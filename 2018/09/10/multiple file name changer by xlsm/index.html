@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.\n\n\n\n1. FeaturesA. Essential functions\n\na. Select multiple files\nb. Change file names by the pairs of original name and new name.\n\n\n2. Blueprint[File select button]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Change name button]\n\n\n\n\n\nOriginal name(After selecting files, this column will be filled automatically)\nNew name(without extension)\n\n\n\n1.txt\naaa\n\n\n2.txt\nbbb\n\n\n3.txt\nccc\n\n\n\n3. Codes[Codes in the File select button]1234567891011121314151617181920212223242526Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of all file that are selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)       ' Name list begins at fifth row, so 5 have to be added.       ' In Column A, put the paths of selected file. In Column B, just put the file names with extension.            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String   ' This is the function which takes only file name from total file path.   ' Using recursive call to cut the rightmost character in string until meet forward slash.('/')   ' If total path is C:\\example\\exam.txt, exam.txt is the final return.    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n[Codes in the Change name button]1234567891011121314151617181920212223242526Sub File_Rename()    Dim OldName, NewName As String    Dim Column_End_Original As Long    Dim Colunm_End_Goal As Long    Dim loop_check As Long    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    Column_End_Goal = Cells(Rows.Count, 3).End(xlUp).Row    ' Get the final rows of original name list and new name list    For loop_check = 6 To Column_End_Original        ' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.        OldName = Cells(loop_check, 1).Text        NewName = Cells(loop_check, 3).Text + \".\" + GetExtention(OldName)        Name OldName As NewName    Next loop_check    MsgBox \"Mission complete\"End SubFunction GetExtention(ByVal strPath As String) As String    ' The function which is get extension from path.    ' Mechanism of this function is exactly same with GetFilenameFromPath.    If Right$(strPath, 1) &lt;&gt; \".\" And Len(strPath) &gt; 0 Then        GetExtention = GetExtention(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n\n4. Result\n","dateCreated":"2018-09-10T00:00:00+09:00","dateModified":"2019-10-10T22:07:39+09:00","datePublished":"2018-09-10T00:00:00+09:00","description":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.","headline":"Multiple file name changer by XLSM","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/10/multiple file name changer by xlsm/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/10/multiple file name changer by xlsm/","keywords":"VBA, VBA-Simple_Script"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.\n\n\n\n1. FeaturesA. Essential functions\n\na. Select multiple files\nb. Change file names by the pairs of original name and new name.\n\n\n2. Blueprint[File select button]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Change name button]\n\n\n\n\n\nOriginal name(After selecting files, this column will be filled automatically)\nNew name(without extension)\n\n\n\n1.txt\naaa\n\n\n2.txt\nbbb\n\n\n3.txt\nccc\n\n\n\n3. Codes[Codes in the File select button]1234567891011121314151617181920212223242526Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of all file that are selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)       ' Name list begins at fifth row, so 5 have to be added.       ' In Column A, put the paths of selected file. In Column B, just put the file names with extension.            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String   ' This is the function which takes only file name from total file path.   ' Using recursive call to cut the rightmost character in string until meet forward slash.('/')   ' If total path is C:\\example\\exam.txt, exam.txt is the final return.    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n[Codes in the Change name button]1234567891011121314151617181920212223242526Sub File_Rename()    Dim OldName, NewName As String    Dim Column_End_Original As Long    Dim Colunm_End_Goal As Long    Dim loop_check As Long    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    Column_End_Goal = Cells(Rows.Count, 3).End(xlUp).Row    ' Get the final rows of original name list and new name list    For loop_check = 6 To Column_End_Original        ' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.        OldName = Cells(loop_check, 1).Text        NewName = Cells(loop_check, 3).Text + \".\" + GetExtention(OldName)        Name OldName As NewName    Next loop_check    MsgBox \"Mission complete\"End SubFunction GetExtention(ByVal strPath As String) As String    ' The function which is get extension from path.    ' Mechanism of this function is exactly same with GetFilenameFromPath.    If Right$(strPath, 1) &lt;&gt; \".\" And Len(strPath) &gt; 0 Then        GetExtention = GetExtention(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n\n4. Result\n","dateCreated":"2018-09-10T00:00:00+09:00","dateModified":"2019-10-10T22:16:34+09:00","datePublished":"2018-09-10T00:00:00+09:00","description":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.","headline":"Multiple file name changer by XLSM","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/10/multiple file name changer by xlsm/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/10/multiple file name changer by xlsm/","keywords":"VBA, VBA-Simple_Script"}</script>
     <meta name="description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
 <meta name="keywords" content="VBA,file name change">
 <meta property="og:type" content="blog">
@@ -23,7 +23,7 @@
 <meta property="og:description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://lh3.googleusercontent.com/NevlaCyd9s1TZ-NASPOH34mZmpaQUKRBNLom44lviPP3nKQqS4o-LaFTxDBlds7Fe86nQnGudVxIzCWk7uKHohN_Hco_lnkKrdKIoCxIkpMUqiHyBbLE719azlWd4P6cBbswXeZayg=w2400">
-<meta property="og:updated_time" content="2019-10-10T13:07:39.687Z">
+<meta property="og:updated_time" content="2019-10-10T13:16:34.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Multiple file name changer by XLSM">
 <meta name="twitter:description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
@@ -248,7 +248,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>There are programs for renaming multiple files like Darknamer,<br><br>but they cannot handle complex rules.<br><br>So I decided to use the might of Excel to do more complicated tasks.</p>
+            <p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.</p>
 <a id="more"></a>
 
 <hr>
@@ -638,7 +638,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -661,7 +661,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br><br>but they cannot handle complex rules.<br><br>So I decided to use the might of Excel to do more complicated tasks.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -684,7 +684,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br><br>Of course, I did not want to merge them manually.<br><br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br>Of course, I did not want to merge them manually.<br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -741,10 +741,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -764,10 +764,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">

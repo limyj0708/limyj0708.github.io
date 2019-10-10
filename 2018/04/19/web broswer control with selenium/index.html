@@ -13,19 +13,19 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!What should I do?\n\n\n\n1. FeaturesA. Essential functions\n\na. It have to push the buttons in a predetermined order.\nb. It have to send date list to web tool.\n\n\n2. Codes123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778from selenium import webdriverfrom selenium.webdriver.support.ui import Select# I import this for selection something in Select tagsfrom time import sleepfrom selenium.webdriver.common.keys import Keys# I import this for sending Tab key inputdateList = open('Date_Range_Selection.txt', 'rt')# Get dates from text format date listdateList_list = dateList.readlines()driver = webdriver.Chrome('chromedriver')# Use Chromedriver.get('http://Address of Web tool/login')sleep(5)driver.find_element_by_id('inputId').send_keys('[Account ID]')driver.find_element_by_id('inputPassword').send_keys('[Account Password]')sleep(5)driver.find_element_by_id('buttonLogin').click()sleep(5)driver.get('http://Address of Web tool/home')sleep(5)damnRadioButton = driver.find_element_by_xpath('//*[@id=\"divStatGeneralBase\"]/div/div[1]/div/div/label[1]')# From this section, structure of HTML codes become so complicated and IDs are not assigned on each objects properly.# So I use xpath to approach objects what I want.# I lost the way long time in this part, so the name of this value is 'damnRadioButton' XDdriver.execute_script(\"arguments[0].click();\", damnRadioButton)# Click radio button. I used Javascript to send click directly, since when I did QA, WebDriver Click was not working.# But after all things were finished, in the actual situation, Webdriver Click worked well. I left this code to keep Javascript example.sleep(5)selectAuctionRange = Select(driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/select[2]'))# Select something from dropdown menuselectAuctionRange.select_by_value('3')# Select third thingsleep(3)for listElement in dateList_list: # Now use dates from the top of this code    bufferData = listElement.split('-')    # The structure of list of data is like this :     # 2018-01-01    # 2018-01-02    # 2018-01-03    # Use hyphen as a delimiter for distinguishment between year, month and date.    year = bufferData[0]    month = bufferData[1]    date = bufferData[2]    # One cycle, one day of data.    startDate = driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/input[1]')    startDate.send_keys(year)    sleep(1)    startDate.send_keys(Keys.TAB)    sleep(1)    startDate.send_keys(month)    sleep(1)    startDate.send_keys(date)    endDate = driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/input[2]')    endDate.send_keys(year)    sleep(1)    endDate.send_keys(Keys.TAB)    sleep(1)    endDate.send_keys(month)    sleep(1)    endDate.send_keys(date)    sleep(1)    driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/button').click()    #Click extraction button    sleep(25)    driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[5]/div/a').click()    #Click \"export to xlsx\" button    print(year+month+date+\"extraction complete!\")    del bufferData[:]    #Initialize bufferprint(\"~The end~\")","dateCreated":"2018-04-19T00:00:00+09:00","dateModified":"2019-10-10T11:28:49+09:00","datePublished":"2018-04-19T00:00:00+09:00","description":"I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!What should I do?","headline":"Web broswer control with Selenium","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/04/19/web broswer control with selenium/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/04/19/web broswer control with selenium/","keywords":"Python, Python-Simple_Script"}</script>
-    <meta name="description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!What should I do?">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at onceand one extracting sequence took 15 minutes!What should I do?\n\n\n\n1. FeaturesA. Essential functions\n\na. It have to push the buttons in a predetermined order.\nb. It have to send date list to web tool.\n\n\n2. Codes123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778from selenium import webdriverfrom selenium.webdriver.support.ui import Select# I import this for selection something in Select tagsfrom time import sleepfrom selenium.webdriver.common.keys import Keys# I import this for sending Tab key inputdateList = open('Date_Range_Selection.txt', 'rt')# Get dates from text format date listdateList_list = dateList.readlines()driver = webdriver.Chrome('chromedriver')# Use Chromedriver.get('http://Address of Web tool/login')sleep(5)driver.find_element_by_id('inputId').send_keys('[Account ID]')driver.find_element_by_id('inputPassword').send_keys('[Account Password]')sleep(5)driver.find_element_by_id('buttonLogin').click()sleep(5)driver.get('http://Address of Web tool/home')sleep(5)damnRadioButton = driver.find_element_by_xpath('//*[@id=\"divStatGeneralBase\"]/div/div[1]/div/div/label[1]')# From this section, structure of HTML codes become so complicated and IDs are not assigned on each objects properly.# So I use xpath to approach objects what I want.# I lost the way long time in this part, so the name of this value is 'damnRadioButton' XDdriver.execute_script(\"arguments[0].click();\", damnRadioButton)# Click radio button. I used Javascript to send click directly, since when I did QA, WebDriver Click was not working.# But after all things were finished, in the actual situation, Webdriver Click worked well. I left this code to keep Javascript example.sleep(5)selectAuctionRange = Select(driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/select[2]'))# Select something from dropdown menuselectAuctionRange.select_by_value('3')# Select third thingsleep(3)for listElement in dateList_list: # Now use dates from the top of this code    bufferData = listElement.split('-')    # The structure of list of data is like this :     # 2018-01-01    # 2018-01-02    # 2018-01-03    # Use hyphen as a delimiter for distinguishment between year, month and date.    year = bufferData[0]    month = bufferData[1]    date = bufferData[2]    # One cycle, one day of data.    startDate = driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/input[1]')    startDate.send_keys(year)    sleep(1)    startDate.send_keys(Keys.TAB)    sleep(1)    startDate.send_keys(month)    sleep(1)    startDate.send_keys(date)    endDate = driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/input[2]')    endDate.send_keys(year)    sleep(1)    endDate.send_keys(Keys.TAB)    sleep(1)    endDate.send_keys(month)    sleep(1)    endDate.send_keys(date)    sleep(1)    driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[1]/div/div/button').click()    #Click extraction button    sleep(25)    driver.find_element_by_xpath('//*[@id=\"divAuctionHouse\"]/div[5]/div/a').click()    #Click \"export to xlsx\" button    print(year+month+date+\"extraction complete!\")    del bufferData[:]    #Initialize bufferprint(\"~The end~\")","dateCreated":"2018-04-19T00:00:00+09:00","dateModified":"2019-10-10T22:16:45+09:00","datePublished":"2018-04-19T00:00:00+09:00","description":"I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at onceand one extracting sequence took 15 minutes!What should I do?","headline":"Web broswer control with Selenium","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/04/19/web broswer control with selenium/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/04/19/web broswer control with selenium/","keywords":"Python, Python-Simple_Script"}</script>
+    <meta name="description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at onceand one extracting sequence took 15 minutes!What should I do?">
 <meta name="keywords" content="Python,Selenium">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Web broswer control with Selenium">
 <meta property="og:url" content="https://limyj0708.github.io/2018/04/19/web broswer control with selenium/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!What should I do?">
+<meta property="og:description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at onceand one extracting sequence took 15 minutes!What should I do?">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-10T02:28:49.493Z">
+<meta property="og:updated_time" content="2019-10-10T13:16:45.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web broswer control with Selenium">
-<meta name="twitter:description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!What should I do?">
+<meta name="twitter:description" content="I had to extract 2 years worth of data from the Web.But this dumb tool I had could extract only 2 weeks of data at onceand one extracting sequence took 15 minutes!What should I do?">
     
     
         
@@ -246,7 +246,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!<br>What should I do?</p>
+            <p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p>
 <a id="more"></a>
 
 <hr>
@@ -606,7 +606,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -629,7 +629,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br><br>but they cannot handle complex rules.<br><br>So I decided to use the might of Excel to do more complicated tasks.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -652,7 +652,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br><br>Of course, I did not want to merge them manually.<br><br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br>Of course, I did not want to merge them manually.<br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -709,10 +709,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -732,10 +732,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
