@@ -552,15 +552,48 @@ Parameter는 함수가 받을 수 있는 Argument의 타입을 정의한다.<br>
 흠, Parameter와 Argument의 차이는 알았다.<br>
 그럼 각각의 자세한 정의는 어떻게 될까?
 
-<blockquote><p>###argument<br>A value passed to a function (or method) when calling the function. There are two kinds of argument:</p>
-<p>keyword argument: an argument preceded by an identifier (e.g. name=) in a function call or passed as a value in a dictionary preceded by **. For example, 3 and 5 are both keyword arguments in the following calls to complex():</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complex(real=<span class="number">3</span>, imag=<span class="number">5</span>)</span><br><span class="line">complex(&#123;<span class="string">'real'</span>: <span class="number">3</span>, <span class="string">'imag'</span>: <span class="number">5</span>&#125;)</span><br></pre></td></tr></table></figure>
-positional argument: an argument that is not a keyword argument. Positional arguments can appear at the beginning of an argument list and/or be passed as elements of an iterable preceded by *. For example, 3 and 5 are both positional arguments in the following calls:
+<blockquote><h3 id="parameter"><a href="#parameter" class="headerlink" title="parameter"></a>parameter</h3><p>A named entity in a function (or method) definition that specifies an argument (or in some cases, arguments) that the function can accept. There are five kinds of parameter:</p>
+<p><strong>positional-or-keyword:</strong> specifies an argument that can be passed either positionally or as a keyword argument. This is the default kind of parameter, for example foo and bar in the following:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None)</span>:</span> ...</span><br></pre></td></tr></table></figure>
+두 형태로 다 받아도 상관이 없는 형태의 예시
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b=<span class="number">10</span>)</span>:</span></span><br><span class="line">    print(a+b)</span><br><span class="line">sum(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">sum(<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 출력값은 둘 다 3으로 잘 나온다.</span></span><br><span class="line"><span class="comment"># b는 keyword parameter지만, positional처럼 값을 넣어도 잘 작동한다.</span></span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>positional-only:</strong> specifies an argument that can be supplied only by position. Python has no syntax for defining positional-only parameters. However, some built-in functions have positional-only parameters (e.g. abs()).</p>
+<p>abs()에 keyword argument를 넣으려고 하면, 시원하게 에러가 뜬다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">abs(foo=<span class="number">10</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line">&lt;ipython-input<span class="number">-3</span>-a716986b1017&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">----&gt; 1 abs(foo=10)</span><br><span class="line"></span><br><span class="line">TypeError: abs() takes no keyword arguments</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>keyword-only:</strong> specifies an argument that can be supplied only by keyword. Keyword-only parameters can be defined by including a single var-positional parameter or bare * in the parameter list of the function definition before them, for example kw_only1 and kw_only2 in the following:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(*arg, *, kw_only1, kw_only2)</span>:</span> ...</span><br></pre></td></tr></table></figure>
+1. 단일 Asterisk 뒤에 오는 parameter들은 무조건 keyword parameter여야 한다. <a href="https://www.python.org/dev/peps/pep-3102/#specification" target="_blank" rel="noopener">PEP-3102</a><br>
+2. var-positional parameter 뒤에 오는 parameter들은 무조건 keyword parameter여야 한다.
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print1</span><span class="params">(a, b, *, kw_only1=None, kw_only2=None, positional)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> print(a,b,kw_only1, kw_only2, positional)</span><br><span class="line">print1(<span class="number">3</span>,<span class="number">4</span>,kw_only1=<span class="number">1</span>, kw_only2=<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># 장렬한 에러 메세지</span></span><br><span class="line">  File <span class="string">"&lt;ipython-input-23-643daf55a3a2&gt;"</span>, line <span class="number">3</span></span><br><span class="line">    print1(<span class="number">3</span>,<span class="number">4</span>,kw_only1=<span class="number">1</span>, kw_only2=<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">                                      ^</span><br><span class="line">SyntaxError: positional argument follows keyword argument</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>var-positional:</strong> specifies that an arbitrary sequence of positional arguments can be provided (in addition to any positional arguments already accepted by other parameters). Such a parameter can be defined by prepending the parameter name with *, for example args in the following:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(*args, **kwargs)</span>:</span> ...</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>var-keyword:</strong> specifies that arbitrarily many keyword arguments can be provided (in addition to any keyword arguments already accepted by other parameters). Such a parameter can be defined by prepending the parameter name with **, for example kwargs in the example above.<br>Parameters can specify both optional and required arguments, as well as default values for some optional arguments.</p>
+<p>직접 임의의(arbitrary) argument들을 마음껏 넣어보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print1</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    print(args)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">print1(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>, kw1=<span class="string">'a'</span>, kw2=<span class="string">'b'</span>, kw3=<span class="string">'hoho'</span>)</span><br><span class="line"><span class="comment"># (1, 2, 3, 4, 5)</span></span><br><span class="line"><span class="comment"># &#123;'kw1': 'a', 'kw2': 'b', 'kw3': 'hoho'&#125;</span></span><br></pre></td></tr></table></figure>
+<br>
+See also the argument glossary entry, the FAQ question on the difference between arguments and parameters, the inspect.Parameter class, the Function definitions section, and PEP 362.<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-parameter" target="_blank" rel="noopener">Glossary > parameter</a></cite></footer></blockquote>
+
+<blockquote><h3 id="argument"><a href="#argument" class="headerlink" title="argument"></a>argument</h3><p>A value passed to a function (or method) when calling the function.<br>There are two kinds of argument:</p>
+<p><strong>keyword argument:</strong><br>an argument preceded by an identifier (e.g. name=) in a function call or passed as a value in a dictionary preceded by **. For example, 3 and 5 are both keyword arguments in the following calls to complex():</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">complex(real=<span class="number">3</span>, imag=<span class="number">5</span>)</span><br><span class="line">complex(**&#123;<span class="string">'real'</span>: <span class="number">3</span>, <span class="string">'imag'</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="comment"># 복소수를 출력하는 함수. 출력값은 (3+5j) 가 된다.</span></span><br><span class="line"><span class="comment"># Asterisk가 data structure를 해체하여 전달하는 역할을 하는데, </span></span><br><span class="line"><span class="comment"># 자세한 내용은 다른 포스트에서 다뤄보자.</span></span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>positional argument:</strong><br>an argument that is not a keyword argument. Positional arguments can appear at the beginning of an argument list and/or be passed as elements of an iterable preceded by *. For example, 3 and 5 are both positional arguments in the following calls:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complex(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">complex(*(<span class="number">3</span>, <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<br>
 Arguments are assigned to the named local variables in a function body. See the Calls section for the rules governing this assignment. Syntactically, any expression can be used to represent an argument; the evaluated value is assigned to the local variable.
 
 <p>See also the parameter glossary entry, the FAQ question on the difference between arguments and parameters, and PEP 362.</p>
-<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-argument" target="_blank" rel="noopener">Glossary-argument</a></cite></footer></blockquote>
+<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-argument" target="_blank" rel="noopener">Glossary > argument</a></cite></footer></blockquote>
 
                     
                         
@@ -1043,10 +1076,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1066,10 +1099,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
