@@ -6,25 +6,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Archives: 2019 - Jin&#39;s Code Archive</title>
+    <title>Iterable, Iterator, Generator - 너희는 누구니? - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,">
+        <meta name="keywords" content="python,javascript,R,Python,Iterable,Iterator,Generator,Container">
     
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Archiving what I studied">
-<meta name="keywords" content="python,javascript,R">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.\n\nIterable\nIterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음)\n그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; y = iter(x)&gt;&gt;&gt; z = iter(x) #The iter() method returns an iterator for the given object.&gt;&gt;&gt; next(y)1&gt;&gt;&gt; next(y)2&gt;&gt;&gt; next(z)1&gt;&gt;&gt; type(x)&lt;class 'list'&gt;&gt;&gt;&gt; type(y)&lt;class 'list_iterator'&gt;\n\n\n\nx는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다. y와 z는 둘 다 상태를 저장하고 있다. (next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)x는 data structure지만(list), data sturcture 인 것이 꼭 필요한 사항은 아니다.\n\nNOTE :실용적인 이유로, 종종 iterable class가 iter()와 next()를 모두 구현하고,self를 반환하는 iter()를 가지는 경우가 있다.이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다.iterator로서 다른 오브젝트를 반환해도 전혀 상관 없다.\n\n\n그럼 이제 아래와 같이 쓰면:\n123x = [1, 2, 3]for elem in x:    ...\n\n실제로는 이런 일이 일어난다.\n\n이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 직접 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(Instruction)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.\n123456789101112&gt;&gt;&gt; import dis&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; dis.dis('for _ in x: pass')  1           0 SETUP_LOOP              14 (to 17)              3 LOAD_NAME                0 (x)              6 GET_ITER        &gt;&gt;    7 FOR_ITER                 6 (to 16)             10 STORE_NAME               1 (_)             13 JUMP_ABSOLUTE            7        &gt;&gt;   16 POP_BLOCK        &gt;&gt;   17 LOAD_CONST               0 (None)             20 RETURN_VALUE\n\nIterator그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 Stateful(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)\n__next__() 메소드를 가지고 있는 모든 오브젝트는 Iterator다.어떻게 값을 발생시키는지는 상관이 없다.\nIterator는 값 공장이다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 내부 상태를 저장하고 있기 때문에, “다음 값”을 어떻게 계산해야 할 지 안다.\n수많은 Iterator의 예들이 있다. itertools 함수들은 Iterator를 반환한다.몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:\n123456&gt;&gt;&gt; from itertools import count&gt;&gt;&gt; counter = count(start=13)&gt;&gt;&gt; next(counter)13&gt;&gt;&gt; next(counter)14\n\n\n몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다: \n12345678910&gt;&gt;&gt; from itertools import cycle&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])&gt;&gt;&gt; next(colors)'red'&gt;&gt;&gt; next(colors)'white'&gt;&gt;&gt; next(colors)'blue'&gt;&gt;&gt; next(colors)'red'\n\n\n몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:\n123456789&gt;&gt;&gt; from itertools import islice&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])  # infinite&gt;&gt;&gt; limited = islice(colors, 0, 4)            # finite&gt;&gt;&gt; for x in limited:                         # so safe to use for-loop on...     print(x)redwhitebluered\n\n\nIterator의 내부 구조에 대한 더 나은 감을 얻기 위해서, 피보나치 수열을 생성하는 Iterator를 만들어 보자:\n\n1234567891011121314151617&gt;&gt;&gt; class fib:...     def __init__(self):...         self.prev = 0...         self.curr = 1... ...     def __iter__(self):...         return self... ...     def __next__(self):...         value = self.curr...         self.curr += self.prev...         self.prev = value...         return value...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n\n이 클래스가 iterable이면서 (__iter()__를 가지고 있기 때문), 자기 자신의 iterator임을 (__next()__를 가지고 있기 때문) 기억하자.\n이 iterator의 내부 상태는 prev와 curr instance variable들에 완전히 저장되며, iterator의 다음 호출에 사용된다. 모든 next() 호출은 두 가지 중요한 일을 한다:\n\n다음 next() 호출을 위해 상태를 변경한다.\n현재 호출을 위한 결과를 생성한다.\n\n\n\n\nCentral Idea : 게으른(lazy) 공장밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는게으른 공장처럼 보인다. 값 하나를 생산한 후에는 다시 정지 상태로 돌아가는.\n\nGenerator드디어 목적지에 도차했다! Generator는 내가(글쓴이가) 완전 좋아하는 Python의 특징이다. Generator는 Iterator의 우아한 버전이다.\nGenerator는 Iterator를 상단의 피보나치 수열 Iterator처럼 작성할 수 있게 해준다. __iter()__와 __next()__를 가지는 클래스의 작성을 피하는, 우아하고 간결한 문법으로.\n직관적으로 표현하면:\n\n모든 Generator는 또한 Iterator이다. (반대는 아니다!)\n모든 Generator는, 그러므로, 값을 게으르게 생산하는 공장이다.\n\n여기 Generator로 쓰여진, 동일한 피보나치 수열 공장이 있다:\n123456789&gt;&gt;&gt; def fib():...     prev, curr = 0, 1...     while True:...         yield curr...         prev, curr = curr, prev + curr...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n\n우아하지 않은가? 이 아름다움을 담당하는 마법의 키워드를 보자:\n\nyield\n\n\n\n\n뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 보통 파이썬 함수로 정의된다. 특별할 것이 없다.그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.\n이제 f=fib() 가 호출되면, Generator가 instance화 되고 반환된다. 여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.더 직관적으로 보면, prev, curr = 0 은 아직 실행되지 않았다.\n그리고, 이 Generator instance는 islice()에 감싸진다.스스로 Iterator이기 때문에, 아직도 아무것도 일어나지 않는다.\n그 다음엔, 이 Iterator는 이 Iterator의 모든 Argument들로부터 list를 생성할 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.\n한 단계씩 보자. 최초의 실행에서, 이 코드는 결과적으로 prev, curr = 0,1 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문을 마주한다. 이 구문은 현재 curr 변수에 있는 값을 생산하고(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.\n이 값은, 이 값을 생산할 islice() wrapper로 전달되고, list는 값 1을 리스트에 추가할 수 있게 된다.\n그리고, list는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 prev, curr = curr, prev + curr 구분 부터 다시 시작하게 된다. 이 다음에 while 루프의 다음 반복에 재진입하고, yield curr 구문을 만나고, 다음 curr 값을 반환한다.\n이 동작은 Output list가 원소 10개를 가지고, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 StopIteration 예외를 발생시킬때까지 일어난다. 그리로 list는 결과를 반환한다: 피보나치 수열 처음 10개 값을 가진 리스트를. Generator가 11번째 next() 호출을 받지 않았음에 주목해라. 결과적으로, 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.\nType of Generators두 가지 종류의 Generator가 있다: Generator function 과 Generator expression 이다.Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다.(피보나치 수열 Generator)yield 키워드가 있기만 해도 함수는 Generator function이 된다.\n다른 타입의 Generator는 list comprehension과 동일한 Generator다.이 문법은 특정 사용처에서는 정말 우아하다.이 문법을 제곱수의 리스트를 만들 때 사용한다고 가정해보자:\n123&gt;&gt;&gt; numbers = [1, 2, 3, 4, 5, 6]&gt;&gt;&gt; [x * x for x in numbers][1, 4, 9, 16, 25, 36]\n\n\nset comprehension으로도 동일한 일을 할 수 있다.\n12&gt;&gt;&gt; &#123;x * x for x in numbers&#125;&#123;1, 4, 36, 9, 16, 25&#125;\n\n\n혹은 dict comprehension으로도:\n12&gt;&gt;&gt; &#123;x: x * x for x in numbers&#125;&#123;1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36&#125;\n\n\nGenerator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)\n1234567&gt;&gt;&gt; lazy_squares = (x * x for x in numbers)&gt;&gt;&gt; lazy_squares&lt;generator object &lt;genexpr&gt; at 0x10d1f5510&gt;&gt;&gt;&gt; next(lazy_squares)1&gt;&gt;&gt; list(lazy_squares)[4, 9, 16, 25, 36]\n\nlazy_squares 의 첫 번째 값을 next() 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)\n요약Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고,메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.\nGenerator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.\n12345def something():    result = []    for ... in ...:        result.append(x)    return result\n\n\n위의 예시를 다음과 같이 바꿔보자.\n123456def iter_something():    for ... in ...:        yield x# def something():  # Only if you really need a list structure#     return list(iter_something())","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2019-10-14T15:11:47+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"Iterable, Iterator, Generator - 너희는 누구니?","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/iterator iterable generator/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/iterator iterable generator/","keywords":"Python"}</script>
+    <meta name="description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
+<meta name="keywords" content="Python,Iterable,Iterator,Generator,Container">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Jin&#39;s Code Archive">
-<meta property="og:url" content="https://limyj0708.github.io/archives/2019/index.html">
+<meta property="og:title" content="Iterable, Iterator, Generator - 너희는 누구니?">
+<meta property="og:url" content="https://limyj0708.github.io/2019/10/12/iterator iterable generator/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="Archiving what I studied">
+<meta property="og:description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://lh3.googleusercontent.com/v5EJBNa6vyH_wwBNg5uXDgOkat1ZEEjX03znRK4ZVeZU2YRFlHVwtyxz_h0PdXwVTIzk9Zb_CWva4sXkuUf0GalZt3GDfBz8P_xIvjRE-CsOVcbyxpviWHbzcVUGaSG2v-BaOyNIBQ=w2400">
+<meta property="og:image" content="https://lh3.googleusercontent.com/3yCxuX_KDrq0QpO6u5sj2i1QEB_Unq_l8L1kj8NkmvK83JSi2zDX5PxK-J03kerrqGtBuwAYk_R4imiynF7L-PuqglSCkdaer-YrO0p8NEtj04-cpdfm3uu8XL-mSbetY6jOmULQmw=w2400">
+<meta property="og:updated_time" content="2019-10-14T06:11:47.014Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jin&#39;s Code Archive">
-<meta name="twitter:description" content="Archiving what I studied">
+<meta name="twitter:title" content="Iterable, Iterator, Generator - 너희는 누구니?">
+<meta name="twitter:description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/v5EJBNa6vyH_wwBNg5uXDgOkat1ZEEjX03znRK4ZVeZU2YRFlHVwtyxz_h0PdXwVTIzk9Zb_CWva4sXkuUf0GalZt3GDfBz8P_xIvjRE-CsOVcbyxpviWHbzcVUGaSG2v-BaOyNIBQ=w2400">
     
     
         
@@ -40,6 +44,8 @@
 
     
 
+    
+        
     
 </head>
 
@@ -212,83 +218,17 @@
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/15/python multiprocessing for web crawling/"
-                            aria-label=": Python Multiprocessing for Web Crawling"
-                        >
-                            Python Multiprocessing for Web Crawling
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-15T00:00:00+09:00">
-	
-		    Oct 15, 2019
-    	
-    </time>
+        <div class="post-header main-content-wrap text-left">
     
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>#Multiprocessing?</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/15/python multiprocessing for web crawling/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
+        <h1 class="post-title">
+            Iterable, Iterator, Generator - 너희는 누구니?
+        </h1>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/12/iterator iterable generator/"
-                            aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
-                        >
-                            Iterable, Iterator, Generator - 너희는 누구니?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+        <div class="post-meta">
     <time datetime="2019-10-12T00:00:00+09:00">
 	
 		    Oct 12, 2019
@@ -303,10 +243,13 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
 <p><img src="https://lh3.googleusercontent.com/v5EJBNa6vyH_wwBNg5uXDgOkat1ZEEjX03znRK4ZVeZU2YRFlHVwtyxz_h0PdXwVTIzk9Zb_CWva4sXkuUf0GalZt3GDfBz8P_xIvjRE-CsOVcbyxpviWHbzcVUGaSG2v-BaOyNIBQ=w2400" alt="Oops, Some network ants ate this pic!" title="relationship between objects"></p>
 <h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><ul>
 <li>Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함<br>(Data structure일 필요는 없음)</li>
@@ -406,483 +349,125 @@ Generator expression으로도 사용할 수 있다. (주의 : tuple comprehensio
 <br>
 위의 예시를 다음과 같이 바꿔보자.
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_something</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        <span class="keyword">yield</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># def something():  # Only if you really need a list structure</span></span><br><span class="line"><span class="comment">#     return list(iter_something())</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/iterator iterable generator/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
             
+
+
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/12/map versus list comprehension/"
-                            aria-label=": Map vs List Comprehension"
-                        >
-                            Map vs List Comprehension
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-12T00:00:00+09:00">
-	
-		    Oct 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/python/">Python</a>
 
             </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
-<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension을 더 직관적이고 명확하다고 생각한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행하 보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
-
-<p>하지만 lambda를 쓰면 어떨까?</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 게으르다.(Map is now lazy)<br><br>무슨 말인고 하니, </p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/map versus list comprehension/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/11/what is the difference between arguments and parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
-                        >
-                            Parameters, Arguments 정의와 차이점
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-11T00:00:00+09:00">
-	
-		    Oct 11, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <blockquote><p>Parameters are defined by the names that appear in a function definition, whereas arguments are the values actually passed to a function when calling it. Parameters define what types of arguments a function can accept. For example, given the function definition:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-foo, bar and kwargs are parameters of func. However, when calling func, for example:
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">42</span>, bar=<span class="number">314</span>, extra=somevar)</span><br></pre></td></tr></table></figure>
-the values 42, 314, and somevar are arguments.<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/faq/programming.html#what-is-the-difference-between-arguments-and-parameters" target="_blank" rel="noopener">Python FAQ</a></cite></footer></blockquote>
-
-<hr>
-<br>
-Parameter는 함수 정의 시 등장하는 이름들에 의해 정의된다.<br>
-Argument는 함수가 호출될 때 실제로 전달되는 값이다.<br>
-Parameter는 함수가 받을 수 있는 Argument의 타입을 정의한다.<br>
-예를 들면, 아래 정의된 함수를 보자:
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<p>foo, bar, kwargs는 함수의 parameter들이다. 하지만, 함수를 호출할 때를 예로 들면:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">42</span>, bar=<span class="number">314</span>, extra=somevar)</span><br></pre></td></tr></table></figure>
-
-<p>42, 314, somevar는 argument들이다.</p>
-<hr>
-<br>
-흠, Parameter와 Argument의 차이는 알았다.<br>
-그럼 각각의 자세한 정의는 어떻게 될까?
-
-<blockquote><p>###argument<br>A value passed to a function (or method) when calling the function. There are two kinds of argument:</p>
-<p>keyword argument: an argument preceded by an identifier (e.g. name=) in a function call or passed as a value in a dictionary preceded by **. For example, 3 and 5 are both keyword arguments in the following calls to complex():</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complex(real=<span class="number">3</span>, imag=<span class="number">5</span>)</span><br><span class="line">complex(&#123;<span class="string">'real'</span>: <span class="number">3</span>, <span class="string">'imag'</span>: <span class="number">5</span>&#125;)</span><br></pre></td></tr></table></figure>
-positional argument: an argument that is not a keyword argument. Positional arguments can appear at the beginning of an argument list and/or be passed as elements of an iterable preceded by *. For example, 3 and 5 are both positional arguments in the following calls:
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complex(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">complex(*(<span class="number">3</span>, <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
-Arguments are assigned to the named local variables in a function body. See the Calls section for the rules governing this assignment. Syntactically, any expression can be used to represent an argument; the evaluated value is assigned to the local variable.
-
-<p>See also the parameter glossary entry, the FAQ question on the difference between arguments and parameters, and PEP 362.</p>
-<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-argument" target="_blank" rel="noopener">Glossary-argument</a></cite></footer></blockquote>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/11/what is the difference between arguments and parameters/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
-                        >
-                            What are Magic Methods?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
-<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
-
-<br>
-어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.
-Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-
-<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
-
-<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/what are magic methods/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
-                        >
-                            Vuetify에서 반응형 웹페이지 제작 테크닉들
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/javascript/">Javascript</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ol>
-<li>&lt;v-###&gt; 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li>“hidden-xs-only” : xs 사이즈에서만 해당 태그를 숨김</li>
-</ul>
-<ol start="2">
-<li>HTML 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li><a href="https://vuetifyjs.com/en/styles/display#visibility" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/display#visibility</a></li>
-<li><code>&lt;br class=&quot;d-flex d-sm-none&quot;&gt;</code> : sm 이하 사이즈에서만 줄바꿈이 등장하게 됨. 긴 텍스트를 해상도에 따라 끊어야 할 때 유용하다.</li>
-</ul>
-<ol start="3">
-<li>현재 화면의 해상도를 받아서 크기 조정하기 : 유튜브 동영상 예시</li>
-</ol>
-<ul>
-<li><p><code>&lt;script&gt;&lt;/script&gt;</code> 사이에 아래처럼 입력해보자.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        data () &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                youtubeSize: &#123;</span><br><span class="line">                        x: <span class="number">0</span>,</span><br><span class="line">                        y: <span class="number">0</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        mounted () &#123;</span><br><span class="line">            <span class="keyword">this</span>.onResize()</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        methods: &#123;</span><br><span class="line">            onResize () &#123;</span><br><span class="line">                <span class="keyword">this</span>.youtubeSize = &#123; <span class="attr">x</span>: <span class="built_in">window</span>.innerWidth - <span class="number">20</span>, <span class="attr">y</span>: <span class="built_in">window</span>.innerWidth * <span class="number">0.625</span> &#125;</span><br><span class="line">                <span class="comment">// 20을 빼준 이유는 약간의 여유공간을 두어 화면에 스크롤이 생기지 않게 하기 위함이고, 0.625를 곱한 건 화면비를 16:10으로 유지하기 위함임</span></span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>위와 같이 적용한 후, 태그는 아래와 같이 지정하자.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">:width</span>=<span class="string">youtubeSize.x</span> <span class="attr">:height</span>=<span class="string">youtubeSize.y</span> <span class="attr">...</span> 중략</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/vuetify making responsible page technique/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/01/python built in function study - map/"
-                            aria-label=": Python Built in function 정리 1 - Map"
-                        >
-                            Python Built in function 정리 1 - Map
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-01T00:00:00+09:00">
-	
-		    Oct 01, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
-<footer><strong>Python Built-in Functions</strong><cite><a href="https://docs.python.org/3.7/library/functions.html#map" target="_blank" rel="noopener">map</a></cite></footer></blockquote>
-
-<hr>
-<br>
-모든 iterable의 Item에 function을 적용하고, 결과를 생성하는 iterator를 Return합니다.
-(class 'map'이 return된다.)
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(type(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 &lt;class 'map'&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>추가적인 iterable arguments가 주어지면,<br>function은 반드시 이 argument들을 받아야 합니다.<br>그리고 function은 모든 iterable들의 item에 병렬적으로 적용됩니다.<br>여러 개의 iterable이 있다면, iterator는 가장 짧은 iterable이 다 사용되면 멈춥니다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(list(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 [7, 16, 27, 40, 55]</span></span><br><span class="line"><span class="comment"># iterable 2개를 받았으며, 각각 map_test가 x에, map_test2가 y에 병렬적으로 대응되었다.</span></span><br><span class="line"><span class="comment"># map_test2가 다 소진되자, 계산이 멈추고 결과가 return 된다. map_test의 6은 안 쓰이게 되었다.</span></span><br></pre></td></tr></table></figure>
-
-<p>함수의 입력값이 argument tuple로 이미 정렬되어 있다면, <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap()</a>를 보세요.</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/01/python built in function study - map/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/08/22/r-var(some_vector) calculate standard deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
-                        >
-                            R - var(some_vector)는 표본분산을 계산한다
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-08-22T00:00:00+09:00">
-	
-		    Aug 22, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/r/">R</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
-
-<p>“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”<br>는 내가 지식이 부족해서 그랬던 것이었다.</p>
-<p>모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.</p>
-<p><a href="https://blog.naver.com/physicopianist/221079231724" target="_blank" rel="noopener">https://blog.naver.com/physicopianist/221079231724</a></p>
-<p>여기 아주 잘 정리되어 있다.</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/08/22/r-var(some_vector) calculate standard deviation/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/15/python multiprocessing for web crawling/"
+                    data-tooltip="Python Multiprocessing for Web Crawling"
+                    aria-label="PREVIOUS: Python Multiprocessing for Web Crawling"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/12/map versus list comprehension/"
+                    data-tooltip="Map vs List Comprehension"
+                    aria-label="NEXT: Map vs List Comprehension"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
 
 
 
@@ -893,6 +478,138 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/15/python multiprocessing for web crawling/"
+                    data-tooltip="Python Multiprocessing for Web Crawling"
+                    aria-label="PREVIOUS: Python Multiprocessing for Web Crawling"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/12/map versus list comprehension/"
+                    data-tooltip="Map vs List Comprehension"
+                    aria-label="NEXT: Map vs List Comprehension"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -1191,6 +908,25 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
 <script src="/assets/js/script-cgdqsnwx9zg31aoakqd9kqzcbhxktewjwkvftnbziye9vctpiwldhmohw818.min.js"></script>
 <!--SCRIPTS END-->
 
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://limyj0708.github.io/2019/10/12/iterator iterable generator/';
+              
+            this.page.identifier = '2019/10/12/iterator iterable generator/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'limyj0708-github-io-1';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
 
 
 

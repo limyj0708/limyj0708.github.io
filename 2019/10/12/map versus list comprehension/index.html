@@ -6,25 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Tag: R - Jin&#39;s Code Archive</title>
+    <title>Map vs List Comprehension - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,">
+        <meta name="keywords" content="python,javascript,R,Python,Map,List Comprehension">
     
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Archiving what I studied">
-<meta name="keywords" content="python,javascript,R">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다.\n첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension을 더 직관적이고 명확하다고 생각한다.\n123456789# 터미널에서 아래와 같이 실행하 보자$ python -mtimeit -s'xs=range(10)' 'map(hex, xs)'100000 loops, best of 3: 4.86 usec per loop# hex() -&gt; 16진수로 변경$ python -mtimeit -s'xs=range(10)' '[hex(x) for x in xs]'100000 loops, best of 3: 5.58 usec per loop# 그냥 함수를 사용했더니, map이 근소하게 더 빠르다\n\n하지만 lambda를 쓰면 어떨까?\n123456$ python -mtimeit -s'xs=range(10)' 'map(lambda x: x+2, xs)'100000 loops, best of 3: 4.24 usec per loop$ python -mtimeit -s'xs=range(10)' '[x+2 for x in xs]'100000 loops, best of 3: 2.32 usec per loop# 속도가 정 반대가 되었다.\n\n\n두 번째 답변의 일부 발췌 :LazinessPython에서 Map은 게으르다.(Map is now lazy)무슨 말인고 하니, \n","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2019-10-11T15:58:44+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"Map vs List Comprehension","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/map versus list comprehension/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/map versus list comprehension/","keywords":"Python"}</script>
+    <meta name="description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
+<meta name="keywords" content="Python,Map,List Comprehension">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Jin&#39;s Code Archive">
-<meta property="og:url" content="https://limyj0708.github.io/tags/r/index.html">
+<meta property="og:title" content="Map vs List Comprehension">
+<meta property="og:url" content="https://limyj0708.github.io/2019/10/12/map versus list comprehension/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="Archiving what I studied">
+<meta property="og:description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-10-11T06:58:44.953Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jin&#39;s Code Archive">
-<meta name="twitter:description" content="Archiving what I studied">
+<meta name="twitter:title" content="Map vs List Comprehension">
+<meta name="twitter:description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
     
     
         
@@ -40,6 +41,8 @@
 
     
 
+    
+        
     
 </head>
 
@@ -212,80 +215,167 @@
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/08/22/r-var(some_vector) calculate standard deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
-                        >
-                            R - var(some_vector)는 표본분산을 계산한다
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-08-22T00:00:00+09:00">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Map vs List Comprehension
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-10-12T00:00:00+09:00">
 	
-		    Aug 22, 2019
+		    Oct 12, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/r/">R</a>
+    <a class="category-link" href="/categories/python/">Python</a>
 
 
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content">
-                    <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
-
-<p>“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”<br>는 내가 지식이 부족해서 그랬던 것이었다.</p>
-<p>모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.</p>
-<p><a href="https://blog.naver.com/physicopianist/221079231724" target="_blank" rel="noopener">https://blog.naver.com/physicopianist/221079231724</a></p>
-<p>여기 아주 잘 정리되어 있다.</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/08/22/r-var(some_vector) calculate standard deviation/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
     
-    <div class="pagination-bar">
-    <ul class="pagination">
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension을 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행하 보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+
+<p>하지만 lambda를 쓰면 어떨까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 게으르다.(Map is now lazy)<br><br>무슨 말인고 하니, </p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/python/">Python</a>
+
+            </div>
         
         
-        <li class="pagination-number">page 1 of 1</li>
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/12/iterator iterable generator/"
+                    data-tooltip="Iterable, Iterator, Generator - 너희는 누구니?"
+                    aria-label="PREVIOUS: Iterable, Iterator, Generator - 너희는 누구니?"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/11/what is the difference between arguments and parameters/"
+                    data-tooltip="Parameters, Arguments 정의와 차이점"
+                    aria-label="NEXT: Parameters, Arguments 정의와 차이점"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -295,6 +385,138 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/12/iterator iterable generator/"
+                    data-tooltip="Iterable, Iterator, Generator - 너희는 누구니?"
+                    aria-label="PREVIOUS: Iterable, Iterator, Generator - 너희는 누구니?"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/11/what is the difference between arguments and parameters/"
+                    data-tooltip="Parameters, Arguments 정의와 차이점"
+                    aria-label="NEXT: Parameters, Arguments 정의와 차이점"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/12/map versus list comprehension/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -593,6 +815,25 @@
 <script src="/assets/js/script-cgdqsnwx9zg31aoakqd9kqzcbhxktewjwkvftnbziye9vctpiwldhmohw818.min.js"></script>
 <!--SCRIPTS END-->
 
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://limyj0708.github.io/2019/10/12/map versus list comprehension/';
+              
+            this.page.identifier = '2019/10/12/map versus list comprehension/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'limyj0708-github-io-1';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
 
 
 
