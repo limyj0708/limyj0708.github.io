@@ -306,7 +306,7 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.<br>어째 아래 정리한 내용을 보는 것 보다, 원문을 보는 것이 더 이해가 잘 된다.<br>시간이 나면 문장을 정리해야겠다..</p>
+                    <p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
 <p><img src="https://drive.google.com/uc?id=1m5WUphiPHDPecjasiirM40shy2Vhu8qg" alt="Oops, Some network ants ate this pic!" title="relationship between objects"></p>
 <h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><ul>
 <li>Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함<br>(Data structure일 필요는 없음)</li>
@@ -316,7 +316,7 @@
 </ul>
 <p>x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), 꼭 data sturcture일 필요는 없다.</p>
 <blockquote>
-<p><strong>NOTE :</strong><br>실용적인 이유로, 종종 iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 구현하고,<br>self를 반환하는 <strong>iter()</strong>를 가지는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다.<br>iterator로서 다른 오브젝트를 반환해도 전혀 상관 없다.</p>
+<p><strong>NOTE :</strong><br>실용적인 이유로, 종종 iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 구현하고,<br>self를 반환하는 <strong>iter()</strong>를 가지는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다.<br>iterator로 self 이외의 다른 오브젝트를 반환해도 전혀 상관 없다.</p>
 </blockquote>
 <br>
 그럼 이제 아래와 같이 쓰면:
@@ -464,14 +464,28 @@ Generator expression으로도 사용할 수 있다. (주의 : tuple comprehensio
             
                 <div class="postShorten-content">
                     <p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
-<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우) List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension을 더 직관적이고 명확하다고 생각한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행하 보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
 
-<p>하지만 lambda를 쓰면 어떨까?</p>
+<br>
+하지만 lambda를 쓰면 어떨까?
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
 
 <hr>
-<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 게으르다.(Map is now lazy)<br><br>무슨 말인고 하니, </p>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
+
+<br>
+List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
+
+<br>
+'게으른' List Comprehension도 Generator expression의 형태로 지원한다.
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
+
 
                     
                         
