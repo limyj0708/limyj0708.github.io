@@ -6,25 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Tag: Javascipt - Jin&#39;s Code Archive</title>
+    <title>Closure and Decorator - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,">
+        <meta name="keywords" content="python,javascript,R,Python,Closure,Decorator">
     
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Archiving what I studied">
-<meta name="keywords" content="python,javascript,R">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"Closure in PythonPrerequisiteNested Function &amp; Nonlocal variableNested function : 다른 함수 안에 정의된 함수.\n","dateCreated":"2019-10-16T00:00:00+09:00","dateModified":"2019-10-16T11:16:04+09:00","datePublished":"2019-10-16T00:00:00+09:00","description":"","headline":"Closure and Decorator","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/16/Closure and Decorator/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/16/Closure and Decorator/","keywords":"Python"}</script>
+    <meta name="description" content="Closure in PythonPrerequisiteNested Function &amp;amp; Nonlocal variableNested function : 다른 함수 안에 정의된 함수.">
+<meta name="keywords" content="Python,Closure,Decorator">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Jin&#39;s Code Archive">
-<meta property="og:url" content="https://limyj0708.github.io/tags/javascipt/index.html">
+<meta property="og:title" content="Closure and Decorator">
+<meta property="og:url" content="https://limyj0708.github.io/2019/10/16/Closure and Decorator/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="Archiving what I studied">
+<meta property="og:description" content="Closure in PythonPrerequisiteNested Function &amp;amp; Nonlocal variableNested function : 다른 함수 안에 정의된 함수.">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-10-16T02:16:04.397Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jin&#39;s Code Archive">
-<meta name="twitter:description" content="Archiving what I studied">
+<meta name="twitter:title" content="Closure and Decorator">
+<meta name="twitter:description" content="Closure in PythonPrerequisiteNested Function &amp;amp; Nonlocal variableNested function : 다른 함수 안에 정의된 함수.">
     
     
         
@@ -40,6 +41,8 @@
 
     
 
+    
+        
     
 </head>
 
@@ -212,97 +215,159 @@
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
-                        >
-                            Vuetify에서 반응형 웹페이지 제작 테크닉들
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Closure and Decorator
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-10-16T00:00:00+09:00">
 	
-		    Oct 04, 2019
+		    Oct 16, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/javascript/">Javascript</a>
+    <a class="category-link" href="/categories/python/">Python</a>
 
 
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content">
-                    <ol>
-<li>&lt;v-###&gt; 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li>“hidden-xs-only” : xs 사이즈에서만 해당 태그를 숨김</li>
-</ul>
-<ol start="2">
-<li>HTML 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li><a href="https://vuetifyjs.com/en/styles/display#visibility" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/display#visibility</a></li>
-<li><code>&lt;br class=&quot;d-flex d-sm-none&quot;&gt;</code> : sm 이하 사이즈에서만 줄바꿈이 등장하게 됨. 긴 텍스트를 해상도에 따라 끊어야 할 때 유용하다.</li>
-</ul>
-<ol start="3">
-<li>현재 화면의 해상도를 받아서 크기 조정하기 : 유튜브 동영상 예시</li>
-</ol>
-<ul>
-<li><p><code>&lt;script&gt;&lt;/script&gt;</code> 사이에 아래처럼 입력해보자.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        data () &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                youtubeSize: &#123;</span><br><span class="line">                        x: <span class="number">0</span>,</span><br><span class="line">                        y: <span class="number">0</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        mounted () &#123;</span><br><span class="line">            <span class="keyword">this</span>.onResize()</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        methods: &#123;</span><br><span class="line">            onResize () &#123;</span><br><span class="line">                <span class="keyword">this</span>.youtubeSize = &#123; <span class="attr">x</span>: <span class="built_in">window</span>.innerWidth - <span class="number">20</span>, <span class="attr">y</span>: <span class="built_in">window</span>.innerWidth * <span class="number">0.625</span> &#125;</span><br><span class="line">                <span class="comment">// 20을 빼준 이유는 약간의 여유공간을 두어 화면에 스크롤이 생기지 않게 하기 위함이고, 0.625를 곱한 건 화면비를 16:10으로 유지하기 위함임</span></span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>위와 같이 적용한 후, 태그는 아래와 같이 지정하자.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">:width</span>=<span class="string">youtubeSize.x</span> <span class="attr">:height</span>=<span class="string">youtubeSize.y</span> <span class="attr">...</span> 중략</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/vuetify making responsible page technique/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
     
-    <div class="pagination-bar">
-    <ul class="pagination">
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="Closure-in-Python"><a href="#Closure-in-Python" class="headerlink" title="Closure in Python"></a>Closure in Python</h1><h2 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h2><h3 id="Nested-Function-amp-Nonlocal-variable"><a href="#Nested-Function-amp-Nonlocal-variable" class="headerlink" title="Nested Function &amp; Nonlocal variable"></a>Nested Function &amp; Nonlocal variable</h3><p><strong>Nested function</strong> : 다른 함수 안에 정의된 함수.</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/python/">Python</a>
+
+            </div>
         
         
-        <li class="pagination-number">page 1 of 1</li>
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/18/lets start docker through installing oracle11g on mac/"
+                    data-tooltip="Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    aria-label="PREVIOUS: Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/15/python multiprocessing for web crawling/"
+                    data-tooltip="Python Multiprocessing for Web Crawling"
+                    aria-label="NEXT: Python Multiprocessing for Web Crawling"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -312,6 +377,138 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/18/lets start docker through installing oracle11g on mac/"
+                    data-tooltip="Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    aria-label="PREVIOUS: Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/10/15/python multiprocessing for web crawling/"
+                    data-tooltip="Python Multiprocessing for Web Crawling"
+                    aria-label="NEXT: Python Multiprocessing for Web Crawling"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/16/Closure and Decorator/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -610,6 +807,25 @@
 <script src="/assets/js/script-cgdqsnwx9zg31aoakqd9kqzcbhxktewjwkvftnbziye9vctpiwldhmohw818.min.js"></script>
 <!--SCRIPTS END-->
 
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://limyj0708.github.io/2019/10/16/Closure and Decorator/';
+              
+            this.page.identifier = '2019/10/16/Closure and Decorator/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'limyj0708-github-io-1';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
 
 
 
