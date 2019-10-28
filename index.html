@@ -371,7 +371,7 @@
 </li>
 <li><p><a href="https://docs.docker.com/engine/reference/commandline/pull/" target="_blank" rel="noopener"><code>docker pull oracleinanutshell/oracle-xe-11g</code></a> : registry에서 image나 repository를 가져온다. 여기서는 추천수가 가장 높았던 <em>oracleinanutshell/oracle-xe-11g</em> 라는 image를 가져왔다. <a href="https://hub.docker.com/r/oracleinanutshell/oracle-xe-11g" target="_blank" rel="noopener">Docker Hub : oracleinanutshell/oracle-xe-11g</a> 설명을 보니 Ubuntu 18.04 LTS에 Oracle xe 11g를 올린 image다.</p>
 </li>
-<li><p><a href="https://docs.docker.com/engine/reference/commandline/run/" target="_blank" rel="noopener"><code>docker run --name oracle-xe-11g -d -p 8080:8080 p 1521:1521 oracleinanutshell/oracle-xe-11g</code></a> : <code>docker run [OPTIONS] image [COMMAND] [ARG...]</code> 이런 구조로 되어있다. Container를 <strong>생성하여 실행한다.</strong> 여기서 사용한 옵션값부터 살펴보자.</p>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/run/" target="_blank" rel="noopener"><code>docker run --name oracle-xe-11g -d -p 8080:8080 -p 1521:1521 oracleinanutshell/oracle-xe-11g</code></a> : <code>docker run [OPTIONS] image [COMMAND] [ARG...]</code> 이런 구조로 되어있다. Container를 <strong>생성하여 실행한다.</strong> 여기서 사용한 옵션값부터 살펴보자.</p>
 <ul>
 <li><p>--name : Container의 이름을 설정한다. 중복 이름은 허용하지 않음.</p>
 </li>
