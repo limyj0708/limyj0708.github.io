@@ -34,7 +34,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-q9xl3emoi0jotmqtnbg8v3fmerl49x72wuwslknbzrymkhnliesulmklnuyz.min.css">
+    <link rel="stylesheet" href="/assets/css/style-rkcnv6nfop9na7tqt5xvn4fonbhlb00dlynf71oe0yz1xuvvjczqo8cdyhai.min.css">
     <!--STYLES END-->
     
 
@@ -223,6 +223,150 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/11/11/Asynchronous, Synchronous, Blocking, Non-Blocking/"
+                            aria-label=": Asynchronous, Synchronous, Blocking, Non-Blocking"
+                        >
+                            Asynchronous, Synchronous, Blocking, Non-Blocking
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-11T00:00:00+09:00">
+	
+		    Nov 11, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/computer-science/">Computer Science</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>많은 자료의 산 중에서, 가장 알기 쉽고 직관적으로 설명한 자료는<br><a href="https://stackoverflow.com/questions/2625493/asynchronous-vs-non-blocking" target="_blank" rel="noopener">https://stackoverflow.com/questions/2625493/asynchronous-vs-non-blocking</a><br>이 질문의 세 번째 답변이라는 결론을 내렸다.<br>이 답변의 번역 + 다른 자료들 + 사족을 섞어서 글을 적어보았다.<br>(많은 자료들이 중구난방으로 이야기하고 있는 부분이 많아서 힘들었다.. 그래서 정리 내용도 좀 어수선하다 ㅠ)</p>
+<p>synchronous / asynchronous : 두 모듈 사이의 관계에 대한 표현<br>blocking / non-blocking : 모듈 하나의 상태에 대한 표현</p>
+<p>예를 들어,<br>모듈 X : 나<br>모튤 Y : 서점<br>X가 Y에게 질문 : C++ primer 책 있나요?</p>
+<p><strong>1. Blocking</strong></p>
+<ul>
+<li>Y가 X에게 답하기 전까지, X는 기다린다. X는 Blocking 상태에 빠진 것이다. </li>
+</ul>
+<p><strong>2. Non-Blocking</strong></p>
+<ul>
+<li>Y가 X에게 답하기 전에, X는 다른 일을 할 수 있다.</li>
+<li>X가 2분마다 Y가 일을 끝냈는지 확인할까?(Synchronous라면 이렇게 될 것 같다.) 아니면 Y가 다 됐다고 부르면 확인할까?(Asynchronous라면 이렇게 될 것 같다.) 모른다.(= 상관이 없다.)</li>
+<li>우리가 아는 건 X가 Y가 일을 끝내기 전에 다른 일을 할 수 있다는 것 뿐이다. X는 Non-Blocking이다.</li>
+</ul>
+<p><strong>3. Synchronous</strong></p>
+<ul>
+<li><p>Y가 X에게 답하기 전에는, X는 다른 일을 진행하지 않는다 - 라고 설명하고 있는데, 이러면 Blocking과 정의가 같다. Synchronous는 엄밀히 말하면, <a href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)#Thread_or_process_synchronization" target="_blank" rel="noopener"><code>작업의 순서를 맞추는 것</code></a>이다. 왜 순서를 맞추냐고? 여러 작업이 동시에(Concurrently) Critical section에 진입하는것을 막기 위해서이기도 하고, 특정 순서에 맞게 작업들을 실행해야 할 필요가 있기(표를 사지도 않고 비행기에 탈 수는 없다) 때문이기도 하다.<br>작업 순서를 맞출 때 Blocking으로 처리하면 편하기 때문에 Blocking의 개념이 섞여서 등장하는 것 뿐이다.</p>
+</li>
+<li><p>이 두 글을 참고하면 좋다.</p>
+<ul>
+<li><a href="https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념" target="_blank" rel="noopener">https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념</a> (이 글의 경우 blocking 부분은 보면 더 헷갈리니 위에만 보자.)</li>
+<li><a href="https://medium.com/from-the-scratch/wtf-is-synchronous-and-asynchronous-1a75afd039df" target="_blank" rel="noopener">https://medium.com/from-the-scratch/wtf-is-synchronous-and-asynchronous-1a75afd039df</a></li>
+</ul>
+</li>
+<li><p>이 X,Y 예에서는, Synchronous는 <strong>X가 Y에게 책 찾았냐고 물어보고,</strong> Y가 책이 있는지 없는지 X에게 알려 준 이후에야, X가 Y에게 “그래서 이 책 얼마죠?” 라고 물어보던가, “그 책 주문 좀 해주세요” 라고 요청할 수 있는 상황인 것이다. 책이 있는지 확인한 다음에 가격을 물어보던지 주문을 요청하던지 할 수 있으니까. X가 Y가 책 찾는 동안 다른 무언가를 하는 건 상관이 없다. 서점 앞에서 줄넘기를 할 수도 있지 않은가? 책이 얼마냐고 못 물어보는 것 뿐.</p>
+</li>
+<li><p><strong>여기서 X가 Y가 작업을 완료했는지 확인하는데, 이것이 Asynchronous와의 또 다른 차이점이기도 하다.</strong> (caller가 callee의 작업 완료를 체크함)</p>
+</li>
+<li><p>이렇게 봐도 상당히 헷갈리기 때문에, 코드를 보자. 아래의 코드는 <em>Synchronous &amp; Non-Blocking</em> 한 간단한 코드이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># thread X</span></span><br><span class="line"><span class="keyword">while</span> (true)</span><br><span class="line">&#123;</span><br><span class="line">    msg = recv(Y, NON_BLOCKING_FLAG);</span><br><span class="line">    <span class="keyword">if</span> (msg <span class="keyword">is</span> <span class="keyword">not</span> empty)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 이 루프 안에서 다른 작업을 할 수 있다.</span></span><br><span class="line">    sleep(<span class="number">2000</span>); // <span class="number">2</span> sec</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># thread Y</span></span><br><span class="line"><span class="comment"># prepare the book for X</span></span><br><span class="line">send(X, book);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>X가 2초마다 Y가 답을 줬는지 아닌지 확인한다.</strong> </li>
+<li>Y가 결과를 반환하기 위해 준비 중이어도, X의 while 루프는 계속 돌아가고 그 안에서 다른 작업을 진행할 수 있다. <strong>그래서 Non-Blocking이다.</strong></li>
+<li><strong>하지만, while문을 빠져나가서 다른 작업을 할 수는 없다! 그래서 Synchronous다.</strong></li>
+<li>코드의 예시까지 보면, X가 서점을 떠나지 못한다고 해석할 수 있다. Y가 책을 찾아줘서 서점과 관련된 일을 마치기 전에는, 서점을 떠나서 다른 걸 할 수 없다. 서점 앞에서 줄넘기는 가능해도.(while문 안에서 뭔가 다른 작업)</li>
+<li>Blocking이었다면, X는 아무것도 못하고 기다려야 했겠지만. </li>
+</ul>
+</li>
+</ul>
+<p><strong>4. Asychronous</strong></p>
+<ul>
+<li>Y가 X에게 답하기 전에, X는 다른 곳에 가서 다른 일을 할 수 있다. <strong>X는 Y가 부르기 전까지 돌아오지 않는다.</strong> 이 때 X와 Y는 Asychronous 하다고 말한다.</li>
+<li>사실 <a href="https://en.wikipedia.org/wiki/Asynchronous_system" target="_blank" rel="noopener">Asynchronous</a>는 엄밀히 말하면, 작업들이 공통적으로 사용하는 global clock이 없고, 신호나 메세지의 도착 시간이 작업의 신뢰성에 영향을 미치지 않음을 뜻한다.<ul>
+<li>즉 <a href="https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념" target="_blank" rel="noopener">작업의 순서가 보장되지 않는다.</a>(A,B,C 순서로 실행되었으나 <a href="https://medium.com/from-the-scratch/wtf-is-synchronous-and-asynchronous-1a75afd039df" target="_blank" rel="noopener">완료도 A,B,C 순서일 것이라 보장할 수 없음</a>)</li>
+<li>위에서 언급한 <strong>신호나 메세지의 도착 시간이 작업의 신뢰성에 영향을 미치지 않음</strong>, 즉, 각 작업이 서로 연관되지 않아서 분리될 수 있으며, 작업 지연시간이 큰 경우에 잘 활용될 수 있다. (DB 접근, Http 요청, File I/O 등)</li>
+</ul>
+</li>
+<li>Y에게 책 있냐고 물어본 후에 X가 카페에 가서 커피를 마시기 시작했지만, 책 찾기보다 커피 마시기가 더 빨리 끝날 수도 있다. 이 둘은 완전히 별개의 작업이며, 작업의 순서가 보장되지 않는다.(Asynchronous &amp; Non-Blocking이라면.) 그리고 이것이 가능한 건, Y가 X를 부를 때 X가 서점으로 돌아가면 되기 때문이다.</li>
+</ul>
+<p>각 2개씩의 개념이 있으니, 총 4개의 조합이 나올 것이다.</p>
+<ul>
+<li>Synchronous - Blocking</li>
+<li>Asynchronous - Blocking</li>
+<li>Synchronous - Non-Blocking </li>
+<li>Asynchronous - Non-Blocking<br>이 조합들에 대해서는 <a href="https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/" target="_blank" rel="noopener">여기를</a> 참고하자. 아래 사진이 핵심인데, 출처의 글에서 가져온 사진이다.</li>
+</ul>
+<p><img src="https://drive.google.com/uc?id=1SygnLUtk9dxVWnycUvt7HHDSwaqO7ARS" alt="Oops, Some network ants ate this pic!" title="sync-async-block-nonblock_cube"> 출처 : <a href="https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/" target="_blank" rel="noopener">https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/</a></p>
+<hr>
+<br>
+
+<ul>
+<li><p>번외 내용 : 정리하다 보니 핵심 개념을 직관적으로 알기에는 너무 응용에 가깝다고 생각되었던 내용. 지우기는 아까워서 넘겨두었다.</p>
+<ul>
+<li><p><a href="(http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html)">Blocking I/O</a> : application이 kernal에 I/O 해줘~ 라고 system call을 날린다. kernal이 I/O를 수행하는 동안, application은 아무것도 못 하고 기다린다. I/O가 완료되면 call에 대한 return값으로 원하던 데이터를 받는다.<br><img src="https://drive.google.com/uc?id=1xKPthKaOEic-OzdqwBYvl25Rv2wdyd5O" alt="Oops, Some network ants ate this pic!" title="Blocking IO"></p>
+</li>
+<li><p><a href="(http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html)">Non-Blocking I/O</a> : application이 kernal에 I/O 해줘~ 라고 system call을 날린다. 그림의 recvfrom 함수는, 바로 결과를 return 하는데, 아직 I/O가 완료되지 않았으므로 에러인 EWOULDBLOCK을 return한다. 프로세스는 계속 recvfrom을 call 하게 되고, 데이터가 완료되었으면 그 때 데이터가 return된다. 이렇게 계속 요청하는 걸 <em>polling</em> 이라 한다.<br><img src="https://drive.google.com/uc?id=1xv9zW0kswg-VxLqFqaVODDmUCYwGWkcE" alt="Oops, Some network ants ate this pic!" title="Non-Blocking IO"></p>
+<ul>
+<li><a href="https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/" target="_blank" rel="noopener">call에 대한 return을 바로 받아서, application이 제어권을 넘겨받고 다른 일을 진행할 수 있는 것이 중요하다.</a> Blocking I/O와는 정 반대로.</li>
+</ul>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Non-blocking_algorithm" target="_blank" rel="noopener">Non-Blocking Algorithm</a> : 어떤 쓰레드의 실패(failure)나 멈춤(suspension)이 다른 쓰레드에 영향을 미치지 않게 하는 알고리즘. 몇몇 상황에서는 이런 알고리즘이 전통적인 Blocking 적용(<a href="https://en.wikipedia.org/wiki/Lock_(computer_science)" target="_blank" rel="noopener">Lock</a>)의 유용한 대안이 된다.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)#Thread_or_process_synchronization" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Synchronization_(computer_science)#Thread_or_process_synchronization</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Synchronous_circuit" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Synchronous_circuit</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Asynchronous_system" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Asynchronous_system</a></li>
+<li><a href="https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념" target="_blank" rel="noopener">https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념</a></li>
+<li><a href="https://medium.com/from-the-scratch/wtf-is-synchronous-and-asynchronous-1a75afd039df" target="_blank" rel="noopener">https://medium.com/from-the-scratch/wtf-is-synchronous-and-asynchronous-1a75afd039df</a></li>
+<li><a href="https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/" target="_blank" rel="noopener">https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/</a></li>
+<li><a href="https://ozt88.tistory.com/20" target="_blank" rel="noopener">https://ozt88.tistory.com/20</a></li>
+<li><a href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html" target="_blank" rel="noopener">http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Blocking_(computing)" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Blocking_(computing)</a></li>
+<li><a href="https://developer.ibm.com/articles/l-async/" target="_blank" rel="noopener">https://developer.ibm.com/articles/l-async/</a></li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/11/11/Asynchronous, Synchronous, Blocking, Non-Blocking/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/11/10/python asyncio for web crawling/"
                             aria-label=": Python Asyncio - 개념이해부터 실전적용까지 (1)"
                         >
@@ -248,7 +392,7 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Cnet의 기사를 크롤링 하려고 하는데, 총 기사 수가 36만개가 넘는다.<br><a href="https://www.cnet.com/sitemaps/articles/" target="_blank" rel="noopener">https://www.cnet.com/sitemaps/articles/</a></p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Cnet의 기사를 크롤링 하려고 하는데, 총 기사 수가 36만개가 넘는다.<br><a href="https://www.cnet.com/sitemaps/articles/" target="_blank" rel="noopener">https://www.cnet.com/sitemaps/articles/</a></p>
 <p>음, 좀 많은데? 기사 링크 수집에만 50분이 걸리는데?<br>내용 수집은 도대체 얼마나 걸릴까?</p>
 <p>기사 수집을 더 빠르게 하고 싶다.<br>한 번에 여러 개의 기사를 수집하게 할 수 없을까?<br>그래서 이것저것 알아보았는데, 이렇게 긴 여정이 될 거라고는 상상하지 못했다…</p>
 <hr style="border-width: 2px;">
@@ -322,7 +466,8 @@
 <hr style="border-width: 0.3px;">
 
 <h1 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h1><ul>
-<li>“Asynchronous Programming” : 비동기 프로그래밍. 용어들의 정의와 비교는 이 문서 하단에서 알아보자.</li>
+<li><a href="https://docs.python.org/3/library/asyncio.html" target="_blank" rel="noopener">Asynchronous I/O</a></li>
+<li>먼저 읽기 : <a href>Asychronous, Synchronous, Blocking, Non-Blocking</a></li>
 <li>Asyncio 라이브러리는 <a href="https://en.wikipedia.org/wiki/Cooperative_multitasking" target="_blank" rel="noopener">cooperative multitasking</a> 이라는 방식을 사용하는데, (a.k.a non-preemptive multitasking) OS가 context switching을 시작시키지 않고 process, 혹은 thread가 자발적으로 “나 멈추고 CPU 점유 넘길게요!” 라고 선언하는 방식이다.</li>
 <li>scheduling 계획 수행을 위해 모든 프로그램들이 “협력” 해야 하므로, “cooperative”라는 형용사가 붙었다.</li>
 <li>코드를 좀 변경하고 추가해야 하지만, <strong><em>언제</em></strong> switching이 일어날 지 알 수 있게 된다.</li>
@@ -446,9 +591,15 @@
 
 <p>실행하면 대략 2.5초가 걸린다. 완전히 같은 동작을 하는 코드를 requests로 작성했을 때 12.2초가 걸리는 것을 생각하면 엄청난 속도향상이라고 볼 수 있겠다.</p>
 <p>그럼 이제 실전으로 들어가보자.<br>Asyncio로 작동되는 코드까지 다 완성해서 돌리고 있는데,<br>글이 너무 길어지는 바람에 실제 활용 설명은 2편에서…</p>
-<h2 id="추가적으로-알아야-할-용어들-누르면-이동-아직-제작-중"><a href="#추가적으로-알아야-할-용어들-누르면-이동-아직-제작-중" class="headerlink" title="추가적으로 알아야 할 용어들 (누르면 이동 : 아직 제작 중)"></a>추가적으로 알아야 할 용어들 (누르면 이동 : 아직 제작 중)</h2><ul>
-<li>Blocking, Non-Blocking, Concurrency, Parallelism</li>
-<li>Synchronous, Asychronous</li>
+<h2 id="추가적으로-알아야-할-용어들"><a href="#추가적으로-알아야-할-용어들" class="headerlink" title="추가적으로 알아야 할 용어들"></a>추가적으로 알아야 할 용어들</h2><ul>
+<li>Blocking, Non-Blocking, Concurrency, Parallelism, Synchronous, Asychronous<ul>
+<li><a href="https://tech.peoplefund.co.kr/2017/08/02/non-blocking-asynchronous-concurrency.html" target="_blank" rel="noopener">https://tech.peoplefund.co.kr/2017/08/02/non-blocking-asynchronous-concurrency.html</a></li>
+<li><a href="https://www.lightbend.com/blog/7-ways-washing-dishes-and-message-driven-reactive-systems" target="_blank" rel="noopener">https://www.lightbend.com/blog/7-ways-washing-dishes-and-message-driven-reactive-systems</a></li>
+<li><a href="http://www.slideshare.net/unitimes/sync-asyncblockingnonblockingio" target="_blank" rel="noopener">http://www.slideshare.net/unitimes/sync-asyncblockingnonblockingio</a></li>
+<li><a href="https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/" target="_blank" rel="noopener">https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/</a></li>
+<li><a href="https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념" target="_blank" rel="noopener">https://jins-dev.tistory.com/entry/동기Synchronous-작업과-비동기Asynchronous-작업-그리고-블락Blocking-과-넌블락NonBlocking-의-개념</a></li>
+</ul>
+</li>
 <li>Awaitable Object</li>
 </ul>
 
@@ -508,7 +659,7 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>새로운 도구의 필요성은 언제나 갑자기 찾아온다.<br>“오너라, 오라클! 난 Docker 마스터다! 널 맥에 바로 설치해주마!”<br>같은 상황은 살면서 별로 일어나지 않는다.</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>새로운 도구의 필요성은 언제나 갑자기 찾아온다.<br>“오너라, 오라클! 난 Docker 마스터다! 널 맥에 바로 설치해주마!”<br>같은 상황은 살면서 별로 일어나지 않는다.</p>
 <p>그렇다고 구글링을 해서 나온 명령어들을 그저 복사&amp;붙여넣기 하여 설치하기만 하면,<br>응용도 안 되고 단지 시간을 쓴 것에 지나지 않게 된다.</p>
 <p>단순한 따라하기를 넘어서, Docker로 Oracle DB를 Mac에 설치하는 과정을 통해<br>Docker의 개념과 기본 명령어들을 공부해보자.<br>일단 설치부터 하고~ <a href="https://docs.docker.com/docker-for-mac/" target="_blank" rel="noopener">Docker Desktop for mac</a><br><br></p>
 <ol>
@@ -794,7 +945,7 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
 <p><img src="https://drive.google.com/uc?id=1m5WUphiPHDPecjasiirM40shy2Vhu8qg" alt="Oops, Some network ants ate this pic!" title="relationship between objects"></p>
 <h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><ul>
 <li>Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함<br>(Data structure일 필요는 없음)</li>
@@ -802,9 +953,9 @@
 
 </li>
 </ul>
-<p>x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), 꼭 data sturcture일 필요는 없다.</p>
+<p>x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.</p>
 <blockquote>
-<p><strong>NOTE :</strong><br>실용적인 이유로, 종종 iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 구현하고,<br>self를 반환하는 <strong>iter()</strong>를 가지는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다.<br>iterator로 self 이외의 다른 오브젝트를 반환해도 전혀 상관 없다.</p>
+<p><strong>참고사항 :</strong><br>iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 가지고 있고, <strong>iter()</strong>가 self(자기 자신)를 반환하는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다. </p>
 </blockquote>
 <br>
 그럼 이제 아래와 같이 쓰면:
@@ -812,13 +963,13 @@
 
 <p>실제로는 이런 일이 일어난다.</p>
 <p><img src="https://drive.google.com/uc?id=1NmzViVcqdWTguVsGz6-iYPIIxNDaPCIh" alt="Oops, Some network ants ate this pic!" title="The scene when you apply"></p>
-<p>이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 직접 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(<a href="https://www.computerhope.com/jargon/c/compinst.htm" target="_blank" rel="noopener">Instruction</a>)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.</p>
+<p>이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(<a href="https://www.computerhope.com/jargon/c/compinst.htm" target="_blank" rel="noopener">Instruction</a>)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(<span class="string">'for _ in x: pass'</span>)</span><br><span class="line">  <span class="number">1</span>           <span class="number">0</span> SETUP_LOOP              <span class="number">14</span> (to <span class="number">17</span>)</span><br><span class="line">              <span class="number">3</span> LOAD_NAME                <span class="number">0</span> (x)</span><br><span class="line">              <span class="number">6</span> GET_ITER</span><br><span class="line">        &gt;&gt;    <span class="number">7</span> FOR_ITER                 <span class="number">6</span> (to <span class="number">16</span>)</span><br><span class="line">             <span class="number">10</span> STORE_NAME               <span class="number">1</span> (_)</span><br><span class="line">             <span class="number">13</span> JUMP_ABSOLUTE            <span class="number">7</span></span><br><span class="line">        &gt;&gt;   <span class="number">16</span> POP_BLOCK</span><br><span class="line">        &gt;&gt;   <span class="number">17</span> LOAD_CONST               <span class="number">0</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">20</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
 
 <h2 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h2><p>그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 <a href="https://softwareengineering.stackexchange.com/questions/331158/stateful-vs-stateless-non-web-app-applications" target="_blank" rel="noopener">Stateful</a>(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.<br>(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)</p>
-<p><code>__next__()</code> 메소드를 가지고 있는 모든 오브젝트는 Iterator다.<br>어떻게 값을 발생시키는지는 상관이 없다.</p>
-<p>Iterator는 값 공장이다. Iterator에 “다음 값”을 요청할 때마다,<br>Iterator는 내부 상태를 저장하고 있기 때문에, “다음 값”을 어떻게 계산해야 할 지 안다.</p>
-<p>수많은 Iterator의 예들이 있다. <strong>itertools</strong> 함수들은 Iterator를 반환한다.<br>몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:</p>
+<p><code>__next__()</code> 메소드를 가지고 있는 모든 오브젝트는 Iterator다.<br>어떻게 다음 값을 발생시키는지는 상관이 없다.</p>
+<p>Iterator는 값 공장이라고 할 수 있다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 저장해 둔 내부 상태를 기반으로 다음 값을 생산하여 반환한다.</p>
+<p><strong>itertools</strong> 모듈의 함수들을 예시로 살펴보자.<br>몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> count</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>counter = count(start=<span class="number">13</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure>
 
 <br>
@@ -830,13 +981,13 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> islice</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])  <span class="comment"># infinite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>limited = islice(colors, <span class="number">0</span>, <span class="number">4</span>)            <span class="comment"># finite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> limited:                         <span class="comment"># so safe to use for-loop on</span></span><br><span class="line"><span class="meta">... </span>    print(x)</span><br><span class="line">red</span><br><span class="line">white</span><br><span class="line">blue</span><br><span class="line">red</span><br></pre></td></tr></table></figure>
 
 <br>
-Iterator의 내부 구조에 대한 더 나은 감을 얻기 위해서, 
+Iterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서, 
 피보나치 수열을 생성하는 Iterator를 만들어 보자:
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">fib</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.prev = <span class="number">0</span></span><br><span class="line"><span class="meta">... </span>        self.curr = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> self</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        value = self.curr</span><br><span class="line"><span class="meta">... </span>        self.curr += self.prev</span><br><span class="line"><span class="meta">... </span>        self.prev = value</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> value</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
 
 <p>이 클래스가 iterable이면서 (<code>__iter()__</code>를 가지고 있기 때문),<br>자기 자신의 iterator임을 (<code>__next()__</code>를 가지고 있기 때문) 기억하자.</p>
-<p>이 iterator의 내부 상태는 prev와 curr instance variable들에 완전히 저장되며,<br>iterator의 다음 호출에 사용된다. 모든 next() 호출은 두 가지 중요한 일을 한다:</p>
+<p>이 iterator의 내부 상태는 prev와 curr에 저장되며, iterator의 다음 호출에 사용된다.<br>next() 호출은 다음의 두 가지 중요한 일을 한다:</p>
 <ol>
 <li>다음 next() 호출을 위해 상태를 변경한다.</li>
 <li>현재 호출을 위한 결과를 생성한다.<br>
@@ -844,16 +995,16 @@ Iterator의 내부 구조에 대한 더 나은 감을 얻기 위해서,
 </li>
 </ol>
 <blockquote>
-<p><strong>Central Idea</strong> : 게으른(lazy) 공장<br>밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는 게으른 공장처럼 보인다. 값 하나를 생산한 후에는<br> 다시 정지 상태로 돌아가는.</p>
+<p><strong>주요 개념</strong> : 게으른(lazy) 공장<br>밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는 게으른 공장처럼 보인다. 이 게으른 공장은 요청을 받으면, 값 하나를 생산한 후에 다시 정지 상태로 돌아가게 된다.</p>
 </blockquote>
 <h2 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h2><p>드디어 목적지에 도차했다! Generator는 내가(글쓴이가) 완전 좋아하는 Python의 특징이다. Generator는 Iterator의 우아한 버전이다.</p>
-<p>Generator는 Iterator를 상단의 피보나치 수열 Iterator처럼 작성할 수 있게 해준다. <code>__iter()__</code>와 <code>__next()__</code>를 가지는 클래스의 작성을 피하는, 우아하고 간결한 문법으로.</p>
+<p>Generator는 <code>__iter()__</code>와 <code>__next()__</code> 메소드를 사용하지 않고도,<br>Iterator를 작성할 수 있게 해 준다.</p>
 <p>직관적으로 표현하면:</p>
 <ol>
-<li>모든 Generator는 또한 Iterator이다. (반대는 아니다!)</li>
+<li>모든 Generator는 Iterator이다. (반대는 아니다!)</li>
 <li>모든 Generator는, 그러므로, 값을 게으르게 생산하는 공장이다.</li>
 </ol>
-<p>여기 Generator로 쓰여진, 동일한 피보나치 수열 공장이 있다:</p>
+<p>여기 Generator로 쓰여진, 피보나치 수열 공장이 있다:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    prev, curr = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">yield</span> curr</span><br><span class="line"><span class="meta">... </span>        prev, curr = curr, prev + curr</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
 
 <p>우아하지 않은가? 이 아름다움을 담당하는 마법의 키워드를 보자:</p>
@@ -862,17 +1013,16 @@ Iterator의 내부 구조에 대한 더 나은 감을 얻기 위해서,
 </blockquote>
 <br>
 
-
-<p>뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 평범한 Python 함수로 정의된다. 특별할 것이 없다.<br>그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.</p>
-<p>이제 <strong>f=fib()</strong> 가 호출되면, Generator가 instance화 되고 반환된다.<br>여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.<br>더 직관적으로 보면, <strong>prev, curr = 0,1</strong> 은 아직 실행되지 않았다.</p>
+<p>뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 평범한 함수로 정의된다. 특별할 것이 없다. 그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.</p>
+<p>이제 <strong>f=fib()</strong> 가 호출되면, Generator가 instance화 되고 반환된다. 여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.<br>더 직관적으로 보면, <strong>prev, curr = 0,1</strong> 은 아직 실행되지 않았다.</p>
 <p>그리고, 이 Generator instance는 islice()에 감싸진다.<br>스스로 Iterator이기 때문에, 아직도 아무것도 일어나지 않는다.</p>
-<p>그 다음엔, 이 Iterator는 이 Iterator의 모든 Argument들로부터 list를 생성할 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.</p>
-<p>한 단계씩 보자. 최초의 실행에서, 이 코드는 결과적으로 <strong>prev, curr = 0,1</strong> 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문을 마주한다. 이 구문은 현재 curr 변수에 있는 값을 생산하고<br>(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.</p>
-<p>이 값은, 이 값을 생산할 islice() wrapper로 전달되고, list는 값 1을 리스트에 추가할 수 있게 된다.</p>
-<p>그리고, list는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 <strong>prev, curr = curr, prev + curr</strong> 구분 부터 다시 시작하게 된다. 이 다음에 <strong>while</strong> 루프의 다음 반복에 재진입하고, <strong>yield curr</strong> 구문을 만나고, 다음 <strong>curr</strong> 값을 반환한다.</p>
-<p>이 동작은 Output list가 원소 10개를 가지고, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 <strong>StopIteration</strong> 예외를 발생시킬때까지 일어난다. 그리로 list는 결과를 반환한다: 피보나치 수열 처음 10개 값을 가진 리스트를. Generator가 11번째 <strong>next()</strong> 호출을 받지 않았음에 주목해라. 결과적으로, 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.</p>
-<h2 id="Type-of-Generators"><a href="#Type-of-Generators" class="headerlink" title="Type of Generators"></a>Type of Generators</h2><p>두 가지 종류의 Generator가 있다: Generator <strong>function</strong> 과 Generator <strong>expression</strong> 이다.<br>Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다.<br>(피보나치 수열 Generator)<br>yield 키워드가 있기만 해도 함수는 Generator function이 된다.</p>
-<p>다른 타입의 Generator는 list comprehension과 동일한 Generator다.<br>이 문법은 특정 사용처에서는 정말 우아하다.<br>이 문법을 제곱수의 리스트를 만들 때 사용한다고 가정해보자:</p>
+<p>그 다음엔, 이 Iterator는 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.</p>
+<p>한 단계씩 보자. 처음에 이 코드는 <strong>prev, curr = 0,1</strong> 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문과 만난다. 이 구문은 현재 curr 변수에 있는 값을 생산하고<br>(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.</p>
+<p>이 값은 islice() wrapper로 전달되고, list()는 값 1을 리스트에 추가할 수 있게 된다.</p>
+<p>그리고, list()는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 <strong>prev, curr = curr, prev + curr</strong> 구분부터 다시 시작하게 된다. 이 다음에 <strong>while</strong> 루프의 다음 반복에 재진입하고, <strong>yield curr</strong> 구문을 만나고, 다음 <strong>curr</strong> 값을 반환한다.</p>
+<p>이 동작은 10번 반복된 후, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 <strong>StopIteration</strong> 예외를 발생시킬때까지 일어난다. 그리고 list()는 피보나치 수열 처음 10개 값을 가진 리스트를 반환하게 된다. Generator가 11번째 <strong>next()</strong> 호출을 받지 않았음에 주목해라. 모든 작업이 끝나면 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.</p>
+<h2 id="Type-of-Generators"><a href="#Type-of-Generators" class="headerlink" title="Type of Generators"></a>Type of Generators</h2><p>두 가지 종류의 Generator가 있다: Generator <strong>function</strong> 과 Generator <strong>expression</strong> 이다.<br>Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다. (피보나치 수열 Generator)<br>yield 키워드가 있기만 해도 함수는 Generator function이 된다.</p>
+<p>다른 타입의 Generator는 list comprehension과 동일한 Generator다.<br>제곱수의 리스트를 만드는 여러가지 예를 살펴보자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure>
 
 <br>
@@ -888,7 +1038,7 @@ Generator expression으로도 사용할 수 있다. (주의 : tuple comprehensio
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x10d1f5510</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(lazy_squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(lazy_squares)</span><br><span class="line">[<span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure>
 
 <p><strong>lazy_squares</strong> 의 첫 번째 값을 <strong>next()</strong> 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.<br>그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)</p>
-<h1 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h1><p>Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.<br>streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고,<br>메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.</p>
+<h1 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h1><p>Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.<br>streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고, 메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.</p>
 <p>Generator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">something</span><span class="params">()</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        result.append(x)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
 
@@ -951,7 +1101,7 @@ Generator expression으로도 사용할 수 있다. (주의 : tuple comprehensio
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
 <h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
 
@@ -1031,7 +1181,7 @@ List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not 
             </div>
             
                 <div class="postShorten-content">
-                    <blockquote><p>Parameters are defined by the names that appear in a function definition, whereas arguments are the values actually passed to a function when calling it. Parameters define what types of arguments a function can accept. For example, given the function definition:</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><p>Parameters are defined by the names that appear in a function definition, whereas arguments are the values actually passed to a function when calling it. Parameters define what types of arguments a function can accept. For example, given the function definition:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 foo, bar and kwargs are parameters of func. However, when calling func, for example:
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">42</span>, bar=<span class="number">314</span>, extra=somevar)</span><br></pre></td></tr></table></figure>
@@ -1129,82 +1279,6 @@ Arguments are assigned to the named local variables in a function body. See the 
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
-                        >
-                            What are Magic Methods?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
-<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
-
-<br>
-어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.
-Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-
-<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
-
-<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/what are magic methods/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
                             href="/2019/10/04/vuetify making responsible page technique/"
                             aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
@@ -1230,7 +1304,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             </div>
             
                 <div class="postShorten-content">
-                    <ol>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><ol>
 <li>&lt;v-###&gt; 태그들 해상도에 따라 disable 하기</li>
 </ol>
 <ul>
@@ -1285,6 +1359,82 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/10/04/what are magic methods/"
+                            aria-label=": What are Magic Methods?"
+                        >
+                            What are Magic Methods?
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-04T00:00:00+09:00">
+	
+		    Oct 04, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
+<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
+
+<br>
+어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.
+Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
+
+<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
+
+<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/04/what are magic methods/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/01/python built in function study - map/"
                             aria-label=": Python Built in function 정리 1 - Map"
                         >
@@ -1310,7 +1460,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             </div>
             
                 <div class="postShorten-content">
-                    <blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
 <footer><strong>Python Built-in Functions</strong><cite><a href="https://docs.python.org/3.7/library/functions.html#map" target="_blank" rel="noopener">map</a></cite></footer></blockquote>
 
 <hr>
@@ -1381,7 +1531,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             </div>
             
                 <div class="postShorten-content">
-                    <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
 
 <p>“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”<br>는 내가 지식이 부족해서 그랬던 것이었다.</p>
 <p>모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.</p>
@@ -1620,10 +1770,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1643,10 +1793,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1714,7 +1864,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                13 posts found
+                14 posts found
             </p>
         </div>
     </div>
@@ -1724,7 +1874,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-xdnwxd2geh0kdsczve4rhgkllvipqf9kauwasklf9l6uecm2lqbbfihxw4vr.min.js"></script>
+<script src="/assets/js/script-cmbtd7djbyd8h4pyvokxv73gmrd00tgd8olup8510yxnkwj0ae2m0rmpiy36.min.js"></script>
 <!--SCRIPTS END-->
 
 
