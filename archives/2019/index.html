@@ -488,7 +488,7 @@
 
 <h1 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h1><ul>
 <li><a href="https://docs.python.org/3/library/asyncio.html" target="_blank" rel="noopener">Asynchronous I/O</a></li>
-<li>먼저 읽기 : <a href="https://limyj0708.github.io/2019/11/11/Asynchronous,%20Synchronous,%20Blocking,%20Non-Blocking/">Asychronous, Synchronous, Blocking, Non-Blocking</a></li>
+<li><b style="color:darkred">반드시 먼저 읽기</b> : <a href="https://limyj0708.github.io/2019/11/11/Asynchronous,%20Synchronous,%20Blocking,%20Non-Blocking/">Asychronous, Synchronous, Blocking, Non-Blocking</a></li>
 <li>Asyncio 라이브러리는 <a href="https://en.wikipedia.org/wiki/Cooperative_multitasking" target="_blank" rel="noopener">cooperative multitasking</a> 이라는 방식을 사용하는데, (a.k.a non-preemptive multitasking) OS가 context switching을 시작시키지 않고 process, 혹은 thread가 자발적으로 “나 멈추고 CPU 점유 넘길게요!” 라고 선언하는 방식이다.</li>
 <li>scheduling 계획 수행을 위해 모든 프로그램들이 “협력” 해야 하므로, “cooperative”라는 형용사가 붙었다.</li>
 <li>코드를 좀 변경하고 추가해야 하지만, <strong><em>언제</em></strong> switching이 일어날 지 알 수 있게 된다.</li>
@@ -622,6 +622,89 @@
                         <p>
                             <a
                                 href="/2019/11/10/python asyncio for web crawling/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/30/Closure and Decorator/"
+                            aria-label=": Scope, Closure 그리고 Decorator"
+                        >
+                            Scope, Closure 그리고 Decorator
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-30T00:00:00+09:00">
+	
+		    Oct 30, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h1><p>Decorator의 간단한 예시와 실행결과를 일단 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function 실행"</span>)</span><br><span class="line"></span><br><span class="line">m = print_line(my_function) <span class="comment"># print_line에 직접 argument를 전달하여 실행해 보자</span></span><br><span class="line">m()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function 실행</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@print_line # decorator를 사용하자</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function2 실행2"</span>)</span><br><span class="line"></span><br><span class="line">my_function2()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function2 실행<span class="number">2</span></span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
+
+<p>Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.<br>라고 할 수 있을 텐데, 여기서 몇 가지 궁금한 점이 생긴다.</p>
+<ol>
+<li>function(여기서는 wrapper_mine)을 value처럼 막 return 하네?<ul>
+<li>그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다</li>
+</ul>
+</li>
+<li>wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?<ul>
+<li>이것도 1번과 마찬가지다.</li>
+</ul>
+</li>
+</ol>
+<p>일단 1번부터 알아 보자.<br>왜 함수를 return이 가능하죠?</p>
+<h1 id="First-class-citizen"><a href="#First-class-citizen" class="headerlink" title="First class citizen"></a>First class citizen</h1><p>Wikipedia의 친절한 설명을 보자.<br>Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.</p>
+<blockquote><p>In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities. These operations typically include being passed as an argument, returned from a function, modified, and assigned to a variable.</p>
+<footer><strong>Wikipedia</strong><cite><a href="https://en.wikipedia.org/wiki/First-class_citizen" target="_blank" rel="noopener">First-class citizen</a></cite></footer></blockquote>
+
+<blockquote>
+<p>First Class Citizen은 Argument로 넘기기, 함수에서 return되기, 조작되기, 변수에 할당되기와 같은, 다른 독립체들과 상호작용 할 수 있는 연산을 지원한다.</p>
+</blockquote>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/30/Closure and Decorator/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -1507,74 +1590,22 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/08/22/r-var(some_vector) calculate standard deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
-                        >
-                            R - var(some_vector)는 표본분산을 계산한다
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-08-22T00:00:00+09:00">
-	
-		    Aug 22, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/r/">R</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
-
-<p>“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”<br>는 내가 지식이 부족해서 그랬던 것이었다.</p>
-<p>모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.</p>
-<p><a href="https://blog.naver.com/physicopianist/221079231724" target="_blank" rel="noopener">https://blog.naver.com/physicopianist/221079231724</a></p>
-<p>여기 아주 잘 정리되어 있다.</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/08/22/r-var(some_vector) calculate standard deviation/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/2019/page/2/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 1 of 2</li>
     </ul>
 </div>
 
@@ -1874,7 +1905,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                14 posts found
+                15 posts found
             </p>
         </div>
     </div>

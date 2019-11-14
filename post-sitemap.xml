@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://limyj0708.github.io/2019/11/10/python%20asyncio%20for%20web%20crawling/</loc>
+        <lastmod>2019-11-14T01:34:01.128Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://limyj0708.github.io/2019/11/11/Asynchronous,%20Synchronous,%20Blocking,%20Non-Blocking/</loc>
         <lastmod>2019-11-13T00:38:39.478Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -16,16 +24,16 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/11/10/python%20asyncio%20for%20web%20crawling/</loc>
-        <lastmod>2019-11-12T08:03:11.247Z</lastmod>
+        <loc>https://limyj0708.github.io/2019/10/12/iterator%20iterable%20generator/</loc>
+        <lastmod>2019-11-11T00:50:05.561Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/10/12/iterator%20iterable%20generator/</loc>
-        <lastmod>2019-11-11T00:50:05.561Z</lastmod>
+        <loc>https://limyj0708.github.io/2019/10/30/Closure%20and%20Decorator/</loc>
+        <lastmod>2019-11-01T07:11:22.456Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
