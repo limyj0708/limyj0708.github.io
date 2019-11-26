@@ -37,6 +37,15 @@
     <link rel="stylesheet" href="/assets/css/style-rkcnv6nfop9na7tqt5xvn4fonbhlb00dlynf71oe0yz1xuvvjczqo8cdyhai.min.css">
     <!--STYLES END-->
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152752888-1');
+    </script>
+
 
     
 
@@ -212,6 +221,77 @@
                         hasCoverMetaIn
                         ">
                 <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/01/python built in function study - map/"
+                            aria-label=": Python Built in function 정리 1 - Map"
+                        >
+                            Python Built in function 정리 1 - Map
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-01T00:00:00+09:00">
+	
+		    Oct 01, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
+<footer><strong>Python Built-in Functions</strong><cite><a href="https://docs.python.org/3.7/library/functions.html#map" target="_blank" rel="noopener">map</a></cite></footer></blockquote>
+
+<hr>
+<br>
+모든 iterable의 Item에 function을 적용하고, 결과를 생성하는 iterator를 Return합니다.
+(class 'map'이 return된다.)
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(type(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 &lt;class 'map'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>추가적인 iterable arguments가 주어지면,<br>function은 반드시 이 argument들을 받아야 합니다.<br>그리고 function은 모든 iterable들의 item에 병렬적으로 적용됩니다.<br>여러 개의 iterable이 있다면, iterator는 가장 짧은 iterable이 다 사용되면 멈춥니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(list(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 [7, 16, 27, 40, 55]</span></span><br><span class="line"><span class="comment"># iterable 2개를 받았으며, 각각 map_test가 x에, map_test2가 y에 병렬적으로 대응되었다.</span></span><br><span class="line"><span class="comment"># map_test2가 다 소진되자, 계산이 멈추고 결과가 return 된다. map_test의 6은 안 쓰이게 되었다.</span></span><br></pre></td></tr></table></figure>
+
+<p>함수의 입력값이 argument tuple로 이미 정렬되어 있다면, <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap()</a>를 보세요.</p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/01/python built in function study - map/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom">
@@ -794,7 +874,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                15 posts found
+                16 posts found
             </p>
         </div>
     </div>

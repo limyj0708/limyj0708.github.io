@@ -6,26 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Scope, Closure 그리고 Decorator - Jin&#39;s Code Archive</title>
+    <title>Decorator가 뭐지? with Scope, Namespace - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,Python,Closure,Decorator,Scope">
+        <meta name="keywords" content="python,javascript,R,Python,Decorator,Scope">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"DecoratorDecorator의 간단한 예시와 실행결과를 일단 보자.\n123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print('-'*30) # func의 사전작업이라 할 수 있다.        func()        print('#'*30) # func의 사후작업이라 할 수 있다.    return wrapper_mine # wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.\n\n12345678910def my_function():    print(\"my_function 실행\")m = print_line(my_function) # print_line에 직접 argument를 전달하여 실행해 보자m()#실행결과------------------------------my_function 실행******************************\n\n12345678910@print_line # decorator를 사용하자def my_function2():    print(\"my_function2 실행2\")my_function2()#실행결과------------------------------my_function2 실행2******************************\n\nDecorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.라고 할 수 있을 텐데, 여기서 몇 가지 궁금한 점이 생긴다.\n\nfunction(여기서는 wrapper_mine)을 value처럼 막 return 하네?\n그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다\n\n\nwrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?\n이것도 1번과 마찬가지다.\n\n\n\n일단 1번부터 알아 보자.왜 함수를 return이 가능하죠?\nFirst class citizenWikipedia의 친절한 설명을 보자.Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.\nIn programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities. These operations typically include being passed as an argument, returned from a function, modified, and assigned to a variable.\nWikipediaFirst-class citizen\n\n\nFirst Class Citizen은 Argument로 넘기기, 함수에서 return되기, 조작되기, 변수에 할당되기와 같은, 다른 독립체들과 상호작용 할 수 있는 연산을 지원한다.\n\n","dateCreated":"2019-10-30T00:00:00+09:00","dateModified":"2019-11-01T16:11:22+09:00","datePublished":"2019-10-30T00:00:00+09:00","description":"","headline":"Scope, Closure 그리고 Decorator","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/30/Closure and Decorator/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/30/Closure and Decorator/","keywords":"Python"}</script>
-    <meta name="description" content="DecoratorDecorator의 간단한 예시와 실행결과를 일단 보자. 123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print(&apos;-&apos;*30) # func의 사전작업이라 할 수 있다.        func()        print(&apos;#&apos;*30) # func의 사후작">
-<meta name="keywords" content="Python,Closure,Decorator,Scope">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"Decorator\nDecorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.Decorator의 간단한 예시와 실행결과를 보자.\n\n123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print('-'*30) # func의 사전작업이라 할 수 있다.        func()        print('#'*30) # func의 사후작업이라 할 수 있다.    return wrapper_mine # wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.\n\n12345678910def my_function():    print(\"my_function 실행\")m = print_line(my_function) # print_line에 직접 argument를 전달하여 실행해 보자m()#실행결과------------------------------my_function 실행******************************\n\n12345678910@print_line # decorator를 사용하자def my_function2():    print(\"my_function2 실행2\")my_function2()#실행결과------------------------------my_function2 실행2******************************\n\n여기서 몇 가지 궁금한 점이 생긴다.\n\nfunction(여기서는 wrapper_mine)을 value처럼 막 return 하네?\nwrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?\n그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다\n\n\n\n일단 1번부터 알아 보자.왜 함수를 return이 가능하죠?\n\nFirst class citizenWikipedia의 친절한 설명을 보자.Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.\nIn programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities. These operations typically include being passed as an argument, returned from a function, modified, and assigned to a variable.\nWikipediaFirst-class citizen\n\n\nFirst Class Citizen은 Argument로 넘기기, 함수에서 return되기, 조작되기, 변수에 할당되기와 같은, 다른 독립체들과 상호작용 할 수 있는 연산을 지원한다.\n\n그리고 Python에서는 함수도 first class object다.“function을 value처럼 막 return 하네?” 해결. 그럼 다음 문제, wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?\nNamespace, Scope - LEGBNamespace\nNamespace? : 객체와 이름이 매핑된 공간. 대부분의 네임스페이스는 딕셔너리로 적용된다.\n네임스페이스의 예시\nbuilt-in된 이름들 : abs()같은 함수명이나, 예외명들.\n모듈 내의 전역 이름들 (global names in module)\n함수 내의 지역 이름들 (local names)\ne.g) zzz.real과 ddd.real은 real이라는 attribute 이름은 같을지라도, 전혀 다른 네임스페이스에서 가져온 것이기 때문에 아무런 연관도 없다.\n\n\n네임스페이스의 수명주기(lifetime)\n각각 다른 시기에 생겨나며, 각각 다른 수명을 가짐\nbuilt-in name을 보유한 네임스페이스는 인터프리터가 시작할 때 생겨나고, 인터프리터가 꺼질 때까지 사라지지 않음.\n모듈의 글로벌 네임스페이스는 모듈의 정의가 읽혀질 때 생겨나며, 인터프리터가 꺼질 때까지 사라지지 않음.\n함수의 지역 네임스페이스는 함수가 호출될 때 생겨나고, 함수가 결과를 반환하거나 함수 내부에서 처리되지 않는 에러를 내보낼 때 사라진다.\n\n\n\n\n\nScope\nScope? : 네임스페이스가 ‘직접 접근’할 수 있는 구문 영역. ‘직접 접근’이라는 건, unqualified reference(비-제한 참조라고 하면 좋을까?)로 네임스페이스 안의 이름을 찾을 수 있는 것을 말한다.\nunqualified reference? : someclass.target 처럼 ‘나 어디 있소’라고 someclass. 를 앞에 붙이지 않고, 바로 target으로 이름을 찾는 참조법.\n\n\nLEGB : Python Scope 탐색 규칙\nLocal : 함수 안에 정의된 이름 중 Global로 정의되지 않은 것\nEnclosing-function : 함수를 내포하고 있는 함수(enclosing function)의 영역 안에 있는 것\nGlobal (module) : 모듈 파일의 가장 상위 레벨에서 정의되었거나(어디 클래스나 함수 안에서 정의된 것 아니고) 함수 내부에서 global키워드로 실행된 것 \nBuilt-in (Python) : Python에서 기본으로 정의하고 있는 것\n\n\n\n아래 코드를 살펴보자.\n123456789101112131415161718192021x1 = -1 # Globalclass spam:        x2 = -2 # class body    def ham(self, bar):        # enclosing function        x3 = -3        print(f'print global x1 : &#123;x1&#125;') # global에서 받아옴        def egg():            x4 = -4            x1 = 'local x1'            print(f'print local x1 : &#123;x1&#125;') # local에서 정의된 x1을 먼저 받아옴            print(f'print class body x2 : &#123;self.x2&#125;') # class body에 정의된 객체를 가져오려면 self 키워드 필요.            # 여기서 그냥 x2로 가져오려고 하면, local에도 없고 enclosing에도 없으니            # global에서 찾게 된다 : print(f'print x2 : &#123;x2&#125;') 그리고 못 찾아서 에러를 낸다.            print(f'print enclosing x3 : &#123;x3&#125;') # enclosing function 영역에서 받아옴            print(f'print abs of x4 : &#123;abs(x4)&#125;') # Built-in에서 print, abs를 찾는다. local에서 x4를 찾는다.            print(bar) # enclosing-function의 argument를 받는다.        egg()spam = spam()spam.ham('foo')\n\n1234567출력결과print global x1 : -1print local x1 : local x1print class body x2 : -2print enclosing x3 : -3print abs of x4 : 4foo\n\nClass body영역은 scope에서 enclosing-function도 아니고 global도 아닌 독특한 위치를 차지하고 있는데, 이 StackOverFlow 답변을 참고하자.\n다시 원점으로 돌아오면,\n123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print('-'*30) # func의 사전작업이라 할 수 있다.        func()        print('#'*30) # func의 사후작업이라 할 수 있다.    return wrapper_mine # wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.\n\n“wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?” 도 해결되었다.\n\n어디다 쓰지?말 그대로, 이걸 어디다 쓸까? 간단한 예제를 살펴보자.코드 출처 : https://khanrc.tistory.com/entry/decorator%EC%99%80-closure\n123456def verbose(func):     def new_func(*args, **kwargs):        print(\"Begin\", func.__name__)        func(*args, **kwargs)        print(\"End\", func.__name__)    return new_func\n\n함수 호출의 시작과 끝을 print 출력으로 알리는 함수다. 아무 함수나 들어올 수 있게 parameter가 설정되어 있다.\n123456@verbosedef simple_sum(x,y):    print(x+y)    return x+ysimple_sum(1,2)\n\n1234출력값Begin simple_sum3End simple_sum\n\n어떤 함수를 집어넣어도 호출 시에, 연산 끝났을 시에 함수 이름과 함께 알려주는 재미있는 Decorator다.\nReference\nhttps://dbader.org/blog/python-first-class-functions\nhttps://docs.python.org/3/tutorial/classes.html\nhttps://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules\nhttps://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/\nhttps://khanrc.tistory.com/entry/decorator%EC%99%80-closure\n\n","dateCreated":"2019-10-30T00:00:00+09:00","dateModified":"2019-11-26T15:49:18+09:00","datePublished":"2019-10-30T00:00:00+09:00","description":"","headline":"Decorator가 뭐지? with Scope, Namespace","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/","keywords":"Python"}</script>
+    <meta name="description" content="Decorator Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.Decorator의 간단한 예시와 실행결과를 보자.  123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        pr">
+<meta name="keywords" content="Python,Decorator,Scope">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Scope, Closure 그리고 Decorator">
-<meta property="og:url" content="https://limyj0708.github.io/2019/10/30/Closure and Decorator/index.html">
+<meta property="og:title" content="Decorator가 뭐지? with Scope, Namespace">
+<meta property="og:url" content="https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="DecoratorDecorator의 간단한 예시와 실행결과를 일단 보자. 123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print(&apos;-&apos;*30) # func의 사전작업이라 할 수 있다.        func()        print(&apos;#&apos;*30) # func의 사후작">
+<meta property="og:description" content="Decorator Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.Decorator의 간단한 예시와 실행결과를 보자.  123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        pr">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-01T07:11:22.456Z">
+<meta property="og:updated_time" content="2019-11-26T06:49:18.923Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Scope, Closure 그리고 Decorator">
-<meta name="twitter:description" content="DecoratorDecorator의 간단한 예시와 실행결과를 일단 보자. 123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        print(&apos;-&apos;*30) # func의 사전작업이라 할 수 있다.        func()        print(&apos;#&apos;*30) # func의 사후작">
+<meta name="twitter:title" content="Decorator가 뭐지? with Scope, Namespace">
+<meta name="twitter:description" content="Decorator Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.Decorator의 간단한 예시와 실행결과를 보자.  123456def print_line(func): # Decorator가 될 함수    def wrapper_mine():        pr">
     
     
         
@@ -38,6 +38,15 @@
     <link rel="stylesheet" href="/assets/css/style-rkcnv6nfop9na7tqt5xvn4fonbhlb00dlynf71oe0yz1xuvvjczqo8cdyhai.min.css">
     <!--STYLES END-->
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152752888-1');
+    </script>
+
 
     
 
@@ -221,7 +230,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Scope, Closure 그리고 Decorator
+            Decorator가 뭐지? with Scope, Namespace
         </h1>
     
     
@@ -246,32 +255,92 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h1><p>Decorator의 간단한 예시와 실행결과를 일단 보자.</p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h1><ul>
+<li>Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.<br>Decorator의 간단한 예시와 실행결과를 보자.</li>
+</ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function 실행"</span>)</span><br><span class="line"></span><br><span class="line">m = print_line(my_function) <span class="comment"># print_line에 직접 argument를 전달하여 실행해 보자</span></span><br><span class="line">m()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function 실행</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@print_line # decorator를 사용하자</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function2 실행2"</span>)</span><br><span class="line"></span><br><span class="line">my_function2()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function2 실행<span class="number">2</span></span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
 
-<p>Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.<br>라고 할 수 있을 텐데, 여기서 몇 가지 궁금한 점이 생긴다.</p>
+<p>여기서 몇 가지 궁금한 점이 생긴다.</p>
 <ol>
-<li>function(여기서는 wrapper_mine)을 value처럼 막 return 하네?<ul>
-<li>그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다</li>
-</ul>
-</li>
+<li>function(여기서는 wrapper_mine)을 value처럼 막 return 하네?</li>
 <li>wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?<ul>
-<li>이것도 1번과 마찬가지다.</li>
+<li>그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다</li>
 </ul>
 </li>
 </ol>
 <p>일단 1번부터 알아 보자.<br>왜 함수를 return이 가능하죠?</p>
-<h1 id="First-class-citizen"><a href="#First-class-citizen" class="headerlink" title="First class citizen"></a>First class citizen</h1><p>Wikipedia의 친절한 설명을 보자.<br>Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.</p>
+<hr>
+<h2 id="First-class-citizen"><a href="#First-class-citizen" class="headerlink" title="First class citizen"></a>First class citizen</h2><p>Wikipedia의 친절한 설명을 보자.<br>Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.</p>
 <blockquote><p>In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities. These operations typically include being passed as an argument, returned from a function, modified, and assigned to a variable.</p>
 <footer><strong>Wikipedia</strong><cite><a href="https://en.wikipedia.org/wiki/First-class_citizen" target="_blank" rel="noopener">First-class citizen</a></cite></footer></blockquote>
 
 <blockquote>
 <p>First Class Citizen은 Argument로 넘기기, 함수에서 return되기, 조작되기, 변수에 할당되기와 같은, 다른 독립체들과 상호작용 할 수 있는 연산을 지원한다.</p>
 </blockquote>
+<p>그리고 Python에서는 <a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">함수도 first class object다.</a><br><strong>“function을 value처럼 막 return 하네?”</strong> 해결. 그럼 다음 문제, wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?</p>
+<h2 id="Namespace-Scope-LEGB"><a href="#Namespace-Scope-LEGB" class="headerlink" title="Namespace, Scope - LEGB"></a>Namespace, Scope - LEGB</h2><h3 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a><a href="https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces" target="_blank" rel="noopener">Namespace</a></h3><ul>
+<li>Namespace? : 객체와 이름이 매핑된 공간. 대부분의 네임스페이스는 딕셔너리로 적용된다.<ul>
+<li>네임스페이스의 예시<ul>
+<li>built-in된 이름들 : <code>abs()</code>같은 함수명이나, 예외명들.</li>
+<li>모듈 내의 전역 이름들 (global names in module)</li>
+<li>함수 내의 지역 이름들 (local names)</li>
+<li>e.g) zzz.real과 ddd.real은 real이라는 attribute 이름은 같을지라도, 전혀 다른 네임스페이스에서 가져온 것이기 때문에 아무런 연관도 없다.</li>
+</ul>
+</li>
+<li>네임스페이스의 수명주기(lifetime)<ul>
+<li>각각 다른 시기에 생겨나며, 각각 다른 수명을 가짐</li>
+<li>built-in name을 보유한 네임스페이스는 인터프리터가 시작할 때 생겨나고, 인터프리터가 꺼질 때까지 사라지지 않음.</li>
+<li>모듈의 글로벌 네임스페이스는 모듈의 정의가 읽혀질 때 생겨나며, 인터프리터가 꺼질 때까지 사라지지 않음.</li>
+<li>함수의 지역 네임스페이스는 함수가 호출될 때 생겨나고, 함수가 결과를 반환하거나 함수 내부에서 처리되지 않는 에러를 내보낼 때 사라진다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h3><ul>
+<li>Scope? : 네임스페이스가 ‘직접 접근’할 수 있는 구문 영역. ‘직접 접근’이라는 건, <a href="https://stackoverflow.com/questions/17403941/what-is-a-qualified-unqualified-name-in-python" target="_blank" rel="noopener">unqualified reference</a>(비-제한 참조라고 하면 좋을까?)로 네임스페이스 안의 이름을 찾을 수 있는 것을 말한다.<ul>
+<li><a href="https://stackoverflow.com/questions/17403941/what-is-a-qualified-unqualified-name-in-python" target="_blank" rel="noopener">unqualified reference?</a> : <code>someclass.target</code> 처럼 ‘나 어디 있소’라고 <code>someclass.</code> 를 앞에 붙이지 않고, 바로 <code>target</code>으로 이름을 찾는 참조법.</li>
+</ul>
+</li>
+<li>LEGB : Python Scope 탐색 규칙<ul>
+<li>Local : 함수 안에 정의된 이름 중 Global로 정의되지 않은 것</li>
+<li>Enclosing-function : 함수를 내포하고 있는 함수(enclosing function)의 영역 안에 있는 것</li>
+<li>Global (module) : 모듈 파일의 가장 상위 레벨에서 정의되었거나(어디 클래스나 함수 안에서 정의된 것 아니고) 함수 내부에서 <code>global</code>키워드로 실행된 것 </li>
+<li>Built-in (Python) : Python에서 기본으로 정의하고 있는 것</li>
+</ul>
+</li>
+</ul>
+<p>아래 코드를 살펴보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">-1</span> <span class="comment"># Global</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">spam</span>:</span>    </span><br><span class="line">    x2 = <span class="number">-2</span> <span class="comment"># class body</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ham</span><span class="params">(self, bar)</span>:</span></span><br><span class="line">        <span class="comment"># enclosing function</span></span><br><span class="line">        x3 = <span class="number">-3</span></span><br><span class="line">        print(<span class="string">f'print global x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># global에서 받아옴</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">egg</span><span class="params">()</span>:</span></span><br><span class="line">            x4 = <span class="number">-4</span></span><br><span class="line">            x1 = <span class="string">'local x1'</span></span><br><span class="line">            print(<span class="string">f'print local x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># local에서 정의된 x1을 먼저 받아옴</span></span><br><span class="line">            print(<span class="string">f'print class body x2 : <span class="subst">&#123;self.x2&#125;</span>'</span>) <span class="comment"># class body에 정의된 객체를 가져오려면 self 키워드 필요.</span></span><br><span class="line">            <span class="comment"># 여기서 그냥 x2로 가져오려고 하면, local에도 없고 enclosing에도 없으니</span></span><br><span class="line">            <span class="comment"># global에서 찾게 된다 : print(f'print x2 : &#123;x2&#125;') 그리고 못 찾아서 에러를 낸다.</span></span><br><span class="line">            print(<span class="string">f'print enclosing x3 : <span class="subst">&#123;x3&#125;</span>'</span>) <span class="comment"># enclosing function 영역에서 받아옴</span></span><br><span class="line">            print(<span class="string">f'print abs of x4 : <span class="subst">&#123;abs(x4)&#125;</span>'</span>) <span class="comment"># Built-in에서 print, abs를 찾는다. local에서 x4를 찾는다.</span></span><br><span class="line">            print(bar) <span class="comment"># enclosing-function의 argument를 받는다.</span></span><br><span class="line">        egg()</span><br><span class="line"></span><br><span class="line">spam = spam()</span><br><span class="line">spam.ham(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">출력결과</span><br><span class="line">print global x1 : -1</span><br><span class="line">print local x1 : local x1</span><br><span class="line">print class body x2 : -2</span><br><span class="line">print enclosing x3 : -3</span><br><span class="line">print abs of x4 : 4</span><br><span class="line">foo</span><br></pre></td></tr></table></figure>
+
+<p>Class body영역은 scope에서 enclosing-function도 아니고 global도 아닌 독특한 위치를 차지하고 있는데, <a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules/23471004#23471004" target="_blank" rel="noopener">이 StackOverFlow 답변</a>을 참고하자.</p>
+<p>다시 원점으로 돌아오면,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>“wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?”</strong> 도 해결되었다.</p>
+<hr>
+<h1 id="어디다-쓰지"><a href="#어디다-쓰지" class="headerlink" title="어디다 쓰지?"></a>어디다 쓰지?</h1><p>말 그대로, 이걸 어디다 쓸까? 간단한 예제를 살펴보자.<br>코드 출처 : <a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">verbose</span><span class="params">(func)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new_func</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"Begin"</span>, func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"End"</span>, func.__name__)</span><br><span class="line">    <span class="keyword">return</span> new_func</span><br></pre></td></tr></table></figure>
+
+<p>함수 호출의 시작과 끝을 print 출력으로 알리는 함수다. 아무 함수나 들어올 수 있게 parameter가 설정되어 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@verbose</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simple_sum</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    print(x+y)</span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line">simple_sum(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">Begin simple_sum</span><br><span class="line">3</span><br><span class="line">End simple_sum</span><br></pre></td></tr></table></figure>
+
+<p>어떤 함수를 집어넣어도 호출 시에, 연산 끝났을 시에 함수 이름과 함께 알려주는 재미있는 Decorator다.</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">https://dbader.org/blog/python-first-class-functions</a></li>
+<li><a href="https://docs.python.org/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/classes.html</a></li>
+<li><a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules" target="_blank" rel="noopener">https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules</a></li>
+<li><a href="https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/" target="_blank" rel="noopener">https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/</a></li>
+<li><a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a></li>
+</ol>
 
             
 
@@ -337,7 +406,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -350,7 +419,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -453,7 +522,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -466,7 +535,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -510,7 +579,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -523,7 +592,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Closure and Decorator/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -819,7 +888,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                15 posts found
+                16 posts found
             </p>
         </div>
     </div>
@@ -836,9 +905,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2019/10/30/Closure and Decorator/';
+            this.page.url = 'https://limyj0708.github.io/2019/10/30/Decorator, Scope, Namespace/';
               
-            this.page.identifier = '2019/10/30/Closure and Decorator/';
+            this.page.identifier = '2019/10/30/Decorator, Scope, Namespace/';
               
           };
           (function() {
