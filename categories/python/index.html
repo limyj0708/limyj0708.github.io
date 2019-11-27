@@ -663,12 +663,20 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">Begin simple_sum</span><br><span class="line">3</span><br><span class="line">End simple_sum</span><br></pre></td></tr></table></figure>
 
 <p>어떤 함수를 집어넣어도 호출 시에, 연산 끝났을 시에 함수 이름과 함께 알려주는 재미있는 Decorator다.</p>
+<hr>
+<h1 id="Chaining-Decorators-in-Python"><a href="#Chaining-Decorators-in-Python" class="headerlink" title="Chaining Decorators in Python"></a>Chaining Decorators in Python</h1><p><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">이 글을 보다보니</a>, 재미있는 예제를 찾을 수 있었다. Decorator가 중첩되어 있으면 어떤 것 부터 적용될까?<br>아래 코드를 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">star</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">percent</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@star</span></span><br><span class="line"><span class="meta">@percent</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(msg)</span>:</span></span><br><span class="line">    print(msg)</span><br><span class="line">printer(<span class="string">"Hello"</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">******************************</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">Hello</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
+
+<p>더 위쪽에 적혀진 Decorator부터 적용됨을 알 수 있다.</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
 <li><a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">https://dbader.org/blog/python-first-class-functions</a></li>
 <li><a href="https://docs.python.org/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/classes.html</a></li>
 <li><a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules" target="_blank" rel="noopener">https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules</a></li>
 <li><a href="https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/" target="_blank" rel="noopener">https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/</a></li>
 <li><a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a></li>
+<li><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">https://www.programiz.com/python-programming/decorator</a></li>
 </ol>
 
                     
@@ -1605,7 +1613,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                16 posts found
+                17 posts found
             </p>
         </div>
     </div>
