@@ -34,7 +34,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-rkcnv6nfop9na7tqt5xvn4fonbhlb00dlynf71oe0yz1xuvvjczqo8cdyhai.min.css">
+    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -222,6 +222,210 @@
                         ">
                 
     <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/12/05/clustering crawled articles 1 k means clustering/"
+                            aria-label=": 테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
+                        >
+                            테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/machine-learning/">Machine learning</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://limyj0708.github.io/2019/11/10/python%20asyncio%20for%20web%20crawling/">저번 글에서</a>, Asyncio를 사용하여 약 40만개의 기사를 크롤링했다. (Verge 3만 5천개 + Cnet 36만개)<br>이 기사들을 클러스터링 하고 싶다. 어떤 경향성을 보일까?</p>
+<p>이 주제에 대해 <a href="https://www.linkedin.com/in/austinkrause/" target="_blank" rel="noopener">Austin L.E. Krause</a>라는 사람이 수행한 <a href="https://medium.com/@krause60/news-article-clustering-using-unsupervised-learning-7647600a04fd" target="_blank" rel="noopener">기록</a>과 <a href="https://github.com/AustinKrause/Mod_5_Text_Summarizer" target="_blank" rel="noopener">코드</a>가 있다. 이 사람이 분석을 어떻게 진행했는지 따라가면서, 원리를 이해하고 내가 가지고 있는 데이터에 적용해보자.</p>
+<p>일단, K-Means Clustering 기법을 사용했다는데, 이것이 무엇인지부터 알아보자.</p>
+<h1 id="알고리즘-K-Means-Clustering"><a href="#알고리즘-K-Means-Clustering" class="headerlink" title="알고리즘 : K-Means Clustering"></a>알고리즘 : K-Means Clustering</h1><blockquote>
+<p>“the objective of K-means is simple: group similar data points together and discover underlying patterns. To achieve this objective, K-means looks for a fixed number (k) of clusters in a dataset.”</p>
+</blockquote>
+<ul>
+<li>K-means 클러스터링의 목표 : 비슷한 데이터 포인트들을 모아서, 기저에 숨겨진 패턴들을 발견하는 것.</li>
+<li>k : Centroid(중심)의 수.</li>
+<li>Centroid(중심) : 클러스터의 중심을 나타내는 실제, 혹은 가상의 위치</li>
+<li><p>모든 데이터 포인트들은, 클러스터 내의 <a href="https://www.investopedia.com/terms/s/sum-of-squares.asp" target="_blank" rel="noopener">Sum of square</a>가 줄어드는 방향으로 각 클러스터들에 할당된다.</p>
+<blockquote>
+<p>Sum of square = <script type="math/tex">\sum_{i=0}^n(X_i - \bar{X})^2</script><br>  <script type="math/tex">X_i</script> = The <script type="math/tex">i^{th}</script> item in set<br>  <script type="math/tex">\bar{X}</script> = The mean of all items in set<br>  <script type="math/tex">(X_i - \bar{X})</script> = The deviation of each item from the mean (편차 : deviation)</p>
+</blockquote>
+<p>  이걸 좀 더 클러스터에 맞게 정의하면 이렇게 된다.</p>
+<ul>
+<li>n개의 d-차원 데이터 오브젝트 <script type="math/tex">(x_1, x_2, \ldots , x_n )</script></li>
+<li>k-mean 알고리즘은 이 n개의 데이터 오브젝트들을 k개의 집합 <script type="math/tex">S = {s_1, s_2, \ldots , s_k }</script> 으로 분할한다. <script type="math/tex">\mu_i</script>를 집합 <script type="math/tex">s_i</script>의 중심(centroid) 라고 하면,<script type="math/tex; mode=display">\sum_{i=1}^n\sum_{x \in s_i} \Vert x - \mu_i \Vert^2</script>각 집합별 중심~집합 내 오브젝트간 거리의 제곱합(Sum of square)를 최소로 하는 집합 S를 찾는 것이 이 알고리즘의 목표이다. 이 개별 클러스터에 대한 이 값을 inertia라고 한다.<blockquote>
+<p>Inertia is the sum of squared error for each cluster. Therefore the smaller the inertia the denser the cluster(closer together all the points are)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><script type="math/tex">\Vert x - y \Vert</script>는 <script type="math/tex">x</script>와 <script type="math/tex">y</script>벡터 사이의 <a href="https://en.wikipedia.org/wiki/Euclidean_distance" target="_blank" rel="noopener">euclidean distance</a>를 의미한다.</li>
+</ul>
+<h2 id="K-Means-알고리즘은-어떻게-동작하는가"><a href="#K-Means-알고리즘은-어떻게-동작하는가" class="headerlink" title="K-Means 알고리즘은 어떻게 동작하는가"></a>K-Means 알고리즘은 어떻게 동작하는가</h2><ul>
+<li>중심들을 무작위로 생성한다. (사전에 정의된 k값에 따라)</li>
+<li>이 중심들은 클러스터들의 시작점으로서 사용된다.</li>
+<li>알고리즘은 중심의 값을 최적화하기 위해서 반복적으로 수행된다.</li>
+<li>클러스터의 생성, 최적화는 다음과 같은 경우에 멈춘다.<ul>
+<li>중심이 안정화되었을 때. 즉, 클러스터링이 성공적으로 완료되어서 값에 더 변화가 없을 때.</li>
+<li>사전 정의된 반복 횟수만큼 진행되었을 때.</li>
+</ul>
+</li>
+</ul>
+<h2 id="K-means-알고리즘의-적용예시"><a href="#K-means-알고리즘의-적용예시" class="headerlink" title="K-means 알고리즘의 적용예시"></a>K-means 알고리즘의 적용예시</h2><ul>
+<li>Python에서 K-means machine learning 알고리즘이 어떻게 사용되는지 살펴보자.</li>
+<li>모두의 친구 Scikit-learn 라이브러리와 무작위 데이터를 사용하자.</li>
+</ul>
+<p><strong>1. 라이브러리 import</strong></p>
+<ul>
+<li>말하지 않아도 익숙한 그분들…  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> plotly.express <span class="keyword">as</span> px <span class="comment"># matplotlib보다 예쁜 걸 쓰고 싶다</span></span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>2. 무작위 데이터 만들기</strong></p>
+<ul>
+<li><p>2차원 공간에다 무작위 데이터를 생성하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X= <span class="number">-2</span> * np.random.rand(<span class="number">100</span>,<span class="number">2</span>) <span class="comment"># 100 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X1 = <span class="number">1</span> + <span class="number">2</span> * np.random.rand(<span class="number">50</span>,<span class="number">2</span>) <span class="comment"># 50 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X[<span class="number">50</span>:<span class="number">100</span>, :] = X1 <span class="comment"># X의 50번 원소부터 100번 원소까지 X1으로 치환한다</span></span><br><span class="line">fig = px.scatter(X, x=X[: ,<span class="number">0</span>], y=X[: ,<span class="number">1</span>])</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+<p>아래와 같이 산점도가 그려진다.<br><img src="https://2.bp.blogspot.com/-AsJuYI5P2Cs/Xe4DC7y4m9I/AAAAAAAAADk/42Zf0Y4ENHU0gMESO2kmNR0Xqp4WDtXQACLcBGAsYHQ/s1600/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%2B2019-12-09%2B%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE%2B5.17.00.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_randomData"></p>
+</li>
+</ul>
+<p><strong>3. Scikit-Learn 사용하기</strong></p>
+<ul>
+<li><p>Scikit-Learn 라이브러리의, 무작위 데이터를 다루기 위한 함수들을 사용하자.</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Kmean = KMeans(n_clusters=<span class="number">2</span>)</span><br><span class="line">Kmean.fit(X)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>이 경우에는, 임의로 k값을 2로 주었다.</p>
+</li>
+<li><p>위의 코드를 실행하면, 아래와 같은 결과값이 나온다.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">KMeans(algorithm=&apos;auto&apos;, copy_x=True, init=&apos;k-means++&apos;, max_iter=300,</span><br><span class="line">    n_clusters=2, n_init=10, n_jobs=None, precompute_distances=&apos;auto&apos;,</span><br><span class="line">    random_state=None, tol=0.0001, verbose=0)</span><br></pre></td></tr></table></figure>
+<p>  각각의 항목은 무슨 의미일까?</p>
+<ul>
+<li><p>altorithm : 어떤 알고리즘을 사용했는가?</p>
+<blockquote>
+<p>algorithm “auto”, “full” or “elkan”, default=”auto”<br>K-means algorithm to use. The classical EM-style algorithm is “full”. The “elkan” variation is more efficient by using the triangle inequality, but currently doesn’t support sparse data. “auto” chooses “elkan” for dense data and “full” for sparse data.</p>
+</blockquote>
+<ul>
+<li>EM(Expectation-Maximization) style algorithm<ul>
+<li><a href="http://rpubs.com/Statdoc/204928" target="_blank" rel="noopener">이 글을</a> 본 다음에 (Likelihood)</li>
+<li><a href="https://www.youtube.com/watch?v=Dn6b9fCIUpM" target="_blank" rel="noopener">이 영상을</a> 보자. (Maximum Likelihood)</li>
+<li>잠재 변수(latent variable)(직접 관측, 측정이 되지 않는 변수)를 가지고 있는 확률 모델에서, Maximum Likelihood Expectation을 구하는 기법 - 이라고 일단 알아두자. <a href="http://sanghyukchun.github.io/70/" target="_blank" rel="noopener">참고</a></li>
+</ul>
+</li>
+<li>Elkan variation - <a href="https://www.aaai.org/Papers/ICML/2003/ICML03-022.pdf" target="_blank" rel="noopener">이를 최초로 제시한 논문</a>.</li>
+<li>sparse data, dense data - <a href="http://blog.naver.com/PostView.nhn?blogId=qbxlvnf11&amp;logNo=221429203293&amp;categoryNo=52&amp;parentCategoryNo=0&amp;viewDate=&amp;currentPage=1&amp;postListTopCurrentPage=1&amp;from=search" target="_blank" rel="noopener">설명이 잘 된 블로그</a></li>
+</ul>
+</li>
+<li><p>copy_x : 원본 데이터를 보존하느냐 마느냐. 기본값은 True(보존). False를 선택하면, 데이터의 <a href="https://stackoverflow.com/questions/26998223/what-is-the-difference-between-contiguous-and-non-contiguous-arrays" target="_blank" rel="noopener">C-contiguous</a>를 보장할 수 없고, 이는 성능 하락을 일으킬 수 있다.</p>
+</li>
+<li>init : 초기화 방법. 기본값은 k-means++ 다.<ul>
+<li>k-means++ : 더 빠른 수렴을 위한 적절한 방법으로 초기 클러스터 중심을 선택한다는데, 자세한 내용은 <a href="http://ilpubs.stanford.edu:8090/778/1/2006-13.pdf" target="_blank" rel="noopener">이 논문</a>에 있다. 언젠가 다 읽어볼 수 있었으면 좋겠다.<ul>
+<li>간단한 설명은 <a href="https://datascienceschool.net/view-notebook/2205ad8f0c5947c08696e8927b466341/" target="_blank" rel="noopener">여기</a> 참고</li>
+</ul>
+</li>
+<li>random : 데이터에서 무작위로 선택함</li>
+<li>ndarray : 이건 이 <a href="https://stackoverflow.com/questions/38355153/initial-centroids-for-scikit-learn-kmeans-clustering" target="_blank" rel="noopener">StackOverFlow 답변</a>에 자세히 설명되어 있다.</li>
+<li>초기값 설정에 대한 <a href="https://lovit.github.io/nlp/machine%20learning/2018/03/19/kmeans_initializer/" target="_blank" rel="noopener">좋은 글</a></li>
+</ul>
+</li>
+<li>max_iter : k-means 알고리즘을 한 번 실행(single run) 할 때 최대 반복횟수. 기본값은 300이다.</li>
+<li>n_clusters : 생성하는 클러스터의 수</li>
+<li>n_init : 각각 다른 중앙값 시드로 몇 번이나 알고리즘을 실행할 것인지 결정한다. 최종 결과는 실행한 값들 중 inertia가 가장 낮은 값이다.</li>
+<li>n_jobs : 계산을 병렬로 돌릴 것인지, 병렬로 한다면 얼마나 프로세서를 사용할지에 대한 옵션. None이면 1로 보고, -1이면 모든 프로세서를 사용한다.</li>
+<li>precompute_distances : 거리를 미리 계산함 - 더 빠르나 메모리를 더 많이 쓴다.<ul>
+<li>기본값은 auto : n_samples * n_clusters &gt; 1200만 이면 미리 계산하지 않는다. 이는 배정밀도(double precision) 사용 시, 1회당 100MB의 overhead와 동일하다.</li>
+<li>True / False : 미리 계산을 항상 하느냐 마느냐.</li>
+</ul>
+</li>
+<li>random_state : 중앙값 초기 설정 시에 사용될 랜덤 넘버 시드를 설정한다.</li>
+<li>tol : 허용 오차. 중심의 이동이 이 이하가 되면 알고리즘의 반복을 멈춘다.<blockquote>
+<p>iteration stops when centroids move less than the tolerance.</p>
+</blockquote>
+</li>
+<li>verbose : <a href="https://stackoverflow.com/questions/27495811/what-is-the-definition-of-the-parameter-verbose-in-scikit-learn-kmeans-cluster" target="_blank" rel="noopener">이 설명</a>을 참고하면, 출력 메세지에 모델 디버깅에 도움이 될 만한 더 상세한 정보를 넣을지 말지에 대한 옵션이다.</li>
+</ul>
+</li>
+</ul>
+<p><strong>4.중앙 찾기</strong></p>
+<ul>
+<li>아래 코드를 실행하여 중앙값을 찾아보자.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kmean.cluster_centers_</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[-0.94665068, -0.97138368],</span><br><span class="line"> [ 2.01559419, 2.02597093]])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>중앙값을 산점도에 표시해보자.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> plotly.graph_objects <span class="keyword">as</span> go</span><br><span class="line">fig = go.Figure()</span><br><span class="line">fig.add_trace(go.Scatter(x=X[: ,<span class="number">0</span>], y=X[: ,<span class="number">1</span>], mode=<span class="string">'markers'</span>))</span><br><span class="line">fig.add_trace(go.Scatter(x=[<span class="number">1.97035726</span>], y=[<span class="number">1.87606743</span>], mode=<span class="string">'markers'</span>, marker=dict(size=<span class="number">20</span>), fillcolor=<span class="string">'red'</span>))</span><br><span class="line">fig.add_trace(go.Scatter(x=[<span class="number">-1.03194238</span>], y=[<span class="number">-0.86428206</span>], mode=<span class="string">'markers'</span>, marker=dict(size=<span class="number">20</span>), fillcolor=<span class="string">'cyan'</span>))</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://1.bp.blogspot.com/-TYn0Yw1aX9g/Xe7xt1DE2BI/AAAAAAAAAD0/pLtEgrz-WvYpNs5ekaSXq7HAuIVnTCQqgCLcBGAsYHQ/s1600/newplot.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_withCenter"></p>
+<p><strong>5. 알고리즘 테스트</strong></p>
+<ul>
+<li><p>데이터가 어떻게 두 클러스터로 분류되었을까?</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kmean.labels_</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=int32)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>새로운 데이터를 넣으면 어떻게 예측을 할까?</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sample_test=np.array([<span class="number">-3.0</span>,<span class="number">-3.0</span>])</span><br><span class="line">second_test=sample_test.reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">Kmean.predict(second_test)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([1], dtype=int32)</span><br></pre></td></tr></table></figure>
+<p>  1번 클러스터에 들어갈 것이라고 예측하였다.</p>
+<ul>
+<li><a href="https://rfriend.tistory.com/345" target="_blank" rel="noopener">reshape의 -1에 대하여</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="https://medium.com/@krause60/news-article-clustering-using-unsupervised-learning-7647600a04fd" target="_blank" rel="noopener">https://medium.com/@krause60/news-article-clustering-using-unsupervised-learning-7647600a04fd</a></li>
+<li><a href="https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1" target="_blank" rel="noopener">https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1</a></li>
+<li><a href="https://www.youtube.com/watch?v=4b5d3muPQmA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=4b5d3muPQmA</a></li>
+<li><a href="https://math.stackexchange.com/questions/586245/what-does-double-vertical-line-means-in-linear-algebra" target="_blank" rel="noopener">https://math.stackexchange.com/questions/586245/what-does-double-vertical-line-means-in-linear-algebra</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Euclidean_distance" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Euclidean_distance</a></li>
+<li><a href="https://www.youtube.com/watch?v=XepXtl9YKwc" target="_blank" rel="noopener">https://www.youtube.com/watch?v=XepXtl9YKwc</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/clustering.html#k-means" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/clustering.html#k-means</a></li>
+<li><a href="https://datascienceschool.net/view-notebook/2205ad8f0c5947c08696e8927b466341/" target="_blank" rel="noopener">https://datascienceschool.net/view-notebook/2205ad8f0c5947c08696e8927b466341/</a></li>
+<li><a href="http://sanghyukchun.github.io/70/" target="_blank" rel="noopener">http://sanghyukchun.github.io/70/</a></li>
+<li><a href="https://lovit.github.io/nlp/machine%20learning/2018/03/19/kmeans_initializer/" target="_blank" rel="noopener">https://lovit.github.io/nlp/machine%20learning/2018/03/19/kmeans_initializer/</a></li>
+<li><a href="https://stackoverflow.com/questions/26998223/what-is-the-difference-between-contiguous-and-non-contiguous-arrays" target="_blank" rel="noopener">https://stackoverflow.com/questions/26998223/what-is-the-difference-between-contiguous-and-non-contiguous-arrays</a></li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/12/05/clustering crawled articles 1 k means clustering/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom">
@@ -1573,86 +1777,6 @@ Arguments are assigned to the named local variables in a function body. See the 
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/vuetify making responsible page technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
-                        >
-                            Vuetify에서 반응형 웹페이지 제작 테크닉들
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/javascript/">Javascript</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><ol>
-<li>&lt;v-###&gt; 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li>“hidden-xs-only” : xs 사이즈에서만 해당 태그를 숨김</li>
-</ul>
-<ol start="2">
-<li>HTML 태그들 해상도에 따라 disable 하기</li>
-</ol>
-<ul>
-<li><a href="https://vuetifyjs.com/en/styles/display#visibility" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/display#visibility</a></li>
-<li><code>&lt;br class=&quot;d-flex d-sm-none&quot;&gt;</code> : sm 이하 사이즈에서만 줄바꿈이 등장하게 됨. 긴 텍스트를 해상도에 따라 끊어야 할 때 유용하다.</li>
-</ul>
-<ol start="3">
-<li>현재 화면의 해상도를 받아서 크기 조정하기 : 유튜브 동영상 예시</li>
-</ol>
-<ul>
-<li><p><code>&lt;script&gt;&lt;/script&gt;</code> 사이에 아래처럼 입력해보자.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        data () &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                youtubeSize: &#123;</span><br><span class="line">                        x: <span class="number">0</span>,</span><br><span class="line">                        y: <span class="number">0</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        mounted () &#123;</span><br><span class="line">            <span class="keyword">this</span>.onResize()</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        methods: &#123;</span><br><span class="line">            onResize () &#123;</span><br><span class="line">                <span class="keyword">this</span>.youtubeSize = &#123; <span class="attr">x</span>: <span class="built_in">window</span>.innerWidth - <span class="number">20</span>, <span class="attr">y</span>: <span class="built_in">window</span>.innerWidth * <span class="number">0.625</span> &#125;</span><br><span class="line">                <span class="comment">// 20을 빼준 이유는 약간의 여유공간을 두어 화면에 스크롤이 생기지 않게 하기 위함이고, 0.625를 곱한 건 화면비를 16:10으로 유지하기 위함임</span></span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>위와 같이 적용한 후, 태그는 아래와 같이 지정하자.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">:width</span>=<span class="string">youtubeSize.x</span> <span class="attr">:height</span>=<span class="string">youtubeSize.y</span> <span class="attr">...</span> 중략</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/vuetify making responsible page technique/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1968,7 +2092,7 @@ Arguments are assigned to the named local variables in a function body. See the 
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                17 posts found
+                18 posts found
             </p>
         </div>
     </div>
@@ -1978,7 +2102,7 @@ Arguments are assigned to the named local variables in a function body. See the 
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-cmbtd7djbyd8h4pyvokxv73gmrd00tgd8olup8510yxnkwj0ae2m0rmpiy36.min.js"></script>
+<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
 <!--SCRIPTS END-->
 
 
@@ -1993,4 +2117,26 @@ Arguments are assigned to the named local variables in a function body. See the 
 
 
     </body>
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          menuSettings: {
+            zoom: "None"
+          },
+          showMathMenu: false,
+          jax: ["input/TeX","output/CommonHTML"],
+          extensions: ["tex2jax.js"],
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js"],
+            equationNumbers: {
+              autoNumber: "AMS"
+            }
+          },
+          tex2jax: {
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["\\[", "\\]"]]
+          }
+        });
+      </script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js"></script>
 </html>
