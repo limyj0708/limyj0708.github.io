@@ -13,7 +13,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.\n\n\n1. FeaturesA. Essential functions\n\na. Merge contents of all excel files to one xlsx file.\nb. If there is a empty file, skip it.\n\n\n2. Codes[Codes in the File select button]\nreuse codes from the project below.Multiple file name changer by XLSM\n\n1234567891011121314151617181920212223Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of each file selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n[Codes in the File merge button]12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485Sub File_Merge()    Dim strTemplate As String    Dim Wb_Bowl As Workbook    Dim Sht_Bowl As Worksheet    Dim Wb_From As Workbook    Dim Sht_From As Worksheet    Dim Each_File_Name As String    Dim Column_End_Original As Long    Dim loop_check As Long    Dim Filename As String    Application.ScreenUpdating = False    ' Stop excel screen update for saving resources until all works are finished.    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    strTemplate = \"F:\\Working History\\3.XXXX\\1_데이터\\1_원본 데이터들\\재화획득소진_틀.xlsx\"    ' Empty form which just has column names.    Set Wb_Bowl = Workbooks.Add(strTemplate)     Set Sht_Bowl = Wb_Bowl.Worksheets(\"sheet\")    ' Set the file and sheet where merging will proceed.    Filename = \"F:\\Working History\\3.XXXX\\1_데이터\\1_원본 데이터들\\RAW_MergeResult.xlsx\"    ' Set the file name of merging result.    Wb_Bowl.SaveAs Filename:=Filename    Application.DisplayAlerts = False    ' Hide alert pop-up like \"Do you really save it?\"    For loop_check = 6 To Column_End_Original    ' List of target files begins at 6th column, so initial value of loop_check is 6.        ThisWorkbook.Activate        Each_File_Name = Cells(loop_check, 1).Text        Set Wb_From = Workbooks.Open(Each_File_Name)         ' Open target file        Application.Wait (Now + TimeValue(\"0:00:04\"))         Set Sht_From = Wb_From.Worksheets(\"sheet\")        Sht_From.Activate        Sht_From.Range(Cells(2, 1), Cells(LastRowInSheet(), LastColInSheet())).Copy        ' Copy all contents in target file without column name.        Sht_Bowl.Activate        Correction = LastRowInSheet() + 1        ' Paste contents on the line after last line        Sht_Bowl.Cells(Correction, 1).PasteSpecial _            Paste:=xlPasteAll        Wb_From.Close        ' Close target file        Application.Wait (Now + TimeValue(\"0:00:01\"))        ActiveWorkbook.Save        Application.Wait (Now + TimeValue(\"0:00:01\"))        Application.CutCopyMode = False        ' Clear clipboard    Next loop_check    Application.DisplayAlerts = True    Application.ScreenUpdating = True    MsgBox \"Merging process is complete. Check your result file.\"End SubFunction LastRowInSheet() As Long' Function that checks last row of sheet    Dim LastRow As Long    With ActiveSheet        LastRow = .Cells(.Rows.Count, \"A\").End(xlUp).Row            If LastRow = 1 Then                LastRow = 2            End If    End With    LastRowInSheet = LastRowEnd FunctionFunction LastColInSheet() As Long' Function that checks last column of sheet    Dim LastRow As Long    With ActiveSheet        LastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column    End With    LastColInSheet = LastColEnd Function\n\n3. Example\n","dateCreated":"2018-09-15T00:00:00+09:00","dateModified":"2020-02-04T18:12:31+09:00","datePublished":"2018-09-15T00:00:00+09:00","description":"I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.","headline":"XLSX file merging script","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/","keywords":"편리한-자동화"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.\n\n\n1. FeaturesA. Essential functions\n\na. Merge contents of all excel files to one xlsx file.\nb. If there is a empty file, skip it.\n\n\n2. Codes[Codes in the File select button]\nreuse codes from the project below.Multiple file name changer by XLSM\n\n1234567891011121314151617181920212223Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of each file selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n[Codes in the File merge button]12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485Sub File_Merge()    Dim strTemplate As String    Dim Wb_Bowl As Workbook    Dim Sht_Bowl As Worksheet    Dim Wb_From As Workbook    Dim Sht_From As Worksheet    Dim Each_File_Name As String    Dim Column_End_Original As Long    Dim loop_check As Long    Dim Filename As String    Application.ScreenUpdating = False    ' Stop excel screen update for saving resources until all works are finished.    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    strTemplate = \"F:\\Working History\\3.XXXX\\1_데이터\\1_원본 데이터들\\재화획득소진_틀.xlsx\"    ' Empty form which just has column names.    Set Wb_Bowl = Workbooks.Add(strTemplate)     Set Sht_Bowl = Wb_Bowl.Worksheets(\"sheet\")    ' Set the file and sheet where merging will proceed.    Filename = \"F:\\Working History\\3.XXXX\\1_데이터\\1_원본 데이터들\\RAW_MergeResult.xlsx\"    ' Set the file name of merging result.    Wb_Bowl.SaveAs Filename:=Filename    Application.DisplayAlerts = False    ' Hide alert pop-up like \"Do you really save it?\"    For loop_check = 6 To Column_End_Original    ' List of target files begins at 6th column, so initial value of loop_check is 6.        ThisWorkbook.Activate        Each_File_Name = Cells(loop_check, 1).Text        Set Wb_From = Workbooks.Open(Each_File_Name)         ' Open target file        Application.Wait (Now + TimeValue(\"0:00:04\"))         Set Sht_From = Wb_From.Worksheets(\"sheet\")        Sht_From.Activate        Sht_From.Range(Cells(2, 1), Cells(LastRowInSheet(), LastColInSheet())).Copy        ' Copy all contents in target file without column name.        Sht_Bowl.Activate        Correction = LastRowInSheet() + 1        ' Paste contents on the line after last line        Sht_Bowl.Cells(Correction, 1).PasteSpecial _            Paste:=xlPasteAll        Wb_From.Close        ' Close target file        Application.Wait (Now + TimeValue(\"0:00:01\"))        ActiveWorkbook.Save        Application.Wait (Now + TimeValue(\"0:00:01\"))        Application.CutCopyMode = False        ' Clear clipboard    Next loop_check    Application.DisplayAlerts = True    Application.ScreenUpdating = True    MsgBox \"Merging process is complete. Check your result file.\"End SubFunction LastRowInSheet() As Long' Function that checks last row of sheet    Dim LastRow As Long    With ActiveSheet        LastRow = .Cells(.Rows.Count, \"A\").End(xlUp).Row            If LastRow = 1 Then                LastRow = 2            End If    End With    LastRowInSheet = LastRowEnd FunctionFunction LastColInSheet() As Long' Function that checks last column of sheet    Dim LastRow As Long    With ActiveSheet        LastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column    End With    LastColInSheet = LastColEnd Function\n\n3. Example\n","dateCreated":"2018-09-15T00:00:00+09:00","dateModified":"2020-02-05T12:15:51+09:00","datePublished":"2018-09-15T00:00:00+09:00","description":"I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.","headline":"XLSX file merging script","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/","keywords":"편리한_자동화"}</script>
     <meta name="description" content="I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the wor">
 <meta name="keywords" content="VBA,Excel file merge">
 <meta property="og:type" content="blog">
@@ -23,7 +23,7 @@
 <meta property="og:description" content="I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the wor">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://drive.google.com/uc?id=1nLQs-ASQxWjEgKAAp4mpQwPgql72U3rT">
-<meta property="og:updated_time" content="2020-02-04T09:12:31.333Z">
+<meta property="og:updated_time" content="2020-02-05T03:15:51.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XLSX file merging script">
 <meta name="twitter:description" content="I was faced with a huge number of excel tables to merge.Of course, I did not want to merge them manually.Fortunately, all the tables were in the same form so it was easy to let the computer do the wor">
@@ -284,7 +284,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/편리한-자동화/">편리한-자동화</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/편리한-자동화/">편리한_자동화</a>
 
             </div>
         
@@ -726,10 +726,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -749,10 +749,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -795,10 +795,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -820,7 +820,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                20 posts found
+                19 posts found
             </p>
         </div>
     </div>

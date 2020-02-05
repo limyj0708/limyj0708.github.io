@@ -9,7 +9,31 @@
 
     <url>
         <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/</loc>
-        <lastmod>2020-02-05T03:12:17.100Z</lastmod>
+        <lastmod>2020-02-05T03:30:02.054Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/24/python-asyncio-for-web-crawling-2/</loc>
+        <lastmod>2020-02-05T03:27:47.345Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/10/python-asyncio-for-web-crawling/</loc>
+        <lastmod>2020-02-05T03:27:39.034Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/</loc>
+        <lastmod>2020-02-05T03:15:51.279Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -128,40 +152,8 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/</loc>
-        <lastmod>2020-02-04T09:12:31.333Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2020/02/04/bankruptcy-prediction-1st/</loc>
-        <lastmod>2020-02-04T08:38:13.750Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://limyj0708.github.io/2019/11/27/excellent-refers/</loc>
         <lastmod>2019-11-29T15:00:00.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/11/24/python-asyncio-for-web-crawling-2/</loc>
-        <lastmod>2019-11-24T02:46:11.301Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/11/10/python-asyncio-for-web-crawling/</loc>
-        <lastmod>2019-11-14T01:34:01.128Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

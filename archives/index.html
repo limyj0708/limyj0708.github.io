@@ -268,7 +268,7 @@
 <li>수집 시작 : 결과물은 csv 파일</li>
 <li>수집 결과 파일들을 로컬 머신에 다운로드</li>
 <li>수집 결과 파일 병합</li>
-<li>끝<br>비고 &gt; 32개를 한 번에 실행 시, 몇몇 instance가 불안정한 문제가 있었기 때문에 최종적으로는 8개를 사용했다.</li>
+<li>끝<br>비고 &gt; 32개를 한 번에 실행 시, 몇몇 instance가 불안정한 문제가 있어서 최종적으로는 8개를 사용했다.</li>
 </ol>
 <h1 id="2-한-걸음씩-살펴보기"><a href="#2-한-걸음씩-살펴보기" class="headerlink" title="2. 한 걸음씩 살펴보기"></a>2. 한 걸음씩 살펴보기</h1><h2 id="2-1-Google-cloud-SDK-설치"><a href="#2-1-Google-cloud-SDK-설치" class="headerlink" title="2-1. Google cloud SDK 설치"></a>2-1. Google cloud SDK 설치</h2><ul>
 <li>Shell에서 다량의 instance를 제어하기 위해 SDK 설치</li>
@@ -356,70 +356,6 @@
                         <p>
                             <a
                                 href="/2020/02/04/bankrup-pre-gcp-instances-crawl/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/04/bankruptcy-prediction-1st/"
-                            aria-label=": 기업부도예측 서비스 프로젝트 중간정산"
-                        >
-                            기업부도예측 서비스 프로젝트 중간정산
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-04T00:00:00+09:00">
-	
-		    Feb 04, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/machine-learning/">Machine learning</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>프로젝트 진행에 바빠서 내용 정리를 못 하면, 프로젝트가 다 끝나고 나서도 못 하기 마련이다.<br>정리되지 않은 경험들은 손에 쥔 모래알처럼 흩날리기 마련이므로, 잠깐 시간을 내서 중간정산을 해보자.</p>
-<ol>
-<li><a href="#데이터-수집">데이터 수집</a><br> - <a href="#GCP-compute-instance-여러-개로-크롤링">GCP compute instance 여러 개로 크롤링</a></li>
-<li><a href="#데이터-전처리">데이터 전처리</a><br> - <a href="#대용량-CSV를-다룰-때-좋은-Shell-명령어들">대용량 CSV를 다룰 때 좋은 Shell 명령어들</a></li>
-<li><a href="#Decision-Tree-기반-알고리즘들로-학습한-결과">Decision Tree 기반 알고리즘들로 학습한 결과</a><br> - <a href="#학습해-본-모델들">학습해 본 모델들</a><br> - <a href="#학습결과">학습결과</a></li>
-<li><a href="#Amazon-Redshift-활용">Amazon Redshift 활용</a><br> - <a href="#개념">개념</a><br> - <a href="#각종-방식으로-클러스터에-연결하기">각종 방식으로 클러스터에 연결하기</a><br> - <a href="#로컬-머신에서-insert로-데이터를-넣는-간단한-예제">로컬 머신에서 insert로 데이터를 넣는 간단한 예제</a></li>
-</ol>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2020/02/04/bankruptcy-prediction-1st/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -1549,6 +1485,75 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": Map vs List Comprehension"
+                        >
+                            Map vs List Comprehension
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-12T00:00:00+09:00">
+	
+		    Oct 12, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
+<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/12/iterator-iterable-generator/"
                             aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
                         >
@@ -1882,10 +1887,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1905,10 +1910,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1951,10 +1956,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1976,7 +1981,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                20 posts found
+                19 posts found
             </p>
         </div>
     </div>

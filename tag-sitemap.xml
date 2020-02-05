@@ -4,14 +4,21 @@
 
     <url>
         <loc>https://limyj0708.github.io/tags/%EC%8B%A4%EC%A0%84-%EB%85%B8%ED%95%98%EC%9A%B0/</loc>
-        <lastmod>2020-02-05T03:12:17.100Z</lastmod>
+        <lastmod>2020-02-05T03:30:02.054Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://limyj0708.github.io/tags/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/</loc>
-        <lastmod>2020-02-04T09:27:43.111Z</lastmod>
+        <lastmod>2020-02-05T03:27:47.345Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/%ED%8E%B8%EB%A6%AC%ED%95%9C-%EC%9E%90%EB%8F%99%ED%99%94/</loc>
+        <lastmod>2020-02-05T03:15:51.279Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -24,50 +31,8 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/tags/%ED%8E%B8%EB%A6%AC%ED%95%9C-%EC%9E%90%EB%8F%99%ED%99%94/</loc>
-        <lastmod>2020-02-04T09:16:53.144Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/tags/%ED%8E%B8%EB%A6%AC%ED%95%9C-%EC%9E%90%EB%8F%99%ED%99%94/</loc>
-        <lastmod>2020-02-04T09:12:31.333Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/tags/database/</loc>
-        <lastmod>2020-02-04T08:38:13.750Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/tags/web/</loc>
-        <lastmod>2020-02-04T08:38:13.750Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/tags/machine-learning/</loc>
-        <lastmod>2020-02-04T08:38:13.750Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://limyj0708.github.io/tags/archiving/</loc>
         <lastmod>2019-11-29T15:00:00.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/tags/python/</loc>
-        <lastmod>2019-11-24T02:46:11.301Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
