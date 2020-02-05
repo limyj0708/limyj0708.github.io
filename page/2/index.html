@@ -394,6 +394,73 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/10/04/what-are-magic-methods/"
+                            aria-label=": What are Magic Methods?"
+                        >
+                            What are Magic Methods?
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-04T00:00:00+09:00">
+	
+		    Oct 04, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
+<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
+<p><br><br>어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.<br>Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
+<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
+<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/04/what-are-magic-methods/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/04/vuetify-making-responsible-page-technique/"
                             aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
@@ -452,73 +519,6 @@
                         <p>
                             <a
                                 href="/2019/10/04/vuetify-making-responsible-page-technique/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
-                        >
-                            What are Magic Methods?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
-<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
-<p><br><br>어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.<br>Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
-<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/what-are-magic-methods/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -1082,10 +1082,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
+                            aria-label=": What are Magic Methods?"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1105,10 +1105,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
+                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
