@@ -8,15 +8,143 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/12/05/clustering%20crawled%20articles%201%20k%20means%20clustering/</loc>
-        <lastmod>2019-12-10T01:25:04.795Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/</loc>
+        <lastmod>2020-02-05T03:12:17.100Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/11/27/excellent%20refers/</loc>
+        <loc>https://limyj0708.github.io/2019/10/30/Decorator-Scope-Namespace/</loc>
+        <lastmod>2020-02-04T09:27:43.111Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/</loc>
+        <lastmod>2020-02-04T09:27:07.086Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1/</loc>
+        <lastmod>2020-02-04T09:21:53.737Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/11/Asynchronous-Synchronous-Blocking-Non-Blocking/</loc>
+        <lastmod>2020-02-04T09:21:18.164Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/</loc>
+        <lastmod>2020-02-04T09:16:53.144Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/</loc>
+        <lastmod>2020-02-04T09:16:46.238Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/</loc>
+        <lastmod>2020-02-04T09:16:36.682Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/</loc>
+        <lastmod>2020-02-04T09:15:07.749Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/</loc>
+        <lastmod>2020-02-04T09:14:44.750Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/</loc>
+        <lastmod>2020-02-04T09:14:39.773Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/</loc>
+        <lastmod>2020-02-04T09:14:36.357Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/</loc>
+        <lastmod>2020-02-04T09:14:25.634Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/</loc>
+        <lastmod>2020-02-04T09:14:15.543Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/04/what-are-magic-methods/</loc>
+        <lastmod>2020-02-04T09:14:09.608Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/</loc>
+        <lastmod>2020-02-04T09:12:31.333Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2020/02/04/bankruptcy-prediction-1st/</loc>
+        <lastmod>2020-02-04T08:38:13.750Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/27/excellent-refers/</loc>
         <lastmod>2019-11-29T15:00:00.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -24,15 +152,7 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/10/30/Decorator,%20Scope,%20Namespace/</loc>
-        <lastmod>2019-11-27T00:34:35.326Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/11/24/python%20asyncio%20for%20web%20crawling%202/</loc>
+        <loc>https://limyj0708.github.io/2019/11/24/python-asyncio-for-web-crawling-2/</loc>
         <lastmod>2019-11-24T02:46:11.301Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -40,112 +160,8 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/11/10/python%20asyncio%20for%20web%20crawling/</loc>
+        <loc>https://limyj0708.github.io/2019/11/10/python-asyncio-for-web-crawling/</loc>
         <lastmod>2019-11-14T01:34:01.128Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/11/11/Asynchronous,%20Synchronous,%20Blocking,%20Non-Blocking/</loc>
-        <lastmod>2019-11-13T00:38:39.478Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/12/iterator%20iterable%20generator/</loc>
-        <lastmod>2019-11-11T00:50:05.561Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/18/lets%20start%20docker%20through%20installing%20oracle11g%20on%20mac/</loc>
-        <lastmod>2019-11-01T00:02:47.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/12/map%20versus%20list%20comprehension/</loc>
-        <lastmod>2019-10-15T08:21:48.663Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/09/10/multiple%20file%20name%20changer%20by%20xlsm/</loc>
-        <lastmod>2019-10-15T00:55:48.175Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/09/15/xlsx%20file%20merging%20script/</loc>
-        <lastmod>2019-10-15T00:54:48.825Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/11/what%20is%20the%20difference%20between%20arguments%20and%20parameters/</loc>
-        <lastmod>2019-10-14T09:04:46.558Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/04/19/web%20broswer%20control%20with%20selenium/</loc>
-        <lastmod>2019-10-10T13:16:45.419Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/01/python%20built%20in%20function%20study%20-%20map/</loc>
-        <lastmod>2019-10-10T08:20:45.762Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/08/22/r-var(some_vector)%20calculate%20standard%20deviation/</loc>
-        <lastmod>2019-10-10T08:02:28.910Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/04/vuetify%20making%20responsible%20page%20technique/</loc>
-        <lastmod>2019-10-10T05:48:47.171Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/01/10/telegram%20bot%20for%20alarming%20erc-20%20token%20balance/</loc>
-        <lastmod>2019-10-10T01:11:10.030Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/04/what%20are%20magic%20methods/</loc>
-        <lastmod>2019-10-10T00:11:48.139Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

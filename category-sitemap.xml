@@ -8,8 +8,57 @@
     </url>
 
     <url>
+        <loc>https://limyj0708.github.io/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1/</loc>
+        <lastmod>2020-02-05T03:12:17.100Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/python/</loc>
+        <lastmod>2020-02-04T09:27:43.111Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://limyj0708.github.io/categories/machine-learning/</loc>
-        <lastmod>2019-12-10T01:25:04.795Z</lastmod>
+        <lastmod>2020-02-04T09:21:53.737Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/computer-science/</loc>
+        <lastmod>2020-02-04T09:21:18.164Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/vba/</loc>
+        <lastmod>2020-02-04T09:16:53.144Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/docker/</loc>
+        <lastmod>2020-02-04T09:15:07.749Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/r/</loc>
+        <lastmod>2020-02-04T09:14:44.750Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/categories/javascript/</loc>
+        <lastmod>2020-02-04T09:14:36.357Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -17,48 +66,6 @@
     <url>
         <loc>https://limyj0708.github.io/categories/archiving/</loc>
         <lastmod>2019-11-29T15:00:00.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/python/</loc>
-        <lastmod>2019-11-27T00:34:35.326Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/computer-science/</loc>
-        <lastmod>2019-11-13T00:38:39.478Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/docker/</loc>
-        <lastmod>2019-11-01T00:02:47.649Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/vba/</loc>
-        <lastmod>2019-10-15T00:55:48.175Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/r/</loc>
-        <lastmod>2019-10-10T08:02:28.910Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/categories/javascript/</loc>
-        <lastmod>2019-10-10T05:48:47.171Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

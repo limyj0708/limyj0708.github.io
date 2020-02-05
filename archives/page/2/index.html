@@ -232,7 +232,170 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/10/04/vuetify making responsible page technique/"
+                            href="/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": Map vs List Comprehension"
+                        >
+                            Map vs List Comprehension
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-12T00:00:00+09:00">
+	
+		    Oct 12, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
+<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
+                            aria-label=": Parameters, Arguments 정의와 차이점"
+                        >
+                            Parameters, Arguments 정의와 차이점
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-11T00:00:00+09:00">
+	
+		    Oct 11, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/python/">Python</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><p>Parameters are defined by the names that appear in a function definition, whereas arguments are the values actually passed to a function when calling it. Parameters define what types of arguments a function can accept. For example, given the function definition:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure><br>foo, bar and kwargs are parameters of func. However, when calling func, for example:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">42</span>, bar=<span class="number">314</span>, extra=somevar)</span><br></pre></td></tr></table></figure><br>the values 42, 314, and somevar are arguments.</p>
+<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/faq/programming.html#what-is-the-difference-between-arguments-and-parameters" target="_blank" rel="noopener">Python FAQ</a></cite></footer></blockquote>
+<hr>
+<p><br><br>Parameter는 함수 정의 시 등장하는 이름들에 의해 정의된다.<br><br>Argument는 함수가 호출될 때 실제로 전달되는 값이다.<br><br>Parameter는 함수가 받을 수 있는 Argument의 타입을 정의한다.<br><br>예를 들면, 아래 정의된 함수를 보자:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>foo, bar, kwargs는 함수의 parameter들이다. 하지만, 함수를 호출할 때를 예로 들면:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">42</span>, bar=<span class="number">314</span>, extra=somevar)</span><br></pre></td></tr></table></figure></p>
+<p>42, 314, somevar는 argument들이다.</p>
+<hr>
+<p><br><br>흠, Parameter와 Argument의 차이는 알았다.<br><br>그럼 각각의 자세한 정의는 어떻게 될까?</p>
+<blockquote><h3 id="parameter"><a href="#parameter" class="headerlink" title="parameter"></a>parameter</h3><p>A named entity in a function (or method) definition that specifies an argument (or in some cases, arguments) that the function can accept. There are five kinds of parameter:</p>
+<p><strong>positional-or-keyword:</strong> specifies an argument that can be passed either positionally or as a keyword argument. This is the default kind of parameter, for example foo and bar in the following:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(foo, bar=None)</span>:</span> ...</span><br></pre></td></tr></table></figure><br>두 형태로 다 받아도 상관이 없는 형태의 예시</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b=<span class="number">10</span>)</span>:</span></span><br><span class="line">    print(a+b)</span><br><span class="line">sum(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">sum(<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 출력값은 둘 다 3으로 잘 나온다.</span></span><br><span class="line"><span class="comment"># b는 keyword parameter지만, positional처럼 값을 넣어도 잘 작동한다.</span></span><br></pre></td></tr></table></figure><br><br></p>
+<p><strong>positional-only:</strong> specifies an argument that can be supplied only by position. Python has no syntax for defining positional-only parameters. However, some built-in functions have positional-only parameters (e.g. abs()).</p>
+<p>abs()에 keyword argument를 넣으려고 하면, 시원하게 에러가 뜬다.</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">abs(foo=<span class="number">10</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line">&lt;ipython-input<span class="number">-3</span>-a716986b1017&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">----&gt; 1 abs(foo=10)</span><br><span class="line"></span><br><span class="line">TypeError: abs() takes no keyword arguments</span><br></pre></td></tr></table></figure><br><br></p>
+<p><strong>keyword-only:</strong> specifies an argument that can be supplied only by keyword. Keyword-only parameters can be defined by including a single var-positional parameter or bare * in the parameter list of the function definition before them, for example kw_only1 and kw_only2 in the following:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(*arg, *, kw_only1, kw_only2)</span>:</span> ...</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>단일 Asterisk 뒤에 오는 parameter들은 무조건 keyword parameter여야 한다. <a href="https://www.python.org/dev/peps/pep-3102/#specification" target="_blank" rel="noopener">PEP-3102</a><br></li>
+<li>var-positional parameter 뒤에 오는 parameter들은 무조건 keyword parameter여야 한다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print1</span><span class="params">(a, b, *, kw_only1=None, kw_only2=None, positional)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> print(a,b,kw_only1, kw_only2, positional)</span><br><span class="line">print1(<span class="number">3</span>,<span class="number">4</span>,kw_only1=<span class="number">1</span>, kw_only2=<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># 장렬한 에러 메세지</span></span><br><span class="line">  File <span class="string">"&lt;ipython-input-23-643daf55a3a2&gt;"</span>, line <span class="number">3</span></span><br><span class="line">    print1(<span class="number">3</span>,<span class="number">4</span>,kw_only1=<span class="number">1</span>, kw_only2=<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">                                      ^</span><br><span class="line">SyntaxError: positional argument follows keyword argument</span><br></pre></td></tr></table></figure><br><br></li>
+</ol>
+<p><strong>var-positional:</strong> specifies that an arbitrary sequence of positional arguments can be provided (in addition to any positional arguments already accepted by other parameters). Such a parameter can be defined by prepending the parameter name with *, for example args in the following:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(*args, **kwargs)</span>:</span> ...</span><br></pre></td></tr></table></figure><br><br></p>
+<p><strong>var-keyword:</strong> specifies that arbitrarily many keyword arguments can be provided (in addition to any keyword arguments already accepted by other parameters). Such a parameter can be defined by prepending the parameter name with **, for example kwargs in the example above.<br>Parameters can specify both optional and required arguments, as well as default values for some optional arguments.</p>
+<p>직접 임의의(arbitrary) argument들을 마음껏 넣어보자.</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print1</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    print(args)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">print1(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>, kw1=<span class="string">'a'</span>, kw2=<span class="string">'b'</span>, kw3=<span class="string">'hoho'</span>)</span><br><span class="line"><span class="comment"># (1, 2, 3, 4, 5)</span></span><br><span class="line"><span class="comment"># &#123;'kw1': 'a', 'kw2': 'b', 'kw3': 'hoho'&#125;</span></span><br></pre></td></tr></table></figure><br><br><br>See also the argument glossary entry, the FAQ question on the difference between arguments and parameters, the inspect.Parameter class, the Function definitions section, and PEP 362.</p>
+<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-parameter" target="_blank" rel="noopener">Glossary > parameter</a></cite></footer></blockquote>
+<blockquote><h3 id="argument"><a href="#argument" class="headerlink" title="argument"></a>argument</h3><p>A value passed to a function (or method) when calling the function.<br>There are two kinds of argument:</p>
+<p><strong>keyword argument:</strong><br>an argument preceded by an identifier (e.g. name=) in a function call or passed as a value in a dictionary preceded by **. For example, 3 and 5 are both keyword arguments in the following calls to complex():</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">complex(real=<span class="number">3</span>, imag=<span class="number">5</span>)</span><br><span class="line">complex(**&#123;<span class="string">'real'</span>: <span class="number">3</span>, <span class="string">'imag'</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="comment"># 복소수를 출력하는 함수. 출력값은 (3+5j) 가 된다.</span></span><br><span class="line"><span class="comment"># Asterisk가 data structure를 해체하여 전달하는 역할을 하는데, </span></span><br><span class="line"><span class="comment"># 자세한 내용은 다른 포스트에서 다뤄보자.</span></span><br></pre></td></tr></table></figure><br><br></p>
+<p><strong>positional argument:</strong><br>an argument that is not a keyword argument. Positional arguments can appear at the beginning of an argument list and/or be passed as elements of an iterable preceded by *. For example, 3 and 5 are both positional arguments in the following calls:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complex(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">complex(*(<span class="number">3</span>, <span class="number">5</span>))</span><br></pre></td></tr></table></figure><br><br><br>Arguments are assigned to the named local variables in a function body. See the Calls section for the rules governing this assignment. Syntactically, any expression can be used to represent an argument; the evaluated value is assigned to the local variable.</p>
+<p>See also the parameter glossary entry, the FAQ question on the difference between arguments and parameters, and PEP 362.</p>
+<footer><strong>Python Documentation</strong><cite><a href="https://docs.python.org/3/glossary.html#term-argument" target="_blank" rel="noopener">Glossary > argument</a></cite></footer></blockquote>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/04/vuetify-making-responsible-page-technique/"
                             aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
                             Vuetify에서 반응형 웹페이지 제작 테크닉들
@@ -258,19 +421,19 @@
             
                 <div class="postShorten-content">
                     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><ol>
-<li>&lt;v-###&gt; 태그들 해상도에 따라 disable 하기</li>
+<li><v-###> 태그들 해상도에 따라 disable 하기</v-###></li>
 </ol>
 <ul>
 <li>“hidden-xs-only” : xs 사이즈에서만 해당 태그를 숨김</li>
 </ul>
-<ol start="2">
+<ol>
 <li>HTML 태그들 해상도에 따라 disable 하기</li>
 </ol>
 <ul>
 <li><a href="https://vuetifyjs.com/en/styles/display#visibility" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/display#visibility</a></li>
 <li><code>&lt;br class=&quot;d-flex d-sm-none&quot;&gt;</code> : sm 이하 사이즈에서만 줄바꿈이 등장하게 됨. 긴 텍스트를 해상도에 따라 끊어야 할 때 유용하다.</li>
 </ul>
-<ol start="3">
+<ol>
 <li>현재 화면의 해상도를 받아서 크기 조정하기 : 유튜브 동영상 예시</li>
 </ol>
 <ul>
@@ -289,7 +452,7 @@
                     
                         <p>
                             <a
-                                href="/2019/10/04/vuetify making responsible page technique/#post-footer"
+                                href="/2019/10/04/vuetify-making-responsible-page-technique/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -312,7 +475,7 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/10/04/what are magic methods/"
+                            href="/2019/10/04/what-are-magic-methods/"
                             aria-label=": What are Magic Methods?"
                         >
                             What are Magic Methods?
@@ -339,22 +502,13 @@
                 <div class="postShorten-content">
                     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
 <footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
-
-<br>
-어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.
-Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.
-
+<p><br><br>어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.<br>Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-
 <p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
-
 <p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
 
                     
@@ -365,7 +519,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <p>
                             <a
-                                href="/2019/10/04/what are magic methods/#post-footer"
+                                href="/2019/10/04/what-are-magic-methods/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -388,10 +542,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/10/01/python built in function study - map/"
-                            aria-label=": Python Built in function 정리 1 - Map"
+                            href="/2019/10/01/python-built-in-function-study-map/"
+                            aria-label=": Python Built in function - Map"
                         >
-                            Python Built in function 정리 1 - Map
+                            Python Built in function - Map
                         </a>
                     
                 </h1>
@@ -415,17 +569,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                 <div class="postShorten-content">
                     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
 <footer><strong>Python Built-in Functions</strong><cite><a href="https://docs.python.org/3.7/library/functions.html#map" target="_blank" rel="noopener">map</a></cite></footer></blockquote>
-
 <hr>
-<br>
-모든 iterable의 Item에 function을 적용하고, 결과를 생성하는 iterator를 Return합니다.
-(class 'map'이 return된다.)
-
+<p><br><br>모든 iterable의 Item에 function을 적용하고, 결과를 생성하는 iterator를 Return합니다.<br>(class ‘map’이 return된다.)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(type(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 &lt;class 'map'&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>추가적인 iterable arguments가 주어지면,<br>function은 반드시 이 argument들을 받아야 합니다.<br>그리고 function은 모든 iterable들의 item에 병렬적으로 적용됩니다.<br>여러 개의 iterable이 있다면, iterator는 가장 짧은 iterable이 다 사용되면 멈춥니다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(list(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 [7, 16, 27, 40, 55]</span></span><br><span class="line"><span class="comment"># iterable 2개를 받았으며, 각각 map_test가 x에, map_test2가 y에 병렬적으로 대응되었다.</span></span><br><span class="line"><span class="comment"># map_test2가 다 소진되자, 계산이 멈추고 결과가 return 된다. map_test의 6은 안 쓰이게 되었다.</span></span><br></pre></td></tr></table></figure>
-
+<p>추가적인 iterable arguments가 주어지면,<br>function은 반드시 이 argument들을 받아야 합니다.<br>그리고 function은 모든 iterable들의 item에 병렬적으로 적용됩니다.<br>여러 개의 iterable이 있다면, iterator는 가장 짧은 iterable이 다 사용되면 멈춥니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(list(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 [7, 16, 27, 40, 55]</span></span><br><span class="line"><span class="comment"># iterable 2개를 받았으며, 각각 map_test가 x에, map_test2가 y에 병렬적으로 대응되었다.</span></span><br><span class="line"><span class="comment"># map_test2가 다 소진되자, 계산이 멈추고 결과가 return 된다. map_test의 6은 안 쓰이게 되었다.</span></span><br></pre></td></tr></table></figure></p>
 <p>함수의 입력값이 argument tuple로 이미 정렬되어 있다면, <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap()</a>를 보세요.</p>
 
                     
@@ -436,7 +583,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <p>
                             <a
-                                href="/2019/10/01/python built in function study - map/#post-footer"
+                                href="/2019/10/01/python-built-in-function-study-map/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -459,7 +606,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/08/22/r-var(some_vector) calculate standard deviation/"
+                            href="/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
                             aria-label=": R - var(some_vector)는 표본분산을 계산한다"
                         >
                             R - var(some_vector)는 표본분산을 계산한다
@@ -485,7 +632,6 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             
                 <div class="postShorten-content">
                     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; var(<span class="number">1</span>:<span class="number">10</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="number">9.166667</span></span><br></pre></td></tr></table></figure>
-
 <p>“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”<br>는 내가 지식이 부족해서 그랬던 것이었다.</p>
 <p>모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.</p>
 <p><a href="https://blog.naver.com/physicopianist/221079231724" target="_blank" rel="noopener">https://blog.naver.com/physicopianist/221079231724</a></p>
@@ -499,7 +645,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <p>
                             <a
-                                href="/2019/08/22/r-var(some_vector) calculate standard deviation/#post-footer"
+                                href="/2019/08/22/r-var(some-vector)-calculate-standard-deviation/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -522,7 +668,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/09/15/xlsx file merging script/"
+                            href="/2018/09/15/xlsx-file-merging-script/"
                             aria-label=": XLSX file merging script"
                         >
                             XLSX file merging script
@@ -550,7 +696,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <p>I was faced with a huge number of excel tables to merge.<br>Of course, I did not want to merge them manually.<br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p>
                     
                         <a
-                            href="/2018/09/15/xlsx file merging script/"
+                            href="/2018/09/15/xlsx-file-merging-script/"
                             class="postShorten-excerpt_link link"
                             aria-label=": XLSX file merging script"
                         >
@@ -573,7 +719,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/09/10/multiple file name changer by xlsm/"
+                            href="/2018/09/10/multiple-file-name-changer-by-xlsm/"
                             aria-label=": Multiple file name changer by XLSM"
                         >
                             Multiple file name changer by XLSM
@@ -598,10 +744,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.</p>
+                    <p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br>
                     
                         <a
-                            href="/2018/09/10/multiple file name changer by xlsm/"
+                            href="/2018/09/10/multiple-file-name-changer-by-xlsm/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Multiple file name changer by XLSM"
                         >
@@ -624,7 +770,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/04/19/web broswer control with selenium/"
+                            href="/2018/04/19/web-broswer-control-with-selenium/"
                             aria-label=": Web broswer control with Selenium"
                         >
                             Web broswer control with Selenium
@@ -652,7 +798,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p>
                     
                         <a
-                            href="/2018/04/19/web broswer control with selenium/"
+                            href="/2018/04/19/web-broswer-control-with-selenium/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Web broswer control with Selenium"
                         >
@@ -675,7 +821,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/01/10/telegram bot for alarming erc-20 token balance/"
+                            href="/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
                             aria-label=": Telegram bot for alarming ERC-20 token balance"
                         >
                             Telegram bot for alarming ERC-20 token balance
@@ -700,10 +846,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.</p>
+                    <p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.<br>
                     
                         <a
-                            href="/2018/01/10/telegram bot for alarming erc-20 token balance/"
+                            href="/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Telegram bot for alarming ERC-20 token balance"
                         >
@@ -742,7 +888,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Jin. All Rights Reserved.
+        Copyrights &copy; 2020 Jin. All Rights Reserved.
     </span>
 </footer>
 
@@ -800,7 +946,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2018/01/10/telegram bot for alarming erc-20 token balance/"
+                            href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
                             aria-label=": Telegram bot for alarming ERC-20 token balance"
                         >
                             <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
@@ -812,7 +958,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -823,7 +969,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2018/04/19/web broswer control with selenium/"
+                            href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
                             aria-label=": Web broswer control with Selenium"
                         >
                             <h3 class="media-heading">Web broswer control with Selenium</h3>
@@ -846,7 +992,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2018/09/10/multiple file name changer by xlsm/"
+                            href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
                             aria-label=": Multiple file name changer by XLSM"
                         >
                             <h3 class="media-heading">Multiple file name changer by XLSM</h3>
@@ -858,7 +1004,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -869,7 +1015,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2018/09/15/xlsx file merging script/"
+                            href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
                             aria-label=": XLSX file merging script"
                         >
                             <h3 class="media-heading">XLSX file merging script</h3>
@@ -892,7 +1038,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/08/22/r-var(some_vector) calculate standard deviation/"
+                            href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
                             aria-label=": R - var(some_vector)는 표본분산을 계산한다"
                         >
                             <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
@@ -915,10 +1061,10 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/01/python built in function study - map/"
-                            aria-label=": Python Built in function 정리 1 - Map"
+                            href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
+                            aria-label=": Python Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function 정리 1 - Map</h3>
+                            <h3 class="media-heading">Python Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -938,7 +1084,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/vuetify making responsible page technique/"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
                             aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
                             <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
@@ -961,7 +1107,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/04/what are magic methods/"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
                             aria-label=": What are Magic Methods?"
                         >
                             <h3 class="media-heading">What are Magic Methods?</h3>
@@ -984,7 +1130,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/11/what is the difference between arguments and parameters/"
+                            href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
                             aria-label=": Parameters, Arguments 정의와 차이점"
                         >
                             <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
@@ -1007,7 +1153,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator iterable generator/"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
                             aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
                         >
                             <h3 class="media-heading">Iterable, Iterator, Generator - 너희는 누구니?</h3>
@@ -1032,7 +1178,7 @@ Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실�
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                18 posts found
+                20 posts found
             </p>
         </div>
     </div>
