@@ -3,29 +3,71 @@
 
 
     <url>
-        <loc>https://limyj0708.github.io/tags/%EC%8B%A4%EC%A0%84-%EB%85%B8%ED%95%98%EC%9A%B0/</loc>
-        <lastmod>2020-02-05T03:30:02.054Z</lastmod>
+        <loc>https://limyj0708.github.io/tags/machine-learning/</loc>
+        <lastmod>2020-02-06T00:37:24.281Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/tags/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/</loc>
-        <lastmod>2020-02-05T03:27:47.345Z</lastmod>
+        <loc>https://limyj0708.github.io/tags/gcp/</loc>
+        <lastmod>2020-02-06T00:27:27.069Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/tags/%ED%8E%B8%EB%A6%AC%ED%95%9C-%EC%9E%90%EB%8F%99%ED%99%94/</loc>
-        <lastmod>2020-02-05T03:15:51.279Z</lastmod>
+        <loc>https://limyj0708.github.io/tags/shell-script/</loc>
+        <lastmod>2020-02-06T00:27:27.069Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/tags/%EC%8B%A4%EC%8A%B5-%EC%A0%95%EB%A6%AC/</loc>
-        <lastmod>2020-02-04T09:21:53.737Z</lastmod>
+        <loc>https://limyj0708.github.io/tags/python/</loc>
+        <lastmod>2020-02-05T09:18:36.963Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/computer-science/</loc>
+        <lastmod>2020-02-05T06:54:54.282Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/vba/</loc>
+        <lastmod>2020-02-05T06:54:35.564Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/vue/</loc>
+        <lastmod>2020-02-05T06:54:19.125Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/javascript/</loc>
+        <lastmod>2020-02-05T06:54:19.125Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/r/</loc>
+        <lastmod>2020-02-05T06:54:02.446Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/tags/docker/</loc>
+        <lastmod>2020-02-05T06:53:38.654Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

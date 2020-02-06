@@ -6,26 +6,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Map vs List Comprehension - Jin&#39;s Code Archive</title>
+    <title>&lt;Python&gt; Map vs List Comprehension - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
         <meta name="keywords" content="python,javascript,R,Python,Map,List Comprehension">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다.\n첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.\n123456789# 터미널에서 아래와 같이 실행해보자$ python -mtimeit -s'xs=range(10)' 'map(hex, xs)'100000 loops, best of 3: 4.86 usec per loop# hex() -&gt; 16진수로 변경$ python -mtimeit -s'xs=range(10)' '[hex(x) for x in xs]'100000 loops, best of 3: 5.58 usec per loop# 그냥 함수를 사용했더니, map이 근소하게 더 빠르다\n하지만 lambda를 쓰면 어떨까?\n123456$ python -mtimeit -s'xs=range(10)' 'map(lambda x: x+2, xs)'100000 loops, best of 3: 4.24 usec per loop$ python -mtimeit -s'xs=range(10)' '[x+2 for x in xs]'100000 loops, best of 3: 2.32 usec per loop# 속도가 정 반대가 되었다.\n\n두 번째 답변의 일부 발췌 :LazinessPython에서 Map은 게으르다.무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.\n123&gt;&gt;&gt; map(str, range(10**100))&lt;map object at 0x2201d50&gt;# 리스트가 아니다\nList Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)\n123&gt;&gt;&gt; [str(n) for n in range(10**100)]# 이런 짓 하지 말라는 것이다.# DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #\n‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.\n12&gt;&gt;&gt; (str(n) for n in range(10**100))&lt;generator object &lt;genexpr&gt; at 0xacbdef&gt;\n","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2020-02-04T18:16:46+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"Map vs List Comprehension","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/","keywords":"학습_정리"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다.\n첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.\n123456789# 터미널에서 아래와 같이 실행해보자$ python -mtimeit -s'xs=range(10)' 'map(hex, xs)'100000 loops, best of 3: 4.86 usec per loop# hex() -&gt; 16진수로 변경$ python -mtimeit -s'xs=range(10)' '[hex(x) for x in xs]'100000 loops, best of 3: 5.58 usec per loop# 그냥 함수를 사용했더니, map이 근소하게 더 빠르다\n하지만 lambda를 쓰면 어떨까?\n123456$ python -mtimeit -s'xs=range(10)' 'map(lambda x: x+2, xs)'100000 loops, best of 3: 4.24 usec per loop$ python -mtimeit -s'xs=range(10)' '[x+2 for x in xs]'100000 loops, best of 3: 2.32 usec per loop# 속도가 정 반대가 되었다.\n\n두 번째 답변의 일부 발췌 :LazinessPython에서 Map은 게으르다.무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.\n123&gt;&gt;&gt; map(str, range(10**100))&lt;map object at 0x2201d50&gt;# 리스트가 아니다\nList Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)\n123&gt;&gt;&gt; [str(n) for n in range(10**100)]# 이런 짓 하지 말라는 것이다.# DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #\n‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.\n12&gt;&gt;&gt; (str(n) for n in range(10**100))&lt;generator object &lt;genexpr&gt; at 0xacbdef&gt;\n","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2020-02-05T18:06:32+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"<Python> Map vs List Comprehension","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/","keywords":"Python"}</script>
     <meta name="description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
-<meta name="keywords" content="Python,Map,List Comprehension">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Map vs List Comprehension">
+<meta property="og:title" content="&lt;Python&gt; Map vs List Comprehension">
 <meta property="og:url" content="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-04T09:16:46.238Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-10-11T15:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-05T09:06:32.821Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Map">
+<meta property="article:tag" content="List Comprehension">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Map vs List Comprehension">
-<meta name="twitter:description" content="List comprehension vs Map위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,Upvote 상위 두 개 답변을 살펴보았다. 첫 번째 답변 :Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)List Comprehension은 나머지 경우에서 더 빠르며, 대부분의">
     
     
         
@@ -35,7 +37,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -67,7 +71,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Jin&#39;s Code Archive
@@ -98,7 +102,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -230,7 +234,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Map vs List Comprehension
+            &lt;Python&gt; Map vs List Comprehension
         </h1>
     
     
@@ -243,7 +247,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -278,7 +282,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/학습-정리/">학습_정리</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/python/" rel="tag">Python</a>
 
             </div>
         
@@ -291,9 +295,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
-                    data-tooltip="Mac에 Oracle DB 설치하기로 Docker 시작하기"
-                    aria-label="PREVIOUS: Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    href="/2019/10/12/iterator-iterable-generator/"
+                    data-tooltip="&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                    aria-label="PREVIOUS: &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -305,9 +309,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/12/iterator-iterable-generator/"
-                    data-tooltip="Iterable, Iterator, Generator - 너희는 누구니?"
-                    aria-label="NEXT: Iterable, Iterator, Generator - 너희는 누구니?"
+                    href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
+                    data-tooltip="&lt;Python&gt; Parameters, Arguments 정의와 차이점"
+                    aria-label="NEXT: &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -381,7 +385,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -407,9 +411,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
-                    data-tooltip="Mac에 Oracle DB 설치하기로 Docker 시작하기"
-                    aria-label="PREVIOUS: Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    href="/2019/10/12/iterator-iterable-generator/"
+                    data-tooltip="&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                    aria-label="PREVIOUS: &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -421,9 +425,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/12/iterator-iterable-generator/"
-                    data-tooltip="Iterable, Iterator, Generator - 너희는 누구니?"
-                    aria-label="NEXT: Iterable, Iterator, Generator - 너희는 누구니?"
+                    href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
+                    data-tooltip="&lt;Python&gt; Parameters, Arguments 정의와 차이점"
+                    aria-label="NEXT: &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -583,9 +587,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
-                            aria-label=": Telegram bot for alarming ERC-20 token balance"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
                         >
-                            <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -606,9 +610,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": Web broswer control with Selenium"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
                         >
-                            <h3 class="media-heading">Web broswer control with Selenium</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -629,9 +633,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": Multiple file name changer by XLSM"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
                         >
-                            <h3 class="media-heading">Multiple file name changer by XLSM</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -652,9 +656,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
-                            aria-label=": XLSX file merging script"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
                         >
-                            <h3 class="media-heading">XLSX file merging script</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -675,9 +679,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
                         >
-                            <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -698,9 +702,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": Python Built in function - Map"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function - Map</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -721,9 +725,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -744,9 +748,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -767,9 +771,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
-                            <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -789,10 +793,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
-                            <h3 class="media-heading">Map vs List Comprehension</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -814,7 +818,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                19 posts found
+                21 posts found
             </p>
         </div>
     </div>
@@ -824,7 +828,9 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -849,8 +855,12 @@
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
       var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');

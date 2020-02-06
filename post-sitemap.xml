@@ -8,16 +8,24 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/</loc>
-        <lastmod>2020-02-05T03:30:02.054Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/</loc>
+        <lastmod>2020-02-06T00:37:24.281Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2019/11/24/python-asyncio-for-web-crawling-2/</loc>
-        <lastmod>2020-02-05T03:27:47.345Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/</loc>
+        <lastmod>2020-02-06T00:27:27.069Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-start/</loc>
+        <lastmod>2020-02-06T00:24:51.991Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -25,23 +33,7 @@
 
     <url>
         <loc>https://limyj0708.github.io/2019/11/10/python-asyncio-for-web-crawling/</loc>
-        <lastmod>2020-02-05T03:27:39.034Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/</loc>
-        <lastmod>2020-02-05T03:15:51.279Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/30/Decorator-Scope-Namespace/</loc>
-        <lastmod>2020-02-04T09:27:43.111Z</lastmod>
+        <lastmod>2020-02-05T09:18:36.963Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -49,63 +41,7 @@
 
     <url>
         <loc>https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/</loc>
-        <lastmod>2020-02-04T09:27:07.086Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1/</loc>
-        <lastmod>2020-02-04T09:21:53.737Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/11/11/Asynchronous-Synchronous-Blocking-Non-Blocking/</loc>
-        <lastmod>2020-02-04T09:21:18.164Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/</loc>
-        <lastmod>2020-02-04T09:16:53.144Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/</loc>
-        <lastmod>2020-02-04T09:16:46.238Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/</loc>
-        <lastmod>2020-02-04T09:16:36.682Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/</loc>
-        <lastmod>2020-02-04T09:15:07.749Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/</loc>
-        <lastmod>2020-02-04T09:14:44.750Z</lastmod>
+        <lastmod>2020-02-05T09:07:49.310Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -113,15 +49,7 @@
 
     <url>
         <loc>https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/</loc>
-        <lastmod>2020-02-04T09:14:39.773Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/</loc>
-        <lastmod>2020-02-04T09:14:36.357Z</lastmod>
+        <lastmod>2020-02-05T09:06:37.719Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -129,7 +57,31 @@
 
     <url>
         <loc>https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/</loc>
-        <lastmod>2020-02-04T09:14:25.634Z</lastmod>
+        <lastmod>2020-02-05T09:06:36.767Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/</loc>
+        <lastmod>2020-02-05T09:06:32.821Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/11/Asynchronous-Synchronous-Blocking-Non-Blocking/</loc>
+        <lastmod>2020-02-05T06:54:54.282Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/</loc>
+        <lastmod>2020-02-05T06:54:35.564Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -137,7 +89,7 @@
 
     <url>
         <loc>https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/</loc>
-        <lastmod>2020-02-04T09:14:15.543Z</lastmod>
+        <lastmod>2020-02-05T06:54:31.115Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -145,7 +97,71 @@
 
     <url>
         <loc>https://limyj0708.github.io/2019/10/04/what-are-magic-methods/</loc>
-        <lastmod>2020-02-04T09:14:09.608Z</lastmod>
+        <lastmod>2020-02-05T06:54:27.808Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/</loc>
+        <lastmod>2020-02-05T06:54:19.125Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/</loc>
+        <lastmod>2020-02-05T06:54:02.446Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/</loc>
+        <lastmod>2020-02-05T06:53:55.471Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/30/Decorator-Scope-Namespace/</loc>
+        <lastmod>2020-02-05T06:53:46.512Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/</loc>
+        <lastmod>2020-02-05T06:53:41.892Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/</loc>
+        <lastmod>2020-02-05T06:53:38.654Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/11/24/python-asyncio-for-web-crawling-2/</loc>
+        <lastmod>2020-02-05T06:53:05.585Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1/</loc>
+        <lastmod>2020-02-05T06:20:01.569Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

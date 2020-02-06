@@ -1,0 +1,1304 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Jin&#39;s Code Archive">
+    <title>Category: 기업부도예측 (머신러닝/웹 리포트) - Jin&#39;s Code Archive</title>
+    <meta name="author" content="Jin">
+    
+        <meta name="keywords" content="python,javascript,R,">
+    
+    
+    
+    <script type="application/ld+json">{}</script>
+    <meta name="description" content="Archiving what I studied">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Jin&#39;s Code Archive">
+<meta property="og:url" content="https://limyj0708.github.io/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/index.html">
+<meta property="og:site_name" content="Jin&#39;s Code Archive">
+<meta property="og:description" content="Archiving what I studied">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152752888-1');
+    </script>
+
+
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            Jin&#39;s Code Archive
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/%20"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Search"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/limyj0708" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.facebook.com/youngjin.lim.12" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/young-jin-lim-b499a0111/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:limyj0708@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+    <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                            aria-label=": &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
+                        >
+                            &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-05T00:00:00+09:00">
+	
+		    Feb 05, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-학습에-사용한-데이터"><span class="toc-text">1. 학습에 사용한 데이터</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Oversampling"><span class="toc-text">1-1. Oversampling</span></a></li></ul></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-모델-학습"><span class="toc-text">2. 모델 학습</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-StratifiedSuffleSplit"><span class="toc-text">2-1. StratifiedSuffleSplit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-결과비교"><span class="toc-text">2-2. 결과비교</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-Oversampling-진행하지-않은-Raw-데이터"><span class="toc-text">2-2-1. Oversampling 진행하지 않은 Raw 데이터</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-RandomOversampling-진행한-데이터"><span class="toc-text">2-2-2. RandomOversampling 진행한 데이터</span></a></li></ul></li></ul></li></ul>
+<hr>
+<p>제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.<br>Hyperparameter 튜닝도 진행하지 않았음.<br>(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정.</p>
+<h1 id="1-학습에-사용한-데이터"><a href="#1-학습에-사용한-데이터" class="headerlink" title="1. 학습에 사용한 데이터"></a>1. 학습에 사용한 데이터</h1><ul>
+<li>상세 수집조건은 <a href="https://limyj0708.github.io/2020/02/04/bankrup-pre-start">&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터</a> 참조</li>
+<li>2606개 기업의 3년치 재무 데이터<ul>
+<li>생존 기업은 2019/12/31 기준 최신 3년치, 상장폐지된 기업은 상장폐지일 기준 최신 3년치</li>
+<li>사용한 feature<ul>
+<li>부채비율</li>
+<li>자기자본비율</li>
+<li>현금자산비율</li>
+<li>당기순이익율</li>
+<li>총자산회전율</li>
+<li>총자산증가율(전년동기)</li>
+<li>당기순이익증가율(전년동기)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2606개 기업의 지난 3개 감사보고서 데이터<ul>
+<li>사용한 feature<ul>
+<li>지난 3개 감사보고서에서, ‘계속기업 불확실성’관련 키워드가 언급된 경우 1, 아니면 0으로 표시</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>상장시장 (코스닥, 코스피)</li>
+</ul>
+<h2 id="1-1-Oversampling"><a href="#1-1-Oversampling" class="headerlink" title="1-1. Oversampling"></a>1-1. Oversampling</h2><ul>
+<li>전체 2606개 기업 중, 부도 기업은 전체의 16.04%<ul>
+<li>불균형한 데이터(Imbalanced data)</li>
+<li>Imbalanced data를 그대로 학습시키면, <a href="https://sumniya.tistory.com/26" target="_blank" rel="noopener">Recall</a>이 낮게 나옴. Precision이 좀 낮아도 모든 부도 기업을 잡아내는 것이 좋은 부도 예측이라는 주제에서는, 허용할 수 없는 일</li>
+</ul>
+</li>
+<li><a href="https://imbalanced-learn.readthedocs.io/en/stable/" target="_blank" rel="noopener">Imbalanced-learn</a> 패키지를 사용하여, 소수 클래스를 증폭시키는 Oversampling을 진행<ul>
+<li>RandomOverSampling 사용 : 소수 클래스의 데이터를 반복해서 넣는 방법</li>
+<li>가상 데이터를 생성하는 Adaptive Synthetic Sampling, SMOTE 기법을 사용하지 못한 이유<ul>
+<li>재무데이터에서 ‘수치를 계산할 수 없는 경우’에는, 구분을 위해 동종의 데이터가 절대로 절대로 가질 수 없는 큰 값을 할당하였음(100,000% 등)<ul>
+<li>예 &gt; [ 부채비율 = (유동부채 + 비유동부채)/자기자본 ] 에서,완전자본잠식이 되어 자기자본이 0이 된 경우</li>
+</ul>
+</li>
+<li>가상의 값을 생성하게 되면, 등장해서는 안 되는 50,000%, 70,000% 등의 값이 생성됨</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-모델-학습"><a href="#2-모델-학습" class="headerlink" title="2. 모델 학습"></a>2. 모델 학습</h1><ul>
+<li>Decision Tree 기반의 다음 세 모델을 사용하였음<ul>
+<li>RandomForest</li>
+<li>GradientBoosting</li>
+<li>XGBoost</li>
+</ul>
+</li>
+<li>각 모델들의 상세 설명은 다른 게시글에서 정리</li>
+</ul>
+<h2 id="2-1-StratifiedSuffleSplit"><a href="#2-1-StratifiedSuffleSplit" class="headerlink" title="2-1. StratifiedSuffleSplit"></a>2-1. StratifiedSuffleSplit</h2><ul>
+<li>정말 기가 막힌 운으로 데이터가 분할되어 성능이 좋게 나온 모델이 있었기 때문에, <a href="https://m.blog.naver.com/PostView.nhn?blogId=wideeyed&amp;logNo=221321084246&amp;proxyReferer=https%3A%2F%2Fwww.google.com%2F" target="_blank" rel="noopener">StratifiedSuffleSplit</a>으로 Train set과 Test set 100건에 대한 검증 진행</li>
+<li>앞으로도 한참 써야 하기 때문에 별도의 모듈을 만들어서 진행<ul>
+<li>Oversampling, 학습, 예측, 평가결과 출력을 한 번에 진행함</li>
+<li>모듈 코드는 <a href="https://github.com/limyj0708/Predict_co_bankruptcy/blob/master/ML_and_DL/ml_Suffle_and_validation.py" target="_blank" rel="noopener">Github</a>에서 확인 가능</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-결과비교"><a href="#2-2-결과비교" class="headerlink" title="2-2. 결과비교"></a>2-2. 결과비교</h2><ul>
+<li>학습 코드는 <a href="https://github.com/limyj0708/Predict_co_bankruptcy/blob/master/ML_and_DL/DTree_base_models_comparison.ipynb" target="_blank" rel="noopener">Github</a>에서 확인 가능</li>
+<li>요약 : 하나의 모델을 사용해야 한다면, 가장 Recall이 높은 <code>GradientBoost-RandomOversampling 데이터 학습</code> 모델을 선정</li>
+</ul>
+<h3 id="2-2-1-Oversampling-진행하지-않은-Raw-데이터"><a href="#2-2-1-Oversampling-진행하지-않은-Raw-데이터" class="headerlink" title="2-2-1. Oversampling 진행하지 않은 Raw 데이터"></a>2-2-1. Oversampling 진행하지 않은 Raw 데이터</h3><ul>
+<li>Raw 데이터에서는 RandomForest가 가장 Recall이 높음</li>
+<li>F1-score는 세 모델이 거의 유사함</li>
+</ul>
+<p><span style="color:darkred"><strong>1. RandomForest, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train - 완전히 과적합됨. Hyperparameter 튜닝 필요</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 1.0</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test - 역시 Imbalanced data는 Recall이 낮음</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.921</td>
+    <td>0.962</td>
+    <td>0.941</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.754</td>
+    <td>0.65</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.906</td>
+  </tr>
+</table>
+
+<hr>
+<p><span style="color:darkred"><strong>2. GradientBoosting, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.969</td>
+    <td>0.995</td>
+    <td>0.982</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.972</td>
+    <td>0.842</td>
+    <td>0.902</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.97</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.929</td>
+    <td>0.965</td>
+    <td>0.946</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.783</td>
+    <td>0.632</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.909</td>
+  </tr>
+</table>
+
+
+<hr>
+<p><span style="color:darkred"><strong>3. XGBoost, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.963</td>
+    <td>0.991</td>
+    <td>0.977</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.949</td>
+    <td>0.808</td>
+    <td>0.873</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.961</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.927</td>
+    <td>0.968</td>
+    <td>0.947</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.796</td>
+    <td>0.622</td>
+    <td>0.697</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.91</td>
+  </tr>
+</table>
+
+<h3 id="2-2-2-RandomOversampling-진행한-데이터"><a href="#2-2-2-RandomOversampling-진행한-데이터" class="headerlink" title="2-2-2. RandomOversampling 진행한 데이터"></a>2-2-2. RandomOversampling 진행한 데이터</h3><ul>
+<li>Precision이 감소하고, Recall이 증가함. F1 score는 거의 변화하지 않음</li>
+<li>더 나은 검증결과를 얻기 위해서는 데이터를 추가해야 할 것 같음</li>
+<li>GradientBoosting이 가장 Recall이 높음</li>
+</ul>
+<p><span style="color:darkred"><strong>1. RandomForest, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train - 완전히 과적합됨. Hyperparameter 튜닝 필요</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 1.0</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.932</td>
+    <td>0.957</td>
+    <td>0.944</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.754</td>
+    <td>0.65</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.906</td>
+  </tr>
+</table>
+
+<hr>
+<p><span style="color:darkred"><strong>2. GradientBoosting, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.969</td>
+    <td>0.948</td>
+    <td>0.958</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.949</td>
+    <td>0.97</td>
+    <td>0.959</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.959</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.952</td>
+    <td>0.913</td>
+    <td>0.932</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.642</td>
+    <td>0.772</td>
+    <td>0.7</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.889</td>
+  </tr>
+</table>
+
+
+<hr>
+<p><span style="color:darkred"><strong>3. XGBoost, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.961</td>
+    <td>0.945</td>
+    <td>0.953</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.946</td>
+    <td>0.962</td>
+    <td>0.954</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.954</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.952</td>
+    <td>0.913</td>
+    <td>0.932</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.641</td>
+    <td>0.768</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.889</td>
+  </tr>
+</table>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/05/bankrup-pre-decision-tree-based-model/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                            aria-label=": &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                        >
+                            &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T00:00:00+09:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-어떻게-활용하였는가"><span class="toc-text">1. 어떻게 활용하였는가?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-한-걸음씩-살펴보기"><span class="toc-text">2. 한 걸음씩 살펴보기</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Google-cloud-SDK-설치"><span class="toc-text">2-1. Google cloud SDK 설치</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-URL-csv-분할"><span class="toc-text">2-2. URL.csv 분할</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Compute-instance-생성"><span class="toc-text">2-3. Compute instance 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-크롤링-코드-분할한-URL-파일-업로드"><span class="toc-text">2-4. 크롤링 코드, 분할한 URL 파일 업로드</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-크롤링-코드-업로드"><span class="toc-text">2-4-1. 크롤링 코드 업로드</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-분할한-URL-파일-업로드"><span class="toc-text">2-4-2. 분할한 URL 파일 업로드</span></a></li></ul></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-수집-실행"><span class="toc-text">2-5. 수집 실행</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-수집-결과-다운로드-수집-결과-병합"><span class="toc-text">2-6. 수집 결과 다운로드, 수집 결과 병합</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-1-수집-결과-다운로드"><span class="toc-text">2-6-1. 수집 결과 다운로드</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-2-수집-결과-병합"><span class="toc-text">2-6-2. 수집 결과 병합</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-3-shell에서-csv-다루기-보너스"><span class="toc-text">2-6-3. shell에서 csv 다루기 보너스</span></a></li></ul></li></ul></li></ul>
+<hr>
+<p>기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.<br>한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 <a href="https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1">비동기로 40만개를 크롤링 했을 때보다</a> 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는 데 GCP compute instance를 어떻게 활용하였는지 정리하였다.</p>
+<p>비동기 크롤링 내용은 이미 충분히 다루었으니, gcloud SDK 명령어와 Shell script에 대한 내용이 되겠다.</p>
+<h1 id="1-어떻게-활용하였는가"><a href="#1-어떻게-활용하였는가" class="headerlink" title="1. 어떻게 활용하였는가?"></a>1. 어떻게 활용하였는가?</h1><ol>
+<li>발행일/제목/본문을 수집해야하는 기사들의 URL 준비 (이하 URL.csv)</li>
+<li>기사 URL을 패러미터에 전달하면, 발행일/제목/본문을 수집하는 코드 작성 (이하 body_crawl.py)</li>
+<li>32개의 Compute instance 생성 (Ubuntu 18.04) 및 환경세팅</li>
+<li>URL.csv를 64개로 분할하여 각 instance에 업로드</li>
+<li>body_crawl.py를 각 instance에 업로드</li>
+<li>수집 시작 : 결과물은 csv 파일</li>
+<li>수집 결과 파일들을 로컬 머신에 다운로드</li>
+<li>수집 결과 파일 병합</li>
+<li>끝<br>비고 &gt; 32개를 한 번에 실행 시, 몇몇 instance가 불안정한 문제가 있어서 최종적으로는 8개를 사용했다.</li>
+</ol>
+<h1 id="2-한-걸음씩-살펴보기"><a href="#2-한-걸음씩-살펴보기" class="headerlink" title="2. 한 걸음씩 살펴보기"></a>2. 한 걸음씩 살펴보기</h1><h2 id="2-1-Google-cloud-SDK-설치"><a href="#2-1-Google-cloud-SDK-설치" class="headerlink" title="2-1. Google cloud SDK 설치"></a>2-1. Google cloud SDK 설치</h2><ul>
+<li>Shell에서 다량의 instance를 제어하기 위해 SDK 설치</li>
+<li><a href="https://cloud.google.com/sdk/docs/quickstart-macos" target="_blank" rel="noopener">https://cloud.google.com/sdk/docs/quickstart-macos</a></li>
+</ul>
+<h2 id="2-2-URL-csv-분할"><a href="#2-2-URL-csv-분할" class="headerlink" title="2-2. URL.csv 분할"></a>2-2. URL.csv 분할</h2><ul>
+<li>아래 shell script를 분할하려는 csv 파일과 같은 폴더에 넣고 실행하자.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">FILENAME=URL.csv</span><br><span class="line">HDR=$(head -1 <span class="variable">$FILENAME</span>) </span><br><span class="line">    <span class="comment"># 첫 줄, header를 저장함.</span></span><br><span class="line">split -l 20000 <span class="variable">$FILENAME</span> xyz</span><br><span class="line">    <span class="comment"># xyzaa, xyzab... 이렇게 분할된 파일들 이름이 prefix+aa...가 됨</span></span><br><span class="line">    <span class="comment">#-l NUMBER, --lines=NUMBER, 20000줄씩 자르거라.</span></span><br><span class="line">n=1</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> xyz* <span class="comment"># xyz~ 라는 이름이 붙은 모든 파일에 대하여</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     <span class="keyword">if</span> [ <span class="variable">$n</span> -gt 1 ]; <span class="keyword">then</span> <span class="comment"># -gt : greater than and not equal.</span></span><br><span class="line">     <span class="comment"># 알아서 header가 포함될 첫 번째 파일 이외에는, 따로 header를 추가함</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="variable">$HDR</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span></span><br><span class="line">     <span class="keyword">fi</span></span><br><span class="line">     cat <span class="variable">$f</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span> <span class="comment"># &gt;&gt;를 써서 내용 추가 방식으로 기록하는 이유는, header만 사용해서 생성한 파일에 본 내용을 추가하기 위해서이다.</span></span><br><span class="line">     rm <span class="variable">$f</span> <span class="comment"># 내용 사용이 끝난 파일은 제거</span></span><br><span class="line">     ((n++))</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></li>
+<li>split 명령어에 대한 더 상세한 설명은 <a href="https://www.computerhope.com/unix/usplit.htm" target="_blank" rel="noopener">여기를</a> 참고하자.</li>
+</ul>
+<h2 id="2-3-Compute-instance-생성"><a href="#2-3-Compute-instance-생성" class="headerlink" title="2-3. Compute instance 생성"></a>2-3. Compute instance 생성</h2><ul>
+<li>GCP Console에서 Compute instance를 하나 생성하여 환경세팅까지 완료하자. 이 instance로 이미지를 생성하여, 이미지를 기반으로 나머지 instance를 한 번에 만들 것이다.</li>
+<li><code>gcloud compute images create &quot;cw-machine&quot; --source-disk &quot;cw-machine-1&quot;</code><ul>
+<li>cw-machine-1 instance를 기반으로, cw-machine 이미지를 만든다.</li>
+</ul>
+</li>
+<li><code>gcloud compute instances create &quot;cw-machine-2&quot; --image-project &quot;ml-practice-261005&quot; --image &quot;cw-machine&quot;</code><ul>
+<li>cw-machine 이미지에서 cw-machine-2 instance를 만든다.</li>
+<li>이 명령어를 기반으로, 여러 instance를 한 번에 실행하기 위핸 shell script를 만들었다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">start_num=2 <span class="comment"># 1번은 이미지를 만들기 위해 이미 생성했으므로 2번부터 시작</span></span><br><span class="line">last_num=32</span><br><span class="line">instance_num=<span class="variable">$&#123;start_num&#125;</span></span><br><span class="line">create_prefix=<span class="string">"gcloud compute instances create"</span></span><br><span class="line">machine_prefix=<span class="string">" cw-machine-"</span></span><br><span class="line">image=<span class="string">" --image-project ml-practice-261005 --image cw-machine"</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span> </span><br><span class="line">        <span class="comment"># 각 zone별로 cpu 할당 제한이 8개다. 그래서 8개마다 zone을 바꿔 준다.</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$create_prefix</span><span class="variable">$machine_prefix</span><span class="variable">$instance_num</span><span class="variable">$image</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span></span><br><span class="line">    <span class="comment"># 이 echo는 명령어가 어떻게 입력되는지 확인하는 용도</span></span><br><span class="line">    <span class="variable">$create_prefix</span><span class="variable">$machine_prefix</span><span class="variable">$instance_num</span><span class="variable">$image</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span> &amp;</span><br><span class="line">    <span class="comment"># 끝에 &amp;를 붙이면 명령어가 백그라운드에서 실행된다.</span></span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">wait</span> <span class="comment"># 모든 백그라운드에서 실행 중인 자식 프로세스가 실행되길 기다림</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All creating processes are done!"</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-4-크롤링-코드-분할한-URL-파일-업로드"><a href="#2-4-크롤링-코드-분할한-URL-파일-업로드" class="headerlink" title="2-4. 크롤링 코드, 분할한 URL 파일 업로드"></a>2-4. 크롤링 코드, 분할한 URL 파일 업로드</h2><h3 id="2-4-1-크롤링-코드-업로드"><a href="#2-4-1-크롤링-코드-업로드" class="headerlink" title="2-4-1. 크롤링 코드 업로드"></a>2-4-1. 크롤링 코드 업로드</h3><ul>
+<li>파일 하나를 업로드 하는 건 별 일 아니다.</li>
+<li>gcloud SDK 명령어만 좀 바뀌었을 뿐, instance 생성 시의 코드와 별로 다르지 않다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">start_num=1</span><br><span class="line">last_num=8</span><br><span class="line">((instance_num=<span class="string">"<span class="variable">$&#123;start_num&#125;</span>"</span>))</span><br><span class="line">machine_prefix=<span class="string">" cw-machine-"</span></span><br><span class="line">scp_upload_prefix=<span class="string">"gcloud compute scp "</span> <span class="comment"># scp 명령어를 사용</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line">name_tosend=<span class="string">"SeoulK/SeoulK_crawl_body.py"</span> <span class="comment"># 보내려는 파일</span></span><br><span class="line">remote_dir=<span class="string">":~/SeoulK"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$scp_upload_prefix</span><span class="variable">$name_tosend</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span></span><br><span class="line">    <span class="variable">$scp_upload_prefix</span><span class="variable">$name_tosend</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span> &amp;</span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">wait</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All processes are done!"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-4-2-분할한-URL-파일-업로드"><a href="#2-4-2-분할한-URL-파일-업로드" class="headerlink" title="2-4-2. 분할한 URL 파일 업로드"></a>2-4-2. 분할한 URL 파일 업로드</h3><ul>
+<li>머신 이름을 받아와서 URL 파일과 크롤링 코드에 사용했으면 그냥 올려도 되겠으나, 크롤링 코드가 URL.csv를 읽게 되어있기 때문에 각 머신에 분할된 URL 파일(URL_1.csv…)을 올릴 때 이름을 URL.csv로 바꿔주어야 한다.</li>
+<li>그 외에는 유사함<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">start_num=1</span><br><span class="line">last_num=32</span><br><span class="line">((instance_num=<span class="string">"<span class="variable">$&#123;start_num&#125;</span>"</span>))</span><br><span class="line">machine_prefix=<span class="string">" cw-machine-"</span></span><br><span class="line">scp_upload_prefix=<span class="string">"gcloud compute scp "</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line">name_tosend=<span class="string">"SeoulK/seoulK_url/URL.csv"</span></span><br><span class="line">remote_dir=<span class="string">":~/SeoulK"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    name_origin=<span class="string">"SeoulK/seoulK_url/URL_"</span><span class="variable">$instance_num</span><span class="string">".csv"</span></span><br><span class="line">    mv <span class="variable">$name_origin</span> <span class="variable">$name_tosend</span> <span class="comment"># 이름을 바꿔준다</span></span><br><span class="line"></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$scp_upload_prefix</span><span class="variable">$name_tosend</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span></span><br><span class="line">    <span class="variable">$scp_upload_prefix</span><span class="variable">$name_tosend</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span></span><br><span class="line"></span><br><span class="line">    mv <span class="variable">$name_tosend</span> <span class="variable">$name_origin</span> <span class="comment"># 보낸 파일은 이름을 원상복귀 시킨다</span></span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All processes are done!"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-5-수집-실행"><a href="#2-5-수집-실행" class="headerlink" title="2-5. 수집 실행"></a>2-5. 수집 실행</h2><ul>
+<li>모든 머신에서 한 번에 명령을 실행시킬 때 두 가지 방법을 고려했다.<ul>
+<li>iterms2 같은 multi-pane, multi-tab 지원 ssh 클라이언트에서 모든 머신에 한 번에 접속하여 동시에 명령 보내기</li>
+<li>gcloud SDK로 머신에 명령어 보내기</li>
+</ul>
+</li>
+<li>ssh 클라이언트에서 보내는 것은, 모든 머신에 로그인하는 스크립트를 짜기 번거롭기도 하고 화면에 뭐가 계속 떠 있으니, gcloud SDK로 명령어를 보내 보자.</li>
+<li>크롤링 완료 알림은, 크롤링 코드 내에서 텔레그램 봇으로 메세지를 보내는 것으로 처리했다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">start_num=33</span><br><span class="line">last_num=64</span><br><span class="line">instance_num=<span class="variable">$&#123;start_num&#125;</span></span><br><span class="line">ssh_prefix=<span class="string">"gcloud compute ssh"</span></span><br><span class="line">machine_prefix=<span class="string">" cw-machine-"</span></span><br><span class="line">command_prefix=<span class="string">" --command "</span></span><br><span class="line">command_send_part1=<span class="string">'cd SeoulK &amp;&amp; python SeoulK_crawl_body.py'</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$ssh_prefix</span><span class="variable">$machine_name</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$command_prefix</span><span class="string">"<span class="variable">$command_send_part1</span>"</span></span><br><span class="line">    <span class="variable">$ssh_prefix</span><span class="variable">$machine_name</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span><span class="variable">$command_prefix</span><span class="string">"<span class="variable">$command_send_part1</span>"</span> &amp;</span><br><span class="line"></span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All processes are done!"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-6-수집-결과-다운로드-수집-결과-병합"><a href="#2-6-수집-결과-다운로드-수집-결과-병합" class="headerlink" title="2-6. 수집 결과 다운로드, 수집 결과 병합"></a>2-6. 수집 결과 다운로드, 수집 결과 병합</h2><h3 id="2-6-1-수집-결과-다운로드"><a href="#2-6-1-수집-결과-다운로드" class="headerlink" title="2-6-1. 수집 결과 다운로드"></a>2-6-1. 수집 결과 다운로드</h3><ul>
+<li>각 머신에서 수집 결과 파일을 받는다.</li>
+<li>결과 파일 이름은 머신이름_seoulK_with_body.csv 이기 때문에, 여기에 맞춰서 코드가 작성되었다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">start_num=1</span><br><span class="line">last_num=32</span><br><span class="line">instance_num=<span class="variable">$&#123;start_num&#125;</span></span><br><span class="line">scp_upload_prefix=<span class="string">"gcloud compute scp --recurse "</span></span><br><span class="line">machine_prefix=<span class="string">"cw-machine-"</span></span><br><span class="line">remote_dir=<span class="string">":~/SeoulK/"</span></span><br><span class="line">name_todownload=<span class="string">"_seoulK_with_body.csv"</span></span><br><span class="line">local_destination=<span class="string">" /Users/youngjinlim/Downloads/file_from_instances"</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    final_file_name=<span class="variable">$machine_name</span><span class="variable">$name_todownload</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$scp_upload_prefix</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span><span class="variable">$final_file_name</span><span class="variable">$local_destination</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span></span><br><span class="line">    <span class="variable">$scp_upload_prefix</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span><span class="variable">$final_file_name</span><span class="variable">$local_destination</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span> &amp;</span><br><span class="line"></span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">wait</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All processes are done!"</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-6-2-수집-결과-병합"><a href="#2-6-2-수집-결과-병합" class="headerlink" title="2-6-2. 수집 결과 병합"></a>2-6-2. 수집 결과 병합</h3></li>
+<li>수집 결과 파일(csv)이 여러 개 쌓였을 텐데, 하나로 병합하자.</li>
+<li>결과 파일 하나하나가 몇백MB 단위이기 때문에 때문에 외부 툴을 사용하는 건 무리고, shell에서 바로 합치자.</li>
+<li>awk ‘FNR &gt; 1’ *.csv &gt; merged_body.csv`<ul>
+<li>모든 csv 파일들에서, 1행 이후의 내용을 가져와서, merged_body.csv로 만든다.</li>
+<li>awk에 대한 상세 설명은 <a href="https://recipes4dev.tistory.com/171" target="_blank" rel="noopener">여기로</a></li>
+<li>FNR : 현재 파일에서 현재 레코드의 순서 값.<ul>
+<li>‘FNR &gt; 1’ : 1번째 레코드보다 큰 것만. 따라서 header가 전부 빠진다.</li>
+<li>이 처리를 안 해주면 파일의 갯수만큼 header가 반복된다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>header는 따로 파일을 만들어서 보관하고 있다가, 따로 병합해 준다.</li>
+</ul>
+<h3 id="2-6-3-shell에서-csv-다루기-보너스"><a href="#2-6-3-shell에서-csv-다루기-보너스" class="headerlink" title="2-6-3. shell에서 csv 다루기 보너스"></a>2-6-3. shell에서 csv 다루기 보너스</h3><ul>
+<li>file.csv의 특정 열에서 중복 제거하기<ul>
+<li><code>awk -F &quot;,&quot; &#39;!x[$1]++&#39; file.csv &gt; file_unique.csv</code></li>
+<li>-F : 필드 구분 문자 지정. csv이므로 ,를 지정함</li>
+<li><code>&#39;!x[$1]++&#39;</code><ul>
+<li><code>$1</code> : 1번째 행.</li>
+<li><code>!x[$1]++</code> : 어떻게 작동하는지는 <a href="https://www.unix.com/shell-programming-and-scripting/153131-remove-duplicate-lines-using-awk.html" target="_blank" rel="noopener">여기를</a> 참고하자. 간단히 요약하면, 처음 만나는 값에 대해서는 값이 x[value]가 0이고, 1이 증가한다. 0이 아닌 값은 출력하지 않는다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/04/bankrup-pre-gcp-instances-crawl/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/bankrup-pre-start/"
+                            aria-label=": &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
+                        >
+                            &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T00:00:00+09:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#주제-기업부도예측-with-머신러닝"><span class="toc-text">주제 : 기업부도예측 with 머신러닝</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-주제-선정-이유"><span class="toc-text">1. 주제 선정 이유</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-부도의-기준"><span class="toc-text">2. 부도의 기준</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-프로젝트-목표"><span class="toc-text">3. 프로젝트 목표</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-수집한-데이터"><span class="toc-text">4. 수집한 데이터</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-재무-데이터"><span class="toc-text">4-1. 재무 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-주가-데이터"><span class="toc-text">4-2. 주가 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-기사-데이터"><span class="toc-text">4-3. 기사 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-감사보고서-데이터"><span class="toc-text">4-4. 감사보고서 데이터</span></a></li></ul></li></ul>
+<hr>
+<h1 id="주제-기업부도예측-with-머신러닝"><a href="#주제-기업부도예측-with-머신러닝" class="headerlink" title="주제 : 기업부도예측 with 머신러닝"></a>주제 : 기업부도예측 with 머신러닝</h1><h1 id="1-주제-선정-이유"><a href="#1-주제-선정-이유" class="headerlink" title="1. 주제 선정 이유"></a>1. 주제 선정 이유</h1><ul>
+<li>10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원</li>
+<li>우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?<ul>
+<li>펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가</li>
+</ul>
+</li>
+<li>기업신용평가 <ul>
+<li>개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; <a href="https://www.thebell.co.kr/free/content/ArticleView.asp?key=201910300100055920003479&amp;lcode=00" target="_blank" rel="noopener">‘기업’ 신용평가에 ML 탑재한 KB국민은행</a></li>
+<li>정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-부도의-기준"><a href="#2-부도의-기준" class="headerlink" title="2. 부도의 기준"></a>2. 부도의 기준</h1><ul>
+<li>한국금융연구원의 <a href="http://www.kcft.or.kr/wp-content/uploads/2018/01/131605558932838295_WP17-08-1.pdf" target="_blank" rel="noopener">빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구</a> 보고서의 기준 사용<ul>
+<li>이 보고서에서는 아이디어와 접근방법을 참고하였음</li>
+<li>사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님</li>
+</ul>
+</li>
+<li>증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행<ul>
+<li>‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의</li>
+</ul>
+</li>
+<li>상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…</li>
+</ul>
+<h1 id="3-프로젝트-목표"><a href="#3-프로젝트-목표" class="headerlink" title="3. 프로젝트 목표"></a>3. 프로젝트 목표</h1><ul>
+<li>3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작<ul>
+<li>부도 확률을 수치로 나타낼 수 있다면 더욱 좋음</li>
+</ul>
+</li>
+<li>웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공<ul>
+<li>원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 </li>
+</ul>
+</li>
+</ul>
+<h1 id="4-수집한-데이터"><a href="#4-수집한-데이터" class="headerlink" title="4. 수집한 데이터"></a>4. 수집한 데이터</h1><h2 id="4-1-재무-데이터"><a href="#4-1-재무-데이터" class="headerlink" title="4-1. 재무 데이터"></a>4-1. 재무 데이터</h2><ul>
+<li>금융정보 데이터베이스 <a href="http://www.dataguide.co.kr" target="_blank" rel="noopener">Dataguide</a>의 데이터를 사용<ul>
+<li>부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터</li>
+</ul>
+</li>
+<li>Dart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택</li>
+</ul>
+<h2 id="4-2-주가-데이터"><a href="#4-2-주가-데이터" class="headerlink" title="4-2. 주가 데이터"></a>4-2. 주가 데이터</h2><ul>
+<li>상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용<ul>
+<li>예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)</li>
+</ul>
+</li>
+<li>생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)</li>
+</ul>
+<h2 id="4-3-기사-데이터"><a href="#4-3-기사-데이터" class="headerlink" title="4-3. 기사 데이터"></a>4-3. 기사 데이터</h2><ul>
+<li>수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이<ul>
+<li>선정기준 : <a href="http://www.kabc.or.kr/about/notices/100000002950" target="_blank" rel="noopener">한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중</a>, 경제지 Top 5</li>
+</ul>
+</li>
+<li>각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집</li>
+<li>데이터 전처리 후 남은 총 기사 수 : 2,380,889개</li>
+</ul>
+<h2 id="4-4-감사보고서-데이터"><a href="#4-4-감사보고서-데이터" class="headerlink" title="4-4. 감사보고서 데이터"></a>4-4. 감사보고서 데이터</h2><ul>
+<li>감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험</li>
+<li>Dart 전자공시에서 데이터 수집</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/04/bankrup-pre-start/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
+        
+        
+        <li class="pagination-number">page 1 of 1</li>
+    </ul>
+</div>
+
+</section>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Jin. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Jin</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">no post found</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Jan 10, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Apr 19, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
+                        >
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 10, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
+                        >
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 15, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br>Of course, I did not want to merge them manually.<br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
+                        >
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 22, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 1, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                        >
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 4, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 4, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 11, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 12, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="no post found"
+                data-message-one="1 post found"
+                data-message-other="{n} posts found">
+                21 posts found
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
+      var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');
+    </script>
+
+
+    </body>
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          menuSettings: {
+            zoom: "None"
+          },
+          showMathMenu: false,
+          jax: ["input/TeX","output/CommonHTML"],
+          extensions: ["tex2jax.js"],
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js"],
+            equationNumbers: {
+              autoNumber: "AMS"
+            }
+          },
+          tex2jax: {
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["\\[", "\\]"]]
+          }
+        });
+      </script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js"></script>
+</html>

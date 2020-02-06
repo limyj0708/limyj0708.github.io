@@ -15,16 +15,17 @@
     
     <script type="application/ld+json">{}</script>
     <meta name="description" content="Archiving what I studied">
-<meta name="keywords" content="python,javascript,R">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Jin&#39;s Code Archive">
 <meta property="og:url" content="https://limyj0708.github.io/archives/2019/11/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="Archiving what I studied">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jin&#39;s Code Archive">
-<meta name="twitter:description" content="Archiving what I studied">
     
     
         
@@ -34,7 +35,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -64,7 +67,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Jin&#39;s Code Archive
@@ -95,7 +98,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -295,9 +298,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/11/24/python-asyncio-for-web-crawling-2/"
-                            aria-label=": Python Asyncio - 개념이해부터 실전적용까지 (끝)"
+                            aria-label=": &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (끝)"
                         >
-                            Python Asyncio - 개념이해부터 실전적용까지 (끝)
+                            &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (끝)
                         </a>
                     
                 </h1>
@@ -310,7 +313,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -377,7 +380,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/computer-science/">Computer Science</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -419,8 +422,7 @@
 </ul>
 </li>
 <li>이 X,Y 예에서는, Synchronous는 <strong>X가 Y에게 책 찾았냐고 물어보고,</strong>(caller가 callee의 상태 확인) Y가 책이 있는지 없는지 X에게 알려 준 이후에야, X가 Y에게 “그래서 이 책 얼마죠?” 라고 물어보던가, “그 책 주문 좀 해주세요” 라고 요청할 수 있는 상황인 것이다.(작업 순서) 책이 있는지 확인한 다음에 가격을 물어보던지 주문을 요청하던지 할 수 있으니까. X가 Y가 책 찾는 동안 다른 무언가를 하는 건 상관이 없다. 서점 앞에서 줄넘기를 할 수도 있지 않은가? 책에 관련된 다음 일을 못하는 것 뿐.</li>
-<li><p>이렇게 봐도 상당히 헷갈리기 때문에, 코드를 보자. 아래의 코드는 <em>Synchronous &amp; Non-Blocking</em> 한 간단한 코드이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># thread X</span></span><br><span class="line"><span class="keyword">while</span> (true)</span><br><span class="line">&#123;</span><br><span class="line">    msg = recv(Y, NON_BLOCKING_FLAG);</span><br><span class="line">    <span class="keyword">if</span> (msg <span class="keyword">is</span> <span class="keyword">not</span> empty)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 이 루프 안에서 다른 작업을 할 수 있다.</span></span><br><span class="line">    sleep(<span class="number">2000</span>); // <span class="number">2</span> sec</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># thread Y</span></span><br><span class="line"><span class="comment"># prepare the book for X</span></span><br><span class="line">send(X, book);</span><br></pre></td></tr></table></figure>
+<li>이렇게 봐도 상당히 헷갈리기 때문에, 코드를 보자. 아래의 코드는 <em>Synchronous &amp; Non-Blocking</em> 한 간단한 코드이다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># thread X</span></span><br><span class="line"><span class="keyword">while</span> (true)</span><br><span class="line">&#123;</span><br><span class="line">    msg = recv(Y, NON_BLOCKING_FLAG);</span><br><span class="line">    <span class="keyword">if</span> (msg <span class="keyword">is</span> <span class="keyword">not</span> empty)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 이 루프 안에서 다른 작업을 할 수 있다.</span></span><br><span class="line">    sleep(<span class="number">2000</span>); // <span class="number">2</span> sec</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># thread Y</span></span><br><span class="line"><span class="comment"># prepare the book for X</span></span><br><span class="line">send(X, book);</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>X가 2초마다 Y가 답을 줬는지 아닌지 확인한다.</strong> </li>
 <li>Y가 결과를 반환하기 위해 준비 중이어도, X의 while 루프는 계속 돌아가고 그 안에서 다른 작업을 진행할 수 있다. <strong>그래서 Non-Blocking이다.</strong></li>
@@ -521,9 +523,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/11/10/python-asyncio-for-web-crawling/"
-                            aria-label=": Python Asyncio - 개념이해부터 실전적용까지 (1)"
+                            aria-label=": &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (1)"
                         >
-                            Python Asyncio - 개념이해부터 실전적용까지 (1)
+                            &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (1)
                         </a>
                     
                 </h1>
@@ -536,7 +538,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -555,12 +557,9 @@
 <p>응~ 한 번에 Thread 하나만 작동시킬꺼야~ 멀티코어여도 안돼~<br>그 이유는 이 글을 보도록 하자. 너무 쉽게 잘 설명했다.<br><a href="https://realpython.com/python-gil/" target="_blank" rel="noopener">“What is the Python Global Interpreter Lock (GIL)?”</a></p>
 <h3 id="위-글의-요약"><a href="#위-글의-요약" class="headerlink" title="위 글의 요약"></a>위 글의 요약</h3><ul>
 <li>간단하게 말하면, Global Interpreter Lock은 딱 하나의 thread만 python interpreter에서 동작하게 하는 <a href="https://en.wikipedia.org/wiki/Mutual_exclusion" target="_blank" rel="noopener">mutex(or a lock)</a>다.</li>
-<li><p>Python의 메모리 관리 : Reference Counting</p>
-<ul>
-<li><p>Python에서 생성된 객체는, 객체가 참조된 수를 추적하는 reference count 변수를 가지고 있다. 이 count가 0이 되면, 그 객체에 의해 점유되고 있던 메모리가 해제된다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = []</span><br><span class="line">b = a</span><br><span class="line">print(sys.getrefcount(a))</span><br><span class="line"><span class="comment"># 출력값 : 3</span></span><br></pre></td></tr></table></figure>
-<p>refcount가 3인 이유는, 빈 리스트 <code>[]</code>가 a, b, sys.getrefcount의 argument 이렇게 세 곳에서 참조되고 있기 때문이다.</p>
-</li>
+<li>Python의 메모리 관리 : Reference Counting<ul>
+<li>Python에서 생성된 객체는, 객체가 참조된 수를 추적하는 reference count 변수를 가지고 있다. 이 count가 0이 되면, 그 객체에 의해 점유되고 있던 메모리가 해제된다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = []</span><br><span class="line">b = a</span><br><span class="line">print(sys.getrefcount(a))</span><br><span class="line"><span class="comment"># 출력값 : 3</span></span><br></pre></td></tr></table></figure>
+refcount가 3인 이유는, 빈 리스트 <code>[]</code>가 a, b, sys.getrefcount의 argument 이렇게 세 곳에서 참조되고 있기 때문이다.</li>
 </ul>
 </li>
 <li><a href="https://jhnyang.tistory.com/35" target="_blank" rel="noopener">Race Condition</a> :<ul>
@@ -587,7 +586,7 @@
 <li>Lock 할당과 해제 작업이 계속 일어나기 때문에, CPU-bound 프로그램에서는 Single-thread보다 속도가 느린 참사가 발생한다. &lt; <a href="https://realpython.com/python-gil/#the-impact-on-multi-threaded-python-programs" target="_blank" rel="noopener">예시</a></li>
 <li><p>I/O bound한 작업에서는, thread가 대부분의 시간을 I/O에 할당하고 있고, 이는 CPU에 관련된 작업이 아니다. URL 요청이라고 하면, 아래와 같은 그림이 될 것이다. 성능 향상 가능! &lt; <a href="https://medium.com/towards-artificial-intelligence/the-why-when-and-how-of-using-python-multi-threading-and-multi-processing-afd1b8a8ecca" target="_blank" rel="noopener">예시</a><br><img src="https://drive.google.com/uc?id=1IIPZgoP0ZneP0XgpM-J0sIbcolDhV_cC" alt="Oops, Some network ants ate this pic!" title="IO Bound Multithreading"> Source : <a href="https://realpython.com/python-concurrency/" target="_blank" rel="noopener">Speed Up Your Python Program With Concurrency</a></p>
 </li>
-<li><p>Threading 튜토리얼은 <a href="hhttps://realpython.com/intro-to-python-threading/" target="_blank" rel="noopener">여기</a>를 참고하자.</p>
+<li><p>Threading 튜토리얼은 <a href="hhttps://realpython.com/intro-to-python-threading/">여기</a>를 참고하자.</p>
 </li>
 </ul>
 <h2 id="Multi-Processing"><a href="#Multi-Processing" class="headerlink" title="Multi-Processing"></a>Multi-Processing</h2><ul>
@@ -631,10 +630,8 @@
 <p>보통 함수는 한 번 호출되면 return값을 call한 곳으로 반환 후 종료되며, 메모리에서 클리어 된다. 그런데 위의 함수를 실행하면,</p>
 <ol>
 <li>read_txt_linebyline이 arguments들을 받고 호출된다.</li>
-<li><p>read_txt_linebyline은 generator object를 반환한다. <code>dir()</code>로 generator object가 가지고 있는 메소드를 확인해보면,</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(dir(readlines_generator))</span><br><span class="line"><span class="comment"># 출력값 :</span></span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__del__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dir__'</span></span><br><span class="line"><span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>,<span class="string">'__getattribute__'</span>,</span><br><span class="line"><span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,<span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__iter__'</span>,</span><br><span class="line"><span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__next__'</span>,</span><br><span class="line"><span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,<span class="string">'__subclasshook__'</span>,</span><br><span class="line"><span class="string">'close'</span>, <span class="string">'gi_code'</span>, <span class="string">'gi_frame'</span>, <span class="string">'gi_running'</span>, <span class="string">'gi_yieldfrom'</span>, <span class="string">'send'</span>, <span class="string">'throw'</span>]</span><br></pre></td></tr></table></figure>
-<p><code>__next__</code>가 보인다. iterator임을 알 수 있다. <a href="https://docs.python.org/3/library/stdtypes.html#typeiter" target="_blank" rel="noopener"><code>__iter__</code>도 있는데, 직접 실행해 보니 자기 자신을 반환한다.</a> iterator가 맞다.</p>
-</li>
+<li>read_txt_linebyline은 generator object를 반환한다. <code>dir()</code>로 generator object가 가지고 있는 메소드를 확인해보면,<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(dir(readlines_generator))</span><br><span class="line"><span class="comment"># 출력값 :</span></span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__del__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dir__'</span></span><br><span class="line"><span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>,<span class="string">'__getattribute__'</span>,</span><br><span class="line"><span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,<span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__iter__'</span>,</span><br><span class="line"><span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__next__'</span>,</span><br><span class="line"><span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,<span class="string">'__subclasshook__'</span>,</span><br><span class="line"><span class="string">'close'</span>, <span class="string">'gi_code'</span>, <span class="string">'gi_frame'</span>, <span class="string">'gi_running'</span>, <span class="string">'gi_yieldfrom'</span>, <span class="string">'send'</span>, <span class="string">'throw'</span>]</span><br></pre></td></tr></table></figure>
+<code>__next__</code>가 보인다. iterator임을 알 수 있다. <a href="https://docs.python.org/3/library/stdtypes.html#typeiter" target="_blank" rel="noopener"><code>__iter__</code>도 있는데, 직접 실행해 보니 자기 자신을 반환한다.</a> iterator가 맞다.</li>
 <li><code>next(readlines_generator)</code>로 처음 값을 요청하면, 코드가 실행되다가 처음으로 yield를 만나게 된다. 여기서 txt 파일에서 읽어온 line이 반환되는데(<code>yield line</code>), 보통의 함수였다면 반환하고 끝났겠지만 여기서는 함수의 실행이 일단 멈춘다.</li>
 <li><code>next(read_txt_linebyline)</code>를 한번 더 호출하면, yield문에서부터 다시 함수가 실행되기 시작한다. <code>while True:</code> 안에서 동작하고 있으므로, 반복문의 처음으로 돌아가서 다시 다음 한 줄을 불러오게 된다.</li>
 <li>이후 계속 반복…</li>
@@ -653,8 +650,7 @@
  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    val = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    print(val)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line">gen = text()</span><br><span class="line">print(next(gen), <span class="string">'N1'</span>)</span><br><span class="line">print(next(gen), <span class="string">'N2'</span>)</span><br><span class="line">print(next(gen), <span class="string">'N3'</span>)</span><br><span class="line"><span class="comment">#### 출력값. 그냥 출력하면 다음과 같이 나온다.</span></span><br><span class="line"><span class="number">1</span> N1</span><br><span class="line"><span class="literal">None</span> <span class="comment"># (yield 1) 표현식에 아무런 값도 할당이 안 되었으므로 None이 된다.</span></span><br><span class="line"><span class="number">2</span> N2</span><br><span class="line"><span class="number">3</span> N3</span><br><span class="line"><span class="comment">###################################</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gen2 = test()</span><br><span class="line">gen2.send(<span class="string">'sth'</span>)</span><br><span class="line"><span class="comment">#### 출력값. Generator 시작 시에는 None을 보내야 한다. 값을 받을 yield 표현식이 없으므로 에러가 난다.</span></span><br><span class="line"><span class="comment">#TypeError    Traceback (most recent call last)</span></span><br><span class="line"><span class="comment">#&lt;ipython-input-75-df11fcdec14b&gt; in &lt;module&gt;</span></span><br><span class="line"><span class="comment">#----&gt; 1 get2.send('sth')</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#TypeError: can't send non-None value to a just-started generator</span></span><br><span class="line"><span class="comment">##################################</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gen3 = test()</span><br><span class="line">print(gen3.send(<span class="literal">None</span>))</span><br><span class="line">print(gen3.send(<span class="string">'sth'</span>))</span><br><span class="line">print(gen3.send(<span class="string">'sth'</span>))</span><br><span class="line"><span class="comment">#### 출력값.</span></span><br><span class="line"><span class="number">1</span> <span class="comment"># send의 argument를 None을 넣었더니 제대로 나온다.</span></span><br><span class="line">sth <span class="comment"># val = yield 1에서, (yield 1) 표현식의 값이 sth가 된다.</span></span><br><span class="line"><span class="comment"># 순서가 중요한데, 1 반환 후, (yield 1)부터 다시 시작하게 될 때 (yield 1) 표현식에 값이 할당된다.</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
 <p> <code>throw()</code>는 yield로 인해 generator가 멈추는 지점에서 예외를 발생시킨다.</p>
  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span> : </span><br><span class="line">            sth = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">            print(sth)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            print(type(e))</span><br><span class="line"></span><br><span class="line">gen = test2()</span><br><span class="line">gen.send(<span class="literal">None</span>)</span><br><span class="line">print(gen.send(<span class="number">100</span>))</span><br><span class="line"><span class="comment">#### 출력값 #</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="comment">###########</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(gen.throw(ArithmeticError, <span class="string">'hohoho'</span>))</span><br><span class="line">print(get.throw(BufferError, <span class="string">'huhuhu'</span>))</span><br><span class="line"><span class="comment">#### 출력값 ###############</span></span><br><span class="line"><span class="comment">#hohoho</span></span><br><span class="line"><span class="comment">#&lt;class 'ArithmeticError'&gt;</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#huhuhu</span></span><br><span class="line"><span class="comment">#&lt;class 'BufferError'&gt;</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#########################</span></span><br></pre></td></tr></table></figure>
-<h3 id="Generator에서-값-반환"><a href="#Generator에서-값-반환" class="headerlink" title="Generator에서 값 반환"></a>Generator에서 값 반환</h3><p>아니 이게 된다고? 네 됩니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'sth'</span></span><br><span class="line"></span><br><span class="line">gen = return_test()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> : </span><br><span class="line">    next(gen)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(type(e))</span><br><span class="line">    print(e.value)</span><br><span class="line">    print(dir(e))</span><br><span class="line"></span><br><span class="line"><span class="comment"># try 블록을 두 번 실행해서 StopIteration을 발동시키면, 출력값이 아래와 같이 된다.</span></span><br><span class="line"></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">StopIteration</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">sth</span></span></span><br><span class="line">['__cause__', '__class__', '__context__', '__delattr__',</span><br><span class="line"><span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>,</span><br><span class="line"><span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,</span><br><span class="line"><span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__ne__'</span>,</span><br><span class="line"><span class="string">'__new__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__setstate__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,</span><br><span class="line"><span class="string">'__subclasshook__'</span>, <span class="string">'__suppress_context__'</span>,</span><br><span class="line"><span class="string">'__traceback__'</span>, <span class="string">'args'</span>, <span class="string">'value'</span>, <span class="string">'with_traceback'</span>]</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://docs.python.org/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener">Python 공식 문서에 따르면</a>, return 값은 StopIteration class의 ‘value’라는 attribute에 할당되는데, 이 value는 StopIteration class의 constructor의 parameter다. <code>dir(e)</code>의 실행결과를 보면 value가 있음을 알 수 있다.</p>
+<h3 id="Generator에서-값-반환"><a href="#Generator에서-값-반환" class="headerlink" title="Generator에서 값 반환"></a>Generator에서 값 반환</h3><p>아니 이게 된다고? 네 됩니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'sth'</span></span><br><span class="line"></span><br><span class="line">gen = return_test()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> : </span><br><span class="line">    next(gen)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(type(e))</span><br><span class="line">    print(e.value)</span><br><span class="line">    print(dir(e))</span><br><span class="line"></span><br><span class="line"><span class="comment"># try 블록을 두 번 실행해서 StopIteration을 발동시키면, 출력값이 아래와 같이 된다.</span></span><br><span class="line"></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">StopIteration</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">sth</span></span></span><br><span class="line">['__cause__', '__class__', '__context__', '__delattr__',</span><br><span class="line"><span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>,</span><br><span class="line"><span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,</span><br><span class="line"><span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__ne__'</span>,</span><br><span class="line"><span class="string">'__new__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__setstate__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,</span><br><span class="line"><span class="string">'__subclasshook__'</span>, <span class="string">'__suppress_context__'</span>,</span><br><span class="line"><span class="string">'__traceback__'</span>, <span class="string">'args'</span>, <span class="string">'value'</span>, <span class="string">'with_traceback'</span>]</span><br></pre></td></tr></table></figure><br><a href="https://docs.python.org/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener">Python 공식 문서에 따르면</a>, return 값은 StopIteration class의 ‘value’라는 attribute에 할당되는데, 이 value는 StopIteration class의 constructor의 parameter다. <code>dir(e)</code>의 실행결과를 보면 value가 있음을 알 수 있다.</p>
 <h3 id="새로운-키워드를-맞이하라-yield-from"><a href="#새로운-키워드를-맞이하라-yield-from" class="headerlink" title="새로운 키워드를 맞이하라! : yield from"></a>새로운 키워드를 맞이하라! : yield from</h3><ul>
 <li>Python 3.4에서 <a href="https://docs.python.org/3/reference/expressions.html#yield-expressions" target="_blank" rel="noopener">yield from</a>이라는 키워드가 생겼다. 이 키워드는 <code>yield from [expression]</code>의 구조로 사용되는데, expression을 일종의 iterator(subiterator)로 취급한다. expression에서 생성된 값을 계속 받아오는 것이다.</li>
 <li><code>send()</code>, <code>throw()</code>로 expression에 값을 보낼 수 있는데, expression 내부에 이 보내진 값을 활용할 수 있는 메소드가 있다면 잘 사용된다.<ul>
@@ -685,8 +681,7 @@
 <p>응? 그럼 coroutine이 generator와 다른 점은 뭐지?<br><blockquote><p>All of this makes generator functions quite similar to coroutines; they yield multiple times, they have more than one entry point and their execution can be suspended. The only difference is that a generator function cannot control where should the execution continue after it yields; the control is always transferred to the generator’s caller.</p>
 <footer><strong>Python Docs</strong><cite><a href="https://docs.python.org/3/reference/expressions.html#yieldexpr" target="_blank" rel="noopener">Yield expressions</a></cite></footer></blockquote><br>generator의 경우, 잠깐 멈췄을 때(yield) 실행을 어디로 넘길 것인지 조정할 수가 없다. 무조건 그 generator의 caller에게 가게 된다. coroutine은 이걸 조정 가능한 것 같은데, 예를 들면 자신의 caller가 아니라 다른 coroutine에게 넘기는 식이다. 코드도 그런 식으로 작동하고.</p>
 <p>그럼, asyncio에서는 coroutine을 어떻게 사용하는걸까?<br>coroutine은 <a href="https://docs.python.org/3/reference/compound_stmts.html#coroutine-function-definition" target="_blank" rel="noopener"><code>async def</code></a>라는 키워드를 통해 정의된다. coroutine은 generator가 yield from을 사용하는 것처럼, <a href="https://docs.python.org/3/reference/expressions.html#await" target="_blank" rel="noopener"><code>await</code></a>라는 키워드를 사용한다. 이 두 키워드가 Python 3.5버전에서 만들어지기 전에는, coroutine을 만들 때 generator처럼 yield from을 사용했었다.</p>
-<p>짤막한 예제를 하나 보자. <a href="https://docs.python.org/3.5/library/asyncio-task.html#example-chain-coroutines" target="_blank" rel="noopener">출처</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나는 coroutine!</span></span><br><span class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>) <span class="comment"># 1초 기다릴래! 그런데 기다리는 동안 난 제어 권한을 넘길(yield)거야! 다른 작업 해볼래?</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나도 coroutine!</span></span><br><span class="line">    result = <span class="keyword">await</span> compute(x, y) <span class="comment"># compute가 완료될 때까지 기다릴래! 그런데 기다리는 동안 다른 작업을 실행할 수 있어!</span></span><br><span class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(print_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">loop.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최신 고수준 API에서는</span></span><br><span class="line">asyncio.run(print_sum(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 라고 하면 위의 loop 3줄을 대체할 수 있다.</span></span><br><span class="line"><span class="comment"># 예제가 Python 3.5.9 기준이라 loop 3줄을 쓰고 있다.</span></span><br><span class="line"><span class="comment"># 하지만 기본 원리를 직관적으로 알고 싶으므로 이대로 진행해보자.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값은 아래와 같다.</span></span><br><span class="line"><span class="comment"># Compute 1 + 2 ...</span></span><br><span class="line"><span class="comment">#  1 + 2 = 3</span></span><br></pre></td></tr></table></figure></p>
-<p>출력값은 별거 없어 보이는데, 뒤에서 어떻게 작동되냐면…</p>
+<p>짤막한 예제를 하나 보자. <a href="https://docs.python.org/3.5/library/asyncio-task.html#example-chain-coroutines" target="_blank" rel="noopener">출처</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나는 coroutine!</span></span><br><span class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>) <span class="comment"># 1초 기다릴래! 그런데 기다리는 동안 난 제어 권한을 넘길(yield)거야! 다른 작업 해볼래?</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나도 coroutine!</span></span><br><span class="line">    result = <span class="keyword">await</span> compute(x, y) <span class="comment"># compute가 완료될 때까지 기다릴래! 그런데 기다리는 동안 다른 작업을 실행할 수 있어!</span></span><br><span class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(print_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">loop.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최신 고수준 API에서는</span></span><br><span class="line">asyncio.run(print_sum(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 라고 하면 위의 loop 3줄을 대체할 수 있다.</span></span><br><span class="line"><span class="comment"># 예제가 Python 3.5.9 기준이라 loop 3줄을 쓰고 있다.</span></span><br><span class="line"><span class="comment"># 하지만 기본 원리를 직관적으로 알고 싶으므로 이대로 진행해보자.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값은 아래와 같다.</span></span><br><span class="line"><span class="comment"># Compute 1 + 2 ...</span></span><br><span class="line"><span class="comment">#  1 + 2 = 3</span></span><br></pre></td></tr></table></figure><br>출력값은 별거 없어 보이는데, 뒤에서 어떻게 작동되냐면…</p>
 <blockquote>
 <p>compute() is chained to print_sum(): print_sum() coroutine waits until compute() is completed before returning its result.</p>
 </blockquote>
@@ -709,8 +704,7 @@
 <p>위의 예제에서는, task 객체가 생성되어 coroutine print_sum()과 compute()를 감싸고, 이들의 실행결과를 기다리다가-받는다. task들은 event loop에 등록되며, event loop가 task들의 실행을 관리한다.</p>
 <p>이제 어떻게 돌아가는지 알았다.<br>그럼 이걸로 어떻게 비동기적으로 http 요청을 받고, 저장할 수 있을까?</p>
 <h1 id="비동기적으로-Http-응답-받기"><a href="#비동기적으로-Http-응답-받기" class="headerlink" title="비동기적으로 Http 응답 받기"></a>비동기적으로 Http 응답 받기</h1><p>requests는 <a href="https://nesoy.github.io/articles/2017-01/Synchronized" target="_blank" rel="noopener">blocking</a> 라이브러리다. http 응답을 기다리는 동안 아무것도 못 한다는 것이다. <a href="https://sjquant.tistory.com/14?category=797018" target="_blank" rel="noopener">requests로도 어떻게 할 수는 있는데</a>, 역시나 내부적으로는 multi-threading으로 동작하는 것이어서 비동기적 처리가 아니다.</p>
-<p>비동기적 http 요청을 보낼 수 있는 <code>aiohttp</code> 라이브러리를 사용하자.<br>간단한 예제 코드를 살펴보면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_text_from_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session: <span class="comment"># 다 끝나면 세션을 닫을것이다.</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> session.get(url, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0'</span>&#125;) <span class="keyword">as</span> req: <span class="comment"># 다 끝나면 get 요청도 닫을것이다.</span></span><br><span class="line">            html = <span class="keyword">await</span> req.text() <span class="comment"># 여기서 시간이 오래 걸리므로 기다린다.</span></span><br><span class="line">    print(<span class="string">f'Get response from <span class="subst">&#123;url&#125;</span>'</span>)</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    print(soup.text[:<span class="number">100</span>].strip())</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    urls = [<span class="string">'http://google.com'</span>, <span class="string">'http://naver.com'</span>, <span class="string">'http://daum.net'</span>\</span><br><span class="line">    ,<span class="string">'http://depromeet.com'</span>, <span class="string">'http://facebook.com'</span>]*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 실행해서 결과 받아올래~ 라는 coroutine 목록을 만든다.</span></span><br><span class="line">    futures = (get_text_from_url(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls) </span><br><span class="line">    <span class="comment"># generator expression으로 했는데, list comprehension으로 해도 된다.</span></span><br><span class="line">    <span class="comment"># 대상이 엄청나게 많을 경우를 생각한다면 url도 generator로 하나씩  생성하는 형태로 만들고,</span></span><br><span class="line">    <span class="comment"># coroutine 생성도 generator expression으로 하는게 좋아 보인다.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*futures)</span><br><span class="line">    <span class="comment"># 첫 번째 인자로 받은 awaitable 객체들을 실행한다.</span></span><br><span class="line">    <span class="comment"># 받은 객체들이 coroutine이면, 알아서 task로서 스케쥴링이 된다.</span></span><br><span class="line">    <span class="comment"># awaitable 객체들이 다 끝나면, 각 awaitable 객체들의 반환값을 리스트로 묶어서 반환한다.</span></span><br><span class="line">    <span class="comment"># 리스트 내의 반환값의 순서는 첫 번째 인자 - 여기서는 *futures -</span></span><br><span class="line">    <span class="comment"># 내의 awaitable 객체들의 순서를 따라간다.</span></span><br><span class="line">    <span class="comment"># https://docs.python.org/3/library/asyncio-task.html</span></span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">asyncio.run(main())</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">f'걸린 시간 : <span class="subst">&#123;end-start&#125;</span>'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>실행하면 대략 2.5초가 걸린다. 완전히 같은 동작을 하는 코드를 requests로 작성했을 때 12.2초가 걸리는 것을 생각하면 엄청난 속도향상이라고 볼 수 있겠다.</p>
+<p>비동기적 http 요청을 보낼 수 있는 <code>aiohttp</code> 라이브러리를 사용하자.<br>간단한 예제 코드를 살펴보면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_text_from_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session: <span class="comment"># 다 끝나면 세션을 닫을것이다.</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> session.get(url, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0'</span>&#125;) <span class="keyword">as</span> req: <span class="comment"># 다 끝나면 get 요청도 닫을것이다.</span></span><br><span class="line">            html = <span class="keyword">await</span> req.text() <span class="comment"># 여기서 시간이 오래 걸리므로 기다린다.</span></span><br><span class="line">    print(<span class="string">f'Get response from <span class="subst">&#123;url&#125;</span>'</span>)</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    print(soup.text[:<span class="number">100</span>].strip())</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    urls = [<span class="string">'http://google.com'</span>, <span class="string">'http://naver.com'</span>, <span class="string">'http://daum.net'</span>\</span><br><span class="line">    ,<span class="string">'http://depromeet.com'</span>, <span class="string">'http://facebook.com'</span>]*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 실행해서 결과 받아올래~ 라는 coroutine 목록을 만든다.</span></span><br><span class="line">    futures = (get_text_from_url(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls) </span><br><span class="line">    <span class="comment"># generator expression으로 했는데, list comprehension으로 해도 된다.</span></span><br><span class="line">    <span class="comment"># 대상이 엄청나게 많을 경우를 생각한다면 url도 generator로 하나씩  생성하는 형태로 만들고,</span></span><br><span class="line">    <span class="comment"># coroutine 생성도 generator expression으로 하는게 좋아 보인다.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*futures)</span><br><span class="line">    <span class="comment"># 첫 번째 인자로 받은 awaitable 객체들을 실행한다.</span></span><br><span class="line">    <span class="comment"># 받은 객체들이 coroutine이면, 알아서 task로서 스케쥴링이 된다.</span></span><br><span class="line">    <span class="comment"># awaitable 객체들이 다 끝나면, 각 awaitable 객체들의 반환값을 리스트로 묶어서 반환한다.</span></span><br><span class="line">    <span class="comment"># 리스트 내의 반환값의 순서는 첫 번째 인자 - 여기서는 *futures -</span></span><br><span class="line">    <span class="comment"># 내의 awaitable 객체들의 순서를 따라간다.</span></span><br><span class="line">    <span class="comment"># https://docs.python.org/3/library/asyncio-task.html</span></span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">asyncio.run(main())</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">f'걸린 시간 : <span class="subst">&#123;end-start&#125;</span>'</span>)</span><br></pre></td></tr></table></figure><br>실행하면 대략 2.5초가 걸린다. 완전히 같은 동작을 하는 코드를 requests로 작성했을 때 12.2초가 걸리는 것을 생각하면 엄청난 속도향상이라고 볼 수 있겠다.</p>
 <p>그럼 이제 실전으로 들어가보자.<br>Asyncio로 작동되는 코드까지 다 완성해서 돌리고 있는데,<br>글이 너무 길어지는 바람에 실제 활용 설명은 2편에서…</p>
 
                     
@@ -808,9 +802,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
-                            aria-label=": Telegram bot for alarming ERC-20 token balance"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
                         >
-                            <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -831,9 +825,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": Web broswer control with Selenium"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
                         >
-                            <h3 class="media-heading">Web broswer control with Selenium</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -854,9 +848,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": Multiple file name changer by XLSM"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
                         >
-                            <h3 class="media-heading">Multiple file name changer by XLSM</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -877,9 +871,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
-                            aria-label=": XLSX file merging script"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
                         >
-                            <h3 class="media-heading">XLSX file merging script</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -900,9 +894,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
                         >
-                            <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -923,9 +917,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": Python Built in function - Map"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function - Map</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -946,9 +940,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -969,9 +963,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -992,9 +986,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
-                            <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1014,10 +1008,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
-                            <h3 class="media-heading">Map vs List Comprehension</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1039,7 +1033,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                19 posts found
+                21 posts found
             </p>
         </div>
     </div>
@@ -1049,14 +1043,20 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
       var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');

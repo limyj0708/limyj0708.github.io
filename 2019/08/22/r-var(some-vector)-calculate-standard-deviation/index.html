@@ -6,26 +6,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>R - var(some_vector)는 표본분산을 계산한다 - Jin&#39;s Code Archive</title>
+    <title>&lt;R&gt; var(some_vector)는 표본분산을 계산한다 - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
         <meta name="keywords" content="python,javascript,R,표본분산,R">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"12&gt; var(1:10)[1] 9.166667\n“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다.\n모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.\nhttps://blog.naver.com/physicopianist/221079231724\n여기 아주 잘 정리되어 있다.\n","dateCreated":"2019-08-22T00:00:00+09:00","dateModified":"2020-02-04T18:14:44+09:00","datePublished":"2019-08-22T00:00:00+09:00","description":"","headline":"R - var(some_vector)는 표본분산을 계산한다","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/","keywords":"학습_정리"}</script>
-    <meta name="description" content="12&amp;gt; var(1:10)[1] 9.166667 “어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다. 모분산은 8.25겠지만, 표본분산은 9.166667이 맞다. https://blog.naver.com/physicopianist/221079231724 여기 아주 잘 정리되어 있다.">
-<meta name="keywords" content="표본분산,R">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"12&gt; var(1:10)[1] 9.166667\n“어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다.\n모분산은 8.25겠지만, 표본분산은 9.166667이 맞다.\nhttps://blog.naver.com/physicopianist/221079231724\n여기 아주 잘 정리되어 있다.\n","dateCreated":"2019-08-22T00:00:00+09:00","dateModified":"2020-02-05T15:54:02+09:00","datePublished":"2019-08-22T00:00:00+09:00","description":"","headline":"<R> var(some_vector)는 표본분산을 계산한다","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/","keywords":"R"}</script>
+    <meta name="description" content="12&gt; var(1:10)[1] 9.166667 “어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다. 모분산은 8.25겠지만, 표본분산은 9.166667이 맞다. https:&#x2F;&#x2F;blog.naver.com&#x2F;physicopianist&#x2F;221079231724 여기 아주 잘 정리되어 있다.">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="R - var(some_vector)는 표본분산을 계산한다">
+<meta property="og:title" content="&lt;R&gt; var(some_vector)는 표본분산을 계산한다">
 <meta property="og:url" content="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="12&amp;gt; var(1:10)[1] 9.166667 “어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다. 모분산은 8.25겠지만, 표본분산은 9.166667이 맞다. https://blog.naver.com/physicopianist/221079231724 여기 아주 잘 정리되어 있다.">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-04T09:14:44.750Z">
+<meta property="og:description" content="12&gt; var(1:10)[1] 9.166667 “어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다. 모분산은 8.25겠지만, 표본분산은 9.166667이 맞다. https:&#x2F;&#x2F;blog.naver.com&#x2F;physicopianist&#x2F;221079231724 여기 아주 잘 정리되어 있다.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-21T15:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-05T06:54:02.446Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="표본분산">
+<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="R - var(some_vector)는 표본분산을 계산한다">
-<meta name="twitter:description" content="12&amp;gt; var(1:10)[1] 9.166667 “어라? 손으로 분산을 구해보니 8.25가 나오는데 왜 값이 다를까?”는 내가 지식이 부족해서 그랬던 것이었다. 모분산은 8.25겠지만, 표본분산은 9.166667이 맞다. https://blog.naver.com/physicopianist/221079231724 여기 아주 잘 정리되어 있다.">
     
     
         
@@ -35,7 +36,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -67,7 +70,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Jin&#39;s Code Archive
@@ -98,7 +101,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -230,7 +233,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            R - var(some_vector)는 표본분산을 계산한다
+            &lt;R&gt; var(some_vector)는 표본분산을 계산한다
         </h1>
     
     
@@ -243,7 +246,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/r/">R</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -271,7 +274,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/학습-정리/">학습_정리</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/r/" rel="tag">R</a>
 
             </div>
         
@@ -285,8 +288,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/10/01/python-built-in-function-study-map/"
-                    data-tooltip="Python Built in function - Map"
-                    aria-label="PREVIOUS: Python Built in function - Map"
+                    data-tooltip="&lt;Python&gt; Built in function - Map"
+                    aria-label="PREVIOUS: &lt;Python&gt; Built in function - Map"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -299,8 +302,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="XLSX file merging script"
-                    aria-label="NEXT: XLSX file merging script"
+                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
+                    aria-label="NEXT: &lt;VBA&gt; XLSX file merging script"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -374,7 +377,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -401,8 +404,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/10/01/python-built-in-function-study-map/"
-                    data-tooltip="Python Built in function - Map"
-                    aria-label="PREVIOUS: Python Built in function - Map"
+                    data-tooltip="&lt;Python&gt; Built in function - Map"
+                    aria-label="PREVIOUS: &lt;Python&gt; Built in function - Map"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -415,8 +418,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="XLSX file merging script"
-                    aria-label="NEXT: XLSX file merging script"
+                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
+                    aria-label="NEXT: &lt;VBA&gt; XLSX file merging script"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -576,9 +579,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
-                            aria-label=": Telegram bot for alarming ERC-20 token balance"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
                         >
-                            <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -599,9 +602,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": Web broswer control with Selenium"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
                         >
-                            <h3 class="media-heading">Web broswer control with Selenium</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -622,9 +625,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": Multiple file name changer by XLSM"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
                         >
-                            <h3 class="media-heading">Multiple file name changer by XLSM</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -645,9 +648,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
-                            aria-label=": XLSX file merging script"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
                         >
-                            <h3 class="media-heading">XLSX file merging script</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -668,9 +671,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
                         >
-                            <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -691,9 +694,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": Python Built in function - Map"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function - Map</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -714,9 +717,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -737,9 +740,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -760,9 +763,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
-                            <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -782,10 +785,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
-                            <h3 class="media-heading">Map vs List Comprehension</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -807,7 +810,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                19 posts found
+                21 posts found
             </p>
         </div>
     </div>
@@ -817,7 +820,9 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -842,8 +847,12 @@
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
       var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');

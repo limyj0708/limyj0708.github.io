@@ -6,28 +6,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>Iterable, Iterator, Generator - 너희는 누구니? - Jin&#39;s Code Archive</title>
+    <title>&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니? - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
         <meta name="keywords" content="python,javascript,R,Python,Iterable,Iterator,Generator,Container">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.\n\nIterable\nIterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음)\n그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; y = iter(x)&gt;&gt;&gt; z = iter(x) #The iter() method returns an iterator for the given object.&gt;&gt;&gt; next(y)1&gt;&gt;&gt; next(y)2&gt;&gt;&gt; next(z)1&gt;&gt;&gt; type(x)&lt;class 'list'&gt;&gt;&gt;&gt; type(y)&lt;class 'list_iterator'&gt;\n\n\nx는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.y와 z는 둘 다 상태를 저장하고 있다.(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.\n\n참고사항 :iterable class가 iter()와 next()를 모두 가지고 있고, iter()가 self(자기 자신)를 반환하는 경우가 있다.이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다. \n\n그럼 이제 아래와 같이 쓰면:123x = [1, 2, 3]for elem in x:    ...\n실제로는 이런 일이 일어난다.\n\n이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(Instruction)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.\n123456789101112&gt;&gt;&gt; import dis&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; dis.dis('for _ in x: pass')  1           0 SETUP_LOOP              14 (to 17)              3 LOAD_NAME                0 (x)              6 GET_ITER        &gt;&gt;    7 FOR_ITER                 6 (to 16)             10 STORE_NAME               1 (_)             13 JUMP_ABSOLUTE            7        &gt;&gt;   16 POP_BLOCK        &gt;&gt;   17 LOAD_CONST               0 (None)             20 RETURN_VALUE\nIterator그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 Stateful(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)\n__next__() 메소드를 가지고 있는 모든 오브젝트는 Iterator다.어떻게 다음 값을 발생시키는지는 상관이 없다.\nIterator는 값 공장이라고 할 수 있다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 저장해 둔 내부 상태를 기반으로 다음 값을 생산하여 반환한다.\nitertools 모듈의 함수들을 예시로 살펴보자.몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:123456&gt;&gt;&gt; from itertools import count&gt;&gt;&gt; counter = count(start=13)&gt;&gt;&gt; next(counter)13&gt;&gt;&gt; next(counter)14\n몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다:12345678910&gt;&gt;&gt; from itertools import cycle&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])&gt;&gt;&gt; next(colors)'red'&gt;&gt;&gt; next(colors)'white'&gt;&gt;&gt; next(colors)'blue'&gt;&gt;&gt; next(colors)'red'\n몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:123456789&gt;&gt;&gt; from itertools import islice&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])  # infinite&gt;&gt;&gt; limited = islice(colors, 0, 4)            # finite&gt;&gt;&gt; for x in limited:                         # so safe to use for-loop on...     print(x)redwhitebluered\nIterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서,피보나치 수열을 생성하는 Iterator를 만들어 보자:\n1234567891011121314151617&gt;&gt;&gt; class fib:...     def __init__(self):...         self.prev = 0...         self.curr = 1... ...     def __iter__(self):...         return self... ...     def __next__(self):...         value = self.curr...         self.curr += self.prev...         self.prev = value...         return value...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n이 클래스가 iterable이면서 (__iter()__를 가지고 있기 때문),자기 자신의 iterator임을 (__next()__를 가지고 있기 때문) 기억하자.\n이 iterator의 내부 상태는 prev와 curr에 저장되며, iterator의 다음 호출에 사용된다.next() 호출은 다음의 두 가지 중요한 일을 한다:\n\n다음 next() 호출을 위해 상태를 변경한다.\n현재 호출을 위한 결과를 생성한다.\n\n\n주요 개념 : 게으른(lazy) 공장밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는 게으른 공장처럼 보인다. 이 게으른 공장은 요청을 받으면, 값 하나를 생산한 후에 다시 정지 상태로 돌아가게 된다.\n\nGenerator드디어 목적지에 도차했다! Generator는 내가(글쓴이가) 완전 좋아하는 Python의 특징이다. Generator는 Iterator의 우아한 버전이다.\nGenerator는 __iter()__와 __next()__ 메소드를 사용하지 않고도,Iterator를 작성할 수 있게 해 준다.\n직관적으로 표현하면:\n\n모든 Generator는 Iterator이다. (반대는 아니다!)\n모든 Generator는, 그러므로, 값을 게으르게 생산하는 공장이다.\n\n여기 Generator로 쓰여진, 피보나치 수열 공장이 있다:\n123456789&gt;&gt;&gt; def fib():...     prev, curr = 0, 1...     while True:...         yield curr...         prev, curr = curr, prev + curr...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n우아하지 않은가? 이 아름다움을 담당하는 마법의 키워드를 보자:\n\nyield\n\n\n뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 평범한 함수로 정의된다. 특별할 것이 없다. 그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.\n이제 f=fib() 가 호출되면, Generator가 instance화 되고 반환된다. 여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.더 직관적으로 보면, prev, curr = 0,1 은 아직 실행되지 않았다.\n그리고, 이 Generator instance는 islice()에 감싸진다.스스로 Iterator이기 때문에, 아직도 아무것도 일어나지 않는다.\n그 다음엔, 이 Iterator는 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.\n한 단계씩 보자. 처음에 이 코드는 prev, curr = 0,1 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문과 만난다. 이 구문은 현재 curr 변수에 있는 값을 생산하고(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.\n이 값은 islice() wrapper로 전달되고, list()는 값 1을 리스트에 추가할 수 있게 된다.\n그리고, list()는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 prev, curr = curr, prev + curr 구분부터 다시 시작하게 된다. 이 다음에 while 루프의 다음 반복에 재진입하고, yield curr 구문을 만나고, 다음 curr 값을 반환한다.\n이 동작은 10번 반복된 후, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 StopIteration 예외를 발생시킬때까지 일어난다. 그리고 list()는 피보나치 수열 처음 10개 값을 가진 리스트를 반환하게 된다. Generator가 11번째 next() 호출을 받지 않았음에 주목해라. 모든 작업이 끝나면 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.\nType of Generators두 가지 종류의 Generator가 있다: Generator function 과 Generator expression 이다.Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다. (피보나치 수열 Generator)yield 키워드가 있기만 해도 함수는 Generator function이 된다.\n다른 타입의 Generator는 list comprehension과 동일한 Generator다.제곱수의 리스트를 만드는 여러가지 예를 살펴보자.123&gt;&gt;&gt; numbers = [1, 2, 3, 4, 5, 6]&gt;&gt;&gt; [x * x for x in numbers][1, 4, 9, 16, 25, 36]\nset comprehension으로도 동일한 일을 할 수 있다.12&gt;&gt;&gt; &#123;x * x for x in numbers&#125;&#123;1, 4, 36, 9, 16, 25&#125;\n혹은 dict comprehension으로도:12&gt;&gt;&gt; &#123;x: x * x for x in numbers&#125;&#123;1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36&#125;\nGenerator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)1234567&gt;&gt;&gt; lazy_squares = (x * x for x in numbers)&gt;&gt;&gt; lazy_squares&lt;generator object &lt;genexpr&gt; at 0x10d1f5510&gt;&gt;&gt;&gt; next(lazy_squares)1&gt;&gt;&gt; list(lazy_squares)[4, 9, 16, 25, 36]\nlazy_squares 의 첫 번째 값을 next() 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)\n요약Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고, 메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.\nGenerator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.12345def something():    result = []    for ... in ...:        result.append(x)    return result\n위의 예시를 다음과 같이 바꿔보자.123456def iter_something():    for ... in ...:        yield x# def something():  # Only if you really need a list structure#     return list(iter_something())\n","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2020-02-04T18:16:36+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"Iterable, Iterator, Generator - 너희는 누구니?","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/","keywords":"학습_정리"}</script>
-    <meta name="description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
-<meta name="keywords" content="Python,Iterable,Iterator,Generator,Container">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.\n\nIterable\nIterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음)\n그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; y = iter(x)&gt;&gt;&gt; z = iter(x) #The iter() method returns an iterator for the given object.&gt;&gt;&gt; next(y)1&gt;&gt;&gt; next(y)2&gt;&gt;&gt; next(z)1&gt;&gt;&gt; type(x)&lt;class 'list'&gt;&gt;&gt;&gt; type(y)&lt;class 'list_iterator'&gt;\nx는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.y와 z는 둘 다 상태를 저장하고 있다.(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.\n\n\n참고사항 :iterable class가 iter()와 next()를 모두 가지고 있고, iter()가 self(자기 자신)를 반환하는 경우가 있다.이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다. \n\n그럼 이제 아래와 같이 쓰면:123x = [1, 2, 3]for elem in x:    ...실제로는 이런 일이 일어난다.\n\n이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(Instruction)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.\n123456789101112&gt;&gt;&gt; import dis&gt;&gt;&gt; x = [1, 2, 3]&gt;&gt;&gt; dis.dis('for _ in x: pass')  1           0 SETUP_LOOP              14 (to 17)              3 LOAD_NAME                0 (x)              6 GET_ITER        &gt;&gt;    7 FOR_ITER                 6 (to 16)             10 STORE_NAME               1 (_)             13 JUMP_ABSOLUTE            7        &gt;&gt;   16 POP_BLOCK        &gt;&gt;   17 LOAD_CONST               0 (None)             20 RETURN_VALUE\nIterator그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 Stateful(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)\n__next__() 메소드를 가지고 있는 모든 오브젝트는 Iterator다.어떻게 다음 값을 발생시키는지는 상관이 없다.\nIterator는 값 공장이라고 할 수 있다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 저장해 둔 내부 상태를 기반으로 다음 값을 생산하여 반환한다.\nitertools 모듈의 함수들을 예시로 살펴보자.몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:123456&gt;&gt;&gt; from itertools import count&gt;&gt;&gt; counter = count(start=13)&gt;&gt;&gt; next(counter)13&gt;&gt;&gt; next(counter)14몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다:12345678910&gt;&gt;&gt; from itertools import cycle&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])&gt;&gt;&gt; next(colors)'red'&gt;&gt;&gt; next(colors)'white'&gt;&gt;&gt; next(colors)'blue'&gt;&gt;&gt; next(colors)'red'몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:123456789&gt;&gt;&gt; from itertools import islice&gt;&gt;&gt; colors = cycle(['red', 'white', 'blue'])  # infinite&gt;&gt;&gt; limited = islice(colors, 0, 4)            # finite&gt;&gt;&gt; for x in limited:                         # so safe to use for-loop on...     print(x)redwhiteblueredIterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서,피보나치 수열을 생성하는 Iterator를 만들어 보자:\n1234567891011121314151617&gt;&gt;&gt; class fib:...     def __init__(self):...         self.prev = 0...         self.curr = 1... ...     def __iter__(self):...         return self... ...     def __next__(self):...         value = self.curr...         self.curr += self.prev...         self.prev = value...         return value...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n이 클래스가 iterable이면서 (__iter()__를 가지고 있기 때문),자기 자신의 iterator임을 (__next()__를 가지고 있기 때문) 기억하자.\n이 iterator의 내부 상태는 prev와 curr에 저장되며, iterator의 다음 호출에 사용된다.next() 호출은 다음의 두 가지 중요한 일을 한다:\n\n다음 next() 호출을 위해 상태를 변경한다.\n현재 호출을 위한 결과를 생성한다.\n\n\n주요 개념 : 게으른(lazy) 공장밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는 게으른 공장처럼 보인다. 이 게으른 공장은 요청을 받으면, 값 하나를 생산한 후에 다시 정지 상태로 돌아가게 된다.\n\nGenerator드디어 목적지에 도차했다! Generator는 내가(글쓴이가) 완전 좋아하는 Python의 특징이다. Generator는 Iterator의 우아한 버전이다.\nGenerator는 __iter()__와 __next()__ 메소드를 사용하지 않고도,Iterator를 작성할 수 있게 해 준다.\n직관적으로 표현하면:\n\n모든 Generator는 Iterator이다. (반대는 아니다!)\n모든 Generator는, 그러므로, 값을 게으르게 생산하는 공장이다.\n\n여기 Generator로 쓰여진, 피보나치 수열 공장이 있다:\n123456789&gt;&gt;&gt; def fib():...     prev, curr = 0, 1...     while True:...         yield curr...         prev, curr = curr, prev + curr...&gt;&gt;&gt; f = fib()&gt;&gt;&gt; list(islice(f, 0, 10))[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n우아하지 않은가? 이 아름다움을 담당하는 마법의 키워드를 보자:\n\nyield\n\n\n뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 평범한 함수로 정의된다. 특별할 것이 없다. 그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.\n이제 f=fib() 가 호출되면, Generator가 instance화 되고 반환된다. 여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.더 직관적으로 보면, prev, curr = 0,1 은 아직 실행되지 않았다.\n그리고, 이 Generator instance는 islice()에 감싸진다.스스로 Iterator이기 때문에, 아직도 아무것도 일어나지 않는다.\n그 다음엔, 이 Iterator는 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.\n한 단계씩 보자. 처음에 이 코드는 prev, curr = 0,1 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문과 만난다. 이 구문은 현재 curr 변수에 있는 값을 생산하고(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.\n이 값은 islice() wrapper로 전달되고, list()는 값 1을 리스트에 추가할 수 있게 된다.\n그리고, list()는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 prev, curr = curr, prev + curr 구분부터 다시 시작하게 된다. 이 다음에 while 루프의 다음 반복에 재진입하고, yield curr 구문을 만나고, 다음 curr 값을 반환한다.\n이 동작은 10번 반복된 후, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 StopIteration 예외를 발생시킬때까지 일어난다. 그리고 list()는 피보나치 수열 처음 10개 값을 가진 리스트를 반환하게 된다. Generator가 11번째 next() 호출을 받지 않았음에 주목해라. 모든 작업이 끝나면 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.\nType of Generators두 가지 종류의 Generator가 있다: Generator function 과 Generator expression 이다.Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다. (피보나치 수열 Generator)yield 키워드가 있기만 해도 함수는 Generator function이 된다.\n다른 타입의 Generator는 list comprehension과 동일한 Generator다.제곱수의 리스트를 만드는 여러가지 예를 살펴보자.123&gt;&gt;&gt; numbers = [1, 2, 3, 4, 5, 6]&gt;&gt;&gt; [x * x for x in numbers][1, 4, 9, 16, 25, 36]set comprehension으로도 동일한 일을 할 수 있다.12&gt;&gt;&gt; &#123;x * x for x in numbers&#125;&#123;1, 4, 36, 9, 16, 25&#125;혹은 dict comprehension으로도:12&gt;&gt;&gt; &#123;x: x * x for x in numbers&#125;&#123;1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36&#125;Generator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)1234567&gt;&gt;&gt; lazy_squares = (x * x for x in numbers)&gt;&gt;&gt; lazy_squares&lt;generator object &lt;genexpr&gt; at 0x10d1f5510&gt;&gt;&gt;&gt; next(lazy_squares)1&gt;&gt;&gt; list(lazy_squares)[4, 9, 16, 25, 36]lazy_squares 의 첫 번째 값을 next() 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)\n요약Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고, 메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.\nGenerator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.12345def something():    result = []    for ... in ...:        result.append(x)    return result위의 예시를 다음과 같이 바꿔보자.123456def iter_something():    for ... in ...:        yield x# def something():  # Only if you really need a list structure#     return list(iter_something())\n","dateCreated":"2019-10-12T00:00:00+09:00","dateModified":"2020-02-05T15:53:41+09:00","datePublished":"2019-10-12T00:00:00+09:00","description":"","headline":"<Python> Iterable, Iterator, Generator - 너희는 누구니?","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/","keywords":"Python"}</script>
+    <meta name="description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&gt;&gt;&gt; x &#x3D; [1, 2,">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Iterable, Iterator, Generator - 너희는 누구니?">
+<meta property="og:title" content="&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?">
 <meta property="og:url" content="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
-<meta property="og:locale" content="en">
+<meta property="og:description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&gt;&gt;&gt; x &#x3D; [1, 2,">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://drive.google.com/uc?id=1m5WUphiPHDPecjasiirM40shy2Vhu8qg">
 <meta property="og:image" content="https://drive.google.com/uc?id=1NmzViVcqdWTguVsGz6-iYPIIxNDaPCIh">
-<meta property="og:updated_time" content="2020-02-04T09:16:36.682Z">
+<meta property="article:published_time" content="2019-10-11T15:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-05T06:53:41.892Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Iterable">
+<meta property="article:tag" content="Iterator">
+<meta property="article:tag" content="Generator">
+<meta property="article:tag" content="Container">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Iterable, Iterator, Generator - 너희는 누구니?">
-<meta name="twitter:description" content="Iterables vs Iterators vs Generators를 보고 그대로 작성하였다.  Iterable Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함(Data structure일 필요는 없음) 그럼 Iterator와 Iterable의 차이는 뭐지?1234567891011121314&amp;gt;&amp;gt;&amp;gt; x = [1, 2,">
 <meta name="twitter:image" content="https://drive.google.com/uc?id=1m5WUphiPHDPecjasiirM40shy2Vhu8qg">
     
     
@@ -38,7 +42,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -70,7 +76,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Jin&#39;s Code Archive
@@ -101,7 +107,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -233,7 +239,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Iterable, Iterator, Generator - 너희는 누구니?
+            &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?
         </h1>
     
     
@@ -246,7 +252,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -263,24 +269,19 @@
 <h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><ul>
 <li>Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함<br>(Data structure일 필요는 없음)</li>
 <li>그럼 Iterator와 Iterable의 차이는 뭐지?<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = iter(x) </span><br><span class="line"><span class="comment">#The iter() method returns an iterator for the given object.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(z)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(y)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">list_iterator</span>'&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
+x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.</li>
 </ul>
-<p>x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.</p>
 <blockquote>
 <p><strong>참고사항 :</strong><br>iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 가지고 있고, <strong>iter()</strong>가 self(자기 자신)를 반환하는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다. </p>
 </blockquote>
-<p><br><br>그럼 이제 아래와 같이 쓰면:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> x:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
-<p>실제로는 이런 일이 일어난다.</p>
+<p><br><br>그럼 이제 아래와 같이 쓰면:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> x:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure><br>실제로는 이런 일이 일어난다.</p>
 <p><img src="https://drive.google.com/uc?id=1NmzViVcqdWTguVsGz6-iYPIIxNDaPCIh" alt="Oops, Some network ants ate this pic!" title="The scene when you apply"></p>
 <p>이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(<a href="https://www.computerhope.com/jargon/c/compinst.htm" target="_blank" rel="noopener">Instruction</a>)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(<span class="string">'for _ in x: pass'</span>)</span><br><span class="line">  <span class="number">1</span>           <span class="number">0</span> SETUP_LOOP              <span class="number">14</span> (to <span class="number">17</span>)</span><br><span class="line">              <span class="number">3</span> LOAD_NAME                <span class="number">0</span> (x)</span><br><span class="line">              <span class="number">6</span> GET_ITER</span><br><span class="line">        &gt;&gt;    <span class="number">7</span> FOR_ITER                 <span class="number">6</span> (to <span class="number">16</span>)</span><br><span class="line">             <span class="number">10</span> STORE_NAME               <span class="number">1</span> (_)</span><br><span class="line">             <span class="number">13</span> JUMP_ABSOLUTE            <span class="number">7</span></span><br><span class="line">        &gt;&gt;   <span class="number">16</span> POP_BLOCK</span><br><span class="line">        &gt;&gt;   <span class="number">17</span> LOAD_CONST               <span class="number">0</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">20</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
 <h2 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h2><p>그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 <a href="https://softwareengineering.stackexchange.com/questions/331158/stateful-vs-stateless-non-web-app-applications" target="_blank" rel="noopener">Stateful</a>(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.<br>(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)</p>
 <p><code>__next__()</code> 메소드를 가지고 있는 모든 오브젝트는 Iterator다.<br>어떻게 다음 값을 발생시키는지는 상관이 없다.</p>
 <p>Iterator는 값 공장이라고 할 수 있다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 저장해 둔 내부 상태를 기반으로 다음 값을 생산하여 반환한다.</p>
-<p><strong>itertools</strong> 모듈의 함수들을 예시로 살펴보자.<br>몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> count</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>counter = count(start=<span class="number">13</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure></p>
-<p><br><br>몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'white'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'blue'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br></pre></td></tr></table></figure></p>
-<p><br><br>몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> islice</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])  <span class="comment"># infinite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>limited = islice(colors, <span class="number">0</span>, <span class="number">4</span>)            <span class="comment"># finite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> limited:                         <span class="comment"># so safe to use for-loop on</span></span><br><span class="line"><span class="meta">... </span>    print(x)</span><br><span class="line">red</span><br><span class="line">white</span><br><span class="line">blue</span><br><span class="line">red</span><br></pre></td></tr></table></figure></p>
-<p><br><br>Iterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서,<br>피보나치 수열을 생성하는 Iterator를 만들어 보자:</p>
+<p><strong>itertools</strong> 모듈의 함수들을 예시로 살펴보자.<br>몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> count</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>counter = count(start=<span class="number">13</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure><br><br><br>몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'white'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'blue'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br></pre></td></tr></table></figure><br><br><br>몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> islice</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])  <span class="comment"># infinite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>limited = islice(colors, <span class="number">0</span>, <span class="number">4</span>)            <span class="comment"># finite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> limited:                         <span class="comment"># so safe to use for-loop on</span></span><br><span class="line"><span class="meta">... </span>    print(x)</span><br><span class="line">red</span><br><span class="line">white</span><br><span class="line">blue</span><br><span class="line">red</span><br></pre></td></tr></table></figure><br><br><br>Iterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서,<br>피보나치 수열을 생성하는 Iterator를 만들어 보자:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">fib</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.prev = <span class="number">0</span></span><br><span class="line"><span class="meta">... </span>        self.curr = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> self</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        value = self.curr</span><br><span class="line"><span class="meta">... </span>        self.curr += self.prev</span><br><span class="line"><span class="meta">... </span>        self.prev = value</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> value</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
 <p>이 클래스가 iterable이면서 (<code>__iter()__</code>를 가지고 있기 때문),<br>자기 자신의 iterator임을 (<code>__next()__</code>를 가지고 있기 때문) 기억하자.</p>
 <p>이 iterator의 내부 상태는 prev와 curr에 저장되며, iterator의 다음 호출에 사용된다.<br>next() 호출은 다음의 두 가지 중요한 일을 한다:</p>
@@ -314,14 +315,9 @@
 <p>그리고, list()는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 <strong>prev, curr = curr, prev + curr</strong> 구분부터 다시 시작하게 된다. 이 다음에 <strong>while</strong> 루프의 다음 반복에 재진입하고, <strong>yield curr</strong> 구문을 만나고, 다음 <strong>curr</strong> 값을 반환한다.</p>
 <p>이 동작은 10번 반복된 후, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 <strong>StopIteration</strong> 예외를 발생시킬때까지 일어난다. 그리고 list()는 피보나치 수열 처음 10개 값을 가진 리스트를 반환하게 된다. Generator가 11번째 <strong>next()</strong> 호출을 받지 않았음에 주목해라. 모든 작업이 끝나면 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.</p>
 <h2 id="Type-of-Generators"><a href="#Type-of-Generators" class="headerlink" title="Type of Generators"></a>Type of Generators</h2><p>두 가지 종류의 Generator가 있다: Generator <strong>function</strong> 과 Generator <strong>expression</strong> 이다.<br>Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다. (피보나치 수열 Generator)<br>yield 키워드가 있기만 해도 함수는 Generator function이 된다.</p>
-<p>다른 타입의 Generator는 list comprehension과 동일한 Generator다.<br>제곱수의 리스트를 만드는 여러가지 예를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure></p>
-<p><br><br>set comprehension으로도 동일한 일을 할 수 있다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">36</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p><br><br>혹은 dict comprehension으로도:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x: x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>: <span class="number">1</span>, <span class="number">2</span>: <span class="number">4</span>, <span class="number">3</span>: <span class="number">9</span>, <span class="number">4</span>: <span class="number">16</span>, <span class="number">5</span>: <span class="number">25</span>, <span class="number">6</span>: <span class="number">36</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p><br><br>Generator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x10d1f5510</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(lazy_squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(lazy_squares)</span><br><span class="line">[<span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure></p>
-<p><strong>lazy_squares</strong> 의 첫 번째 값을 <strong>next()</strong> 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.<br>그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)</p>
+<p>다른 타입의 Generator는 list comprehension과 동일한 Generator다.<br>제곱수의 리스트를 만드는 여러가지 예를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure><br><br><br>set comprehension으로도 동일한 일을 할 수 있다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">36</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>&#125;</span><br></pre></td></tr></table></figure><br><br><br>혹은 dict comprehension으로도:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x: x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>: <span class="number">1</span>, <span class="number">2</span>: <span class="number">4</span>, <span class="number">3</span>: <span class="number">9</span>, <span class="number">4</span>: <span class="number">16</span>, <span class="number">5</span>: <span class="number">25</span>, <span class="number">6</span>: <span class="number">36</span>&#125;</span><br></pre></td></tr></table></figure><br><br><br>Generator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x10d1f5510</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(lazy_squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(lazy_squares)</span><br><span class="line">[<span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure><br><strong>lazy_squares</strong> 의 첫 번째 값을 <strong>next()</strong> 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.<br>그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)</p>
 <h1 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h1><p>Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.<br>streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고, 메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.</p>
-<p>Generator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">something</span><span class="params">()</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        result.append(x)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
-<p><br><br>위의 예시를 다음과 같이 바꿔보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_something</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        <span class="keyword">yield</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># def something():  # Only if you really need a list structure</span></span><br><span class="line"><span class="comment">#     return list(iter_something())</span></span><br></pre></td></tr></table></figure></p>
+<p>Generator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">something</span><span class="params">()</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        result.append(x)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure><br><br><br>위의 예시를 다음과 같이 바꿔보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_something</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        <span class="keyword">yield</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># def something():  # Only if you really need a list structure</span></span><br><span class="line"><span class="comment">#     return list(iter_something())</span></span><br></pre></td></tr></table></figure></p>
 
             
 
@@ -333,7 +329,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/학습-정리/">학습_정리</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/python/" rel="tag">Python</a>
 
             </div>
         
@@ -346,9 +342,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/12/map-versus-list-comprehension/"
-                    data-tooltip="Map vs List Comprehension"
-                    aria-label="PREVIOUS: Map vs List Comprehension"
+                    href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
+                    data-tooltip="&lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    aria-label="PREVIOUS: &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -360,9 +356,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                    data-tooltip="Parameters, Arguments 정의와 차이점"
-                    aria-label="NEXT: Parameters, Arguments 정의와 차이점"
+                    href="/2019/10/12/map-versus-list-comprehension/"
+                    data-tooltip="&lt;Python&gt; Map vs List Comprehension"
+                    aria-label="NEXT: &lt;Python&gt; Map vs List Comprehension"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -436,7 +432,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -462,9 +458,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/12/map-versus-list-comprehension/"
-                    data-tooltip="Map vs List Comprehension"
-                    aria-label="PREVIOUS: Map vs List Comprehension"
+                    href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
+                    data-tooltip="&lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                    aria-label="PREVIOUS: &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -476,9 +472,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                    data-tooltip="Parameters, Arguments 정의와 차이점"
-                    aria-label="NEXT: Parameters, Arguments 정의와 차이점"
+                    href="/2019/10/12/map-versus-list-comprehension/"
+                    data-tooltip="&lt;Python&gt; Map vs List Comprehension"
+                    aria-label="NEXT: &lt;Python&gt; Map vs List Comprehension"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -638,9 +634,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
-                            aria-label=": Telegram bot for alarming ERC-20 token balance"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
                         >
-                            <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -661,9 +657,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": Web broswer control with Selenium"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
                         >
-                            <h3 class="media-heading">Web broswer control with Selenium</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -684,9 +680,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": Multiple file name changer by XLSM"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
                         >
-                            <h3 class="media-heading">Multiple file name changer by XLSM</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -707,9 +703,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
-                            aria-label=": XLSX file merging script"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
                         >
-                            <h3 class="media-heading">XLSX file merging script</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -730,9 +726,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
                         >
-                            <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -753,9 +749,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": Python Built in function - Map"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function - Map</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -776,9 +772,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -799,9 +795,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -822,9 +818,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
-                            <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -844,10 +840,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
-                            <h3 class="media-heading">Map vs List Comprehension</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -869,7 +865,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                19 posts found
+                21 posts found
             </p>
         </div>
     </div>
@@ -879,7 +875,9 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -904,8 +902,12 @@
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
       var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');

@@ -15,16 +15,17 @@
     
     <script type="application/ld+json">{}</script>
     <meta name="description" content="Archiving what I studied">
-<meta name="keywords" content="python,javascript,R">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Jin&#39;s Code Archive">
 <meta property="og:url" content="https://limyj0708.github.io/archives/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="Archiving what I studied">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="R">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jin&#39;s Code Archive">
-<meta name="twitter:description" content="Archiving what I studied">
     
     
         
@@ -34,7 +35,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-lce6jfukrcx6s0ldazek8x7pdf7hekcmwvdnfmvqg0dbv75faly4jlp3foko.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
@@ -64,7 +67,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/ "
+            href="/%20"
             aria-label=""
         >
             Jin&#39;s Code Archive
@@ -95,7 +98,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/ "
+                             href="/%20"
                             
                             title="Home"
                         >
@@ -232,10 +235,466 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
-                            aria-label=": GCP compute instances + shell script로 여러 머신에서 편하게 크롤링을 하자"
+                            href="/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                            aria-label=": &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
                         >
-                            GCP compute instances + shell script로 여러 머신에서 편하게 크롤링을 하자
+                            &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-05T00:00:00+09:00">
+	
+		    Feb 05, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-학습에-사용한-데이터"><span class="toc-text">1. 학습에 사용한 데이터</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Oversampling"><span class="toc-text">1-1. Oversampling</span></a></li></ul></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-모델-학습"><span class="toc-text">2. 모델 학습</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-StratifiedSuffleSplit"><span class="toc-text">2-1. StratifiedSuffleSplit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-결과비교"><span class="toc-text">2-2. 결과비교</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-Oversampling-진행하지-않은-Raw-데이터"><span class="toc-text">2-2-1. Oversampling 진행하지 않은 Raw 데이터</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-RandomOversampling-진행한-데이터"><span class="toc-text">2-2-2. RandomOversampling 진행한 데이터</span></a></li></ul></li></ul></li></ul>
+<hr>
+<p>제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.<br>Hyperparameter 튜닝도 진행하지 않았음.<br>(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정.</p>
+<h1 id="1-학습에-사용한-데이터"><a href="#1-학습에-사용한-데이터" class="headerlink" title="1. 학습에 사용한 데이터"></a>1. 학습에 사용한 데이터</h1><ul>
+<li>상세 수집조건은 <a href="https://limyj0708.github.io/2020/02/04/bankrup-pre-start">&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터</a> 참조</li>
+<li>2606개 기업의 3년치 재무 데이터<ul>
+<li>생존 기업은 2019/12/31 기준 최신 3년치, 상장폐지된 기업은 상장폐지일 기준 최신 3년치</li>
+<li>사용한 feature<ul>
+<li>부채비율</li>
+<li>자기자본비율</li>
+<li>현금자산비율</li>
+<li>당기순이익율</li>
+<li>총자산회전율</li>
+<li>총자산증가율(전년동기)</li>
+<li>당기순이익증가율(전년동기)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2606개 기업의 지난 3개 감사보고서 데이터<ul>
+<li>사용한 feature<ul>
+<li>지난 3개 감사보고서에서, ‘계속기업 불확실성’관련 키워드가 언급된 경우 1, 아니면 0으로 표시</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>상장시장 (코스닥, 코스피)</li>
+</ul>
+<h2 id="1-1-Oversampling"><a href="#1-1-Oversampling" class="headerlink" title="1-1. Oversampling"></a>1-1. Oversampling</h2><ul>
+<li>전체 2606개 기업 중, 부도 기업은 전체의 16.04%<ul>
+<li>불균형한 데이터(Imbalanced data)</li>
+<li>Imbalanced data를 그대로 학습시키면, <a href="https://sumniya.tistory.com/26" target="_blank" rel="noopener">Recall</a>이 낮게 나옴. Precision이 좀 낮아도 모든 부도 기업을 잡아내는 것이 좋은 부도 예측이라는 주제에서는, 허용할 수 없는 일</li>
+</ul>
+</li>
+<li><a href="https://imbalanced-learn.readthedocs.io/en/stable/" target="_blank" rel="noopener">Imbalanced-learn</a> 패키지를 사용하여, 소수 클래스를 증폭시키는 Oversampling을 진행<ul>
+<li>RandomOverSampling 사용 : 소수 클래스의 데이터를 반복해서 넣는 방법</li>
+<li>가상 데이터를 생성하는 Adaptive Synthetic Sampling, SMOTE 기법을 사용하지 못한 이유<ul>
+<li>재무데이터에서 ‘수치를 계산할 수 없는 경우’에는, 구분을 위해 동종의 데이터가 절대로 절대로 가질 수 없는 큰 값을 할당하였음(100,000% 등)<ul>
+<li>예 &gt; [ 부채비율 = (유동부채 + 비유동부채)/자기자본 ] 에서,완전자본잠식이 되어 자기자본이 0이 된 경우</li>
+</ul>
+</li>
+<li>가상의 값을 생성하게 되면, 등장해서는 안 되는 50,000%, 70,000% 등의 값이 생성됨</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-모델-학습"><a href="#2-모델-학습" class="headerlink" title="2. 모델 학습"></a>2. 모델 학습</h1><ul>
+<li>Decision Tree 기반의 다음 세 모델을 사용하였음<ul>
+<li>RandomForest</li>
+<li>GradientBoosting</li>
+<li>XGBoost</li>
+</ul>
+</li>
+<li>각 모델들의 상세 설명은 다른 게시글에서 정리</li>
+</ul>
+<h2 id="2-1-StratifiedSuffleSplit"><a href="#2-1-StratifiedSuffleSplit" class="headerlink" title="2-1. StratifiedSuffleSplit"></a>2-1. StratifiedSuffleSplit</h2><ul>
+<li>정말 기가 막힌 운으로 데이터가 분할되어 성능이 좋게 나온 모델이 있었기 때문에, <a href="https://m.blog.naver.com/PostView.nhn?blogId=wideeyed&amp;logNo=221321084246&amp;proxyReferer=https%3A%2F%2Fwww.google.com%2F" target="_blank" rel="noopener">StratifiedSuffleSplit</a>으로 Train set과 Test set 100건에 대한 검증 진행</li>
+<li>앞으로도 한참 써야 하기 때문에 별도의 모듈을 만들어서 진행<ul>
+<li>Oversampling, 학습, 예측, 평가결과 출력을 한 번에 진행함</li>
+<li>모듈 코드는 <a href="https://github.com/limyj0708/Predict_co_bankruptcy/blob/master/ML_and_DL/ml_Suffle_and_validation.py" target="_blank" rel="noopener">Github</a>에서 확인 가능</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-결과비교"><a href="#2-2-결과비교" class="headerlink" title="2-2. 결과비교"></a>2-2. 결과비교</h2><ul>
+<li>학습 코드는 <a href="https://github.com/limyj0708/Predict_co_bankruptcy/blob/master/ML_and_DL/DTree_base_models_comparison.ipynb" target="_blank" rel="noopener">Github</a>에서 확인 가능</li>
+<li>요약 : 하나의 모델을 사용해야 한다면, 가장 Recall이 높은 <code>GradientBoost-RandomOversampling 데이터 학습</code> 모델을 선정</li>
+</ul>
+<h3 id="2-2-1-Oversampling-진행하지-않은-Raw-데이터"><a href="#2-2-1-Oversampling-진행하지-않은-Raw-데이터" class="headerlink" title="2-2-1. Oversampling 진행하지 않은 Raw 데이터"></a>2-2-1. Oversampling 진행하지 않은 Raw 데이터</h3><ul>
+<li>Raw 데이터에서는 RandomForest가 가장 Recall이 높음</li>
+<li>F1-score는 세 모델이 거의 유사함</li>
+</ul>
+<p><span style="color:darkred"><strong>1. RandomForest, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train - 완전히 과적합됨. Hyperparameter 튜닝 필요</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 1.0</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test - 역시 Imbalanced data는 Recall이 낮음</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.921</td>
+    <td>0.962</td>
+    <td>0.941</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.754</td>
+    <td>0.65</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.906</td>
+  </tr>
+</table>
+
+<hr>
+<p><span style="color:darkred"><strong>2. GradientBoosting, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.969</td>
+    <td>0.995</td>
+    <td>0.982</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.972</td>
+    <td>0.842</td>
+    <td>0.902</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.97</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.929</td>
+    <td>0.965</td>
+    <td>0.946</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.783</td>
+    <td>0.632</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.909</td>
+  </tr>
+</table>
+
+
+<hr>
+<p><span style="color:darkred"><strong>3. XGBoost, Non-sampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.963</td>
+    <td>0.991</td>
+    <td>0.977</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.949</td>
+    <td>0.808</td>
+    <td>0.873</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.961</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.927</td>
+    <td>0.968</td>
+    <td>0.947</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.796</td>
+    <td>0.622</td>
+    <td>0.697</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.91</td>
+  </tr>
+</table>
+
+<h3 id="2-2-2-RandomOversampling-진행한-데이터"><a href="#2-2-2-RandomOversampling-진행한-데이터" class="headerlink" title="2-2-2. RandomOversampling 진행한 데이터"></a>2-2-2. RandomOversampling 진행한 데이터</h3><ul>
+<li>Precision이 감소하고, Recall이 증가함. F1 score는 거의 변화하지 않음</li>
+<li>더 나은 검증결과를 얻기 위해서는 데이터를 추가해야 할 것 같음</li>
+<li>GradientBoosting이 가장 Recall이 높음</li>
+</ul>
+<p><span style="color:darkred"><strong>1. RandomForest, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train - 완전히 과적합됨. Hyperparameter 튜닝 필요</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>1.0</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 1.0</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.932</td>
+    <td>0.957</td>
+    <td>0.944</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.754</td>
+    <td>0.65</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.906</td>
+  </tr>
+</table>
+
+<hr>
+<p><span style="color:darkred"><strong>2. GradientBoosting, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.969</td>
+    <td>0.948</td>
+    <td>0.958</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.949</td>
+    <td>0.97</td>
+    <td>0.959</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.959</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.952</td>
+    <td>0.913</td>
+    <td>0.932</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.642</td>
+    <td>0.772</td>
+    <td>0.7</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.889</td>
+  </tr>
+</table>
+
+
+<hr>
+<p><span style="color:darkred"><strong>3. XGBoost, RandomOversampling, 100회 최종평균결과</strong></span><br> <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Train</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.961</td>
+    <td>0.945</td>
+    <td>0.953</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.946</td>
+    <td>0.962</td>
+    <td>0.954</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> : 0.954</td>
+  </tr>
+</table></p>
+ <table>
+   <tr>
+    <th colspan='4'><span style="color:darkblue">Test</span></th>
+  </tr>
+  <tr>
+    <th>Label</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1-Score</th>
+  </tr>
+  <tr>
+    <td>0(생존)</td>
+    <td>0.952</td>
+    <td>0.913</td>
+    <td>0.932</td>
+  </tr>
+  <tr>
+    <td>1(부도)</td>
+    <td>0.641</td>
+    <td>0.768</td>
+    <td>0.698</td>
+  </tr>
+    <tr>
+    <td colspan='4'><strong>accuracy</strong> :0.889</td>
+  </tr>
+</table>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/05/bankrup-pre-decision-tree-based-model/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                            aria-label=": &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                        >
+                            &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링
                         </a>
                     
                 </h1>
@@ -248,7 +707,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/프로젝트-기업부도예측/">프로젝트_기업부도예측</a>
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
 
 
     
@@ -257,7 +716,9 @@
             </div>
             
                 <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.<br>한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 <a href="https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1">비동기로 40만개를 크롤링 했을 때보다</a> 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는 데 GCP compute instance를 어떻게 활용하였는지 정리하였다.</p>
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-어떻게-활용하였는가"><span class="toc-text">1. 어떻게 활용하였는가?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-한-걸음씩-살펴보기"><span class="toc-text">2. 한 걸음씩 살펴보기</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Google-cloud-SDK-설치"><span class="toc-text">2-1. Google cloud SDK 설치</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-URL-csv-분할"><span class="toc-text">2-2. URL.csv 분할</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Compute-instance-생성"><span class="toc-text">2-3. Compute instance 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-크롤링-코드-분할한-URL-파일-업로드"><span class="toc-text">2-4. 크롤링 코드, 분할한 URL 파일 업로드</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-크롤링-코드-업로드"><span class="toc-text">2-4-1. 크롤링 코드 업로드</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-분할한-URL-파일-업로드"><span class="toc-text">2-4-2. 분할한 URL 파일 업로드</span></a></li></ul></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-수집-실행"><span class="toc-text">2-5. 수집 실행</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-수집-결과-다운로드-수집-결과-병합"><span class="toc-text">2-6. 수집 결과 다운로드, 수집 결과 병합</span></a><ul class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-1-수집-결과-다운로드"><span class="toc-text">2-6-1. 수집 결과 다운로드</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-2-수집-결과-병합"><span class="toc-text">2-6-2. 수집 결과 병합</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-3-shell에서-csv-다루기-보너스"><span class="toc-text">2-6-3. shell에서 csv 다루기 보너스</span></a></li></ul></li></ul></li></ul>
+<hr>
+<p>기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.<br>한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 <a href="https://limyj0708.github.io/2019/12/05/clustering-crawled-articles-k-means-clustering1">비동기로 40만개를 크롤링 했을 때보다</a> 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는 데 GCP compute instance를 어떻게 활용하였는지 정리하였다.</p>
 <p>비동기 크롤링 내용은 이미 충분히 다루었으니, gcloud SDK 명령어와 Shell script에 대한 내용이 되겠다.</p>
 <h1 id="1-어떻게-활용하였는가"><a href="#1-어떻게-활용하였는가" class="headerlink" title="1. 어떻게 활용하였는가?"></a>1. 어떻게 활용하였는가?</h1><ol>
 <li>발행일/제목/본문을 수집해야하는 기사들의 URL 준비 (이하 URL.csv)</li>
@@ -275,11 +736,8 @@
 <li><a href="https://cloud.google.com/sdk/docs/quickstart-macos" target="_blank" rel="noopener">https://cloud.google.com/sdk/docs/quickstart-macos</a></li>
 </ul>
 <h2 id="2-2-URL-csv-분할"><a href="#2-2-URL-csv-분할" class="headerlink" title="2-2. URL.csv 분할"></a>2-2. URL.csv 분할</h2><ul>
-<li><p>아래 shell script를 분할하려는 csv 파일과 같은 폴더에 넣고 실행하자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">FILENAME=URL.csv</span><br><span class="line">HDR=$(head -1 <span class="variable">$FILENAME</span>) </span><br><span class="line">    <span class="comment"># 첫 줄, header를 저장함.</span></span><br><span class="line">split -l 20000 <span class="variable">$FILENAME</span> xyz</span><br><span class="line">    <span class="comment"># xyzaa, xyzab... 이렇게 분할된 파일들 이름이 prefix+aa...가 됨</span></span><br><span class="line">    <span class="comment">#-l NUMBER, --lines=NUMBER, 20000줄씩 자르거라.</span></span><br><span class="line">n=1</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> xyz* <span class="comment"># xyz~ 라는 이름이 붙은 모든 파일에 대하여</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     <span class="keyword">if</span> [ <span class="variable">$n</span> -gt 1 ]; <span class="keyword">then</span> <span class="comment"># -gt : greater than and not equal.</span></span><br><span class="line">     <span class="comment"># 알아서 header가 포함될 첫 번째 파일 이외에는, 따로 header를 추가함</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="variable">$HDR</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span></span><br><span class="line">     <span class="keyword">fi</span></span><br><span class="line">     cat <span class="variable">$f</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span> <span class="comment"># &gt;&gt;를 써서 내용 추가 방식으로 기록하는 이유는, header만 사용해서 생성한 파일에 본 내용을 추가하기 위해서이다.</span></span><br><span class="line">     rm <span class="variable">$f</span> <span class="comment"># 내용 사용이 끝난 파일은 제거</span></span><br><span class="line">     ((n++))</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split 명령어에 대한 더 상세한 설명은 <a href="https://www.computerhope.com/unix/usplit.htm" target="_blank" rel="noopener">여기를</a> 참고하자.</p>
-</li>
+<li>아래 shell script를 분할하려는 csv 파일과 같은 폴더에 넣고 실행하자.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">FILENAME=URL.csv</span><br><span class="line">HDR=$(head -1 <span class="variable">$FILENAME</span>) </span><br><span class="line">    <span class="comment"># 첫 줄, header를 저장함.</span></span><br><span class="line">split -l 20000 <span class="variable">$FILENAME</span> xyz</span><br><span class="line">    <span class="comment"># xyzaa, xyzab... 이렇게 분할된 파일들 이름이 prefix+aa...가 됨</span></span><br><span class="line">    <span class="comment">#-l NUMBER, --lines=NUMBER, 20000줄씩 자르거라.</span></span><br><span class="line">n=1</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> xyz* <span class="comment"># xyz~ 라는 이름이 붙은 모든 파일에 대하여</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     <span class="keyword">if</span> [ <span class="variable">$n</span> -gt 1 ]; <span class="keyword">then</span> <span class="comment"># -gt : greater than and not equal.</span></span><br><span class="line">     <span class="comment"># 알아서 header가 포함될 첫 번째 파일 이외에는, 따로 header를 추가함</span></span><br><span class="line">          <span class="built_in">echo</span> <span class="variable">$HDR</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span></span><br><span class="line">     <span class="keyword">fi</span></span><br><span class="line">     cat <span class="variable">$f</span> &gt;&gt; <span class="string">"URL_"</span><span class="variable">$&#123;n&#125;</span><span class="string">'.csv'</span> <span class="comment"># &gt;&gt;를 써서 내용 추가 방식으로 기록하는 이유는, header만 사용해서 생성한 파일에 본 내용을 추가하기 위해서이다.</span></span><br><span class="line">     rm <span class="variable">$f</span> <span class="comment"># 내용 사용이 끝난 파일은 제거</span></span><br><span class="line">     ((n++))</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></li>
+<li>split 명령어에 대한 더 상세한 설명은 <a href="https://www.computerhope.com/unix/usplit.htm" target="_blank" rel="noopener">여기를</a> 참고하자.</li>
 </ul>
 <h2 id="2-3-Compute-instance-생성"><a href="#2-3-Compute-instance-생성" class="headerlink" title="2-3. Compute instance 생성"></a>2-3. Compute instance 생성</h2><ul>
 <li>GCP Console에서 Compute instance를 하나 생성하여 환경세팅까지 완료하자. 이 instance로 이미지를 생성하여, 이미지를 기반으로 나머지 instance를 한 번에 만들 것이다.</li>
@@ -317,9 +775,7 @@
 <h2 id="2-6-수집-결과-다운로드-수집-결과-병합"><a href="#2-6-수집-결과-다운로드-수집-결과-병합" class="headerlink" title="2-6. 수집 결과 다운로드, 수집 결과 병합"></a>2-6. 수집 결과 다운로드, 수집 결과 병합</h2><h3 id="2-6-1-수집-결과-다운로드"><a href="#2-6-1-수집-결과-다운로드" class="headerlink" title="2-6-1. 수집 결과 다운로드"></a>2-6-1. 수집 결과 다운로드</h3><ul>
 <li>각 머신에서 수집 결과 파일을 받는다.</li>
 <li>결과 파일 이름은 머신이름_seoulK_with_body.csv 이기 때문에, 여기에 맞춰서 코드가 작성되었다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">start_num=1</span><br><span class="line">last_num=32</span><br><span class="line">instance_num=<span class="variable">$&#123;start_num&#125;</span></span><br><span class="line">scp_upload_prefix=<span class="string">"gcloud compute scp --recurse "</span></span><br><span class="line">machine_prefix=<span class="string">"cw-machine-"</span></span><br><span class="line">remote_dir=<span class="string">":~/SeoulK/"</span></span><br><span class="line">name_todownload=<span class="string">"_seoulK_with_body.csv"</span></span><br><span class="line">local_destination=<span class="string">" /Users/youngjinlim/Downloads/file_from_instances"</span></span><br><span class="line">zone_prefix=<span class="string">" --zone"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=last_num)); <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+7) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-east1-b"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+8) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+15) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-west1-a"</span></span><br><span class="line">    <span class="keyword">elif</span> (( <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&gt;=(start_num+16) &amp;&amp; <span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>&lt;=(start_num+23) )); <span class="keyword">then</span></span><br><span class="line">        zone=<span class="string">" us-central1-a"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        zone=<span class="string">" northamerica-northeast1-a"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    machine_name=<span class="variable">$machine_prefix</span><span class="variable">$instance_num</span></span><br><span class="line">    final_file_name=<span class="variable">$machine_name</span><span class="variable">$name_todownload</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$scp_upload_prefix</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span><span class="variable">$final_file_name</span><span class="variable">$local_destination</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span></span><br><span class="line">    <span class="variable">$scp_upload_prefix</span><span class="variable">$machine_name</span><span class="variable">$remote_dir</span><span class="variable">$final_file_name</span><span class="variable">$local_destination</span><span class="variable">$zone_prefix</span><span class="variable">$zone</span> &amp;</span><br><span class="line"></span><br><span class="line">    ((instance_num=<span class="string">"<span class="variable">$&#123;instance_num&#125;</span>"</span>+1))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">wait</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"All processes are done!"</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="2-6-2-수집-결과-병합"><a href="#2-6-2-수집-결과-병합" class="headerlink" title="2-6-2. 수집 결과 병합"></a>2-6-2. 수집 결과 병합</h3><ul>
+<h3 id="2-6-2-수집-결과-병합"><a href="#2-6-2-수집-결과-병합" class="headerlink" title="2-6-2. 수집 결과 병합"></a>2-6-2. 수집 결과 병합</h3></li>
 <li>수집 결과 파일(csv)이 여러 개 쌓였을 텐데, 하나로 병합하자.</li>
 <li>결과 파일 하나하나가 몇백MB 단위이기 때문에 때문에 외부 툴을 사용하는 건 무리고, shell에서 바로 합치자.</li>
 <li>awk ‘FNR &gt; 1’ *.csv &gt; merged_body.csv`<ul>
@@ -378,6 +834,125 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/04/bankrup-pre-start/"
+                            aria-label=": &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
+                        >
+                            &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T00:00:00+09:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#주제-기업부도예측-with-머신러닝"><span class="toc-text">주제 : 기업부도예측 with 머신러닝</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-주제-선정-이유"><span class="toc-text">1. 주제 선정 이유</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-부도의-기준"><span class="toc-text">2. 부도의 기준</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-프로젝트-목표"><span class="toc-text">3. 프로젝트 목표</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-수집한-데이터"><span class="toc-text">4. 수집한 데이터</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-재무-데이터"><span class="toc-text">4-1. 재무 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-주가-데이터"><span class="toc-text">4-2. 주가 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-기사-데이터"><span class="toc-text">4-3. 기사 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-감사보고서-데이터"><span class="toc-text">4-4. 감사보고서 데이터</span></a></li></ul></li></ul>
+<hr>
+<h1 id="주제-기업부도예측-with-머신러닝"><a href="#주제-기업부도예측-with-머신러닝" class="headerlink" title="주제 : 기업부도예측 with 머신러닝"></a>주제 : 기업부도예측 with 머신러닝</h1><h1 id="1-주제-선정-이유"><a href="#1-주제-선정-이유" class="headerlink" title="1. 주제 선정 이유"></a>1. 주제 선정 이유</h1><ul>
+<li>10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원</li>
+<li>우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?<ul>
+<li>펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가</li>
+</ul>
+</li>
+<li>기업신용평가 <ul>
+<li>개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; <a href="https://www.thebell.co.kr/free/content/ArticleView.asp?key=201910300100055920003479&amp;lcode=00" target="_blank" rel="noopener">‘기업’ 신용평가에 ML 탑재한 KB국민은행</a></li>
+<li>정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-부도의-기준"><a href="#2-부도의-기준" class="headerlink" title="2. 부도의 기준"></a>2. 부도의 기준</h1><ul>
+<li>한국금융연구원의 <a href="http://www.kcft.or.kr/wp-content/uploads/2018/01/131605558932838295_WP17-08-1.pdf" target="_blank" rel="noopener">빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구</a> 보고서의 기준 사용<ul>
+<li>이 보고서에서는 아이디어와 접근방법을 참고하였음</li>
+<li>사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님</li>
+</ul>
+</li>
+<li>증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행<ul>
+<li>‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의</li>
+</ul>
+</li>
+<li>상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…</li>
+</ul>
+<h1 id="3-프로젝트-목표"><a href="#3-프로젝트-목표" class="headerlink" title="3. 프로젝트 목표"></a>3. 프로젝트 목표</h1><ul>
+<li>3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작<ul>
+<li>부도 확률을 수치로 나타낼 수 있다면 더욱 좋음</li>
+</ul>
+</li>
+<li>웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공<ul>
+<li>원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 </li>
+</ul>
+</li>
+</ul>
+<h1 id="4-수집한-데이터"><a href="#4-수집한-데이터" class="headerlink" title="4. 수집한 데이터"></a>4. 수집한 데이터</h1><h2 id="4-1-재무-데이터"><a href="#4-1-재무-데이터" class="headerlink" title="4-1. 재무 데이터"></a>4-1. 재무 데이터</h2><ul>
+<li>금융정보 데이터베이스 <a href="http://www.dataguide.co.kr" target="_blank" rel="noopener">Dataguide</a>의 데이터를 사용<ul>
+<li>부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터</li>
+</ul>
+</li>
+<li>Dart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택</li>
+</ul>
+<h2 id="4-2-주가-데이터"><a href="#4-2-주가-데이터" class="headerlink" title="4-2. 주가 데이터"></a>4-2. 주가 데이터</h2><ul>
+<li>상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용<ul>
+<li>예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)</li>
+</ul>
+</li>
+<li>생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)</li>
+</ul>
+<h2 id="4-3-기사-데이터"><a href="#4-3-기사-데이터" class="headerlink" title="4-3. 기사 데이터"></a>4-3. 기사 데이터</h2><ul>
+<li>수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이<ul>
+<li>선정기준 : <a href="http://www.kabc.or.kr/about/notices/100000002950" target="_blank" rel="noopener">한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중</a>, 경제지 Top 5</li>
+</ul>
+</li>
+<li>각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집</li>
+<li>데이터 전처리 후 남은 총 기사 수 : 2,380,889개</li>
+</ul>
+<h2 id="4-4-감사보고서-데이터"><a href="#4-4-감사보고서-데이터" class="headerlink" title="4-4. 감사보고서 데이터"></a>4-4. 감사보고서 데이터</h2><ul>
+<li>감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험</li>
+<li>Dart 전자공시에서 데이터 수집</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/04/bankrup-pre-start/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/12/05/clustering-crawled-articles-k-means-clustering1/"
                             aria-label=": 테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
                         >
@@ -394,7 +969,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/machine-learning/">Machine learning</a>
+    <a class="category-link" href="/categories/%EC%8B%A4%EC%A0%84%EA%B2%BD%ED%97%98-%EA%B8%B0%EB%A1%9D/">실전경험_기록</a>
 
 
     
@@ -449,20 +1024,15 @@
 </ul>
 <p><strong>2. 무작위 데이터 만들기</strong></p>
 <ul>
-<li><p>2차원 공간에다 무작위 데이터를 생성하자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X= <span class="number">-2</span> * np.random.rand(<span class="number">100</span>,<span class="number">2</span>) <span class="comment"># 100 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X1 = <span class="number">1</span> + <span class="number">2</span> * np.random.rand(<span class="number">50</span>,<span class="number">2</span>) <span class="comment"># 50 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X[<span class="number">50</span>:<span class="number">100</span>, :] = X1 <span class="comment"># X의 50번 원소부터 100번 원소까지 X1으로 치환한다</span></span><br><span class="line">fig = px.scatter(X, x=X[: ,<span class="number">0</span>], y=X[: ,<span class="number">1</span>])</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
-<p>아래와 같이 산점도가 그려진다.<br><img src="https://2.bp.blogspot.com/-AsJuYI5P2Cs/Xe4DC7y4m9I/AAAAAAAAADk/42Zf0Y4ENHU0gMESO2kmNR0Xqp4WDtXQACLcBGAsYHQ/s1600/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%2B2019-12-09%2B%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE%2B5.17.00.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_randomData"></p>
-</li>
+<li>2차원 공간에다 무작위 데이터를 생성하자.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X= <span class="number">-2</span> * np.random.rand(<span class="number">100</span>,<span class="number">2</span>) <span class="comment"># 100 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X1 = <span class="number">1</span> + <span class="number">2</span> * np.random.rand(<span class="number">50</span>,<span class="number">2</span>) <span class="comment"># 50 * 2 shape의 ndarray 생성. 난수값들이 담겨있음</span></span><br><span class="line">X[<span class="number">50</span>:<span class="number">100</span>, :] = X1 <span class="comment"># X의 50번 원소부터 100번 원소까지 X1으로 치환한다</span></span><br><span class="line">fig = px.scatter(X, x=X[: ,<span class="number">0</span>], y=X[: ,<span class="number">1</span>])</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+아래와 같이 산점도가 그려진다.<br><img src="https://2.bp.blogspot.com/-AsJuYI5P2Cs/Xe4DC7y4m9I/AAAAAAAAADk/42Zf0Y4ENHU0gMESO2kmNR0Xqp4WDtXQACLcBGAsYHQ/s1600/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%2B2019-12-09%2B%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE%2B5.17.00.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_randomData"></li>
 </ul>
 <p><strong>3. Scikit-Learn 사용하기</strong></p>
 <ul>
-<li><p>Scikit-Learn 라이브러리의, 무작위 데이터를 다루기 위한 함수들을 사용하자.</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Kmean = KMeans(n_clusters=<span class="number">2</span>)</span><br><span class="line">Kmean.fit(X)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>이 경우에는, 임의로 k값을 2로 주었다.</p>
-</li>
+<li>Scikit-Learn 라이브러리의, 무작위 데이터를 다루기 위한 함수들을 사용하자.  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Kmean = KMeans(n_clusters=<span class="number">2</span>)</span><br><span class="line">Kmean.fit(X)</span><br></pre></td></tr></table></figure></li>
+<li>이 경우에는, 임의로 k값을 2로 주었다.</li>
 <li><p>위의 코드를 실행하면, 아래와 같은 결과값이 나온다.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">KMeans(algorithm=&apos;auto&apos;, copy_x=True, init=&apos;k-means++&apos;, max_iter=300,</span><br><span class="line">    n_clusters=2, n_init=10, n_jobs=None, precompute_distances=&apos;auto&apos;,</span><br><span class="line">    random_state=None, tol=0.0001, verbose=0)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">KMeans(algorithm&#x3D;&#39;auto&#39;, copy_x&#x3D;True, init&#x3D;&#39;k-means++&#39;, max_iter&#x3D;300,</span><br><span class="line">    n_clusters&#x3D;2, n_init&#x3D;10, n_jobs&#x3D;None, precompute_distances&#x3D;&#39;auto&#39;,</span><br><span class="line">    random_state&#x3D;None, tol&#x3D;0.0001, verbose&#x3D;0)</span><br></pre></td></tr></table></figure>
 <p>  각각의 항목은 무슨 의미일까?</p>
 <ul>
 <li><p>altorithm : 어떤 알고리즘을 사용했는가?</p>
@@ -513,25 +1083,17 @@
 <p><strong>4.중앙 찾기</strong></p>
 <ul>
 <li>아래 코드를 실행하여 중앙값을 찾아보자.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kmean.cluster_centers_</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[-0.94665068, -0.97138368],</span><br><span class="line"> [ 2.01559419, 2.02597093]])</span><br></pre></td></tr></table></figure>
-<ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[-0.94665068, -0.97138368],</span><br><span class="line"> [ 2.01559419, 2.02597093]])</span><br></pre></td></tr></table></figure></li>
 <li>중앙값을 산점도에 표시해보자.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> plotly.graph_objects <span class="keyword">as</span> go</span><br><span class="line">fig = go.Figure()</span><br><span class="line">fig.add_trace(go.Scatter(x=X[: ,<span class="number">0</span>], y=X[: ,<span class="number">1</span>], mode=<span class="string">'markers'</span>))</span><br><span class="line">fig.add_trace(go.Scatter(x=[<span class="number">1.97035726</span>], y=[<span class="number">1.87606743</span>], mode=<span class="string">'markers'</span>, marker=dict(size=<span class="number">20</span>), fillcolor=<span class="string">'red'</span>))</span><br><span class="line">fig.add_trace(go.Scatter(x=[<span class="number">-1.03194238</span>], y=[<span class="number">-0.86428206</span>], mode=<span class="string">'markers'</span>, marker=dict(size=<span class="number">20</span>), fillcolor=<span class="string">'cyan'</span>))</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
-</li>
+<img src="https://1.bp.blogspot.com/-TYn0Yw1aX9g/Xe7xt1DE2BI/AAAAAAAAAD0/pLtEgrz-WvYpNs5ekaSXq7HAuIVnTCQqgCLcBGAsYHQ/s1600/newplot.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_withCenter"></li>
 </ul>
-<p><img src="https://1.bp.blogspot.com/-TYn0Yw1aX9g/Xe7xt1DE2BI/AAAAAAAAAD0/pLtEgrz-WvYpNs5ekaSXq7HAuIVnTCQqgCLcBGAsYHQ/s1600/newplot.png" alt="Oops, Some network ants ate this pic!" title="Scatterplot_withCenter"></p>
 <p><strong>5. 알고리즘 테스트</strong></p>
 <ul>
-<li><p>데이터가 어떻게 두 클러스터로 분류되었을까?</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kmean.labels_</span><br></pre></td></tr></table></figure>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=int32)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>새로운 데이터를 넣으면 어떻게 예측을 할까?</p>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sample_test=np.array([<span class="number">-3.0</span>,<span class="number">-3.0</span>])</span><br><span class="line">second_test=sample_test.reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">Kmean.predict(second_test)</span><br></pre></td></tr></table></figure>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([1], dtype=int32)</span><br></pre></td></tr></table></figure>
-<p>  1번 클러스터에 들어갈 것이라고 예측하였다.</p>
-<ul>
+<li>데이터가 어떻게 두 클러스터로 분류되었을까?  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kmean.labels_</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,</span><br><span class="line">    1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,</span><br><span class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype&#x3D;int32)</span><br></pre></td></tr></table></figure></li>
+<li>새로운 데이터를 넣으면 어떻게 예측을 할까?  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sample_test=np.array([<span class="number">-3.0</span>,<span class="number">-3.0</span>])</span><br><span class="line">second_test=sample_test.reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">Kmean.predict(second_test)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([1], dtype&#x3D;int32)</span><br></pre></td></tr></table></figure>
+  1번 클러스터에 들어갈 것이라고 예측하였다.<ul>
 <li><a href="https://rfriend.tistory.com/345" target="_blank" rel="noopener">reshape의 -1에 대하여</a></li>
 </ul>
 </li>
@@ -645,9 +1207,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/11/24/python-asyncio-for-web-crawling-2/"
-                            aria-label=": Python Asyncio - 개념이해부터 실전적용까지 (끝)"
+                            aria-label=": &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (끝)"
                         >
-                            Python Asyncio - 개념이해부터 실전적용까지 (끝)
+                            &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (끝)
                         </a>
                     
                 </h1>
@@ -660,7 +1222,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -727,7 +1289,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/computer-science/">Computer Science</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -769,8 +1331,7 @@
 </ul>
 </li>
 <li>이 X,Y 예에서는, Synchronous는 <strong>X가 Y에게 책 찾았냐고 물어보고,</strong>(caller가 callee의 상태 확인) Y가 책이 있는지 없는지 X에게 알려 준 이후에야, X가 Y에게 “그래서 이 책 얼마죠?” 라고 물어보던가, “그 책 주문 좀 해주세요” 라고 요청할 수 있는 상황인 것이다.(작업 순서) 책이 있는지 확인한 다음에 가격을 물어보던지 주문을 요청하던지 할 수 있으니까. X가 Y가 책 찾는 동안 다른 무언가를 하는 건 상관이 없다. 서점 앞에서 줄넘기를 할 수도 있지 않은가? 책에 관련된 다음 일을 못하는 것 뿐.</li>
-<li><p>이렇게 봐도 상당히 헷갈리기 때문에, 코드를 보자. 아래의 코드는 <em>Synchronous &amp; Non-Blocking</em> 한 간단한 코드이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># thread X</span></span><br><span class="line"><span class="keyword">while</span> (true)</span><br><span class="line">&#123;</span><br><span class="line">    msg = recv(Y, NON_BLOCKING_FLAG);</span><br><span class="line">    <span class="keyword">if</span> (msg <span class="keyword">is</span> <span class="keyword">not</span> empty)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 이 루프 안에서 다른 작업을 할 수 있다.</span></span><br><span class="line">    sleep(<span class="number">2000</span>); // <span class="number">2</span> sec</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># thread Y</span></span><br><span class="line"><span class="comment"># prepare the book for X</span></span><br><span class="line">send(X, book);</span><br></pre></td></tr></table></figure>
+<li>이렇게 봐도 상당히 헷갈리기 때문에, 코드를 보자. 아래의 코드는 <em>Synchronous &amp; Non-Blocking</em> 한 간단한 코드이다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># thread X</span></span><br><span class="line"><span class="keyword">while</span> (true)</span><br><span class="line">&#123;</span><br><span class="line">    msg = recv(Y, NON_BLOCKING_FLAG);</span><br><span class="line">    <span class="keyword">if</span> (msg <span class="keyword">is</span> <span class="keyword">not</span> empty)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 이 루프 안에서 다른 작업을 할 수 있다.</span></span><br><span class="line">    sleep(<span class="number">2000</span>); // <span class="number">2</span> sec</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># thread Y</span></span><br><span class="line"><span class="comment"># prepare the book for X</span></span><br><span class="line">send(X, book);</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>X가 2초마다 Y가 답을 줬는지 아닌지 확인한다.</strong> </li>
 <li>Y가 결과를 반환하기 위해 준비 중이어도, X의 while 루프는 계속 돌아가고 그 안에서 다른 작업을 진행할 수 있다. <strong>그래서 Non-Blocking이다.</strong></li>
@@ -871,9 +1432,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/11/10/python-asyncio-for-web-crawling/"
-                            aria-label=": Python Asyncio - 개념이해부터 실전적용까지 (1)"
+                            aria-label=": &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (1)"
                         >
-                            Python Asyncio - 개념이해부터 실전적용까지 (1)
+                            &lt;Python&gt; Asyncio - 개념이해부터 실전적용까지 (1)
                         </a>
                     
                 </h1>
@@ -886,7 +1447,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -905,12 +1466,9 @@
 <p>응~ 한 번에 Thread 하나만 작동시킬꺼야~ 멀티코어여도 안돼~<br>그 이유는 이 글을 보도록 하자. 너무 쉽게 잘 설명했다.<br><a href="https://realpython.com/python-gil/" target="_blank" rel="noopener">“What is the Python Global Interpreter Lock (GIL)?”</a></p>
 <h3 id="위-글의-요약"><a href="#위-글의-요약" class="headerlink" title="위 글의 요약"></a>위 글의 요약</h3><ul>
 <li>간단하게 말하면, Global Interpreter Lock은 딱 하나의 thread만 python interpreter에서 동작하게 하는 <a href="https://en.wikipedia.org/wiki/Mutual_exclusion" target="_blank" rel="noopener">mutex(or a lock)</a>다.</li>
-<li><p>Python의 메모리 관리 : Reference Counting</p>
-<ul>
-<li><p>Python에서 생성된 객체는, 객체가 참조된 수를 추적하는 reference count 변수를 가지고 있다. 이 count가 0이 되면, 그 객체에 의해 점유되고 있던 메모리가 해제된다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = []</span><br><span class="line">b = a</span><br><span class="line">print(sys.getrefcount(a))</span><br><span class="line"><span class="comment"># 출력값 : 3</span></span><br></pre></td></tr></table></figure>
-<p>refcount가 3인 이유는, 빈 리스트 <code>[]</code>가 a, b, sys.getrefcount의 argument 이렇게 세 곳에서 참조되고 있기 때문이다.</p>
-</li>
+<li>Python의 메모리 관리 : Reference Counting<ul>
+<li>Python에서 생성된 객체는, 객체가 참조된 수를 추적하는 reference count 변수를 가지고 있다. 이 count가 0이 되면, 그 객체에 의해 점유되고 있던 메모리가 해제된다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = []</span><br><span class="line">b = a</span><br><span class="line">print(sys.getrefcount(a))</span><br><span class="line"><span class="comment"># 출력값 : 3</span></span><br></pre></td></tr></table></figure>
+refcount가 3인 이유는, 빈 리스트 <code>[]</code>가 a, b, sys.getrefcount의 argument 이렇게 세 곳에서 참조되고 있기 때문이다.</li>
 </ul>
 </li>
 <li><a href="https://jhnyang.tistory.com/35" target="_blank" rel="noopener">Race Condition</a> :<ul>
@@ -937,7 +1495,7 @@
 <li>Lock 할당과 해제 작업이 계속 일어나기 때문에, CPU-bound 프로그램에서는 Single-thread보다 속도가 느린 참사가 발생한다. &lt; <a href="https://realpython.com/python-gil/#the-impact-on-multi-threaded-python-programs" target="_blank" rel="noopener">예시</a></li>
 <li><p>I/O bound한 작업에서는, thread가 대부분의 시간을 I/O에 할당하고 있고, 이는 CPU에 관련된 작업이 아니다. URL 요청이라고 하면, 아래와 같은 그림이 될 것이다. 성능 향상 가능! &lt; <a href="https://medium.com/towards-artificial-intelligence/the-why-when-and-how-of-using-python-multi-threading-and-multi-processing-afd1b8a8ecca" target="_blank" rel="noopener">예시</a><br><img src="https://drive.google.com/uc?id=1IIPZgoP0ZneP0XgpM-J0sIbcolDhV_cC" alt="Oops, Some network ants ate this pic!" title="IO Bound Multithreading"> Source : <a href="https://realpython.com/python-concurrency/" target="_blank" rel="noopener">Speed Up Your Python Program With Concurrency</a></p>
 </li>
-<li><p>Threading 튜토리얼은 <a href="hhttps://realpython.com/intro-to-python-threading/" target="_blank" rel="noopener">여기</a>를 참고하자.</p>
+<li><p>Threading 튜토리얼은 <a href="hhttps://realpython.com/intro-to-python-threading/">여기</a>를 참고하자.</p>
 </li>
 </ul>
 <h2 id="Multi-Processing"><a href="#Multi-Processing" class="headerlink" title="Multi-Processing"></a>Multi-Processing</h2><ul>
@@ -981,10 +1539,8 @@
 <p>보통 함수는 한 번 호출되면 return값을 call한 곳으로 반환 후 종료되며, 메모리에서 클리어 된다. 그런데 위의 함수를 실행하면,</p>
 <ol>
 <li>read_txt_linebyline이 arguments들을 받고 호출된다.</li>
-<li><p>read_txt_linebyline은 generator object를 반환한다. <code>dir()</code>로 generator object가 가지고 있는 메소드를 확인해보면,</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(dir(readlines_generator))</span><br><span class="line"><span class="comment"># 출력값 :</span></span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__del__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dir__'</span></span><br><span class="line"><span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>,<span class="string">'__getattribute__'</span>,</span><br><span class="line"><span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,<span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__iter__'</span>,</span><br><span class="line"><span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__next__'</span>,</span><br><span class="line"><span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,<span class="string">'__subclasshook__'</span>,</span><br><span class="line"><span class="string">'close'</span>, <span class="string">'gi_code'</span>, <span class="string">'gi_frame'</span>, <span class="string">'gi_running'</span>, <span class="string">'gi_yieldfrom'</span>, <span class="string">'send'</span>, <span class="string">'throw'</span>]</span><br></pre></td></tr></table></figure>
-<p><code>__next__</code>가 보인다. iterator임을 알 수 있다. <a href="https://docs.python.org/3/library/stdtypes.html#typeiter" target="_blank" rel="noopener"><code>__iter__</code>도 있는데, 직접 실행해 보니 자기 자신을 반환한다.</a> iterator가 맞다.</p>
-</li>
+<li>read_txt_linebyline은 generator object를 반환한다. <code>dir()</code>로 generator object가 가지고 있는 메소드를 확인해보면,<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(dir(readlines_generator))</span><br><span class="line"><span class="comment"># 출력값 :</span></span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__del__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dir__'</span></span><br><span class="line"><span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>,<span class="string">'__getattribute__'</span>,</span><br><span class="line"><span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,<span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__iter__'</span>,</span><br><span class="line"><span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__next__'</span>,</span><br><span class="line"><span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,<span class="string">'__subclasshook__'</span>,</span><br><span class="line"><span class="string">'close'</span>, <span class="string">'gi_code'</span>, <span class="string">'gi_frame'</span>, <span class="string">'gi_running'</span>, <span class="string">'gi_yieldfrom'</span>, <span class="string">'send'</span>, <span class="string">'throw'</span>]</span><br></pre></td></tr></table></figure>
+<code>__next__</code>가 보인다. iterator임을 알 수 있다. <a href="https://docs.python.org/3/library/stdtypes.html#typeiter" target="_blank" rel="noopener"><code>__iter__</code>도 있는데, 직접 실행해 보니 자기 자신을 반환한다.</a> iterator가 맞다.</li>
 <li><code>next(readlines_generator)</code>로 처음 값을 요청하면, 코드가 실행되다가 처음으로 yield를 만나게 된다. 여기서 txt 파일에서 읽어온 line이 반환되는데(<code>yield line</code>), 보통의 함수였다면 반환하고 끝났겠지만 여기서는 함수의 실행이 일단 멈춘다.</li>
 <li><code>next(read_txt_linebyline)</code>를 한번 더 호출하면, yield문에서부터 다시 함수가 실행되기 시작한다. <code>while True:</code> 안에서 동작하고 있으므로, 반복문의 처음으로 돌아가서 다시 다음 한 줄을 불러오게 된다.</li>
 <li>이후 계속 반복…</li>
@@ -1003,8 +1559,7 @@
  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    val = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    print(val)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line">gen = text()</span><br><span class="line">print(next(gen), <span class="string">'N1'</span>)</span><br><span class="line">print(next(gen), <span class="string">'N2'</span>)</span><br><span class="line">print(next(gen), <span class="string">'N3'</span>)</span><br><span class="line"><span class="comment">#### 출력값. 그냥 출력하면 다음과 같이 나온다.</span></span><br><span class="line"><span class="number">1</span> N1</span><br><span class="line"><span class="literal">None</span> <span class="comment"># (yield 1) 표현식에 아무런 값도 할당이 안 되었으므로 None이 된다.</span></span><br><span class="line"><span class="number">2</span> N2</span><br><span class="line"><span class="number">3</span> N3</span><br><span class="line"><span class="comment">###################################</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gen2 = test()</span><br><span class="line">gen2.send(<span class="string">'sth'</span>)</span><br><span class="line"><span class="comment">#### 출력값. Generator 시작 시에는 None을 보내야 한다. 값을 받을 yield 표현식이 없으므로 에러가 난다.</span></span><br><span class="line"><span class="comment">#TypeError    Traceback (most recent call last)</span></span><br><span class="line"><span class="comment">#&lt;ipython-input-75-df11fcdec14b&gt; in &lt;module&gt;</span></span><br><span class="line"><span class="comment">#----&gt; 1 get2.send('sth')</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#TypeError: can't send non-None value to a just-started generator</span></span><br><span class="line"><span class="comment">##################################</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gen3 = test()</span><br><span class="line">print(gen3.send(<span class="literal">None</span>))</span><br><span class="line">print(gen3.send(<span class="string">'sth'</span>))</span><br><span class="line">print(gen3.send(<span class="string">'sth'</span>))</span><br><span class="line"><span class="comment">#### 출력값.</span></span><br><span class="line"><span class="number">1</span> <span class="comment"># send의 argument를 None을 넣었더니 제대로 나온다.</span></span><br><span class="line">sth <span class="comment"># val = yield 1에서, (yield 1) 표현식의 값이 sth가 된다.</span></span><br><span class="line"><span class="comment"># 순서가 중요한데, 1 반환 후, (yield 1)부터 다시 시작하게 될 때 (yield 1) 표현식에 값이 할당된다.</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
 <p> <code>throw()</code>는 yield로 인해 generator가 멈추는 지점에서 예외를 발생시킨다.</p>
  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span> : </span><br><span class="line">            sth = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">            print(sth)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            print(type(e))</span><br><span class="line"></span><br><span class="line">gen = test2()</span><br><span class="line">gen.send(<span class="literal">None</span>)</span><br><span class="line">print(gen.send(<span class="number">100</span>))</span><br><span class="line"><span class="comment">#### 출력값 #</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="comment">###########</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(gen.throw(ArithmeticError, <span class="string">'hohoho'</span>))</span><br><span class="line">print(get.throw(BufferError, <span class="string">'huhuhu'</span>))</span><br><span class="line"><span class="comment">#### 출력값 ###############</span></span><br><span class="line"><span class="comment">#hohoho</span></span><br><span class="line"><span class="comment">#&lt;class 'ArithmeticError'&gt;</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#huhuhu</span></span><br><span class="line"><span class="comment">#&lt;class 'BufferError'&gt;</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#########################</span></span><br></pre></td></tr></table></figure>
-<h3 id="Generator에서-값-반환"><a href="#Generator에서-값-반환" class="headerlink" title="Generator에서 값 반환"></a>Generator에서 값 반환</h3><p>아니 이게 된다고? 네 됩니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'sth'</span></span><br><span class="line"></span><br><span class="line">gen = return_test()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> : </span><br><span class="line">    next(gen)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(type(e))</span><br><span class="line">    print(e.value)</span><br><span class="line">    print(dir(e))</span><br><span class="line"></span><br><span class="line"><span class="comment"># try 블록을 두 번 실행해서 StopIteration을 발동시키면, 출력값이 아래와 같이 된다.</span></span><br><span class="line"></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">StopIteration</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">sth</span></span></span><br><span class="line">['__cause__', '__class__', '__context__', '__delattr__',</span><br><span class="line"><span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>,</span><br><span class="line"><span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,</span><br><span class="line"><span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__ne__'</span>,</span><br><span class="line"><span class="string">'__new__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__setstate__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,</span><br><span class="line"><span class="string">'__subclasshook__'</span>, <span class="string">'__suppress_context__'</span>,</span><br><span class="line"><span class="string">'__traceback__'</span>, <span class="string">'args'</span>, <span class="string">'value'</span>, <span class="string">'with_traceback'</span>]</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://docs.python.org/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener">Python 공식 문서에 따르면</a>, return 값은 StopIteration class의 ‘value’라는 attribute에 할당되는데, 이 value는 StopIteration class의 constructor의 parameter다. <code>dir(e)</code>의 실행결과를 보면 value가 있음을 알 수 있다.</p>
+<h3 id="Generator에서-값-반환"><a href="#Generator에서-값-반환" class="headerlink" title="Generator에서 값 반환"></a>Generator에서 값 반환</h3><p>아니 이게 된다고? 네 됩니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_test</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'sth'</span></span><br><span class="line"></span><br><span class="line">gen = return_test()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> : </span><br><span class="line">    next(gen)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(type(e))</span><br><span class="line">    print(e.value)</span><br><span class="line">    print(dir(e))</span><br><span class="line"></span><br><span class="line"><span class="comment"># try 블록을 두 번 실행해서 StopIteration을 발동시키면, 출력값이 아래와 같이 된다.</span></span><br><span class="line"></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">StopIteration</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">sth</span></span></span><br><span class="line">['__cause__', '__class__', '__context__', '__delattr__',</span><br><span class="line"><span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>,</span><br><span class="line"><span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>,</span><br><span class="line"><span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__ne__'</span>,</span><br><span class="line"><span class="string">'__new__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>,</span><br><span class="line"><span class="string">'__setattr__'</span>, <span class="string">'__setstate__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,</span><br><span class="line"><span class="string">'__subclasshook__'</span>, <span class="string">'__suppress_context__'</span>,</span><br><span class="line"><span class="string">'__traceback__'</span>, <span class="string">'args'</span>, <span class="string">'value'</span>, <span class="string">'with_traceback'</span>]</span><br></pre></td></tr></table></figure><br><a href="https://docs.python.org/3/library/exceptions.html#StopIteration" target="_blank" rel="noopener">Python 공식 문서에 따르면</a>, return 값은 StopIteration class의 ‘value’라는 attribute에 할당되는데, 이 value는 StopIteration class의 constructor의 parameter다. <code>dir(e)</code>의 실행결과를 보면 value가 있음을 알 수 있다.</p>
 <h3 id="새로운-키워드를-맞이하라-yield-from"><a href="#새로운-키워드를-맞이하라-yield-from" class="headerlink" title="새로운 키워드를 맞이하라! : yield from"></a>새로운 키워드를 맞이하라! : yield from</h3><ul>
 <li>Python 3.4에서 <a href="https://docs.python.org/3/reference/expressions.html#yield-expressions" target="_blank" rel="noopener">yield from</a>이라는 키워드가 생겼다. 이 키워드는 <code>yield from [expression]</code>의 구조로 사용되는데, expression을 일종의 iterator(subiterator)로 취급한다. expression에서 생성된 값을 계속 받아오는 것이다.</li>
 <li><code>send()</code>, <code>throw()</code>로 expression에 값을 보낼 수 있는데, expression 내부에 이 보내진 값을 활용할 수 있는 메소드가 있다면 잘 사용된다.<ul>
@@ -1035,8 +1590,7 @@
 <p>응? 그럼 coroutine이 generator와 다른 점은 뭐지?<br><blockquote><p>All of this makes generator functions quite similar to coroutines; they yield multiple times, they have more than one entry point and their execution can be suspended. The only difference is that a generator function cannot control where should the execution continue after it yields; the control is always transferred to the generator’s caller.</p>
 <footer><strong>Python Docs</strong><cite><a href="https://docs.python.org/3/reference/expressions.html#yieldexpr" target="_blank" rel="noopener">Yield expressions</a></cite></footer></blockquote><br>generator의 경우, 잠깐 멈췄을 때(yield) 실행을 어디로 넘길 것인지 조정할 수가 없다. 무조건 그 generator의 caller에게 가게 된다. coroutine은 이걸 조정 가능한 것 같은데, 예를 들면 자신의 caller가 아니라 다른 coroutine에게 넘기는 식이다. 코드도 그런 식으로 작동하고.</p>
 <p>그럼, asyncio에서는 coroutine을 어떻게 사용하는걸까?<br>coroutine은 <a href="https://docs.python.org/3/reference/compound_stmts.html#coroutine-function-definition" target="_blank" rel="noopener"><code>async def</code></a>라는 키워드를 통해 정의된다. coroutine은 generator가 yield from을 사용하는 것처럼, <a href="https://docs.python.org/3/reference/expressions.html#await" target="_blank" rel="noopener"><code>await</code></a>라는 키워드를 사용한다. 이 두 키워드가 Python 3.5버전에서 만들어지기 전에는, coroutine을 만들 때 generator처럼 yield from을 사용했었다.</p>
-<p>짤막한 예제를 하나 보자. <a href="https://docs.python.org/3.5/library/asyncio-task.html#example-chain-coroutines" target="_blank" rel="noopener">출처</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나는 coroutine!</span></span><br><span class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>) <span class="comment"># 1초 기다릴래! 그런데 기다리는 동안 난 제어 권한을 넘길(yield)거야! 다른 작업 해볼래?</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나도 coroutine!</span></span><br><span class="line">    result = <span class="keyword">await</span> compute(x, y) <span class="comment"># compute가 완료될 때까지 기다릴래! 그런데 기다리는 동안 다른 작업을 실행할 수 있어!</span></span><br><span class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(print_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">loop.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최신 고수준 API에서는</span></span><br><span class="line">asyncio.run(print_sum(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 라고 하면 위의 loop 3줄을 대체할 수 있다.</span></span><br><span class="line"><span class="comment"># 예제가 Python 3.5.9 기준이라 loop 3줄을 쓰고 있다.</span></span><br><span class="line"><span class="comment"># 하지만 기본 원리를 직관적으로 알고 싶으므로 이대로 진행해보자.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값은 아래와 같다.</span></span><br><span class="line"><span class="comment"># Compute 1 + 2 ...</span></span><br><span class="line"><span class="comment">#  1 + 2 = 3</span></span><br></pre></td></tr></table></figure></p>
-<p>출력값은 별거 없어 보이는데, 뒤에서 어떻게 작동되냐면…</p>
+<p>짤막한 예제를 하나 보자. <a href="https://docs.python.org/3.5/library/asyncio-task.html#example-chain-coroutines" target="_blank" rel="noopener">출처</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나는 coroutine!</span></span><br><span class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1.0</span>) <span class="comment"># 1초 기다릴래! 그런데 기다리는 동안 난 제어 권한을 넘길(yield)거야! 다른 작업 해볼래?</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span> <span class="comment"># 나도 coroutine!</span></span><br><span class="line">    result = <span class="keyword">await</span> compute(x, y) <span class="comment"># compute가 완료될 때까지 기다릴래! 그런데 기다리는 동안 다른 작업을 실행할 수 있어!</span></span><br><span class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(print_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">loop.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최신 고수준 API에서는</span></span><br><span class="line">asyncio.run(print_sum(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="comment"># 라고 하면 위의 loop 3줄을 대체할 수 있다.</span></span><br><span class="line"><span class="comment"># 예제가 Python 3.5.9 기준이라 loop 3줄을 쓰고 있다.</span></span><br><span class="line"><span class="comment"># 하지만 기본 원리를 직관적으로 알고 싶으므로 이대로 진행해보자.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값은 아래와 같다.</span></span><br><span class="line"><span class="comment"># Compute 1 + 2 ...</span></span><br><span class="line"><span class="comment">#  1 + 2 = 3</span></span><br></pre></td></tr></table></figure><br>출력값은 별거 없어 보이는데, 뒤에서 어떻게 작동되냐면…</p>
 <blockquote>
 <p>compute() is chained to print_sum(): print_sum() coroutine waits until compute() is completed before returning its result.</p>
 </blockquote>
@@ -1059,8 +1613,7 @@
 <p>위의 예제에서는, task 객체가 생성되어 coroutine print_sum()과 compute()를 감싸고, 이들의 실행결과를 기다리다가-받는다. task들은 event loop에 등록되며, event loop가 task들의 실행을 관리한다.</p>
 <p>이제 어떻게 돌아가는지 알았다.<br>그럼 이걸로 어떻게 비동기적으로 http 요청을 받고, 저장할 수 있을까?</p>
 <h1 id="비동기적으로-Http-응답-받기"><a href="#비동기적으로-Http-응답-받기" class="headerlink" title="비동기적으로 Http 응답 받기"></a>비동기적으로 Http 응답 받기</h1><p>requests는 <a href="https://nesoy.github.io/articles/2017-01/Synchronized" target="_blank" rel="noopener">blocking</a> 라이브러리다. http 응답을 기다리는 동안 아무것도 못 한다는 것이다. <a href="https://sjquant.tistory.com/14?category=797018" target="_blank" rel="noopener">requests로도 어떻게 할 수는 있는데</a>, 역시나 내부적으로는 multi-threading으로 동작하는 것이어서 비동기적 처리가 아니다.</p>
-<p>비동기적 http 요청을 보낼 수 있는 <code>aiohttp</code> 라이브러리를 사용하자.<br>간단한 예제 코드를 살펴보면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_text_from_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session: <span class="comment"># 다 끝나면 세션을 닫을것이다.</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> session.get(url, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0'</span>&#125;) <span class="keyword">as</span> req: <span class="comment"># 다 끝나면 get 요청도 닫을것이다.</span></span><br><span class="line">            html = <span class="keyword">await</span> req.text() <span class="comment"># 여기서 시간이 오래 걸리므로 기다린다.</span></span><br><span class="line">    print(<span class="string">f'Get response from <span class="subst">&#123;url&#125;</span>'</span>)</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    print(soup.text[:<span class="number">100</span>].strip())</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    urls = [<span class="string">'http://google.com'</span>, <span class="string">'http://naver.com'</span>, <span class="string">'http://daum.net'</span>\</span><br><span class="line">    ,<span class="string">'http://depromeet.com'</span>, <span class="string">'http://facebook.com'</span>]*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 실행해서 결과 받아올래~ 라는 coroutine 목록을 만든다.</span></span><br><span class="line">    futures = (get_text_from_url(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls) </span><br><span class="line">    <span class="comment"># generator expression으로 했는데, list comprehension으로 해도 된다.</span></span><br><span class="line">    <span class="comment"># 대상이 엄청나게 많을 경우를 생각한다면 url도 generator로 하나씩  생성하는 형태로 만들고,</span></span><br><span class="line">    <span class="comment"># coroutine 생성도 generator expression으로 하는게 좋아 보인다.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*futures)</span><br><span class="line">    <span class="comment"># 첫 번째 인자로 받은 awaitable 객체들을 실행한다.</span></span><br><span class="line">    <span class="comment"># 받은 객체들이 coroutine이면, 알아서 task로서 스케쥴링이 된다.</span></span><br><span class="line">    <span class="comment"># awaitable 객체들이 다 끝나면, 각 awaitable 객체들의 반환값을 리스트로 묶어서 반환한다.</span></span><br><span class="line">    <span class="comment"># 리스트 내의 반환값의 순서는 첫 번째 인자 - 여기서는 *futures -</span></span><br><span class="line">    <span class="comment"># 내의 awaitable 객체들의 순서를 따라간다.</span></span><br><span class="line">    <span class="comment"># https://docs.python.org/3/library/asyncio-task.html</span></span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">asyncio.run(main())</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">f'걸린 시간 : <span class="subst">&#123;end-start&#125;</span>'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>실행하면 대략 2.5초가 걸린다. 완전히 같은 동작을 하는 코드를 requests로 작성했을 때 12.2초가 걸리는 것을 생각하면 엄청난 속도향상이라고 볼 수 있겠다.</p>
+<p>비동기적 http 요청을 보낼 수 있는 <code>aiohttp</code> 라이브러리를 사용하자.<br>간단한 예제 코드를 살펴보면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_text_from_url</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session: <span class="comment"># 다 끝나면 세션을 닫을것이다.</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> session.get(url, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0'</span>&#125;) <span class="keyword">as</span> req: <span class="comment"># 다 끝나면 get 요청도 닫을것이다.</span></span><br><span class="line">            html = <span class="keyword">await</span> req.text() <span class="comment"># 여기서 시간이 오래 걸리므로 기다린다.</span></span><br><span class="line">    print(<span class="string">f'Get response from <span class="subst">&#123;url&#125;</span>'</span>)</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    print(soup.text[:<span class="number">100</span>].strip())</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    urls = [<span class="string">'http://google.com'</span>, <span class="string">'http://naver.com'</span>, <span class="string">'http://daum.net'</span>\</span><br><span class="line">    ,<span class="string">'http://depromeet.com'</span>, <span class="string">'http://facebook.com'</span>]*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 실행해서 결과 받아올래~ 라는 coroutine 목록을 만든다.</span></span><br><span class="line">    futures = (get_text_from_url(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls) </span><br><span class="line">    <span class="comment"># generator expression으로 했는데, list comprehension으로 해도 된다.</span></span><br><span class="line">    <span class="comment"># 대상이 엄청나게 많을 경우를 생각한다면 url도 generator로 하나씩  생성하는 형태로 만들고,</span></span><br><span class="line">    <span class="comment"># coroutine 생성도 generator expression으로 하는게 좋아 보인다.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*futures)</span><br><span class="line">    <span class="comment"># 첫 번째 인자로 받은 awaitable 객체들을 실행한다.</span></span><br><span class="line">    <span class="comment"># 받은 객체들이 coroutine이면, 알아서 task로서 스케쥴링이 된다.</span></span><br><span class="line">    <span class="comment"># awaitable 객체들이 다 끝나면, 각 awaitable 객체들의 반환값을 리스트로 묶어서 반환한다.</span></span><br><span class="line">    <span class="comment"># 리스트 내의 반환값의 순서는 첫 번째 인자 - 여기서는 *futures -</span></span><br><span class="line">    <span class="comment"># 내의 awaitable 객체들의 순서를 따라간다.</span></span><br><span class="line">    <span class="comment"># https://docs.python.org/3/library/asyncio-task.html</span></span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line">asyncio.run(main())</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">f'걸린 시간 : <span class="subst">&#123;end-start&#125;</span>'</span>)</span><br></pre></td></tr></table></figure><br>실행하면 대략 2.5초가 걸린다. 완전히 같은 동작을 하는 코드를 requests로 작성했을 때 12.2초가 걸리는 것을 생각하면 엄청난 속도향상이라고 볼 수 있겠다.</p>
 <p>그럼 이제 실전으로 들어가보자.<br>Asyncio로 작동되는 코드까지 다 완성해서 돌리고 있는데,<br>글이 너무 길어지는 바람에 실제 활용 설명은 2편에서…</p>
 
                     
@@ -1095,9 +1648,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/10/30/Decorator-Scope-Namespace/"
-                            aria-label=": Decorator가 뭐지? with Scope, Namespace"
+                            aria-label=": &lt;Python&gt; Decorator가 뭐지? with Scope, Namespace"
                         >
-                            Decorator가 뭐지? with Scope, Namespace
+                            &lt;Python&gt; Decorator가 뭐지? with Scope, Namespace
                         </a>
                     
                 </h1>
@@ -1110,7 +1663,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/python/">Python</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -1174,21 +1727,15 @@
 </ul>
 </li>
 </ul>
-<p>아래 코드를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">-1</span> <span class="comment"># Global</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">spam</span>:</span>    </span><br><span class="line">    x2 = <span class="number">-2</span> <span class="comment"># class body</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ham</span><span class="params">(self, bar)</span>:</span></span><br><span class="line">        <span class="comment"># enclosing function</span></span><br><span class="line">        x3 = <span class="number">-3</span></span><br><span class="line">        print(<span class="string">f'print global x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># global에서 받아옴</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">egg</span><span class="params">()</span>:</span></span><br><span class="line">            x4 = <span class="number">-4</span></span><br><span class="line">            x1 = <span class="string">'local x1'</span></span><br><span class="line">            print(<span class="string">f'print local x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># local에서 정의된 x1을 먼저 받아옴</span></span><br><span class="line">            print(<span class="string">f'print class body x2 : <span class="subst">&#123;self.x2&#125;</span>'</span>) <span class="comment"># class body에 정의된 객체를 가져오려면 self 키워드 필요.</span></span><br><span class="line">            <span class="comment"># 여기서 그냥 x2로 가져오려고 하면, local에도 없고 enclosing에도 없으니</span></span><br><span class="line">            <span class="comment"># global에서 찾게 된다 : print(f'print x2 : &#123;x2&#125;') 그리고 못 찾아서 에러를 낸다.</span></span><br><span class="line">            print(<span class="string">f'print enclosing x3 : <span class="subst">&#123;x3&#125;</span>'</span>) <span class="comment"># enclosing function 영역에서 받아옴</span></span><br><span class="line">            print(<span class="string">f'print abs of x4 : <span class="subst">&#123;abs(x4)&#125;</span>'</span>) <span class="comment"># Built-in에서 print, abs를 찾는다. local에서 x4를 찾는다.</span></span><br><span class="line">            print(bar) <span class="comment"># enclosing-function의 argument를 받는다.</span></span><br><span class="line">        egg()</span><br><span class="line"></span><br><span class="line">spam = spam()</span><br><span class="line">spam.ham(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">출력결과</span><br><span class="line">print global x1 : -1</span><br><span class="line">print local x1 : local x1</span><br><span class="line">print class body x2 : -2</span><br><span class="line">print enclosing x3 : -3</span><br><span class="line">print abs of x4 : 4</span><br><span class="line">foo</span><br></pre></td></tr></table></figure>
-<p>Class body영역은 scope에서 enclosing-function도 아니고 global도 아닌 독특한 위치를 차지하고 있는데, <a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules/23471004#23471004" target="_blank" rel="noopener">이 StackOverFlow 답변</a>을 참고하자.</p>
-<p>다시 원점으로 돌아오면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>“wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?”</strong> 도 해결되었다.</p>
+<p>아래 코드를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">-1</span> <span class="comment"># Global</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">spam</span>:</span>    </span><br><span class="line">    x2 = <span class="number">-2</span> <span class="comment"># class body</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ham</span><span class="params">(self, bar)</span>:</span></span><br><span class="line">        <span class="comment"># enclosing function</span></span><br><span class="line">        x3 = <span class="number">-3</span></span><br><span class="line">        print(<span class="string">f'print global x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># global에서 받아옴</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">egg</span><span class="params">()</span>:</span></span><br><span class="line">            x4 = <span class="number">-4</span></span><br><span class="line">            x1 = <span class="string">'local x1'</span></span><br><span class="line">            print(<span class="string">f'print local x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># local에서 정의된 x1을 먼저 받아옴</span></span><br><span class="line">            print(<span class="string">f'print class body x2 : <span class="subst">&#123;self.x2&#125;</span>'</span>) <span class="comment"># class body에 정의된 객체를 가져오려면 self 키워드 필요.</span></span><br><span class="line">            <span class="comment"># 여기서 그냥 x2로 가져오려고 하면, local에도 없고 enclosing에도 없으니</span></span><br><span class="line">            <span class="comment"># global에서 찾게 된다 : print(f'print x2 : &#123;x2&#125;') 그리고 못 찾아서 에러를 낸다.</span></span><br><span class="line">            print(<span class="string">f'print enclosing x3 : <span class="subst">&#123;x3&#125;</span>'</span>) <span class="comment"># enclosing function 영역에서 받아옴</span></span><br><span class="line">            print(<span class="string">f'print abs of x4 : <span class="subst">&#123;abs(x4)&#125;</span>'</span>) <span class="comment"># Built-in에서 print, abs를 찾는다. local에서 x4를 찾는다.</span></span><br><span class="line">            print(bar) <span class="comment"># enclosing-function의 argument를 받는다.</span></span><br><span class="line">        egg()</span><br><span class="line"></span><br><span class="line">spam = spam()</span><br><span class="line">spam.ham(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">출력결과</span><br><span class="line">print global x1 : -1</span><br><span class="line">print local x1 : local x1</span><br><span class="line">print class body x2 : -2</span><br><span class="line">print enclosing x3 : -3</span><br><span class="line">print abs of x4 : 4</span><br><span class="line">foo</span><br></pre></td></tr></table></figure><br>Class body영역은 scope에서 enclosing-function도 아니고 global도 아닌 독특한 위치를 차지하고 있는데, <a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules/23471004#23471004" target="_blank" rel="noopener">이 StackOverFlow 답변</a>을 참고하자.</p>
+<p>다시 원점으로 돌아오면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure><br><strong>“wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?”</strong> 도 해결되었다.</p>
 <hr>
-<h1 id="어디다-쓰지"><a href="#어디다-쓰지" class="headerlink" title="어디다 쓰지?"></a>어디다 쓰지?</h1><p>말 그대로, 이걸 어디다 쓸까? 간단한 예제를 살펴보자.<br>코드 출처 : <a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">verbose</span><span class="params">(func)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new_func</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"Begin"</span>, func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"End"</span>, func.__name__)</span><br><span class="line">    <span class="keyword">return</span> new_func</span><br></pre></td></tr></table></figure></p>
-<p>함수 호출의 시작과 끝을 print 출력으로 알리는 함수다. 아무 함수나 들어올 수 있게 parameter가 설정되어 있다.</p>
+<h1 id="어디다-쓰지"><a href="#어디다-쓰지" class="headerlink" title="어디다 쓰지?"></a>어디다 쓰지?</h1><p>말 그대로, 이걸 어디다 쓸까? 간단한 예제를 살펴보자.<br>코드 출처 : <a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">verbose</span><span class="params">(func)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new_func</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"Begin"</span>, func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"End"</span>, func.__name__)</span><br><span class="line">    <span class="keyword">return</span> new_func</span><br></pre></td></tr></table></figure><br>함수 호출의 시작과 끝을 print 출력으로 알리는 함수다. 아무 함수나 들어올 수 있게 parameter가 설정되어 있다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@verbose</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simple_sum</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    print(x+y)</span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line">simple_sum(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">Begin simple_sum</span><br><span class="line">3</span><br><span class="line">End simple_sum</span><br></pre></td></tr></table></figure>
 <p>어떤 함수를 집어넣어도 호출 시에, 연산 끝났을 시에 함수 이름과 함께 알려주는 재미있는 Decorator다.</p>
 <hr>
-<h1 id="Chaining-Decorators-in-Python"><a href="#Chaining-Decorators-in-Python" class="headerlink" title="Chaining Decorators in Python"></a>Chaining Decorators in Python</h1><p><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">이 글을 보다보니</a>, 재미있는 예제를 찾을 수 있었다. Decorator가 중첩되어 있으면 어떤 것 부터 적용될까?<br>아래 코드를 보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">star</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">percent</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@star</span></span><br><span class="line"><span class="meta">@percent</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(msg)</span>:</span></span><br><span class="line">    print(msg)</span><br><span class="line">printer(<span class="string">"Hello"</span>)</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">******************************</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">Hello</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
-<p>더 위쪽에 적혀진 Decorator부터 적용됨을 알 수 있다.</p>
+<h1 id="Chaining-Decorators-in-Python"><a href="#Chaining-Decorators-in-Python" class="headerlink" title="Chaining Decorators in Python"></a>Chaining Decorators in Python</h1><p><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">이 글을 보다보니</a>, 재미있는 예제를 찾을 수 있었다. Decorator가 중첩되어 있으면 어떤 것 부터 적용될까?<br>아래 코드를 보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">star</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">percent</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@star</span></span><br><span class="line"><span class="meta">@percent</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(msg)</span>:</span></span><br><span class="line">    print(msg)</span><br><span class="line">printer(<span class="string">"Hello"</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">******************************</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">Hello</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure><br>더 위쪽에 적혀진 Decorator부터 적용됨을 알 수 있다.</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
 <li><a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">https://dbader.org/blog/python-first-class-functions</a></li>
 <li><a href="https://docs.python.org/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/classes.html</a></li>
@@ -1230,9 +1777,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
-                            aria-label=": Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                            aria-label=": &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
                         >
-                            Mac에 Oracle DB 설치하기로 Docker 시작하기
+                            &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기
                         </a>
                     
                 </h1>
@@ -1245,7 +1792,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/docker/">Docker</a>
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -1262,7 +1809,7 @@
 <li><a href="#여기까지-읽었을-때의-궁금한-점들">여기까지 읽었을 때의 궁금한 점들</a><br> - <a href="#Daemon이-뭐지">Daemon이 뭐지?</a><br> - <a href="#Rest-API가-뭐지">Rest API가 뭐지?</a><br> - <a href="#Socket이-뭐지">Socket이 뭐지?</a></li>
 <li><a href="#그래서-선생-이-명령어가-도대체-뭐요">그래서 선생, 이 명령어가 도대체 뭐요?</a><br> - <a href="#어떤-명령어들을-사용하였는가">어떤 명령어들을 사용하였는가</a><br> - <a href="#뭐-하나-잊어버린-것-같은데-Volume">뭐 하나 잊어버린 것 같은데..? : Volume</a></li>
 </ol>
-<h1 id="Docker가-뭐요"><a href="#Docker가-뭐요" class="headerlink" title="Docker가 뭐요?"></a>Docker가 뭐요?</h1><p>일단 <a href="https://www.youtube.com/channel/UCUpJs89fSBXNolQGOYKn0YQ/about" target="_blank" rel="noopener">Nomad Coders</a>의 아래 영상을 본 다음에,<br><br>    <div class="video-container"><iframe src="//www.youtube.com/embed/chnCcGCTyBg" frameborder="0" allowfullscreen></iframe></div></p>
+<h1 id="Docker가-뭐요"><a href="#Docker가-뭐요" class="headerlink" title="Docker가 뭐요?"></a>Docker가 뭐요?</h1><p>일단 <a href="https://www.youtube.com/channel/UCUpJs89fSBXNolQGOYKn0YQ/about" target="_blank" rel="noopener">Nomad Coders</a>의 아래 영상을 본 다음에,<br><br>    <div class="video-container"><iframe src="https://www.youtube.com/embed/chnCcGCTyBg" frameborder="0" loading="lazy" allowfullscreen></iframe></div></p>
 <p>좋은 소개 자료들을 읽어보자. </p>
 <ul>
 <li><a href="https://docs.docker.com/engine/docker-overview/" target="_blank" rel="noopener">Docker 공식 문서 / Docker Overview</a></li>
@@ -1350,7 +1897,7 @@
 <h2 id="여기까지-읽었을-때의-궁금한-점들"><a href="#여기까지-읽었을-때의-궁금한-점들" class="headerlink" title="여기까지 읽었을 때의 궁금한 점들"></a>여기까지 읽었을 때의 궁금한 점들</h2><h3 id="Daemon이-뭐지"><a href="#Daemon이-뭐지" class="headerlink" title="Daemon이 뭐지?"></a>Daemon이 뭐지?</h3><blockquote><p>In multitasking computer operating systems, a daemon (/ˈdiːmən/ or /ˈdeɪmən/)[1] is a computer program that runs as a background process, rather than being under the direct control of an interactive user.</p>
 <footer><strong>Wikipedia</strong><cite><a href="https://en.wikipedia.org/wiki/Daemon_(computing)" target="_blank" rel="noopener">Daemon(computing)</a></cite></footer></blockquote>
 <p>악마는 당신의 등 뒤에서 조용히 돌아가고 있다… :)<br><br></p>
-<h3 id="Rest-API가-뭐지"><a href="#Rest-API가-뭐지" class="headerlink" title="Rest API가 뭐지?"></a>Rest API가 뭐지?</h3><p><strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer<br>이 영상 이상으로 잘 설명한 자료가 있을까?<br>내용이 방대하기 때문에, 추후 별도의 정리를 진행해야겠다.<br><br><br><div class="video-container"><iframe src="//www.youtube.com/embed/RP_f5dMoHFc" frameborder="0" allowfullscreen></iframe></div><br><br></p>
+<h3 id="Rest-API가-뭐지"><a href="#Rest-API가-뭐지" class="headerlink" title="Rest API가 뭐지?"></a>Rest API가 뭐지?</h3><p><strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer<br>이 영상 이상으로 잘 설명한 자료가 있을까?<br>내용이 방대하기 때문에, 추후 별도의 정리를 진행해야겠다.<br><br><br><div class="video-container"><iframe src="https://www.youtube.com/embed/RP_f5dMoHFc" frameborder="0" loading="lazy" allowfullscreen></iframe></div><br><br></p>
 <h3 id="Socket이-뭐지"><a href="#Socket이-뭐지" class="headerlink" title="Socket이 뭐지?"></a>Socket이 뭐지?</h3><p><strong>프로세스 간 데이터 교환을 위한, 소프트웨어로 작성된 통신 접속점</strong><br>아래는 Unix Socket(Unix Domain Socket)과 IP Socket에 대한 설명이다.<br><blockquote><p>A UNIX socket is an inter-process communication mechanism that allows bidirectional data exchange between processes running on the same machine.</p>
 <p>IP sockets (especially TCP/IP sockets) are a mechanism allowing communication between processes over the network. In some cases, you can use TCP/IP sockets to talk with processes running on the same computer (by using the loopback interface).</p>
 <p>UNIX domain sockets know that they’re executing on the same system, so they can avoid some checks and operations (like routing); which makes them faster and lighter than IP sockets. So if you plan to communicate with processes on the same host, this is a better option than IP sockets.</p>
@@ -1372,10 +1919,8 @@
 <ul>
 <li>--name : Container의 이름을 설정한다. 중복 이름은 허용하지 않음.</li>
 <li>-d : Container를 백그라운드에서 실행하고, Container ID를 출력한다.<br><a href="https://www.tecmint.com/run-docker-container-in-background-detached-mode/" target="_blank" rel="noopener">Background와 Foreground의 차이</a></li>
-<li><p>-p : 특정 범위의 포트, 혹은 포트 하나를 host에 publish한다. 여기서는 hostPort:ContainerPort 구조로 사용했다. 즉, Container의 8080포트를 Host의 8080포트에 매핑하는 방화벽 규칙을 만든다. (하필이면 8080, 1521인 이유는, Oracle Listener가 사용하는 포트가 1521이고, XML DB가 8080포트를 사용하기 때문이다.)<br> <a href="https://docs.docker.com/engine/reference/commandline/port/" target="_blank" rel="noopener"><code>docker port oracle-xe-11g</code></a>로 연결된 포트를 확인해보면, 다음과 같이 뜬다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1521/tcp -&gt; 0.0.0.0:1521</span><br><span class="line">8080/tcp -&gt; 0.0.0.0:8080</span><br></pre></td></tr></table></figure>
-<p>포트들이 <a href="https://superuser.com/questions/949428/whats-the-difference-between-127-0-0-1-and-0-0-0-0" target="_blank" rel="noopener">0.0.0.0 (all IPv4 addresses on the local machine)</a>의 동일 포트에 매핑되었다. 이제 Container가 <strong>생성</strong>된 후 <strong>실행</strong>되었는데, 그럼 다음엔 뭘 해야 할까?</p>
-<ul>
+<li>-p : 특정 범위의 포트, 혹은 포트 하나를 host에 publish한다. 여기서는 hostPort:ContainerPort 구조로 사용했다. 즉, Container의 8080포트를 Host의 8080포트에 매핑하는 방화벽 규칙을 만든다. (하필이면 8080, 1521인 이유는, Oracle Listener가 사용하는 포트가 1521이고, XML DB가 8080포트를 사용하기 때문이다.)<br> <a href="https://docs.docker.com/engine/reference/commandline/port/" target="_blank" rel="noopener"><code>docker port oracle-xe-11g</code></a>로 연결된 포트를 확인해보면, 다음과 같이 뜬다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1521&#x2F;tcp -&gt; 0.0.0.0:1521</span><br><span class="line">8080&#x2F;tcp -&gt; 0.0.0.0:8080</span><br></pre></td></tr></table></figure>
+포트들이 <a href="https://superuser.com/questions/949428/whats-the-difference-between-127-0-0-1-and-0-0-0-0" target="_blank" rel="noopener">0.0.0.0 (all IPv4 addresses on the local machine)</a>의 동일 포트에 매핑되었다. 이제 Container가 <strong>생성</strong>된 후 <strong>실행</strong>되었는데, 그럼 다음엔 뭘 해야 할까?<ul>
 <li><a href="https://docs.docker.com/config/Containers/Container-networking/#published-ports" target="_blank" rel="noopener">참고 공식 문서 : Container networking</a></li>
 <li><a href="https://docs.docker.com/engine/reference/run/#expose-incoming-ports" target="_blank" rel="noopener">참고 공식 문서 : Docker run reference</a></li>
 </ul>
@@ -1385,16 +1930,11 @@
 <li><p><a href="https://docs.docker.com/engine/reference/commandline/exec/" target="_blank" rel="noopener"><code>docker exec -it oracle-xe-11g bash</code></a> : 외부에서, 실행 중인 Container 안의 명령을 실행한다. oracle-xe-11g Container는 Ubuntu 18.04위에서 Oracle DB를 구동하는 구조이기 때문에, bash shell을 열라는 명령어를 보내 보았다.(bash) 옵션 -it는 뭘까?</p>
 <ul>
 <li>-i : 키보드, 화면을 통해 STDIN, STDOUT(표준입력, 표준출력)<a href="https://github.com/kennyyu/bootcamp-unix/wiki/stdin,-stdout,-stderr,-and-pipes" target="_blank" rel="noopener">[설명]</a><a href="https://velog.io/@jakeseo_me/유닉스의-stdin-stdout-stderr-그리고-pipes에-대해-알아보자" target="_blank" rel="noopener">[설명의 번역]</a>을 열고 유지한다. 명령어 입력, 결과 출력을 위해서 넣어주어야 하는 값이다.</li>
-<li><p>-t : pseudo-TTY를 할당한다. 터미널 환경을 에뮬레이션 해 주는데, 이 옵션을 입력하지 않으면 터미널 환경이 보이지 않는다.<br>(i와 t값을 넣지 않으면 각각 어떻게 되는가? 는 <a href="https://m.blog.naver.com/alice_k106/220340499760" target="_blank" rel="noopener">이 블로그</a>를 참고하자.)<br>보기만 해서는 잘 기억나지 않을테니, 직접 해보자.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec oracle-xe-11g bash</span><br><span class="line">%</span><br></pre></td></tr></table></figure>
-<p>하나도 안 쓰면 바로 종료된다. 입출력도, tty도 활성화되지 않았으니 당연한 결과.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -t oracle-xe-11g bash</span><br><span class="line">root@a702ae5d7f10:/# sqlplus</span><br></pre></td></tr></table></figure>
-<p>-t만 쓰면, 첫 번째 명령어 입력까지는 가능하나 그 후의 결과가 출력되지 않는다. STDIN을 열지 않았으니 당연한 결과.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -i oracle-xe-11g bash</span><br><span class="line">sqlplus</span><br><span class="line">bash: line 1: sqlplus: command not found</span><br><span class="line">ls</span><br><span class="line">bin</span><br><span class="line">boot</span><br><span class="line">dev</span><br><span class="line">...(이하생략)</span><br></pre></td></tr></table></figure>
-<p>-i만 쓰면, 터미널 환경이 조성되지 않는다. 그냥 명령어를 입력하면 sqlplus는 command not found 에러가 뜨고, ls는 제대로 출력이 되긴 한다. 응용 프로그램(sqlplus) 실행은 안 되고, 기본 shell command는 제대로 실행되는 건 terminal의 부재 때문이 아닌가 추측해본다. 자세한 이유는 다음에 알아보기로 하자.<br></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -it oracle-xe-11g bash</span><br><span class="line"></span><br><span class="line">root@a702ae5d7f10:/# sqlplus</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 11.2.0.2.0 Production on Sun Oct 27 02:33:24 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Enter user-name: system</span><br><span class="line">Enter password:</span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production</span><br><span class="line"></span><br><span class="line">SQL&gt;</span><br></pre></td></tr></table></figure>
-<p>제대로 모두 입력하여 sqlplus에 로그인까지 진행하면 이렇게 된다.</p>
-</li>
+<li>-t : pseudo-TTY를 할당한다. 터미널 환경을 에뮬레이션 해 주는데, 이 옵션을 입력하지 않으면 터미널 환경이 보이지 않는다.<br>(i와 t값을 넣지 않으면 각각 어떻게 되는가? 는 <a href="https://m.blog.naver.com/alice_k106/220340499760" target="_blank" rel="noopener">이 블로그</a>를 참고하자.)<br>보기만 해서는 잘 기억나지 않을테니, 직접 해보자.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec oracle-xe-11g bash</span><br><span class="line">%</span><br></pre></td></tr></table></figure>
+하나도 안 쓰면 바로 종료된다. 입출력도, tty도 활성화되지 않았으니 당연한 결과.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -t oracle-xe-11g bash</span><br><span class="line">root@a702ae5d7f10:&#x2F;# sqlplus</span><br></pre></td></tr></table></figure>
+-t만 쓰면, 첫 번째 명령어 입력까지는 가능하나 그 후의 결과가 출력되지 않는다. STDIN을 열지 않았으니 당연한 결과.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -i oracle-xe-11g bash</span><br><span class="line">sqlplus</span><br><span class="line">bash: line 1: sqlplus: command not found</span><br><span class="line">ls</span><br><span class="line">bin</span><br><span class="line">boot</span><br><span class="line">dev</span><br><span class="line">...(이하생략)</span><br></pre></td></tr></table></figure>
+-i만 쓰면, 터미널 환경이 조성되지 않는다. 그냥 명령어를 입력하면 sqlplus는 command not found 에러가 뜨고, ls는 제대로 출력이 되긴 한다. 응용 프로그램(sqlplus) 실행은 안 되고, 기본 shell command는 제대로 실행되는 건 terminal의 부재 때문이 아닌가 추측해본다. 자세한 이유는 다음에 알아보기로 하자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -it oracle-xe-11g bash</span><br><span class="line"></span><br><span class="line">root@a702ae5d7f10:&#x2F;# sqlplus</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 11.2.0.2.0 Production on Sun Oct 27 02:33:24 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Enter user-name: system</span><br><span class="line">Enter password:</span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production</span><br><span class="line"></span><br><span class="line">SQL&gt;</span><br></pre></td></tr></table></figure>
+제대로 모두 입력하여 sqlplus에 로그인까지 진행하면 이렇게 된다.</li>
 </ul>
 </li>
 </ul>
@@ -1419,24 +1959,19 @@
 <footer><strong>Docker 공식 페이지</strong><cite><a href="https://docs.docker.com/storage/storagedriver/#Container-and-layers" target="_blank" rel="noopener">About storage drivers / Container and layers</a></cite></footer></blockquote>
 </li>
 </ul>
-<p>그럼, oracle-xe-11g Container 안의 어떤 폴더를 Host의 폴더와 연결해 주어야 할까?<br>Container 안에서 oracle이란 이름을 가진 폴더를 검색해보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find / -name oracle -type d  # 전체 폴더에서 oracle 이름을 가진 폴더 검색</span><br><span class="line">/u01/app/oracle</span><br></pre></td></tr></table></figure></p>
-<p>오호라, <code>/u01/app/oracle</code>를 연결하면 될 것 같다.</p>
+<p>그럼, oracle-xe-11g Container 안의 어떤 폴더를 Host의 폴더와 연결해 주어야 할까?<br>Container 안에서 oracle이란 이름을 가진 폴더를 검색해보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find &#x2F; -name oracle -type d  # 전체 폴더에서 oracle 이름을 가진 폴더 검색</span><br><span class="line">&#x2F;u01&#x2F;app&#x2F;oracle</span><br></pre></td></tr></table></figure><br>오호라, <code>/u01/app/oracle</code>를 연결하면 될 것 같다.</p>
 <p><a href="(https://docs.docker.com/engine/reference/commandline/run/"><code>docker run</code></a>)문서에 따르면, Volume을 할당하기 위해 다음과 같은 옵션이 필요하다.<br><code>-v [Host directory]:[Container directory]</code><br>이 옵션을 추가하여, Container를 다시 생성해 보자.</p>
 <p><code>docker run --name oracle-xe-11g -d -p 8080:8080 -p 1521:1521 -v /Users/youngjinlim/Coding/BigData_Study/SQL/Docker_volume:/u01/app/oracle oracleinanutshell/oracle-xe-11g</code></p>
-<p>과연 Volume이 잘 Mount 되었을까?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker inspect --format=&apos;&#123;&#123;.Mounts&#125;&#125;&apos; oracle-xe-11g</span><br><span class="line">[&#123;bind  /Users/youngjinlim/Coding/BigData_Study/SQL/Docker_volume /u01/app/oracle   true rprivate&#125;]</span><br></pre></td></tr></table></figure></p>
-<p>오, 잘 연결된 것 같다. 그런데… DB에 연결할 수가 없었다! 왜지?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@141d12eb18ac:/u01/app/oracle# ls -l</span><br><span class="line">total 0</span><br></pre></td></tr></table></figure></p>
-<p>어엉? Container 쪽 폴더가 텅 비어버렸다! 아무래도 Host쪽의 폴더로 덮어씌워진 것 같다.<br>아.. 너무 고통스럽다..<br>이에 대한 원인과 해결방법은 이 블로그에서 찾을 수 있었다.</p>
+<p>과연 Volume이 잘 Mount 되었을까?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker inspect --format&#x3D;&#39;&#123;&#123;.Mounts&#125;&#125;&#39; oracle-xe-11g</span><br><span class="line">[&#123;bind  &#x2F;Users&#x2F;youngjinlim&#x2F;Coding&#x2F;BigData_Study&#x2F;SQL&#x2F;Docker_volume &#x2F;u01&#x2F;app&#x2F;oracle   true rprivate&#125;]</span><br></pre></td></tr></table></figure><br>오, 잘 연결된 것 같다. 그런데… DB에 연결할 수가 없었다! 왜지?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@141d12eb18ac:&#x2F;u01&#x2F;app&#x2F;oracle# ls -l</span><br><span class="line">total 0</span><br></pre></td></tr></table></figure><br>어엉? Container 쪽 폴더가 텅 비어버렸다! 아무래도 Host쪽의 폴더로 덮어씌워진 것 같다.<br>아.. 너무 고통스럽다..<br>이에 대한 원인과 해결방법은 이 블로그에서 찾을 수 있었다.</p>
 <ul>
-<li><a href="https://darkrasid.github.io/docker/container/volume/2017/05/10/docker-volumes.html" target="_blank" rel="noopener">docker volume의 사용방법과 차이점</a> :<br><span style="color:red"><b>!!주의!!<b></b></b></span> 이 블로그 포스팅에선 <code>docker create volume volume_name</code> 라고 썼는데,<br>이러면 안된다. 왜냐면..</li>
+<li><a href="https://darkrasid.github.io/docker/container/volume/2017/05/10/docker-volumes.html" target="_blank" rel="noopener">docker volume의 사용방법과 차이점</a> :<br><span style="color:red"><b>!!주의!!<b></span> 이 블로그 포스팅에선 <code>docker create volume volume_name</code> 라고 썼는데,<br>이러면 안된다. 왜냐면..</li>
 </ul>
 <blockquote><p>Description : Create a new Container<br>Usage : docker create [OPTIONS] image [COMMAND] [ARG…]</p>
 <footer><strong>Wikipedia</strong><cite><a href="https://docs.docker.com/engine/reference/commandline/create/" target="_blank" rel="noopener">Docker 공식 페이지 / docker create</a></cite></footer></blockquote>
 <p>docker create는 Container를 만들 때 쓰는 명령어이기 때문이다.<br><a href="https://docs.docker.com/engine/reference/commandline/volume/" target="_blank" rel="noopener">docker volume</a>을 써야 한다.</p>
-<p>Host쪽 폴더가 텅 비어있을 때, Container쪽 폴더를 남기려면 아래와 같은 방법을 사용해야 한다.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create volume_name</span><br><span class="line">docker run --name oracle-xe-11g -d -v volume_name:/Container/some/where ...(이하생략)</span><br></pre></td></tr></table></figure></p>
-<p>그럼 실행해 보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">% docker volume create oracle-xe-11g_study    # Volume 생성</span><br><span class="line">% docker volume ls    # 잘 생성되었는지 확인</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               oracle-xe-11g_study</span><br><span class="line">% docker run --name oracle-xe-11g_study -d -v oracle-xe-11g_study:/u01/app/oracle -p 8080:8080 -p 1521:1521 oracleinanutshell/oracle-xe-11g</span><br><span class="line">6a7d5728c9084c9f2c25931a8a7bf1120594776380d5cd8e17d6d15b48604eb6    # 새 Container 생성</span><br><span class="line">% docker exec -it oracle-xe-11g_study bash    # /u01/app/oracle 폴더 무사한지 확인하러 들어감</span><br><span class="line">root@6a7d5728c908:/# cd /u01/app/oracle</span><br><span class="line">root@6a7d5728c908:/u01/app/oracle# ls -l    # 결과를 보면 무사함을 알 수 있음</span><br><span class="line">total 24</span><br><span class="line">drwxr-x--- 4 oracle dba  4096 Oct 27 03:39 admin</span><br><span class="line">drwxrwxr-x 4 oracle dba  4096 Oct 27 03:39 diag</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 fast_recovery_area</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 oradata</span><br><span class="line">drwxr-xr-x 3 oracle dba  4096 Oct 27 03:39 oradiag_oracle</span><br><span class="line">drwxr-xr-x 3 root   root 4096 Oct 27 03:39 product</span><br><span class="line">root@6a7d5728c908:/u01/app/oracle# exit</span><br><span class="line">exit</span><br><span class="line">% docker inspect --format=&apos;&#123;&#123;.Mounts&#125;&#125;&apos; oracle-xe-11g_study    # Volume 잘 연결 되었는지 확인</span><br><span class="line">[&#123;volume oracle-xe-11g_study /var/lib/docker/volumes/oracle-xe-11g_study/_data /u01/app/oracle local z true &#125;]</span><br></pre></td></tr></table></figure></p>
-<p>연결도 잘 됐고, Container 쪽 폴더도 무사하다.<br>‘CUSTOMERS’ 라는 이름의 테이블을 추가한 후, Container를 새로 생성해서 같은 Volume에 연결했을 경우, 새로 생성한 Container에서도 CUSTOMERS 테이블이 잘 보이는지 확인해 보자.</p>
+<p>Host쪽 폴더가 텅 비어있을 때, Container쪽 폴더를 남기려면 아래와 같은 방법을 사용해야 한다.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create volume_name</span><br><span class="line">docker run --name oracle-xe-11g -d -v volume_name:&#x2F;Container&#x2F;some&#x2F;where ...(이하생략)</span><br></pre></td></tr></table></figure><br>그럼 실행해 보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">% docker volume create oracle-xe-11g_study    # Volume 생성</span><br><span class="line">% docker volume ls    # 잘 생성되었는지 확인</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               oracle-xe-11g_study</span><br><span class="line">% docker run --name oracle-xe-11g_study -d -v oracle-xe-11g_study:&#x2F;u01&#x2F;app&#x2F;oracle -p 8080:8080 -p 1521:1521 oracleinanutshell&#x2F;oracle-xe-11g</span><br><span class="line">6a7d5728c9084c9f2c25931a8a7bf1120594776380d5cd8e17d6d15b48604eb6    # 새 Container 생성</span><br><span class="line">% docker exec -it oracle-xe-11g_study bash    # &#x2F;u01&#x2F;app&#x2F;oracle 폴더 무사한지 확인하러 들어감</span><br><span class="line">root@6a7d5728c908:&#x2F;# cd &#x2F;u01&#x2F;app&#x2F;oracle</span><br><span class="line">root@6a7d5728c908:&#x2F;u01&#x2F;app&#x2F;oracle# ls -l    # 결과를 보면 무사함을 알 수 있음</span><br><span class="line">total 24</span><br><span class="line">drwxr-x--- 4 oracle dba  4096 Oct 27 03:39 admin</span><br><span class="line">drwxrwxr-x 4 oracle dba  4096 Oct 27 03:39 diag</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 fast_recovery_area</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 oradata</span><br><span class="line">drwxr-xr-x 3 oracle dba  4096 Oct 27 03:39 oradiag_oracle</span><br><span class="line">drwxr-xr-x 3 root   root 4096 Oct 27 03:39 product</span><br><span class="line">root@6a7d5728c908:&#x2F;u01&#x2F;app&#x2F;oracle# exit</span><br><span class="line">exit</span><br><span class="line">% docker inspect --format&#x3D;&#39;&#123;&#123;.Mounts&#125;&#125;&#39; oracle-xe-11g_study    # Volume 잘 연결 되었는지 확인</span><br><span class="line">[&#123;volume oracle-xe-11g_study &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;oracle-xe-11g_study&#x2F;_data &#x2F;u01&#x2F;app&#x2F;oracle local z true &#125;]</span><br></pre></td></tr></table></figure><br>연결도 잘 됐고, Container 쪽 폴더도 무사하다.<br>‘CUSTOMERS’ 라는 이름의 테이블을 추가한 후, Container를 새로 생성해서 같은 Volume에 연결했을 경우, 새로 생성한 Container에서도 CUSTOMERS 테이블이 잘 보이는지 확인해 보자.</p>
 <p><img src="https://drive.google.com/uc?id=1P4k-ysg5DS9Rnb69GKno9BlBpLEdzoeq" alt="Oops, Some network ants ate this pic!" title="Add one table"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">% docker run --name oracle-xe-11g_volumetest -d -v oracle-xe-11g_study:/u01/app/oracle -p 8080:8080 -p 1521:1521 oracleinanutshell/oracle-xe-11g</span><br><span class="line">08ba1459d196d6094b7adc2232d843e430574551cb1ba4c823fae7f85aa8fe36</span><br><span class="line">youngjinlim@Youngui-MacBookPro ~ % docker ps</span><br><span class="line">...중략  NAMES</span><br><span class="line">        oracle-xe-11g_volumetest</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">% docker run --name oracle-xe-11g_volumetest -d -v oracle-xe-11g_study:&#x2F;u01&#x2F;app&#x2F;oracle -p 8080:8080 -p 1521:1521 oracleinanutshell&#x2F;oracle-xe-11g</span><br><span class="line">08ba1459d196d6094b7adc2232d843e430574551cb1ba4c823fae7f85aa8fe36</span><br><span class="line">youngjinlim@Youngui-MacBookPro ~ % docker ps</span><br><span class="line">...중략  NAMES</span><br><span class="line">        oracle-xe-11g_volumetest</span><br></pre></td></tr></table></figure>
 <p>새로 생성한 Container 하나만 실행 중이다.(oracle-xe-11g_volumetest)<br>이제 추가했던 테이블이 그대로 있는지 확인해 보자.</p>
 <p><img src="https://drive.google.com/uc?id=11goqVWONxi2uduKTx1mUzgBK2MuXuHLc" alt="Oops, Some network ants ate this pic!" title="table check in new container"></p>
 <p>잘 있다.</p>
@@ -1476,196 +2011,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
-                        >
-                            Map vs List Comprehension
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-12T00:00:00+09:00">
-	
-		    Oct 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
-<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
-<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": Iterable, Iterator, Generator - 너희는 누구니?"
-                        >
-                            Iterable, Iterator, Generator - 너희는 누구니?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-12T00:00:00+09:00">
-	
-		    Oct 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/python/">Python</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs Iterators vs Generators</a><br>를 보고 그대로 작성하였다.</p>
-<p><img src="https://drive.google.com/uc?id=1m5WUphiPHDPecjasiirM40shy2Vhu8qg" alt="Oops, Some network ants ate this pic!" title="relationship between objects"></p>
-<h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><ul>
-<li>Iterator를 반환할 수 있다면, 어떤 오브젝트여도 Iterable함<br>(Data structure일 필요는 없음)</li>
-<li>그럼 Iterator와 Iterable의 차이는 뭐지?<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = iter(x) </span><br><span class="line"><span class="comment">#The iter() method returns an iterator for the given object.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(z)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(y)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">list_iterator</span>'&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 만들어낸다.<br>y와 z는 둘 다 상태를 저장하고 있다.<br>(next(y)를 두 번 호출할 시, 처음 한 번 호출한 상태를 기억하고 있다.)<br>x는 data structure지만(list), iterable 객체가 꼭 data sturcture일 필요는 없다.</p>
-<blockquote>
-<p><strong>참고사항 :</strong><br>iterable class가 <strong>iter()</strong>와 <strong>next()</strong>를 모두 가지고 있고, <strong>iter()</strong>가 self(자기 자신)를 반환하는 경우가 있다.<br>이는 class를 iterable인 동시에 자기 자신의 iterator로 만든다. </p>
-</blockquote>
-<p><br><br>그럼 이제 아래와 같이 쓰면:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> x:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
-<p>실제로는 이런 일이 일어난다.</p>
-<p><img src="https://drive.google.com/uc?id=1NmzViVcqdWTguVsGz6-iYPIIxNDaPCIh" alt="Oops, Some network ants ate this pic!" title="The scene when you apply"></p>
-<p>이 코드를 disassemble 해 보면, iter(x)를 실행하는 데 필요한 GET_ITER의 호출을 볼 수 있다. FOR_ITER는 next()를 반복적으로 호출하는 것과 같은 동작을 하는 명령어(<a href="https://www.computerhope.com/jargon/c/compinst.htm" target="_blank" rel="noopener">Instruction</a>)다. 그런데 이는 이진 코드의 형태를 보여주지는 않는데, interpreter의 속도를 위해 최적화되어 있기 때문이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(<span class="string">'for _ in x: pass'</span>)</span><br><span class="line">  <span class="number">1</span>           <span class="number">0</span> SETUP_LOOP              <span class="number">14</span> (to <span class="number">17</span>)</span><br><span class="line">              <span class="number">3</span> LOAD_NAME                <span class="number">0</span> (x)</span><br><span class="line">              <span class="number">6</span> GET_ITER</span><br><span class="line">        &gt;&gt;    <span class="number">7</span> FOR_ITER                 <span class="number">6</span> (to <span class="number">16</span>)</span><br><span class="line">             <span class="number">10</span> STORE_NAME               <span class="number">1</span> (_)</span><br><span class="line">             <span class="number">13</span> JUMP_ABSOLUTE            <span class="number">7</span></span><br><span class="line">        &gt;&gt;   <span class="number">16</span> POP_BLOCK</span><br><span class="line">        &gt;&gt;   <span class="number">17</span> LOAD_CONST               <span class="number">0</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">20</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
-<h2 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h2><p>그럼 도대체 Iterator가 뭐냐? next()를 호출하였을 때, 다음 값을 발생시키는 <a href="https://softwareengineering.stackexchange.com/questions/331158/stateful-vs-stateless-non-web-app-applications" target="_blank" rel="noopener">Stateful</a>(상태를 기억하여 다음 동작에 활용이 가능한) helper object다.<br>(현재 몇 번째인지 기억해야 다음 값을 불러올 수 있을테니 Stateful이어야 함이 직관적으로 이해된다.)</p>
-<p><code>__next__()</code> 메소드를 가지고 있는 모든 오브젝트는 Iterator다.<br>어떻게 다음 값을 발생시키는지는 상관이 없다.</p>
-<p>Iterator는 값 공장이라고 할 수 있다. Iterator에 “다음 값”을 요청할 때마다, Iterator는 저장해 둔 내부 상태를 기반으로 다음 값을 생산하여 반환한다.</p>
-<p><strong>itertools</strong> 모듈의 함수들을 예시로 살펴보자.<br>몇몇 함수들은 무한한 순서 값들(sequences)을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> count</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>counter = count(start=<span class="number">13</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(counter)</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure></p>
-<p><br><br>몇몇 함수들은 유한한 순서 값들에서 무한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'white'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'blue'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br></pre></td></tr></table></figure></p>
-<p><br><br>몇몇 함수들은 무한한 순서 값들에서 유한한 순서 값들을 발생시킨다:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> islice</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])  <span class="comment"># infinite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>limited = islice(colors, <span class="number">0</span>, <span class="number">4</span>)            <span class="comment"># finite</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> limited:                         <span class="comment"># so safe to use for-loop on</span></span><br><span class="line"><span class="meta">... </span>    print(x)</span><br><span class="line">red</span><br><span class="line">white</span><br><span class="line">blue</span><br><span class="line">red</span><br></pre></td></tr></table></figure></p>
-<p><br><br>Iterator의 내부 구조에 대한 더 나은 이해를 얻기 위해서,<br>피보나치 수열을 생성하는 Iterator를 만들어 보자:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">fib</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.prev = <span class="number">0</span></span><br><span class="line"><span class="meta">... </span>        self.curr = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> self</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        value = self.curr</span><br><span class="line"><span class="meta">... </span>        self.curr += self.prev</span><br><span class="line"><span class="meta">... </span>        self.prev = value</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> value</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
-<p>이 클래스가 iterable이면서 (<code>__iter()__</code>를 가지고 있기 때문),<br>자기 자신의 iterator임을 (<code>__next()__</code>를 가지고 있기 때문) 기억하자.</p>
-<p>이 iterator의 내부 상태는 prev와 curr에 저장되며, iterator의 다음 호출에 사용된다.<br>next() 호출은 다음의 두 가지 중요한 일을 한다:</p>
-<ol>
-<li>다음 next() 호출을 위해 상태를 변경한다.</li>
-<li>현재 호출을 위한 결과를 생성한다.<br><br></li>
-</ol>
-<blockquote>
-<p><strong>주요 개념</strong> : 게으른(lazy) 공장<br>밖에서 보면, iterator는 값을 요청하기 전까지 정지해 있는 게으른 공장처럼 보인다. 이 게으른 공장은 요청을 받으면, 값 하나를 생산한 후에 다시 정지 상태로 돌아가게 된다.</p>
-</blockquote>
-<h2 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h2><p>드디어 목적지에 도차했다! Generator는 내가(글쓴이가) 완전 좋아하는 Python의 특징이다. Generator는 Iterator의 우아한 버전이다.</p>
-<p>Generator는 <code>__iter()__</code>와 <code>__next()__</code> 메소드를 사용하지 않고도,<br>Iterator를 작성할 수 있게 해 준다.</p>
-<p>직관적으로 표현하면:</p>
-<ol>
-<li>모든 Generator는 Iterator이다. (반대는 아니다!)</li>
-<li>모든 Generator는, 그러므로, 값을 게으르게 생산하는 공장이다.</li>
-</ol>
-<p>여기 Generator로 쓰여진, 피보나치 수열 공장이 있다:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    prev, curr = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">yield</span> curr</span><br><span class="line"><span class="meta">... </span>        prev, curr = curr, prev + curr</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
-<p>우아하지 않은가? 이 아름다움을 담당하는 마법의 키워드를 보자:</p>
-<blockquote>
-<p>yield</p>
-</blockquote>
-<p><br></p>
-<p>뭐가 일어나는지 파헤쳐보자: 처음에는, fib가 평범한 함수로 정의된다. 특별할 것이 없다. 그러나, 함수 안에 Return 키워드가 없다. 반환값은 Generator가 된다.</p>
-<p>이제 <strong>f=fib()</strong> 가 호출되면, Generator가 instance화 되고 반환된다. 여기까지는 어떤 코드도 실행되지 않을 것이다. Generator는 초기의 정지 상태에서 시작한다.<br>더 직관적으로 보면, <strong>prev, curr = 0,1</strong> 은 아직 실행되지 않았다.</p>
-<p>그리고, 이 Generator instance는 islice()에 감싸진다.<br>스스로 Iterator이기 때문에, 아직도 아무것도 일어나지 않는다.</p>
-<p>그 다음엔, 이 Iterator는 list()에 의해 감싸진다. 그리고, 이 Iterator는 결과적으로 f instance에서 next()를 호출하는 islice() instance 위에서 next()를 호출하기 시작한다.</p>
-<p>한 단계씩 보자. 처음에 이 코드는 <strong>prev, curr = 0,1</strong> 을 실행할 것이고, while True 루프에 들어가서, yield curr 구문과 만난다. 이 구문은 현재 curr 변수에 있는 값을 생산하고<br>(현재 curr 변수에 할당된 값과 동일한 값을 반환한다는 의미) 다시 정지 상태가 될 것이다.</p>
-<p>이 값은 islice() wrapper로 전달되고, list()는 값 1을 리스트에 추가할 수 있게 된다.</p>
-<p>그리고, list()는 islice()에 다음 값을 요청한다. islice()는 f에 다음 값을 요청하고, f의 정지상태를 해제한다. f는 <strong>prev, curr = curr, prev + curr</strong> 구분부터 다시 시작하게 된다. 이 다음에 <strong>while</strong> 루프의 다음 반복에 재진입하고, <strong>yield curr</strong> 구문을 만나고, 다음 <strong>curr</strong> 값을 반환한다.</p>
-<p>이 동작은 10번 반복된 후, list()가 islice()에 11번째 값을 요청하고, islice()가 끝에 도달했음을 의미하는 <strong>StopIteration</strong> 예외를 발생시킬때까지 일어난다. 그리고 list()는 피보나치 수열 처음 10개 값을 가진 리스트를 반환하게 된다. Generator가 11번째 <strong>next()</strong> 호출을 받지 않았음에 주목해라. 모든 작업이 끝나면 이 Generator는 다시 사용되지 않고, Garbage Collector에 의해 처리된다.</p>
-<h2 id="Type-of-Generators"><a href="#Type-of-Generators" class="headerlink" title="Type of Generators"></a>Type of Generators</h2><p>두 가지 종류의 Generator가 있다: Generator <strong>function</strong> 과 Generator <strong>expression</strong> 이다.<br>Generator function은 body에 yield를 가지고 있는 함수이다. 방금 이에 대한 예를 봤다. (피보나치 수열 Generator)<br>yield 키워드가 있기만 해도 함수는 Generator function이 된다.</p>
-<p>다른 타입의 Generator는 list comprehension과 동일한 Generator다.<br>제곱수의 리스트를 만드는 여러가지 예를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure></p>
-<p><br><br>set comprehension으로도 동일한 일을 할 수 있다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">36</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p><br><br>혹은 dict comprehension으로도:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;x: x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line">&#123;<span class="number">1</span>: <span class="number">1</span>, <span class="number">2</span>: <span class="number">4</span>, <span class="number">3</span>: <span class="number">9</span>, <span class="number">4</span>: <span class="number">16</span>, <span class="number">5</span>: <span class="number">25</span>, <span class="number">6</span>: <span class="number">36</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p><br><br>Generator expression으로도 사용할 수 있다. (주의 : tuple comprehension 아님)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> numbers)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lazy_squares</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x10d1f5510</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(lazy_squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(lazy_squares)</span><br><span class="line">[<span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>]</span><br></pre></td></tr></table></figure></p>
-<p><strong>lazy_squares</strong> 의 첫 번째 값을 <strong>next()</strong> 로 읽었기 때문에, 상태가 “두 번째” 아이템이 되었다.<br>그래서 list() 호출을 통해서 전부 부르려고 하면, 제곱수의 나머지 리스트만 반환된다. (‘게으른 행동’. 마지막 출력결과를 보면 “첫 번째” 아이템인 1이 반환되지 않았다.)</p>
-<h1 id="요약"><a href="#요약" class="headerlink" title="요약"></a>요약</h1><p>Generator는 프로그래밍에 적용 가능한 아주 강력한 구조다.<br>streaming code를 더 적은 중간 변수들과 데이터 구조들을 사용하여 만들 수 있게 해주고, 메모리와 CPU 사용 측면에서도 더 효과적이다. 더 적은 라인을 차지함은 물론이다.</p>
-<p>Generator 사용 팁 : 코드에서 다음과 같은 일을 할 수 있는 곳을 찾아보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">something</span><span class="params">()</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        result.append(x)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
-<p><br><br>위의 예시를 다음과 같이 바꿔보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_something</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">        <span class="keyword">yield</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># def something():  # Only if you really need a list structure</span></span><br><span class="line"><span class="comment">#     return list(iter_something())</span></span><br></pre></td></tr></table></figure></p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/iterator-iterable-generator/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1681,7 +2026,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 1 of 2</li>
+        <li class="pagination-number">page 1 of 3</li>
     </ul>
 </div>
 
@@ -1750,9 +2095,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
-                            aria-label=": Telegram bot for alarming ERC-20 token balance"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
                         >
-                            <h3 class="media-heading">Telegram bot for alarming ERC-20 token balance</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1773,9 +2118,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": Web broswer control with Selenium"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
                         >
-                            <h3 class="media-heading">Web broswer control with Selenium</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1796,9 +2141,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": Multiple file name changer by XLSM"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
                         >
-                            <h3 class="media-heading">Multiple file name changer by XLSM</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1819,9 +2164,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
-                            aria-label=": XLSX file merging script"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
                         >
-                            <h3 class="media-heading">XLSX file merging script</h3>
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1842,9 +2187,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
-                            aria-label=": R - var(some_vector)는 표본분산을 계산한다"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
                         >
-                            <h3 class="media-heading">R - var(some_vector)는 표본분산을 계산한다</h3>
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1865,9 +2210,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": Python Built in function - Map"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
                         >
-                            <h3 class="media-heading">Python Built in function - Map</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1888,9 +2233,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
-                            aria-label=": Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
                         >
-                            <h3 class="media-heading">Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1911,9 +2256,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
-                            aria-label=": What are Magic Methods?"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
                         >
-                            <h3 class="media-heading">What are Magic Methods?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1934,9 +2279,9 @@
                         <a
                             class="link-unstyled"
                             href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
-                            aria-label=": Parameters, Arguments 정의와 차이점"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
-                            <h3 class="media-heading">Parameters, Arguments 정의와 차이점</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1956,10 +2301,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": Map vs List Comprehension"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
-                            <h3 class="media-heading">Map vs List Comprehension</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1981,7 +2326,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                19 posts found
+                21 posts found
             </p>
         </div>
     </div>
@@ -1991,14 +2336,20 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-fvkrexvbsfpkyxxpmrstsruzb3xjubddhrlkmsteuqhrnq4utrmfp081qfeq.min.js"></script>
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
 
 
-    <script src="/assets/js/moment-with-locales.js"></script>
-    <script src="/assets/js/algoliasearch.js"></script>
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
       var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');

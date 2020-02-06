@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Jin&#39;s Code Archive">
+    <title>&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터 - Jin&#39;s Code Archive</title>
+    <meta name="author" content="Jin">
+    
+        <meta name="keywords" content="python,javascript,R,기업부도예측,머신러닝">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유\n10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원\n우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?\n펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가\n\n\n기업신용평가 \n개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; ‘기업’ 신용평가에 ML 탑재한 KB국민은행\n정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제\n\n\n\n2. 부도의 기준\n한국금융연구원의 빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구 보고서의 기준 사용\n이 보고서에서는 아이디어와 접근방법을 참고하였음\n사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님\n\n\n증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행\n‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의\n\n\n상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…\n\n3. 프로젝트 목표\n3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작\n부도 확률을 수치로 나타낼 수 있다면 더욱 좋음\n\n\n웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공\n원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 \n\n\n\n4. 수집한 데이터4-1. 재무 데이터\n금융정보 데이터베이스 Dataguide의 데이터를 사용\n부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터\n\n\nDart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택\n\n4-2. 주가 데이터\n상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용\n예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)\n\n\n생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)\n\n4-3. 기사 데이터\n수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이\n선정기준 : 한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중, 경제지 Top 5\n\n\n각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집\n데이터 전처리 후 남은 총 기사 수 : 2,380,889개\n\n4-4. 감사보고서 데이터\n감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험\nDart 전자공시에서 데이터 수집\n\n","dateCreated":"2020-02-04T00:00:00+09:00","dateModified":"2020-02-06T09:24:51+09:00","datePublished":"2020-02-04T00:00:00+09:00","description":"","headline":"<기업부도예측-1> 프로젝트 개요, 수집 데이터","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"}</script>
+    <meta name="description" content="주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유 10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원 우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까? 펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가   기업신용평가  개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/04/bankrup-pre-start/index.html">
+<meta property="og:site_name" content="Jin&#39;s Code Archive">
+<meta property="og:description" content="주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유 10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원 우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까? 펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가   기업신용평가  개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-03T15:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-06T00:24:51.991Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="기업부도예측">
+<meta property="article:tag" content="머신러닝">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152752888-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152752888-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/%20"
+            aria-label=""
+        >
+            Jin&#39;s Code Archive
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/%20"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Search"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/limyj0708" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.facebook.com/youngjin.lim.12" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/young-jin-lim-b499a0111/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:limyj0708@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-04T00:00:00+09:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#주제-기업부도예측-with-머신러닝"><span class="toc-text">주제 : 기업부도예측 with 머신러닝</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-주제-선정-이유"><span class="toc-text">1. 주제 선정 이유</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-부도의-기준"><span class="toc-text">2. 부도의 기준</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-프로젝트-목표"><span class="toc-text">3. 프로젝트 목표</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-수집한-데이터"><span class="toc-text">4. 수집한 데이터</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-재무-데이터"><span class="toc-text">4-1. 재무 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-주가-데이터"><span class="toc-text">4-2. 주가 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-기사-데이터"><span class="toc-text">4-3. 기사 데이터</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-감사보고서-데이터"><span class="toc-text">4-4. 감사보고서 데이터</span></a></li></ul></li></ul>
+<hr>
+<h1 id="주제-기업부도예측-with-머신러닝"><a href="#주제-기업부도예측-with-머신러닝" class="headerlink" title="주제 : 기업부도예측 with 머신러닝"></a>주제 : 기업부도예측 with 머신러닝</h1><h1 id="1-주제-선정-이유"><a href="#1-주제-선정-이유" class="headerlink" title="1. 주제 선정 이유"></a>1. 주제 선정 이유</h1><ul>
+<li>10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원</li>
+<li>우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?<ul>
+<li>펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가</li>
+</ul>
+</li>
+<li>기업신용평가 <ul>
+<li>개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; <a href="https://www.thebell.co.kr/free/content/ArticleView.asp?key=201910300100055920003479&amp;lcode=00" target="_blank" rel="noopener">‘기업’ 신용평가에 ML 탑재한 KB국민은행</a></li>
+<li>정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-부도의-기준"><a href="#2-부도의-기준" class="headerlink" title="2. 부도의 기준"></a>2. 부도의 기준</h1><ul>
+<li>한국금융연구원의 <a href="http://www.kcft.or.kr/wp-content/uploads/2018/01/131605558932838295_WP17-08-1.pdf" target="_blank" rel="noopener">빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구</a> 보고서의 기준 사용<ul>
+<li>이 보고서에서는 아이디어와 접근방법을 참고하였음</li>
+<li>사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님</li>
+</ul>
+</li>
+<li>증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행<ul>
+<li>‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의</li>
+</ul>
+</li>
+<li>상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…</li>
+</ul>
+<h1 id="3-프로젝트-목표"><a href="#3-프로젝트-목표" class="headerlink" title="3. 프로젝트 목표"></a>3. 프로젝트 목표</h1><ul>
+<li>3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작<ul>
+<li>부도 확률을 수치로 나타낼 수 있다면 더욱 좋음</li>
+</ul>
+</li>
+<li>웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공<ul>
+<li>원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 </li>
+</ul>
+</li>
+</ul>
+<h1 id="4-수집한-데이터"><a href="#4-수집한-데이터" class="headerlink" title="4. 수집한 데이터"></a>4. 수집한 데이터</h1><h2 id="4-1-재무-데이터"><a href="#4-1-재무-데이터" class="headerlink" title="4-1. 재무 데이터"></a>4-1. 재무 데이터</h2><ul>
+<li>금융정보 데이터베이스 <a href="http://www.dataguide.co.kr" target="_blank" rel="noopener">Dataguide</a>의 데이터를 사용<ul>
+<li>부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터</li>
+</ul>
+</li>
+<li>Dart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택</li>
+</ul>
+<h2 id="4-2-주가-데이터"><a href="#4-2-주가-데이터" class="headerlink" title="4-2. 주가 데이터"></a>4-2. 주가 데이터</h2><ul>
+<li>상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용<ul>
+<li>예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)</li>
+</ul>
+</li>
+<li>생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)</li>
+</ul>
+<h2 id="4-3-기사-데이터"><a href="#4-3-기사-데이터" class="headerlink" title="4-3. 기사 데이터"></a>4-3. 기사 데이터</h2><ul>
+<li>수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이<ul>
+<li>선정기준 : <a href="http://www.kabc.or.kr/about/notices/100000002950" target="_blank" rel="noopener">한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중</a>, 경제지 Top 5</li>
+</ul>
+</li>
+<li>각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집</li>
+<li>데이터 전처리 후 남은 총 기사 수 : 2,380,889개</li>
+</ul>
+<h2 id="4-4-감사보고서-데이터"><a href="#4-4-감사보고서-데이터" class="headerlink" title="4-4. 감사보고서 데이터"></a>4-4. 감사보고서 데이터</h2><ul>
+<li>감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험</li>
+<li>Dart 전자공시에서 데이터 수집</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                    aria-label="PREVIOUS: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/05/clustering-crawled-articles-k-means-clustering1/"
+                    data-tooltip="테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
+                    aria-label="NEXT: 테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Jin. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                    aria-label="PREVIOUS: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/05/clustering-crawled-articles-k-means-clustering1/"
+                    data-tooltip="테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
+                    aria-label="NEXT: 테크 기사를 비지도 학습으로 클러스터링 하기 (1) - K-means clustering"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Jin</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">no post found</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/01/10/telegram-bot-for-alarming-erc-20-token-balance/"
+                            aria-label=": &lt;Python&gt; Telegram bot for alarming ERC-20 token balance"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Telegram bot for alarming ERC-20 token balance</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Jan 10, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Do you run cryptocurrency nodes?<br>Do you want to feel happy seeing your balance increasing?<br>Do you want to know the best timing to withdraw the surplus balance?<br>I wanted to do so, so I wrote this script.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/04/19/web-broswer-control-with-selenium/"
+                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Web broswer control with Selenium</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Apr 19, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
+                        >
+                            <h3 class="media-heading">&lt;VBA&gt; Multiple file name changer by XLSM</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 10, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2018/09/15/xlsx-file-merging-script/"
+                            aria-label=": &lt;VBA&gt; XLSX file merging script"
+                        >
+                            <h3 class="media-heading">&lt;VBA&gt; XLSX file merging script</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 15, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I was faced with a huge number of excel tables to merge.<br>Of course, I did not want to merge them manually.<br>Fortunately, all the tables were in the same form so it was easy to let the computer do the work for me.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/08/22/r-var(some-vector)-calculate-standard-deviation/"
+                            aria-label=": &lt;R&gt; var(some_vector)는 표본분산을 계산한다"
+                        >
+                            <h3 class="media-heading">&lt;R&gt; var(some_vector)는 표본분산을 계산한다</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 22, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/01/python-built-in-function-study-map/"
+                            aria-label=": &lt;Python&gt; Built in function - Map"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Built in function - Map</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 1, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/04/vuetify-making-responsible-page-technique/"
+                            aria-label=": &lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들"
+                        >
+                            <h3 class="media-heading">&lt;Javascript&gt; Vuetify에서 반응형 웹페이지 제작 테크닉들</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 4, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/04/what-are-magic-methods/"
+                            aria-label=": &lt;Python&gt; What are Magic Methods?"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; What are Magic Methods?</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 4, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
+                            aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Parameters, Arguments 정의와 차이점</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 11, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
+                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                        >
+                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Oct 12, 2019
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="no post found"
+                data-message-one="1 post found"
+                data-message-other="{n} posts found">
+                21 posts found
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://limyj0708.github.io/2020/02/04/bankrup-pre-start/';
+              
+            this.page.identifier = '2020/02/04/bankrup-pre-start/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'limyj0708-github-io-1';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('GF9RX37SCC', '3e75dd950d56645dc2558af2082c8ac8');
+      var algoliaIndex = algoliaClient.initIndex('my_github_page_hexo');
+    </script>
+
+
+    </body>
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          menuSettings: {
+            zoom: "None"
+          },
+          showMathMenu: false,
+          jax: ["input/TeX","output/CommonHTML"],
+          extensions: ["tex2jax.js"],
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js"],
+            equationNumbers: {
+              autoNumber: "AMS"
+            }
+          },
+          tex2jax: {
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["\\[", "\\]"]]
+          }
+        });
+      </script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js"></script>
+</html>
