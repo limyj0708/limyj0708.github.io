@@ -6,29 +6,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>&lt;VBA&gt; Multiple file name changer by XLSM - Jin&#39;s Code Archive</title>
+    <title>&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기 - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,VBA,file name change">
+        <meta name="keywords" content="python,javascript,R,AWS,Redshift">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.\n\n1. FeaturesA. Essential functions\n\na. Select multiple files\nb. Change file names by the pairs of original name and new name.\n\n\n2. Blueprint[File select button]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Change name button]\n\n\n\n\n\nOriginal name(After selecting files, this column will be filled automatically)\nNew name(without extension)\n\n\n\n\n1.txt\naaa\n\n\n2.txt\nbbb\n\n\n3.txt\nccc\n\n\n\n\n\n3. Codes[Codes in the File select button]1234567891011121314151617181920212223242526Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of all file that are selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)       ' Name list begins at fifth row, so 5 have to be added.       ' In Column A, put the paths of selected file. In Column B, just put the file names with extension.            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String   ' This is the function which takes only file name from total file path.   ' Using recursive call to cut the rightmost character in string until meet forward slash.('/')   ' If total path is C:\\example\\exam.txt, exam.txt is the final return.    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n[Codes in the Change name button]1234567891011121314151617181920212223242526Sub File_Rename()    Dim OldName, NewName As String    Dim Column_End_Original As Long    Dim Colunm_End_Goal As Long    Dim loop_check As Long    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    Column_End_Goal = Cells(Rows.Count, 3).End(xlUp).Row    ' Get the final rows of original name list and new name list    For loop_check = 6 To Column_End_Original        ' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.        OldName = Cells(loop_check, 1).Text        NewName = Cells(loop_check, 3).Text + \".\" + GetExtention(OldName)        Name OldName As NewName    Next loop_check    MsgBox \"Mission complete\"End SubFunction GetExtention(ByVal strPath As String) As String    ' The function which is get extension from path.    ' Mechanism of this function is exactly same with GetFilenameFromPath.    If Right$(strPath, 1) &lt;&gt; \".\" And Len(strPath) &gt; 0 Then        GetExtention = GetExtention(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n4. Result\n","dateCreated":"2018-09-10T00:00:00+09:00","dateModified":"2020-02-05T15:53:55+09:00","datePublished":"2018-09-10T00:00:00+09:00","description":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.","headline":"<VBA> Multiple file name changer by XLSM","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/","keywords":"VBA"}</script>
-    <meta name="description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\nRedshift 공식 메뉴얼에서 명료하게 설명하지 않았거나, 없는 내용에 대한 정리이다.\n1. Virtual Private Cloud(VPC) 보안 그룹 설정\nVPC의 보안 그룹 설정이 필요하다.\n클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; VPC 보안 그룹 메뉴로\nInbound 설정에서, 유형 Redshift, 연결을 원하는 머신의 IP를 Source로 설정하자.\n\n2. “공개적으로 액세스 할 수 있음” 설정\n너무 간단한 내용이지만, 메뉴얼에 없었다…\n클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; 공개적으로 액세스 할 수 있음 메뉴에서 ‘예’로 바꿔주면 된다.\n\n3. TablePlus에서 연결하기\nMac용 SQL 클라이언트 중에서는 TablePlus가 제일 좋은 것 같다.\n클러스터 Endpoint는 이런 구조다.\nCLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com:PORT/DATABASE-NAME\n\n\nHost에 입력할 값\nCLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com\n\n\nPort, User, Password, Database는 설정했던 값을 입력\n나머지 옵션은 조절하지 않아도 됨\n\n4. psycopg2에서 연결하기\n간단해서 코드로 대신함\n12345678import psycopg2dbname='YOUR-DB-NAME' # 최초의 기본 db명은 devhost='CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'port=5439user='USER-NAME'password='********'con=psycopg2.connect(dbname=dbname, host=host, port=port, user=user, password=password)cur = con.cursor()\n\n매번 connect, cursor를 닫기 번거로우니 with 구문을 사용하자.\n12345678910dbname='YOUR-DB-NAME' # 최초의 기본 db명은 devhost='CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'port=5439user='USER-NAME'password='********'connect_param = dict(&#123;'dbname':dbname, 'host':host, 'port':port, 'user':user, 'password':password&#125;)with psycopg2.connect(**connect_param) as con:    with con.cursor() as cur:        do something\n\n","dateCreated":"2020-02-06T13:13:00+09:00","dateModified":"2020-02-13T12:13:38+09:00","datePublished":"2020-02-06T13:13:00+09:00","description":"","headline":"<기업부도예측-4> 로컬 머신에서 AWS Redshift에 접근하기","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/","keywords":"AWS"}</script>
+    <meta name="description" content="Redshift 공식 메뉴얼에서 명료하게 설명하지 않았거나, 없는 내용에 대한 정리이다. 1. Virtual Private Cloud(VPC) 보안 그룹 설정 VPC의 보안 그룹 설정이 필요하다. 클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; VPC 보안 그룹 메뉴로 Inbound 설정에서, 유형 Redshift, 연결을 원하는">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="&lt;VBA&gt; Multiple file name changer by XLSM">
-<meta property="og:url" content="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/index.html">
+<meta property="og:title" content="&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
+<meta property="og:description" content="Redshift 공식 메뉴얼에서 명료하게 설명하지 않았거나, 없는 내용에 대한 정리이다. 1. Virtual Private Cloud(VPC) 보안 그룹 설정 VPC의 보안 그룹 설정이 필요하다. 클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; VPC 보안 그룹 메뉴로 Inbound 설정에서, 유형 Redshift, 연결을 원하는">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3">
-<meta property="article:published_time" content="2018-09-09T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-05T06:53:55.471Z">
+<meta property="article:published_time" content="2020-02-06T04:13:00.000Z">
+<meta property="article:modified_time" content="2020-02-13T03:13:38.206Z">
 <meta property="article:author" content="Jin">
-<meta property="article:tag" content="VBA">
-<meta property="article:tag" content="file name change">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="Redshift">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3">
     
     
         
@@ -209,20 +207,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            &lt;VBA&gt; Multiple file name changer by XLSM
+            &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2018-09-10T00:00:00+09:00">
+    <time datetime="2020-02-06T13:13:00+09:00">
 	
-		    Sep 10, 2018
+		    Feb 06, 2020
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%EC%9E%90%EB%8F%99%ED%99%94-%EC%BD%94%EB%93%9C-%EC%A0%9C%EC%9E%91/">자동화_코드_제작</a>
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>, <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -234,45 +232,38 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br><a id="more"></a></p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Virtual-Private-Cloud-VPC-보안-그룹-설정"><span class="toc-text">1. Virtual Private Cloud(VPC) 보안 그룹 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-“공개적으로-액세스-할-수-있음”-설정"><span class="toc-text">2. “공개적으로 액세스 할 수 있음” 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-TablePlus에서-연결하기"><span class="toc-text">3. TablePlus에서 연결하기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-psycopg2에서-연결하기"><span class="toc-text">4. psycopg2에서 연결하기</span></a></li></ul>
 <hr>
-<h2 id="1-Features"><a href="#1-Features" class="headerlink" title="1. Features"></a>1. Features</h2><p><strong>A. Essential functions</strong></p>
-<ul>
-<li>a. Select multiple files</li>
-<li>b. Change file names by the pairs of original name and new name.</li>
+<p>Redshift <a href="https://docs.aws.amazon.com/ko_kr/redshift/index.html" target="_blank" rel="noopener">공식 메뉴얼</a>에서 명료하게 설명하지 않았거나, 없는 내용에 대한 정리이다.</p>
+<h1 id="1-Virtual-Private-Cloud-VPC-보안-그룹-설정"><a href="#1-Virtual-Private-Cloud-VPC-보안-그룹-설정" class="headerlink" title="1. Virtual Private Cloud(VPC) 보안 그룹 설정"></a>1. Virtual Private Cloud(VPC) 보안 그룹 설정</h1><ul>
+<li><a href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/what-is-amazon-vpc.html" target="_blank" rel="noopener">VPC</a>의 보안 그룹 설정이 필요하다.</li>
+<li>클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; VPC 보안 그룹 메뉴로</li>
+<li>Inbound 설정에서, 유형 Redshift, 연결을 원하는 머신의 IP를 Source로 설정하자.</li>
 </ul>
-<hr>
-<h2 id="2-Blueprint"><a href="#2-Blueprint" class="headerlink" title="2. Blueprint"></a>2. Blueprint</h2><p><strong>[File select button]</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>[Change name button]</strong></p>
-<p><br></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Original name<br>(After selecting files, this column <br>will be filled automatically)</th>
-<th style="text-align:center">New name<br>(without extension)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1.txt</td>
-<td style="text-align:center">aaa</td>
-</tr>
-<tr>
-<td style="text-align:center">2.txt</td>
-<td style="text-align:center">bbb</td>
-</tr>
-<tr>
-<td style="text-align:center">3.txt</td>
-<td style="text-align:center">ccc</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-<h2 id="3-Codes"><a href="#3-Codes" class="headerlink" title="3. Codes"></a>3. Codes</h2><h3 id="Codes-in-the-File-select-button"><a href="#Codes-in-the-File-select-button" class="headerlink" title="[Codes in the File select button]"></a>[Codes in the File select button]</h3><figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> File_Select()</span><br><span class="line">    <span class="keyword">Dim</span> Name_Location_Index <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> FileName_Cache <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">With</span> Application.FileDialog(msoFileDialogOpen)</span><br><span class="line">        .AllowMultiSelect = <span class="literal">True</span></span><br><span class="line">        .Show</span><br><span class="line">        <span class="comment">' Display paths of all file that are selected</span></span><br><span class="line">        <span class="keyword">For</span> Name_Location_Index = <span class="number">1</span> <span class="keyword">To</span> .SelectedItems.Count</span><br><span class="line">            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))</span><br><span class="line">            Worksheets(<span class="string">"Main"</span>).Cells(Name_Location_Index + <span class="number">5</span>, <span class="number">1</span>).Value = .SelectedItems(Name_Location_Index)</span><br><span class="line">       <span class="comment">' Name list begins at fifth row, so 5 have to be added.</span></span><br><span class="line">       <span class="comment">' In Column A, put the paths of selected file. In Column B, just put the file names with extension.</span></span><br><span class="line">            Worksheets(<span class="string">"Main"</span>).Cells(Name_Location_Index + <span class="number">5</span>, <span class="number">2</span>).Value = FileName_Cache</span><br><span class="line">        <span class="keyword">Next</span> Name_Location_Index</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetFilenameFromPath(<span class="keyword">ByVal</span> strPath <span class="keyword">As</span> <span class="built_in">String</span>) <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">   <span class="comment">' This is the function which takes only file name from total file path.</span></span><br><span class="line">   <span class="comment">' Using recursive call to cut the rightmost character in string until meet forward slash.('/')</span></span><br><span class="line">   <span class="comment">' If total path is C:\example\exam.txt, exam.txt is the final return.</span></span><br><span class="line">    <span class="keyword">If</span> Right$(strPath, <span class="number">1</span>) &lt;&gt; <span class="string">"\"</span> <span class="keyword">And</span> Len(strPath) &gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - <span class="number">1</span>)) + Right$(strPath, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
-<h3 id="Codes-in-the-Change-name-button"><a href="#Codes-in-the-Change-name-button" class="headerlink" title="[Codes in the Change name button]"></a>[Codes in the Change name button]</h3><figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> File_Rename()</span><br><span class="line">    <span class="keyword">Dim</span> OldName, NewName <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">    <span class="keyword">Dim</span> Column_End_Original <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> Colunm_End_Goal <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> loop_check <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line"></span><br><span class="line">    Column_End_Original = Cells(Rows.Count, <span class="number">1</span>).<span class="keyword">End</span>(xlUp).Row</span><br><span class="line">    Column_End_Goal = Cells(Rows.Count, <span class="number">3</span>).<span class="keyword">End</span>(xlUp).Row</span><br><span class="line">    <span class="comment">' Get the final rows of original name list and new name list</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">For</span> loop_check = <span class="number">6</span> <span class="keyword">To</span> Column_End_Original</span><br><span class="line">        <span class="comment">' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.</span></span><br><span class="line">        OldName = Cells(loop_check, <span class="number">1</span>).<span class="keyword">Text</span></span><br><span class="line">        NewName = Cells(loop_check, <span class="number">3</span>).<span class="keyword">Text</span> + <span class="string">"."</span> + GetExtention(OldName)</span><br><span class="line">        Name OldName <span class="keyword">As</span> NewName</span><br><span class="line">    <span class="keyword">Next</span> loop_check</span><br><span class="line">    MsgBox <span class="string">"Mission complete"</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetExtention(<span class="keyword">ByVal</span> strPath <span class="keyword">As</span> <span class="built_in">String</span>) <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">    <span class="comment">' The function which is get extension from path.</span></span><br><span class="line">    <span class="comment">' Mechanism of this function is exactly same with GetFilenameFromPath.</span></span><br><span class="line">    <span class="keyword">If</span> Right$(strPath, <span class="number">1</span>) &lt;&gt; <span class="string">"."</span> <span class="keyword">And</span> Len(strPath) &gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">        GetExtention = GetExtention(Left$(strPath, Len(strPath) - <span class="number">1</span>)) + Right$(strPath, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="4-Result"><a href="#4-Result" class="headerlink" title="4. Result"></a>4. Result</h2><p><img src="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3" alt="Oops, Some network ants ate this pic!" title="The scene when you apply"></p>
+<h1 id="2-“공개적으로-액세스-할-수-있음”-설정"><a href="#2-“공개적으로-액세스-할-수-있음”-설정" class="headerlink" title="2. “공개적으로 액세스 할 수 있음” 설정"></a>2. “공개적으로 액세스 할 수 있음” 설정</h1><ul>
+<li>너무 간단한 내용이지만, 메뉴얼에 없었다…</li>
+<li>클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; 공개적으로 액세스 할 수 있음 메뉴에서 ‘예’로 바꿔주면 된다.</li>
+</ul>
+<h1 id="3-TablePlus에서-연결하기"><a href="#3-TablePlus에서-연결하기" class="headerlink" title="3. TablePlus에서 연결하기"></a>3. TablePlus에서 연결하기</h1><ul>
+<li>Mac용 SQL 클라이언트 중에서는 TablePlus가 제일 좋은 것 같다.</li>
+<li>클러스터 Endpoint는 이런 구조다.<ul>
+<li>CLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com:PORT/DATABASE-NAME</li>
+</ul>
+</li>
+<li>Host에 입력할 값<ul>
+<li>CLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com</li>
+</ul>
+</li>
+<li>Port, User, Password, Database는 설정했던 값을 입력</li>
+<li>나머지 옵션은 조절하지 않아도 됨</li>
+</ul>
+<h1 id="4-psycopg2에서-연결하기"><a href="#4-psycopg2에서-연결하기" class="headerlink" title="4. psycopg2에서 연결하기"></a>4. psycopg2에서 연결하기</h1><ul>
+<li><p>간단해서 코드로 대신함</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line">dbname=<span class="string">'YOUR-DB-NAME'</span> <span class="comment"># 최초의 기본 db명은 dev</span></span><br><span class="line">host=<span class="string">'CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'</span></span><br><span class="line">port=<span class="number">5439</span></span><br><span class="line">user=<span class="string">'USER-NAME'</span></span><br><span class="line">password=<span class="string">'********'</span></span><br><span class="line">con=psycopg2.connect(dbname=dbname, host=host, port=port, user=user, password=password)</span><br><span class="line">cur = con.cursor()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>매번 connect, cursor를 닫기 번거로우니 with 구문을 사용하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dbname=<span class="string">'YOUR-DB-NAME'</span> <span class="comment"># 최초의 기본 db명은 dev</span></span><br><span class="line">host=<span class="string">'CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'</span></span><br><span class="line">port=<span class="number">5439</span></span><br><span class="line">user=<span class="string">'USER-NAME'</span></span><br><span class="line">password=<span class="string">'********'</span></span><br><span class="line">connect_param = dict(&#123;<span class="string">'dbname'</span>:dbname, <span class="string">'host'</span>:host, <span class="string">'port'</span>:port, <span class="string">'user'</span>:user, <span class="string">'password'</span>:password&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param) <span class="keyword">as</span> con:</span><br><span class="line">    <span class="keyword">with</span> con.cursor() <span class="keyword">as</span> cur:</span><br><span class="line">        do something</span><br></pre></td></tr></table></figure></li>
+</ul>
 
             
 
@@ -284,7 +275,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/vba/" rel="tag">VBA</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/aws/" rel="tag">AWS</a>
 
             </div>
         
@@ -297,9 +288,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
-                    aria-label="PREVIOUS: &lt;VBA&gt; XLSX file merging script"
+                    href="/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
+                    data-tooltip="&lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2"
+                    aria-label="PREVIOUS: &lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -311,9 +302,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/04/19/web-broswer-control-with-selenium/"
-                    data-tooltip="&lt;Python&gt; Web broswer control with Selenium"
-                    aria-label="NEXT: &lt;Python&gt; Web broswer control with Selenium"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
+                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
+                    aria-label="NEXT: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -338,7 +329,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -351,7 +342,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -374,7 +365,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -413,9 +404,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
-                    aria-label="PREVIOUS: &lt;VBA&gt; XLSX file merging script"
+                    href="/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
+                    data-tooltip="&lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2"
+                    aria-label="PREVIOUS: &lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -427,9 +418,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/04/19/web-broswer-control-with-selenium/"
-                    data-tooltip="&lt;Python&gt; Web broswer control with Selenium"
-                    aria-label="NEXT: &lt;Python&gt; Web broswer control with Selenium"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
+                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
+                    aria-label="NEXT: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -454,7 +445,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -467,7 +458,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -490,7 +481,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -511,7 +502,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -524,7 +515,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -839,9 +830,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/';
+            this.page.url = 'https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/';
               
-            this.page.identifier = '2018/09/10/multiple-file-name-changer-by-xlsm/';
+            this.page.identifier = '2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/';
               
           };
           (function() {

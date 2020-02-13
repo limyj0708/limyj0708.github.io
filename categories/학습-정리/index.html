@@ -36,7 +36,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+<link rel="stylesheet" href="/assets/css/style-22tzafjcdlcnt88uzcz0qlal4pjrroh71schgqdvvnkd7mmjrd2taoasvunf.min.css">
 
     <!--STYLES END-->
     
@@ -98,19 +98,6 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
                              href="/all-categories"
                             
                             title="Categories"
@@ -157,19 +144,6 @@
                     
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="About"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -225,6 +199,190 @@
                         ">
                 
     <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
+                            aria-label=": &lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2"
+                        >
+                            &lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-11T12:13:00+09:00">
+	
+		    Feb 11, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>, <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것"><span class="toc-text">1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-psycopg2"><span class="toc-text">2. psycopg2</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Query-parameter-전달-시의-유의점"><span class="toc-text">2-1. Query parameter 전달 시의 유의점</span></a></li></ul></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-로컬-DB-postgreSQL"><span class="toc-text">3. 로컬 DB : postgreSQL</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-COPY-시의-권한-문제"><span class="toc-text">3-1. COPY 시의 권한 문제</span></a></li></ul></li></ul>
+<hr>
+<p>1편인 이유는, Redshift에 사용할 데이터를 적재하기만 했지, 업데이트 되는 데이터들, 특히 매일 나오는 주가 데이터와 기사 데이터를 수집, 변환, 적재하는 ETL 파이프라인을 아직 만들지 않았기 때문이다.</p>
+<h1 id="1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것"><a href="#1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것" class="headerlink" title="1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것"></a>1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h1><ul>
+<li>차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어넣는 것이 훨씬 빠르다.</li>
+<li>Redshift에서 직접 SELECT, INSERT 처리를 하면 : 300만행 추가에 예상 완료시간 4일</li>
+<li>로컬 DB에서 연산 후 COPY로 업로드하면 : 300만 행 연산시간 3.5시간, COPY 업로드 시간 5분</li>
+<li><a href="https://aws.amazon.com/ko/data-warehouse/" target="_blank" rel="noopener">AWS DW 설명 문서</a>의 말을 들었어야 했는데.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 같은 코드를 로컬 DB에서 돌리면 3.5시간, Redshift에 연결해서 돌리면 4일</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param_local) <span class="keyword">as</span> con:</span><br><span class="line">    cur_2 = con.cursor()</span><br><span class="line">    <span class="comment"># fetchall을 사용해서 커서를 재활용하지 않고 커서를 두 개 두는 이유는, redshift의 single-node cluster에서는 fetchall이 지원되지 않기 떄문이다.</span></span><br><span class="line">        <span class="comment"># InternalError_: Fetch ALL is not supported on single-node clusters.</span></span><br><span class="line">        <span class="comment"># Please specify the fetch size (maximum 1000 for single-node clusters) </span></span><br><span class="line">        <span class="comment"># or upgrade to a multi node installation.</span></span><br><span class="line">    <span class="comment"># 로컬 머신에서 연산하면 fetchall을 사용할 수 있으므로 이렇게 안 해도 되지만,</span></span><br><span class="line">    <span class="comment"># 코드 수정이 더 번거로웠으므로 그냥 사용하였다.</span></span><br><span class="line">    </span><br><span class="line">    get_companylist_sql = <span class="string">'''select * from target_company_list;'''</span></span><br><span class="line">    target_company_list = sqlio.read_sql_query(get_companylist_sql, con)</span><br><span class="line">    <span class="comment"># 1mb도 안되는 작은 테이블이라서 데이터프레임으로 한 번에 받아옴</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> each_code <span class="keyword">in</span> target_company_list[<span class="string">'stock_code'</span>]:</span><br><span class="line">        cur_1 = con.cursor(<span class="string">'ss_cursor'</span>) <span class="comment"># server side cursor</span></span><br><span class="line">        <span class="comment"># cur_1.itersize = 1000 # redshift single-node cluster에서의 server side cursor의 최대 제한값</span></span><br><span class="line">        </span><br><span class="line">        print(each_code,<span class="string">'_start'</span>)</span><br><span class="line">        predict_start = target_company_list[target_company_list[<span class="string">'stock_code'</span>] == each_code][<span class="string">'pre_6m'</span>].values[<span class="number">0</span>] - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line">        predict_end = predict_start - datetime.timedelta(days=<span class="number">1096</span>)</span><br><span class="line"></span><br><span class="line">        cur_1.execute(</span><br><span class="line">            <span class="string">"""</span></span><br><span class="line"><span class="string">            select * from stock_data_2000_2020_raw</span></span><br><span class="line"><span class="string">            where (date between %(predict_end)s and %(predict_start)s) and (stock_code = %(stock_code)s);</span></span><br><span class="line"><span class="string">            """</span>,</span><br><span class="line">            &#123;<span class="string">'predict_end'</span>:predict_end.strftime(<span class="string">"%Y-%m-%d"</span>),<span class="string">'predict_start'</span>:predict_start.strftime(<span class="string">"%Y-%m-%d"</span>),<span class="string">'stock_code'</span>: each_code&#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> each_row <span class="keyword">in</span> cur_1: </span><br><span class="line">            <span class="comment"># next(cur_1)로 한줄씩 불러와서 insert</span></span><br><span class="line">            cur_2.execute(<span class="string">"""insert into stock_data_3years_raw_6m values %s"""</span>, [each_row])</span><br><span class="line">            <span class="comment"># each_row는 tuple이다.</span></span><br><span class="line">        con.commit()</span><br><span class="line">        print(each_code,<span class="string">'_commit complete'</span>)</span><br><span class="line">    cur_2.close()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="2-psycopg2"><a href="#2-psycopg2" class="headerlink" title="2. psycopg2"></a>2. psycopg2</h1><h2 id="2-1-Query-parameter-전달-시의-유의점"><a href="#2-1-Query-parameter-전달-시의-유의점" class="headerlink" title="2-1. Query parameter 전달 시의 유의점"></a>2-1. Query parameter 전달 시의 유의점</h2><ul>
+<li><a href="https://www.psycopg.org/docs/usage.html#query-parameters" target="_blank" rel="noopener">psycopg2 document</a>에, 아주 빨간색으로 엄청 잘 보이게 써 있는 경고문이 있다.<div class="alert danger"><p>Warning :Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.</p>
+</div>
+</li>
+</ul>
+<ul>
+<li><p>SQL Injection의 위험이 있기 때문인데, 어떻게 위험한지는 <a href="https://stackoverflow.com/questions/37329370/how-to-avoid-sql-injection-with-select-from-table-name" target="_blank" rel="noopener">여기를</a> 참고하자.</p>
+</li>
+<li><p>그럼 어떻게 하라는 걸까?</p>
+<ul>
+<li><a href="https://www.psycopg.org/docs/usage.html#query-parameters" target="_blank" rel="noopener">psycopg2 document</a>의 예시들 중, 이렇게 써야겠다고 생각한 형식은 아래와 같다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line"><span class="keyword">from</span> psycopg2 <span class="keyword">import</span> sql</span><br><span class="line"></span><br><span class="line">credentials = <span class="string">'aws_access_key_id=**************;aws_secret_access_key=**************'</span></span><br><span class="line">s3_bucket_param = <span class="string">'s3://BUCKET-NAME/FILE-NAME'</span></span><br><span class="line"></span><br><span class="line">copy_query = sql.SQL(<span class="string">"""</span></span><br><span class="line"><span class="string">        copy &#123;table_name&#125;</span></span><br><span class="line"><span class="string">        from %(s3_bucket_param)s</span></span><br><span class="line"><span class="string">        credentials %(credentials)s</span></span><br><span class="line"><span class="string">        IGNOREHEADER 1</span></span><br><span class="line"><span class="string">        CSV;</span></span><br><span class="line"><span class="string">    """</span>).format(table_name = sql.Identifier(<span class="string">'TABLE-NAME'</span>))</span><br><span class="line"></span><br><span class="line">cur.execute(copy_query, &#123;<span class="string">'s3_bucket_param'</span>:s3_bucket_param, <span class="string">'credentials'</span>:credentials&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><strong>{}</strong> : 테이블 이름 등의 identifier를 받는다. %s 형식으로 이 값을 받으려고 하면, 제대로 인식이 안 되기 때문에 번거롭지만 <code>.foramt(table_name = sql.Identifier(&#39;TABLE-NAME&#39;))</code>형식으로 인자를 넘겨야 한다. keyword parameter로 안 해도 되지만, 어떤 자리에 무엇이 들어가는 지 명확하게 정의하는 것을 좋아하므로 몽땅 keyword parameter로 진행하였다.<ul>
+<li><a href="https://www.psycopg.org/docs/sql.html" target="_blank" rel="noopener">sql 모듈 설명</a></li>
+<li><a href="https://github.com/psycopg/psycopg2/issues/423" target="_blank" rel="noopener">같은 문제로 고통받던 사람의 이슈제기</a></li>
+</ul>
+</li>
+<li><strong>%(keyword)s</strong> : value를 받는다. execute 함수 내부에서 인자로 전달하면 된다. keyword parameter로 정의했을 경우 dictionary로 전달하자.</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-로컬-DB-postgreSQL"><a href="#3-로컬-DB-postgreSQL" class="headerlink" title="3. 로컬 DB : postgreSQL"></a>3. 로컬 DB : postgreSQL</h1><h2 id="3-1-COPY-시의-권한-문제"><a href="#3-1-COPY-시의-권한-문제" class="headerlink" title="3-1. COPY 시의 권한 문제"></a>3-1. COPY 시의 권한 문제</h2><ul>
+<li>작업 폴더 내에 있는 CSV 파일을 그대로 COPY하려고 하면, 무조건 permission error가 발생한다.</li>
+<li>DB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?<ul>
+<li>맥에서 Homebrew로 설치한 기준에서는, /usr/local/var/postgres</li>
+<li>예시  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param_local) <span class="keyword">as</span> con:</span><br><span class="line">    <span class="keyword">with</span> con.cursor() <span class="keyword">as</span> cur:</span><br><span class="line">        cur.execute(</span><br><span class="line">            <span class="string">"""</span></span><br><span class="line"><span class="string">            COPY stock_data_2000_2020_raw</span></span><br><span class="line"><span class="string">            from '/usr/local/var/postgres/stock_data_raw_2.csv'</span></span><br><span class="line"><span class="string">            DELIMITER ','</span></span><br><span class="line"><span class="string">            CSV HEADER;</span></span><br><span class="line"><span class="string">            """</span>)</span><br><span class="line">con.commit()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
+                            aria-label=": &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                        >
+                            &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-06T13:13:00+09:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>, <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Virtual-Private-Cloud-VPC-보안-그룹-설정"><span class="toc-text">1. Virtual Private Cloud(VPC) 보안 그룹 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-“공개적으로-액세스-할-수-있음”-설정"><span class="toc-text">2. “공개적으로 액세스 할 수 있음” 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-TablePlus에서-연결하기"><span class="toc-text">3. TablePlus에서 연결하기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-psycopg2에서-연결하기"><span class="toc-text">4. psycopg2에서 연결하기</span></a></li></ul>
+<hr>
+<p>Redshift <a href="https://docs.aws.amazon.com/ko_kr/redshift/index.html" target="_blank" rel="noopener">공식 메뉴얼</a>에서 명료하게 설명하지 않았거나, 없는 내용에 대한 정리이다.</p>
+<h1 id="1-Virtual-Private-Cloud-VPC-보안-그룹-설정"><a href="#1-Virtual-Private-Cloud-VPC-보안-그룹-설정" class="headerlink" title="1. Virtual Private Cloud(VPC) 보안 그룹 설정"></a>1. Virtual Private Cloud(VPC) 보안 그룹 설정</h1><ul>
+<li><a href="https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/what-is-amazon-vpc.html" target="_blank" rel="noopener">VPC</a>의 보안 그룹 설정이 필요하다.</li>
+<li>클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; VPC 보안 그룹 메뉴로</li>
+<li>Inbound 설정에서, 유형 Redshift, 연결을 원하는 머신의 IP를 Source로 설정하자.</li>
+</ul>
+<h1 id="2-“공개적으로-액세스-할-수-있음”-설정"><a href="#2-“공개적으로-액세스-할-수-있음”-설정" class="headerlink" title="2. “공개적으로 액세스 할 수 있음” 설정"></a>2. “공개적으로 액세스 할 수 있음” 설정</h1><ul>
+<li>너무 간단한 내용이지만, 메뉴얼에 없었다…</li>
+<li>클러스터 선택 -&gt; 속성 -&gt; 네트워크 및 보안 -&gt; 공개적으로 액세스 할 수 있음 메뉴에서 ‘예’로 바꿔주면 된다.</li>
+</ul>
+<h1 id="3-TablePlus에서-연결하기"><a href="#3-TablePlus에서-연결하기" class="headerlink" title="3. TablePlus에서 연결하기"></a>3. TablePlus에서 연결하기</h1><ul>
+<li>Mac용 SQL 클라이언트 중에서는 TablePlus가 제일 좋은 것 같다.</li>
+<li>클러스터 Endpoint는 이런 구조다.<ul>
+<li>CLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com:PORT/DATABASE-NAME</li>
+</ul>
+</li>
+<li>Host에 입력할 값<ul>
+<li>CLUSTER-NAME.CLUSTER-KEY.CLUSTER-REGION.redshift.amazonaws.com</li>
+</ul>
+</li>
+<li>Port, User, Password, Database는 설정했던 값을 입력</li>
+<li>나머지 옵션은 조절하지 않아도 됨</li>
+</ul>
+<h1 id="4-psycopg2에서-연결하기"><a href="#4-psycopg2에서-연결하기" class="headerlink" title="4. psycopg2에서 연결하기"></a>4. psycopg2에서 연결하기</h1><ul>
+<li><p>간단해서 코드로 대신함</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line">dbname=<span class="string">'YOUR-DB-NAME'</span> <span class="comment"># 최초의 기본 db명은 dev</span></span><br><span class="line">host=<span class="string">'CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'</span></span><br><span class="line">port=<span class="number">5439</span></span><br><span class="line">user=<span class="string">'USER-NAME'</span></span><br><span class="line">password=<span class="string">'********'</span></span><br><span class="line">con=psycopg2.connect(dbname=dbname, host=host, port=port, user=user, password=password)</span><br><span class="line">cur = con.cursor()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>매번 connect, cursor를 닫기 번거로우니 with 구문을 사용하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dbname=<span class="string">'YOUR-DB-NAME'</span> <span class="comment"># 최초의 기본 db명은 dev</span></span><br><span class="line">host=<span class="string">'CLUSTER-NAME.CLUESTER-KEY.CLUESTER-REGION.redshift.amazonaws.com'</span></span><br><span class="line">port=<span class="number">5439</span></span><br><span class="line">user=<span class="string">'USER-NAME'</span></span><br><span class="line">password=<span class="string">'********'</span></span><br><span class="line">connect_param = dict(&#123;<span class="string">'dbname'</span>:dbname, <span class="string">'host'</span>:host, <span class="string">'port'</span>:port, <span class="string">'user'</span>:user, <span class="string">'password'</span>:password&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param) <span class="keyword">as</span> con:</span><br><span class="line">    <span class="keyword">with</span> con.cursor() <span class="keyword">as</span> cur:</span><br><span class="line">        do something</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom">
@@ -1049,6 +1207,75 @@ refcount가 3인 이유는, 빈 리스트 <code>[]</code>가 a, b, sys.getrefcou
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
+                        >
+                            &lt;Python&gt; Map vs List Comprehension
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-12T00:00:00+09:00">
+	
+		    Oct 12, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
+<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/12/iterator-iterable-generator/"
                             aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
                         >
@@ -1160,75 +1387,6 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
-                        >
-                            &lt;Python&gt; Map vs List Comprehension
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-12T00:00:00+09:00">
-	
-		    Oct 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
-<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
-<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
                             href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/"
                             aria-label=": &lt;Python&gt; Parameters, Arguments 정의와 차이점"
                         >
@@ -1300,137 +1458,6 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                         <p>
                             <a
                                 href="/2019/10/11/what-is-the-difference-between-arguments-and-parameters/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/04/what-are-magic-methods/"
-                            aria-label=": &lt;Python&gt; What are Magic Methods?"
-                        >
-                            &lt;Python&gt; What are Magic Methods?
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Magic-Method"><a href="#Magic-Method" class="headerlink" title="Magic Method"></a>Magic Method</h1><blockquote><p>What are magic methods? They’re everything in object-oriented Python. They’re special methods that you can define to add “magic” to your classes. They’re always surrounded by double underscores (e.g. <strong>init</strong> or <strong>lt</strong>).</p>
-<footer><strong>Rafe Kettler</strong><cite><a href="https://rszalski.github.io/magicmethods/%" target="_blank" rel="noopener">A Guide to Python's Magic Methods</a></cite></footer></blockquote>
-<p><br><br>어떤 클래스의 인스턴스에 어떤 동작을 취하려고 할 때, Call 되는 미리 만들어진 메소드들.<br>Class Initialization과 Compasion Operator에 관련된 Magic Method들로 실습해보자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Word</span><span class="params">(str)</span>:</span> <span class="comment"># str을 상속받음</span></span><br><span class="line">    <span class="string">'''Class for words, defining comparison based on word length.'''</span></span><br><span class="line">        <span class="comment"># Note that we have to use __new__. This is because str is an immutable</span></span><br><span class="line">        <span class="comment"># type, so we have to initialize it early (at creation)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># When subclassing immutable built-in types like numbers and strings, </span></span><br><span class="line">        <span class="comment"># and occasionally in other situations, </span></span><br><span class="line">        <span class="comment"># the static method __new__ comes in handy.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># __init__으로 하면 아예 작동하지 않는다. 관련 내용은 아래 링크에서 확인.</span></span><br><span class="line">        <span class="comment"># https://www.python.org/download/releases/2.2.3/descrintro/#__new__</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, word)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">' '</span> <span class="keyword">in</span> word:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"Value contains spaces. Truncating to first space."</span>)</span><br><span class="line">            word = word[:word.index(<span class="string">' '</span>)] <span class="comment"># Word is now all chars before first space    </span></span><br><span class="line">        <span class="keyword">return</span> str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt; len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &gt;= len(other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">blah = Word(<span class="string">'blahblah bb'</span>)</span><br><span class="line">print(blah)</span><br><span class="line">damn = Word(<span class="string">'damn'</span>)</span><br><span class="line">print(damn &lt; blah) <span class="comment"># blah가 8자로 더 길기 때문에, True가 반환된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">Value contains spaces. Truncating to first space.</span><br><span class="line">blahblah</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'damn'</span> &lt; <span class="string">'blahblah'</span>) <span class="comment"># 일반 문자열에서는, 알파벳 순으로 비교하며, 더 뒤에 있는 알파벳이</span></span><br><span class="line"><span class="comment"># 더 큰 것으로 취급된다. 그래서 False가 출력된다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-<p>Word 클래스 안에서, Operator가 Call하는 Magic Method들을 재정의하여 Override 했다.<br>그래서 값이 같은 문자열임에도 불구하고, Word 클래스의 인스턴스인 문자열과<br>값으로서의 문자열에서의 Operator의 행동이 다르다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        self.name = value</span><br><span class="line">        <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">        <span class="comment"># is recursion.</span></span><br><span class="line">        <span class="comment"># so this really means self.__setattr__('name', value). Since the method</span></span><br><span class="line">        <span class="comment"># keeps calling itself, the recursion goes on forever causing a crash</span></span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"><span class="comment"># __setattr__ 안에 인스턴스의 변수를 변경시키는 기능이 들어 있어서, 또 자기 자신을 호출하게 된다.</span></span><br><span class="line"><span class="comment"># 그래서 아래처럼 RecursionError: maximum recursion depth exceeded 를 발생시킨다.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --Console Output--</span></span><br><span class="line">    ---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    RecursionError                            Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">          <span class="number">9</span> </span><br><span class="line">         <span class="number">10</span> presume = isThereError()</span><br><span class="line">    ---&gt; 11 presume.somethingnono = 1</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ... last <span class="number">1</span> frames repeated, <span class="keyword">from</span> the frame below ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;ipython-input<span class="number">-50</span><span class="number">-5</span>ff951d7c6d3&gt; <span class="keyword">in</span> __setattr__(self, name, value)</span><br><span class="line">          <span class="number">2</span>     something = <span class="number">0</span></span><br><span class="line">          <span class="number">3</span>     <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">    ----&gt; 4         self.name = value</span><br><span class="line">          <span class="number">5</span>         <span class="comment"># since every time an attribute is assigned, __setattr__() is called, this</span></span><br><span class="line">          <span class="number">6</span>         <span class="comment"># is recursion.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">isThereError</span><span class="params">()</span>:</span></span><br><span class="line">    something = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        print(<span class="string">'좋은 시도였다 인간'</span>)</span><br><span class="line"></span><br><span class="line">presume = isThereError()</span><br><span class="line">presume.somethingnono = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 안에 재귀요소가 없으면 이렇게 평범하게 동작함. </span></span><br><span class="line"><span class="comment"># attribute를 바꾸려고 (심지어 존재하지도 않는 것을 바꾸려고 시도) 했을 뿐인데 print가 찍히는 클래스가 있다?</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># -- Console Output --</span></span><br><span class="line">좋은 시도였다 인간</span><br></pre></td></tr></table></figure>
-<p>Magic Method가 어떤 개념이고, 어떤 식으로 동작하는지 감을 잡았으니,<br>계속해서 문서의 예제들을 실행해 보자.<br>…To be coutinued..</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/04/what-are-magic-methods/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/01/python-built-in-function-study-map/"
-                            aria-label=": &lt;Python&gt; Built in function - Map"
-                        >
-                            &lt;Python&gt; Built in function - Map
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-01T00:00:00+09:00">
-	
-		    Oct 01, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote><h1 id="map-function-iterable-…"><a href="#map-function-iterable-…" class="headerlink" title="map(function, iterable, …)"></a>map(function, iterable, …)</h1><p>Return an iterator that applies function to every item of iterable, yielding the results. If additional iterable arguments are passed, function must take that many arguments and is applied to the items from all iterables in parallel. With multiple iterables, the iterator stops when the shortest iterable is exhausted. For cases where the function inputs are already arranged into argument tuples, see <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap</a>.</p>
-<footer><strong>Python Built-in Functions</strong><cite><a href="https://docs.python.org/3.7/library/functions.html#map" target="_blank" rel="noopener">map</a></cite></footer></blockquote>
-<hr>
-<p><br><br>모든 iterable의 Item에 function을 적용하고, 결과를 생성하는 iterator를 Return합니다.<br>(class ‘map’이 return된다.)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(type(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 &lt;class 'map'&gt;</span></span><br></pre></td></tr></table></figure>
-<p>추가적인 iterable arguments가 주어지면,<br>function은 반드시 이 argument들을 받아야 합니다.<br>그리고 function은 모든 iterable들의 item에 병렬적으로 적용됩니다.<br>여러 개의 iterable이 있다면, iterator는 가장 짧은 iterable이 다 사용되면 멈춥니다.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map_test = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">map_test2 = [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">map_result = map(<span class="keyword">lambda</span> x,y : x*y, map_test, map_test2)</span><br><span class="line">print(list(map_result))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 출력값 [7, 16, 27, 40, 55]</span></span><br><span class="line"><span class="comment"># iterable 2개를 받았으며, 각각 map_test가 x에, map_test2가 y에 병렬적으로 대응되었다.</span></span><br><span class="line"><span class="comment"># map_test2가 다 소진되자, 계산이 멈추고 결과가 return 된다. map_test의 6은 안 쓰이게 되었다.</span></span><br></pre></td></tr></table></figure></p>
-<p>함수의 입력값이 argument tuple로 이미 정렬되어 있다면, <a href="https://docs.python.org/3.7/library/itertools.html#itertools.starmap" target="_blank" rel="noopener">itertools.starmap()</a>를 보세요.</p>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/01/python-built-in-function-study-map/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -1734,10 +1761,10 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1759,7 +1786,7 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                23 posts found
             </p>
         </div>
     </div>
@@ -1770,7 +1797,7 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+<script src="/assets/js/script-kxsq3fjhsue9xnfwgpjsxjf9crp3bykgtwnstq4c5h5q2opv7xgn1wdiejq2.min.js"></script>
 
 <!--SCRIPTS END-->
 

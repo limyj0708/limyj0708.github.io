@@ -36,7 +36,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+<link rel="stylesheet" href="/assets/css/style-22tzafjcdlcnt88uzcz0qlal4pjrroh71schgqdvvnkd7mmjrd2taoasvunf.min.css">
 
     <!--STYLES END-->
     
@@ -98,19 +98,6 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
                              href="/all-categories"
                             
                             title="Categories"
@@ -157,19 +144,6 @@
                     
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="About"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -224,6 +198,448 @@
                         hasCoverMetaIn
                         ">
                 <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/30/Decorator-Scope-Namespace/"
+                            aria-label=": &lt;Python&gt; Decorator가 뭐지? with Scope, Namespace"
+                        >
+                            &lt;Python&gt; Decorator가 뭐지? with Scope, Namespace
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-30T00:00:00+09:00">
+	
+		    Oct 30, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h1><ul>
+<li>Decorator : 오브젝트의 구조를 변경하지 않고 새 기능을 추가 할 수 있게 해 주는 디자인 패턴. Python에서는 @를 키워드로 사용한다.<br>Decorator의 간단한 예시와 실행결과를 보자.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function 실행"</span>)</span><br><span class="line"></span><br><span class="line">m = print_line(my_function) <span class="comment"># print_line에 직접 argument를 전달하여 실행해 보자</span></span><br><span class="line">m()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function 실행</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@print_line # decorator를 사용하자</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"my_function2 실행2"</span>)</span><br><span class="line"></span><br><span class="line">my_function2()</span><br><span class="line"></span><br><span class="line"><span class="comment">#실행결과</span></span><br><span class="line">------------------------------</span><br><span class="line">my_function2 실행<span class="number">2</span></span><br><span class="line">******************************</span><br></pre></td></tr></table></figure>
+<p>여기서 몇 가지 궁금한 점이 생긴다.</p>
+<ol>
+<li>function(여기서는 wrapper_mine)을 value처럼 막 return 하네?</li>
+<li>wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?<ul>
+<li>그게 그냥 된대~ 하고 사용해 왔지만 정확한 철학을 알고 싶다</li>
+</ul>
+</li>
+</ol>
+<p>일단 1번부터 알아 보자.<br>왜 함수를 return이 가능하죠?</p>
+<hr>
+<h2 id="First-class-citizen"><a href="#First-class-citizen" class="headerlink" title="First class citizen"></a>First class citizen</h2><p>Wikipedia의 친절한 설명을 보자.<br>Python first class citizen 이라고 검색하면 나오는 포스트들 다 여기서 내용 가져온 거다.</p>
+<blockquote><p>In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities. These operations typically include being passed as an argument, returned from a function, modified, and assigned to a variable.</p>
+<footer><strong>Wikipedia</strong><cite><a href="https://en.wikipedia.org/wiki/First-class_citizen" target="_blank" rel="noopener">First-class citizen</a></cite></footer></blockquote>
+<blockquote>
+<p>First Class Citizen은 Argument로 넘기기, 함수에서 return되기, 조작되기, 변수에 할당되기와 같은, 다른 독립체들과 상호작용 할 수 있는 연산을 지원한다.</p>
+</blockquote>
+<p>그리고 Python에서는 <a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">함수도 first class object다.</a><br><strong>“function을 value처럼 막 return 하네?”</strong> 해결. 그럼 다음 문제, wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?</p>
+<h2 id="Namespace-Scope-LEGB"><a href="#Namespace-Scope-LEGB" class="headerlink" title="Namespace, Scope - LEGB"></a>Namespace, Scope - LEGB</h2><h3 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a><a href="https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces" target="_blank" rel="noopener">Namespace</a></h3><ul>
+<li>Namespace? : 객체와 이름이 매핑된 공간. 대부분의 네임스페이스는 딕셔너리로 적용된다.<ul>
+<li>네임스페이스의 예시<ul>
+<li>built-in된 이름들 : <code>abs()</code>같은 함수명이나, 예외명들.</li>
+<li>모듈 내의 전역 이름들 (global names in module)</li>
+<li>함수 내의 지역 이름들 (local names)</li>
+<li>e.g) zzz.real과 ddd.real은 real이라는 attribute 이름은 같을지라도, 전혀 다른 네임스페이스에서 가져온 것이기 때문에 아무런 연관도 없다.</li>
+</ul>
+</li>
+<li>네임스페이스의 수명주기(lifetime)<ul>
+<li>각각 다른 시기에 생겨나며, 각각 다른 수명을 가짐</li>
+<li>built-in name을 보유한 네임스페이스는 인터프리터가 시작할 때 생겨나고, 인터프리터가 꺼질 때까지 사라지지 않음.</li>
+<li>모듈의 글로벌 네임스페이스는 모듈의 정의가 읽혀질 때 생겨나며, 인터프리터가 꺼질 때까지 사라지지 않음.</li>
+<li>함수의 지역 네임스페이스는 함수가 호출될 때 생겨나고, 함수가 결과를 반환하거나 함수 내부에서 처리되지 않는 에러를 내보낼 때 사라진다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h3><ul>
+<li>Scope? : 네임스페이스가 ‘직접 접근’할 수 있는 구문 영역. ‘직접 접근’이라는 건, <a href="https://stackoverflow.com/questions/17403941/what-is-a-qualified-unqualified-name-in-python" target="_blank" rel="noopener">unqualified reference</a>(비-제한 참조라고 하면 좋을까?)로 네임스페이스 안의 이름을 찾을 수 있는 것을 말한다.<ul>
+<li><a href="https://stackoverflow.com/questions/17403941/what-is-a-qualified-unqualified-name-in-python" target="_blank" rel="noopener">unqualified reference?</a> : <code>someclass.target</code> 처럼 ‘나 어디 있소’라고 <code>someclass.</code> 를 앞에 붙이지 않고, 바로 <code>target</code>으로 이름을 찾는 참조법.</li>
+</ul>
+</li>
+<li>LEGB : Python Scope 탐색 규칙<ul>
+<li>Local : 함수 안에 정의된 이름 중 Global로 정의되지 않은 것</li>
+<li>Enclosing-function : 함수를 내포하고 있는 함수(enclosing function)의 영역 안에 있는 것</li>
+<li>Global (module) : 모듈 파일의 가장 상위 레벨에서 정의되었거나(어디 클래스나 함수 안에서 정의된 것 아니고) 함수 내부에서 <code>global</code>키워드로 실행된 것 </li>
+<li>Built-in (Python) : Python에서 기본으로 정의하고 있는 것</li>
+</ul>
+</li>
+</ul>
+<p>아래 코드를 살펴보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">-1</span> <span class="comment"># Global</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">spam</span>:</span>    </span><br><span class="line">    x2 = <span class="number">-2</span> <span class="comment"># class body</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ham</span><span class="params">(self, bar)</span>:</span></span><br><span class="line">        <span class="comment"># enclosing function</span></span><br><span class="line">        x3 = <span class="number">-3</span></span><br><span class="line">        print(<span class="string">f'print global x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># global에서 받아옴</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">egg</span><span class="params">()</span>:</span></span><br><span class="line">            x4 = <span class="number">-4</span></span><br><span class="line">            x1 = <span class="string">'local x1'</span></span><br><span class="line">            print(<span class="string">f'print local x1 : <span class="subst">&#123;x1&#125;</span>'</span>) <span class="comment"># local에서 정의된 x1을 먼저 받아옴</span></span><br><span class="line">            print(<span class="string">f'print class body x2 : <span class="subst">&#123;self.x2&#125;</span>'</span>) <span class="comment"># class body에 정의된 객체를 가져오려면 self 키워드 필요.</span></span><br><span class="line">            <span class="comment"># 여기서 그냥 x2로 가져오려고 하면, local에도 없고 enclosing에도 없으니</span></span><br><span class="line">            <span class="comment"># global에서 찾게 된다 : print(f'print x2 : &#123;x2&#125;') 그리고 못 찾아서 에러를 낸다.</span></span><br><span class="line">            print(<span class="string">f'print enclosing x3 : <span class="subst">&#123;x3&#125;</span>'</span>) <span class="comment"># enclosing function 영역에서 받아옴</span></span><br><span class="line">            print(<span class="string">f'print abs of x4 : <span class="subst">&#123;abs(x4)&#125;</span>'</span>) <span class="comment"># Built-in에서 print, abs를 찾는다. local에서 x4를 찾는다.</span></span><br><span class="line">            print(bar) <span class="comment"># enclosing-function의 argument를 받는다.</span></span><br><span class="line">        egg()</span><br><span class="line"></span><br><span class="line">spam = spam()</span><br><span class="line">spam.ham(<span class="string">'foo'</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">출력결과</span><br><span class="line">print global x1 : -1</span><br><span class="line">print local x1 : local x1</span><br><span class="line">print class body x2 : -2</span><br><span class="line">print enclosing x3 : -3</span><br><span class="line">print abs of x4 : 4</span><br><span class="line">foo</span><br></pre></td></tr></table></figure><br>Class body영역은 scope에서 enclosing-function도 아니고 global도 아닌 독특한 위치를 차지하고 있는데, <a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules/23471004#23471004" target="_blank" rel="noopener">이 StackOverFlow 답변</a>을 참고하자.</p>
+<p>다시 원점으로 돌아오면,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_line</span><span class="params">(func)</span>:</span> <span class="comment"># Decorator가 될 함수</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_mine</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span>*<span class="number">30</span>) <span class="comment"># func의 사전작업이라 할 수 있다.</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'#'</span>*<span class="number">30</span>) <span class="comment"># func의 사후작업이라 할 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> wrapper_mine <span class="comment"># wrapper_mine을 호출한 게 아니고, 함수 객체를 그냥 반환한 거다.</span></span><br></pre></td></tr></table></figure><br><strong>“wrapper_mine이 어떻게 print_line의 argument에 접근할 수 있지?”</strong> 도 해결되었다.</p>
+<hr>
+<h1 id="어디다-쓰지"><a href="#어디다-쓰지" class="headerlink" title="어디다 쓰지?"></a>어디다 쓰지?</h1><p>말 그대로, 이걸 어디다 쓸까? 간단한 예제를 살펴보자.<br>코드 출처 : <a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">verbose</span><span class="params">(func)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">new_func</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"Begin"</span>, func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"End"</span>, func.__name__)</span><br><span class="line">    <span class="keyword">return</span> new_func</span><br></pre></td></tr></table></figure><br>함수 호출의 시작과 끝을 print 출력으로 알리는 함수다. 아무 함수나 들어올 수 있게 parameter가 설정되어 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@verbose</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simple_sum</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    print(x+y)</span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line">simple_sum(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">Begin simple_sum</span><br><span class="line">3</span><br><span class="line">End simple_sum</span><br></pre></td></tr></table></figure>
+<p>어떤 함수를 집어넣어도 호출 시에, 연산 끝났을 시에 함수 이름과 함께 알려주는 재미있는 Decorator다.</p>
+<hr>
+<h1 id="Chaining-Decorators-in-Python"><a href="#Chaining-Decorators-in-Python" class="headerlink" title="Chaining Decorators in Python"></a>Chaining Decorators in Python</h1><p><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">이 글을 보다보니</a>, 재미있는 예제를 찾을 수 있었다. Decorator가 중첩되어 있으면 어떤 것 부터 적용될까?<br>아래 코드를 보자.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">star</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"*"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">percent</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">"%"</span> * <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@star</span></span><br><span class="line"><span class="meta">@percent</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(msg)</span>:</span></span><br><span class="line">    print(msg)</span><br><span class="line">printer(<span class="string">"Hello"</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">출력값</span><br><span class="line">******************************</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">Hello</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">******************************</span><br></pre></td></tr></table></figure><br>더 위쪽에 적혀진 Decorator부터 적용됨을 알 수 있다.</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="https://dbader.org/blog/python-first-class-functions" target="_blank" rel="noopener">https://dbader.org/blog/python-first-class-functions</a></li>
+<li><a href="https://docs.python.org/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/3/tutorial/classes.html</a></li>
+<li><a href="https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules" target="_blank" rel="noopener">https://stackoverflow.com/questions/291978/short-description-of-the-scoping-rules</a></li>
+<li><a href="https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/" target="_blank" rel="noopener">https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/</a></li>
+<li><a href="https://khanrc.tistory.com/entry/decorator%EC%99%80-closure" target="_blank" rel="noopener">https://khanrc.tistory.com/entry/decorator%EC%99%80-closure</a></li>
+<li><a href="https://www.programiz.com/python-programming/decorator" target="_blank" rel="noopener">https://www.programiz.com/python-programming/decorator</a></li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/30/Decorator-Scope-Namespace/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/"
+                            aria-label=": &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기"
+                        >
+                            &lt;Docker&gt; Mac에 Oracle DB 설치하기로 Docker 시작하기
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-18T00:00:00+09:00">
+	
+		    Oct 18, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>새로운 도구의 필요성은 언제나 갑자기 찾아온다.<br>“오너라, 오라클! 난 Docker 마스터다! 널 맥에 바로 설치해주마!”<br>같은 상황은 살면서 별로 일어나지 않는다.</p>
+<p>그렇다고 구글링을 해서 나온 명령어들을 그저 복사&amp;붙여넣기 하여 설치하기만 하면,<br>응용도 안 되고 단지 시간을 쓴 것에 지나지 않게 된다.</p>
+<p>단순한 따라하기를 넘어서, Docker로 Oracle DB를 Mac에 설치하는 과정을 통해<br>Docker의 개념과 기본 명령어들을 공부해보자.<br>일단 설치부터 하고~ <a href="https://docs.docker.com/docker-for-mac/" target="_blank" rel="noopener">Docker Desktop for mac</a><br><br></p>
+<ol>
+<li><a href="#Docker가-뭐요">Docker가 뭐요?</a><br> - <a href="#Docker의-구조">Docker의 구조</a><br> - <a href="#Docker-objects-Container-image">Container? image?</a></li>
+<li><a href="#여기까지-읽었을-때의-궁금한-점들">여기까지 읽었을 때의 궁금한 점들</a><br> - <a href="#Daemon이-뭐지">Daemon이 뭐지?</a><br> - <a href="#Rest-API가-뭐지">Rest API가 뭐지?</a><br> - <a href="#Socket이-뭐지">Socket이 뭐지?</a></li>
+<li><a href="#그래서-선생-이-명령어가-도대체-뭐요">그래서 선생, 이 명령어가 도대체 뭐요?</a><br> - <a href="#어떤-명령어들을-사용하였는가">어떤 명령어들을 사용하였는가</a><br> - <a href="#뭐-하나-잊어버린-것-같은데-Volume">뭐 하나 잊어버린 것 같은데..? : Volume</a></li>
+</ol>
+<h1 id="Docker가-뭐요"><a href="#Docker가-뭐요" class="headerlink" title="Docker가 뭐요?"></a>Docker가 뭐요?</h1><p>일단 <a href="https://www.youtube.com/channel/UCUpJs89fSBXNolQGOYKn0YQ/about" target="_blank" rel="noopener">Nomad Coders</a>의 아래 영상을 본 다음에,<br><br>    <div class="video-container"><iframe src="https://www.youtube.com/embed/chnCcGCTyBg" frameborder="0" loading="lazy" allowfullscreen></iframe></div></p>
+<p>좋은 소개 자료들을 읽어보자. </p>
+<ul>
+<li><a href="https://docs.docker.com/engine/docker-overview/" target="_blank" rel="noopener">Docker 공식 문서 / Docker Overview</a></li>
+<li><a href="https://www.docker.com/resources/what-Container" target="_blank" rel="noopener">Docker 공식 문서 / Container 개념 소개 페이지</a></li>
+<li><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">초보를 위한 도커 안내서 - 도커란 무엇인가?</a></li>
+</ul>
+<p>Docker Overview 페이지와 <a href="https://en.wikipedia.org/wiki/Docker_(software" target="_blank" rel="noopener">Wikipedia</a>)의 설명을 요약하면, 아래와 같이 정리할 수 있지 않을까?</p>
+<p><span style="color:#AA0909"><b>‘Container’라 불리는 단위로 어플리케이션을 묶고, 인프라로부터 분리하여, 인프라에 종속되지 않는 어플리케이션 실행과 빠른 배포를 가능하게 하는 플랫폼</b></span></p>
+<h2 id="Docker의-구조"><a href="#Docker의-구조" class="headerlink" title="Docker의 구조"></a>Docker의 구조</h2><h3 id="Docker-Engine"><a href="#Docker-Engine" class="headerlink" title="Docker Engine"></a>Docker Engine</h3><p>다음은 Docker Engine의 구조이다. 서버-클라이언트 형식으로 되어 있다.<br>이 Docker Engine 위에서 Container가 돌아가고, 이런저런 관리를 하게 된다.</p>
+<p><img src="https://drive.google.com/uc?id=1p6RtMxLnxHHcsjAGP3n8PFUKALgB7-Je" alt="Oops, Some network ants ate this pic!" title="Docker Flow"></p>
+<ul>
+<li><p><a href="#Daemon이-뭐지">Daemon</a> 프로세스인 서버가 돌아가고 있다.</p>
+</li>
+<li><p><a href="#Rest-api가-뭐지">REST API</a> : 프로그램들이 deamon과 통신하고 뭘 해야 할 지 명령할 때,<br>사용할 수 있는 인터페이스를 명시하는 REST API.</p>
+</li>
+<li><p>CLI Client : <a href="https://stackoverflow.com/questions/42641011/what-is-the-need-for-docker-daemon" target="_blank" rel="noopener">AWS CLI 처럼 HTTP API WRAPPER로서 기능함.</a><br>아래 설명을 잘 읽어 보자.</p>
+<blockquote>
+<p>When you use docker run command to start up a Container, your docker client will translate that command into http API call, sends it to docker daemon, Docker daemon then evaluates the request, talks to underlying os and provisions your Container.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Docker-Architecture"><a href="#Docker-Architecture" class="headerlink" title="Docker Architecture"></a>Docker Architecture</h3><p><img src="https://drive.google.com/uc?id=10OeKD0B_zOS-Ivi5kvgsvjE18LWyCv3a" alt="Oops, Some network ants ate this pic!" title="Docker Architecture"></p>
+<p><br></p>
+<ul>
+<li>Client가 Daemon에게 요청을 보낸다.<ul>
+<li>Client와 Daemon은 같은 시스템에서 작동할 수도 있고, </li>
+<li>Client가 별도 서버의 Daemon에 접속할 수도 있다.</li>
+</ul>
+</li>
+<li>Client와 Daemon은 <a href="#Socket이-뭐지">UNIX Socket</a>(로컬에서 돌아갈 때)이나 네트워크 인터페이스를 통해, <a href="#Rest-api가-뭐지">REST API</a>로 통신한다.</li>
+</ul>
+<h4 id="The-Docker-daemon"><a href="#The-Docker-daemon" class="headerlink" title="The Docker daemon"></a>The Docker daemon</h4><ul>
+<li>Docker daemon(<code>dockerd</code>)는 Docker API의 요청을 받아서, Docker Object(image, Container, network, volume…)들을 관리한다. </li>
+<li>Docker service들을 관리하기 위해 다른 daemon들과 통신할 수도 있음.   </li>
+</ul>
+<h4 id="The-Docker-client"><a href="#The-Docker-client" class="headerlink" title="The Docker client"></a>The Docker client</h4><ul>
+<li>Docker client(<code>docker</code>) : Docker와 상호작용 하기 위한 가장 주요한 방법!<br>e.g : <code>docker run</code>명령어를 실행하면, client는 <code>dockerd</code>에 이 명령어를 보낸다. <code>docker</code>명령은 Docker API를 사용한다.</li>
+<li>여러 개의 daemon과 통신할 수도 있다.</li>
+</ul>
+<h4 id="Docker-registries"><a href="#Docker-registries" class="headerlink" title="Docker registries"></a>Docker registries</h4><ul>
+<li>Docker image들의 저장장소. Docker Hub라는 Public registy가 제공된다.<br>(image를 찾을 때, 찾는 장소는 Docker Hub가 기본값이다!) Private registry도 사용 가능.</li>
+<li>Docker Datacenter를 사용한다면, Docker Trusted Registy가 포함되어 있다.<br>(이 내용은 나중에 알아보자.)</li>
+</ul>
+<h2 id="Docker-objects-Container-image"><a href="#Docker-objects-Container-image" class="headerlink" title="Docker objects : Container? image?"></a>Docker objects : Container? image?</h2><h3 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h3><ul>
+<li>Image는 Container를 만들기 위한 명령들이 들어 있는 읽기 전용 템플릿이다.</li>
+<li>Image를 만들기 위해서는 <a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="noopener">Dockerfile</a>을 만들어야 한다.<ul>
+<li>Dockerfile은 image를 만들고 실행하는데 필요한 단계들을 정의하는 구문들을 담고 있는 파일이다.</li>
+<li>Dockerfile의 각 명령들은 image의 각 <strong><em>layer</em></strong>들을 생성한다. Dockerfile을 수정하고 다시 빌드하면, 바꾼 layer만 변경된다. 그래서 다른 가상화 기술에 비해 가볍고 작고 빠르다.</li>
+</ul>
+</li>
+<li>Image는 상태(state)를 가지지 않으며, 변하지 않는다.(Container의 설계도가 상황에 따라 이리저리 변하면 곤란할 것이다.)</li>
+<li>Layer로 구성된 특성 덕분에, 특정 이미지를 약간 수정한 다른 이미지를 쉽게 만들 수 있다.<ul>
+<li>e.g. Ubuntu 이미지를 기반으로, Ubuntu에 Node.js를 설치한 다른 이미지 생성.</li>
+</ul>
+</li>
+</ul>
+<p>위의 설명을 시각화하면 아래처럼 된다.<br><img src="https://drive.google.com/uc?id=1TotuCQNuYkOj9e3_ITLi_R0DtrBWxCSk" alt="Oops, Some network ants ate this pic!" title="Docker Layer"></p>
+<h3 id="Container-is-a-runnable-instance-of-image"><a href="#Container-is-a-runnable-instance-of-image" class="headerlink" title="Container (is a runnable instance of image)"></a>Container (is a runnable instance of image)</h3><ul>
+<li>제목에 써 있는 대로, image의 인스턴스. image가 실행된 상태. </li>
+<li><a href="https://www.docker.com/resources/what-Container" target="_blank" rel="noopener">Docker 공식 Container 소개 페이지에 따르면,</a> 아래와 같은 컨셉으로 작동한다. VM은 비교를 위해 언급되어 있다.</li>
+</ul>
+<p><img src="https://drive.google.com/uc?id=1iJFyDPDOoX7htyEYkazMAFMCVz_SHV7O" alt="Oops, Some network ants ate this pic!" title="Docker Container"></p>
+<blockquote>
+<p>Containers<br><strong>Containers are an abstraction at the app layer that packages code and dependencies together.</strong> Multiple Containers can run on the same machine and share the OS kernel with other Containers, each running as isolated processes in user space. Containers take up less space than VMs (Container images are typically tens of MBs in size), can handle more applications and require fewer VMs and Operating systems.</p>
+<p>VIRTUAL MACHINES<br>Virtual machines (VMs) are an abstraction of physical hardware turning one server into many servers. The hypervisor allows multiple VMs to run on a single machine. Each VM includes a full copy of an operating system, the application, necessary binaries and libraries - taking up tens of GBs. VMs can also be slow to boot.</p>
+</blockquote>
+<p><strong>Container의 특징들</strong></p>
+<ul>
+<li>Docker API, CLI로 만들고(create) 시작하고(start) 멈추고(stop) 옮기고(move) 할 수 있다.</li>
+<li>하나 혹은 여러 네트워크에 연결하고, 저장소를 추가하고, Container의 현재 상태를 기반으로 새 image도 만들 수 있다.</li>
+<li>기본적으로는, Container는 다른 Container, 자신의 Host와 잘 분리되어 있으며, 이 격리 상태도 조정할 수 있다.</li>
+<li>Container는 (image) + (생성, 실행 시 받는 구성 옵션 값)에 의해 정의된다.(configuration option)</li>
+<li>Container가 삭제될 때에는, 영구 저장소에 저장되지 않은 상태 변경 값은 사라진다. 그렇다. 모든 변경 사항은 Container의 R/W Layer에 저장되며, 이 Layer는 Container가 삭제되면 같이 사라진다.</li>
+</ul>
+<p><strong><code>docker run</code> 명령어 예시로 알아보는 Container 생성과정</strong><br><code>% docker run -i -t ubuntu /bin/bash</code><br>위의 명령어를 실행하면, ubuntu Container를 만들고 실행해서 로컬 command-line 세션에 붙이고, Ubuntu의 Bash Shell을 실행한다. 어떤 일이 일어나는걸까?</p>
+<ol>
+<li><code>ubuntu</code> image가 로컬에 없으면, Docker가 image를 내가 설정해 둔 registry에서 pull한다. <code>docker pull ubuntu</code>를 직접 입력한 것처럼. (기본 registry는 Docker Hub)</li>
+<li>Docker가 새 Container를 만든다. <code>docker Container create</code>를 직접 입력한 것처럼.</li>
+<li>Docker가 읽고 쓰기가 가능한 파일시스템을 Container의 최종 레이어로써 할당한다.(R/W Layer) 이는 Container가 로컬 파일시스템에서 파일과 디렉토리를 만들고 수정할 수 있게 해 준다.</li>
+<li>네트워크 옵션을 하나도 주지 않았기 때문에, Docker가 Container를 기본 네트워크에 연결하기 위해 네트워크 인터페이스를 만든다. 이 과정은 IP 주소를 Container에 할당하는 과정이 포함된다. 자연스럽게, Container는 host의 네트워크 연결을 사용하여 외부 네트워크에 접속할 수 있게 된다.</li>
+<li>Docker가 Container를 켠 후 <code>/bin/bash</code>를 실행한다. Container는 상호작용이 가능하게(interactively) 동작하고 있고, 터미널에 붙어 있기 때문에 (<code>-i</code>,<code>-t</code> 플래그를 넣어서), 키보드로 명령을 입력할 수 있고, 출력을 터미널로 받아볼 수 있다.</li>
+<li><code>/bin/bash</code>명령을 끄기 위해 <code>exit</code>를 입력하면, Container는 멈추지만 제거되지는 않는다. 다시 시작하거나 제거할 수 있다.</li>
+</ol>
+<h3 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h3><p>(이 내용은 당장 활용할 일이 없다. 이후 사용의 필요가 느껴지면 심도있게 알아보자.)<br><a href="https://subicura.com/2017/02/25/container-orchestration-with-docker-swarm.html" target="_blank" rel="noopener">(Swarm에 대해 소개하는 아주 좋은 글)</a><br>Service는 여러 개의 Docker daemon위에서 Container를 스케일링 할 수 있게 해준다.<br>이 여러 개의 Docker daemon들은 <strong>Swarm</strong>이라는, 여러 개의 <em>manager</em>, <em>worker</em>를 가지고 있는 단위로 뭉쳐서 작동한다.<br>Swarm의 각 멤버들은 Docker daemon이고, daemon들은 Docker API를 사용하여 통신한다.<br>Service는 원하는 상태를 정의할 수 있게 해 주는데, 특정 시간에 반드시 접근 가능해야 하는 Service 복제체의 숫자라던가 하는 것이다.<br>기본적으로, Service는 모든 worker node들에 부하 분산처리된다.(load-balanced) 사용자에게는 Docker service가 하나의 어플리케이션으로 보인다. Docker 1.12버전 이상부터 지원됨!</p>
+<h2 id="여기까지-읽었을-때의-궁금한-점들"><a href="#여기까지-읽었을-때의-궁금한-점들" class="headerlink" title="여기까지 읽었을 때의 궁금한 점들"></a>여기까지 읽었을 때의 궁금한 점들</h2><h3 id="Daemon이-뭐지"><a href="#Daemon이-뭐지" class="headerlink" title="Daemon이 뭐지?"></a>Daemon이 뭐지?</h3><blockquote><p>In multitasking computer operating systems, a daemon (/ˈdiːmən/ or /ˈdeɪmən/)[1] is a computer program that runs as a background process, rather than being under the direct control of an interactive user.</p>
+<footer><strong>Wikipedia</strong><cite><a href="https://en.wikipedia.org/wiki/Daemon_(computing)" target="_blank" rel="noopener">Daemon(computing)</a></cite></footer></blockquote>
+<p>악마는 당신의 등 뒤에서 조용히 돌아가고 있다… :)<br><br></p>
+<h3 id="Rest-API가-뭐지"><a href="#Rest-API가-뭐지" class="headerlink" title="Rest API가 뭐지?"></a>Rest API가 뭐지?</h3><p><strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer<br>이 영상 이상으로 잘 설명한 자료가 있을까?<br>내용이 방대하기 때문에, 추후 별도의 정리를 진행해야겠다.<br><br><br><div class="video-container"><iframe src="https://www.youtube.com/embed/RP_f5dMoHFc" frameborder="0" loading="lazy" allowfullscreen></iframe></div><br><br></p>
+<h3 id="Socket이-뭐지"><a href="#Socket이-뭐지" class="headerlink" title="Socket이 뭐지?"></a>Socket이 뭐지?</h3><p><strong>프로세스 간 데이터 교환을 위한, 소프트웨어로 작성된 통신 접속점</strong><br>아래는 Unix Socket(Unix Domain Socket)과 IP Socket에 대한 설명이다.<br><blockquote><p>A UNIX socket is an inter-process communication mechanism that allows bidirectional data exchange between processes running on the same machine.</p>
+<p>IP sockets (especially TCP/IP sockets) are a mechanism allowing communication between processes over the network. In some cases, you can use TCP/IP sockets to talk with processes running on the same computer (by using the loopback interface).</p>
+<p>UNIX domain sockets know that they’re executing on the same system, so they can avoid some checks and operations (like routing); which makes them faster and lighter than IP sockets. So if you plan to communicate with processes on the same host, this is a better option than IP sockets.</p>
+<footer><strong>serverfault.com</strong><cite><a href="https://serverfault.com/questions/124517/whats-the-difference-between-unix-socket-and-tcp-ip-socket" target="_blank" rel="noopener">What's the difference between Unix socket and TCP/IP socket?</a></cite></footer></blockquote></p>
+<p>아래 글들도 읽어보도록 하자.</p>
+<ul>
+<li><a href="https://blog.naver.com/myca11/221389847130" target="_blank" rel="noopener">소켓과 포트</a></li>
+<li><a href="https://recipes4dev.tistory.com/153" target="_blank" rel="noopener">소켓 프로그래밍</a></li>
+<li><a href="https://12bme.tistory.com/228" target="_blank" rel="noopener">소켓 프로그래밍 기초</a></li>
+<li><a href="https://blog.naver.com/myca11/221369799273" target="_blank" rel="noopener">번외 : 서버,클라이언트,호스트</a><br><br></li>
+</ul>
+<h1 id="그래서-선생-이-명령어가-도대체-뭐요"><a href="#그래서-선생-이-명령어가-도대체-뭐요" class="headerlink" title="그래서 선생, 이 명령어가 도대체 뭐요?"></a>그래서 선생, 이 명령어가 도대체 뭐요?</h1><h2 id="어떤-명령어들을-사용하였는가"><a href="#어떤-명령어들을-사용하였는가" class="headerlink" title="어떤 명령어들을 사용하였는가"></a>어떤 명령어들을 사용하였는가</h2><p>Oracle DB 설치와 실행을 위해 어떤 명령어들을 사용하였는가?<br>(클릭하면 각 명령어 설명 공식문서로 이동함)</p>
+<ul>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/search/" target="_blank" rel="noopener"><code>docker search oracle</code></a> : 기본 registry인 docker hub에서, oracle이라는 단어를 포함한 image를 찾는다. 추천수 순으로 정렬되어 나온다. 그런데 솔직히 <a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>에서 검색하는 것이 더 좋다. </p>
+</li>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/pull/" target="_blank" rel="noopener"><code>docker pull oracleinanutshell/oracle-xe-11g</code></a> : registry에서 image나 repository를 가져온다. 여기서는 추천수가 가장 높았던 <em>oracleinanutshell/oracle-xe-11g</em> 라는 image를 가져왔다. <a href="https://hub.docker.com/r/oracleinanutshell/oracle-xe-11g" target="_blank" rel="noopener">Docker Hub : oracleinanutshell/oracle-xe-11g</a> 설명을 보니 Ubuntu 18.04 LTS에 Oracle xe 11g를 올린 image다.</p>
+</li>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/run/" target="_blank" rel="noopener"><code>docker run --name oracle-xe-11g -d -p 8080:8080 -p 1521:1521 oracleinanutshell/oracle-xe-11g</code></a> : <code>docker run [OPTIONS] image [COMMAND] [ARG...]</code> 이런 구조로 되어있다. Container를 <strong>생성하여 실행한다.</strong> 여기서 사용한 옵션값부터 살펴보자.</p>
+<ul>
+<li>--name : Container의 이름을 설정한다. 중복 이름은 허용하지 않음.</li>
+<li>-d : Container를 백그라운드에서 실행하고, Container ID를 출력한다.<br><a href="https://www.tecmint.com/run-docker-container-in-background-detached-mode/" target="_blank" rel="noopener">Background와 Foreground의 차이</a></li>
+<li>-p : 특정 범위의 포트, 혹은 포트 하나를 host에 publish한다. 여기서는 hostPort:ContainerPort 구조로 사용했다. 즉, Container의 8080포트를 Host의 8080포트에 매핑하는 방화벽 규칙을 만든다. (하필이면 8080, 1521인 이유는, Oracle Listener가 사용하는 포트가 1521이고, XML DB가 8080포트를 사용하기 때문이다.)<br> <a href="https://docs.docker.com/engine/reference/commandline/port/" target="_blank" rel="noopener"><code>docker port oracle-xe-11g</code></a>로 연결된 포트를 확인해보면, 다음과 같이 뜬다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1521&#x2F;tcp -&gt; 0.0.0.0:1521</span><br><span class="line">8080&#x2F;tcp -&gt; 0.0.0.0:8080</span><br></pre></td></tr></table></figure>
+포트들이 <a href="https://superuser.com/questions/949428/whats-the-difference-between-127-0-0-1-and-0-0-0-0" target="_blank" rel="noopener">0.0.0.0 (all IPv4 addresses on the local machine)</a>의 동일 포트에 매핑되었다. 이제 Container가 <strong>생성</strong>된 후 <strong>실행</strong>되었는데, 그럼 다음엔 뭘 해야 할까?<ul>
+<li><a href="https://docs.docker.com/config/Containers/Container-networking/#published-ports" target="_blank" rel="noopener">참고 공식 문서 : Container networking</a></li>
+<li><a href="https://docs.docker.com/engine/reference/run/#expose-incoming-ports" target="_blank" rel="noopener">참고 공식 문서 : Docker run reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/exec/" target="_blank" rel="noopener"><code>docker exec -it oracle-xe-11g bash</code></a> : 외부에서, 실행 중인 Container 안의 명령을 실행한다. oracle-xe-11g Container는 Ubuntu 18.04위에서 Oracle DB를 구동하는 구조이기 때문에, bash shell을 열라는 명령어를 보내 보았다.(bash) 옵션 -it는 뭘까?</p>
+<ul>
+<li>-i : 키보드, 화면을 통해 STDIN, STDOUT(표준입력, 표준출력)<a href="https://github.com/kennyyu/bootcamp-unix/wiki/stdin,-stdout,-stderr,-and-pipes" target="_blank" rel="noopener">[설명]</a><a href="https://velog.io/@jakeseo_me/유닉스의-stdin-stdout-stderr-그리고-pipes에-대해-알아보자" target="_blank" rel="noopener">[설명의 번역]</a>을 열고 유지한다. 명령어 입력, 결과 출력을 위해서 넣어주어야 하는 값이다.</li>
+<li>-t : pseudo-TTY를 할당한다. 터미널 환경을 에뮬레이션 해 주는데, 이 옵션을 입력하지 않으면 터미널 환경이 보이지 않는다.<br>(i와 t값을 넣지 않으면 각각 어떻게 되는가? 는 <a href="https://m.blog.naver.com/alice_k106/220340499760" target="_blank" rel="noopener">이 블로그</a>를 참고하자.)<br>보기만 해서는 잘 기억나지 않을테니, 직접 해보자.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec oracle-xe-11g bash</span><br><span class="line">%</span><br></pre></td></tr></table></figure>
+하나도 안 쓰면 바로 종료된다. 입출력도, tty도 활성화되지 않았으니 당연한 결과.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -t oracle-xe-11g bash</span><br><span class="line">root@a702ae5d7f10:&#x2F;# sqlplus</span><br></pre></td></tr></table></figure>
+-t만 쓰면, 첫 번째 명령어 입력까지는 가능하나 그 후의 결과가 출력되지 않는다. STDIN을 열지 않았으니 당연한 결과.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -i oracle-xe-11g bash</span><br><span class="line">sqlplus</span><br><span class="line">bash: line 1: sqlplus: command not found</span><br><span class="line">ls</span><br><span class="line">bin</span><br><span class="line">boot</span><br><span class="line">dev</span><br><span class="line">...(이하생략)</span><br></pre></td></tr></table></figure>
+-i만 쓰면, 터미널 환경이 조성되지 않는다. 그냥 명령어를 입력하면 sqlplus는 command not found 에러가 뜨고, ls는 제대로 출력이 되긴 한다. 응용 프로그램(sqlplus) 실행은 안 되고, 기본 shell command는 제대로 실행되는 건 terminal의 부재 때문이 아닌가 추측해본다. 자세한 이유는 다음에 알아보기로 하자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">% docker exec -it oracle-xe-11g bash</span><br><span class="line"></span><br><span class="line">root@a702ae5d7f10:&#x2F;# sqlplus</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 11.2.0.2.0 Production on Sun Oct 27 02:33:24 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Enter user-name: system</span><br><span class="line">Enter password:</span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production</span><br><span class="line"></span><br><span class="line">SQL&gt;</span><br></pre></td></tr></table></figure>
+제대로 모두 입력하여 sqlplus에 로그인까지 진행하면 이렇게 된다.</li>
+</ul>
+</li>
+</ul>
+<p>도대체 pseudo-TTY가 뭐지? 에 대한 글은 다음 링크를 참고하자.</p>
+<ul>
+<li><a href="https://mug896.github.io/bash-shell/tty.html" target="_blank" rel="noopener">Bash Shell에 대한 엄청난 gitbook : TTY</a></li>
+<li><a href="https://kldp.org/node/134965" target="_blank" rel="noopener">콘솔? 터미널? 쉘?</a></li>
+</ul>
+<p>- oracleinanutshell/oracle-xe-11g image로부터 Container를 실행하였고, Container에서 sqlplus를 실행해서 로그인도 해 봤다.<br>- 설정을 다 했다. 그런데 컴퓨터 재부팅을 하거나, Docker를 종료했다가 Container를 또 실행하고 싶으면 어떻게 해야 할까?</p>
+<p>-<a href="https://docs.docker.com/engine/reference/commandline/start/" target="_blank" rel="noopener"><code>docker start oracle-xe-11g</code></a> : 하나, 혹은 여러 개의 멈춘 Container를 실행한다. 여기서는 <code>docker run</code>으로 생성한 ‘oracle-xe-11g’ 라는 이름을 붙인 Container를 실행한다.</p>
+<h2 id="뭐-하나-잊어버린-것-같은데-Volume"><a href="#뭐-하나-잊어버린-것-같은데-Volume" class="headerlink" title="뭐 하나 잊어버린 것 같은데..? : Volume"></a>뭐 하나 잊어버린 것 같은데..? : Volume</h2><p>그런데 여기서 빼먹은 것이 하나 있다. 위에 위험한 설명이 하나 있었던 것 같은데?</p>
+<blockquote>
+<p>Container가 삭제될 때에는, 영구 저장소에 저장되지 않은 상태 변경 값은 사라진다. 그렇다. 모든 변경 사항은 Container의 R/W Layer에 저장되며, 이 Layer는 Container가 삭제되면 같이 사라진다.</p>
+</blockquote>
+<p>Container를 영영 없애지 않을 생각이거나, 한 Container의 데이터를 다른 Container와 공유하지 않을 생각이라면 지금까지 입력한 명령어들만으로도 충분하다. 하지만 아니라면? Volume을 사용, 데이터를 Host에 저장하여 안전하게 유지, 공유해보자. 아래 두 링크를 꼭 읽어보자. 초반 부분만 읽어봐도 된다.</p>
+<ul>
+<li><a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">Docker 공식 페이지 / Use volumes</a></li>
+<li><a href="https://docs.docker.com/storage/storagedriver/" target="_blank" rel="noopener">Docker 공식 페이지 / About storage drivers</a><blockquote><p>Volumes are the preferred mechanism for persisting data generated by and used by Docker Containers.</p>
+<footer><strong>Docker 공식 페이지</strong><cite><a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">Use Volume</a></cite></footer></blockquote>
+<blockquote><p>The major difference between a Container and an image is the top writable layer. All writes to the Container that add new or modify existing data are stored in this writable layer. When the Container is deleted, the writable layer is also deleted. The underlying image remains unchanged.</p>
+<p>Because each Container has its own writable Container layer, and all changes are stored in this Container layer, multiple Containers can share access to the same underlying image and yet have their own data state.</p>
+<footer><strong>Docker 공식 페이지</strong><cite><a href="https://docs.docker.com/storage/storagedriver/#Container-and-layers" target="_blank" rel="noopener">About storage drivers / Container and layers</a></cite></footer></blockquote>
+</li>
+</ul>
+<p>그럼, oracle-xe-11g Container 안의 어떤 폴더를 Host의 폴더와 연결해 주어야 할까?<br>Container 안에서 oracle이란 이름을 가진 폴더를 검색해보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find &#x2F; -name oracle -type d  # 전체 폴더에서 oracle 이름을 가진 폴더 검색</span><br><span class="line">&#x2F;u01&#x2F;app&#x2F;oracle</span><br></pre></td></tr></table></figure><br>오호라, <code>/u01/app/oracle</code>를 연결하면 될 것 같다.</p>
+<p><a href="(https://docs.docker.com/engine/reference/commandline/run/"><code>docker run</code></a>)문서에 따르면, Volume을 할당하기 위해 다음과 같은 옵션이 필요하다.<br><code>-v [Host directory]:[Container directory]</code><br>이 옵션을 추가하여, Container를 다시 생성해 보자.</p>
+<p><code>docker run --name oracle-xe-11g -d -p 8080:8080 -p 1521:1521 -v /Users/youngjinlim/Coding/BigData_Study/SQL/Docker_volume:/u01/app/oracle oracleinanutshell/oracle-xe-11g</code></p>
+<p>과연 Volume이 잘 Mount 되었을까?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% docker inspect --format&#x3D;&#39;&#123;&#123;.Mounts&#125;&#125;&#39; oracle-xe-11g</span><br><span class="line">[&#123;bind  &#x2F;Users&#x2F;youngjinlim&#x2F;Coding&#x2F;BigData_Study&#x2F;SQL&#x2F;Docker_volume &#x2F;u01&#x2F;app&#x2F;oracle   true rprivate&#125;]</span><br></pre></td></tr></table></figure><br>오, 잘 연결된 것 같다. 그런데… DB에 연결할 수가 없었다! 왜지?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@141d12eb18ac:&#x2F;u01&#x2F;app&#x2F;oracle# ls -l</span><br><span class="line">total 0</span><br></pre></td></tr></table></figure><br>어엉? Container 쪽 폴더가 텅 비어버렸다! 아무래도 Host쪽의 폴더로 덮어씌워진 것 같다.<br>아.. 너무 고통스럽다..<br>이에 대한 원인과 해결방법은 이 블로그에서 찾을 수 있었다.</p>
+<ul>
+<li><a href="https://darkrasid.github.io/docker/container/volume/2017/05/10/docker-volumes.html" target="_blank" rel="noopener">docker volume의 사용방법과 차이점</a> :<br><span style="color:red"><b>!!주의!!<b></span> 이 블로그 포스팅에선 <code>docker create volume volume_name</code> 라고 썼는데,<br>이러면 안된다. 왜냐면..</li>
+</ul>
+<blockquote><p>Description : Create a new Container<br>Usage : docker create [OPTIONS] image [COMMAND] [ARG…]</p>
+<footer><strong>Wikipedia</strong><cite><a href="https://docs.docker.com/engine/reference/commandline/create/" target="_blank" rel="noopener">Docker 공식 페이지 / docker create</a></cite></footer></blockquote>
+<p>docker create는 Container를 만들 때 쓰는 명령어이기 때문이다.<br><a href="https://docs.docker.com/engine/reference/commandline/volume/" target="_blank" rel="noopener">docker volume</a>을 써야 한다.</p>
+<p>Host쪽 폴더가 텅 비어있을 때, Container쪽 폴더를 남기려면 아래와 같은 방법을 사용해야 한다.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create volume_name</span><br><span class="line">docker run --name oracle-xe-11g -d -v volume_name:&#x2F;Container&#x2F;some&#x2F;where ...(이하생략)</span><br></pre></td></tr></table></figure><br>그럼 실행해 보자.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">% docker volume create oracle-xe-11g_study    # Volume 생성</span><br><span class="line">% docker volume ls    # 잘 생성되었는지 확인</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               oracle-xe-11g_study</span><br><span class="line">% docker run --name oracle-xe-11g_study -d -v oracle-xe-11g_study:&#x2F;u01&#x2F;app&#x2F;oracle -p 8080:8080 -p 1521:1521 oracleinanutshell&#x2F;oracle-xe-11g</span><br><span class="line">6a7d5728c9084c9f2c25931a8a7bf1120594776380d5cd8e17d6d15b48604eb6    # 새 Container 생성</span><br><span class="line">% docker exec -it oracle-xe-11g_study bash    # &#x2F;u01&#x2F;app&#x2F;oracle 폴더 무사한지 확인하러 들어감</span><br><span class="line">root@6a7d5728c908:&#x2F;# cd &#x2F;u01&#x2F;app&#x2F;oracle</span><br><span class="line">root@6a7d5728c908:&#x2F;u01&#x2F;app&#x2F;oracle# ls -l    # 결과를 보면 무사함을 알 수 있음</span><br><span class="line">total 24</span><br><span class="line">drwxr-x--- 4 oracle dba  4096 Oct 27 03:39 admin</span><br><span class="line">drwxrwxr-x 4 oracle dba  4096 Oct 27 03:39 diag</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 fast_recovery_area</span><br><span class="line">drwxr-x--- 3 oracle dba  4096 Oct 27 03:39 oradata</span><br><span class="line">drwxr-xr-x 3 oracle dba  4096 Oct 27 03:39 oradiag_oracle</span><br><span class="line">drwxr-xr-x 3 root   root 4096 Oct 27 03:39 product</span><br><span class="line">root@6a7d5728c908:&#x2F;u01&#x2F;app&#x2F;oracle# exit</span><br><span class="line">exit</span><br><span class="line">% docker inspect --format&#x3D;&#39;&#123;&#123;.Mounts&#125;&#125;&#39; oracle-xe-11g_study    # Volume 잘 연결 되었는지 확인</span><br><span class="line">[&#123;volume oracle-xe-11g_study &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;oracle-xe-11g_study&#x2F;_data &#x2F;u01&#x2F;app&#x2F;oracle local z true &#125;]</span><br></pre></td></tr></table></figure><br>연결도 잘 됐고, Container 쪽 폴더도 무사하다.<br>‘CUSTOMERS’ 라는 이름의 테이블을 추가한 후, Container를 새로 생성해서 같은 Volume에 연결했을 경우, 새로 생성한 Container에서도 CUSTOMERS 테이블이 잘 보이는지 확인해 보자.</p>
+<p><img src="https://drive.google.com/uc?id=1P4k-ysg5DS9Rnb69GKno9BlBpLEdzoeq" alt="Oops, Some network ants ate this pic!" title="Add one table"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">% docker run --name oracle-xe-11g_volumetest -d -v oracle-xe-11g_study:&#x2F;u01&#x2F;app&#x2F;oracle -p 8080:8080 -p 1521:1521 oracleinanutshell&#x2F;oracle-xe-11g</span><br><span class="line">08ba1459d196d6094b7adc2232d843e430574551cb1ba4c823fae7f85aa8fe36</span><br><span class="line">youngjinlim@Youngui-MacBookPro ~ % docker ps</span><br><span class="line">...중략  NAMES</span><br><span class="line">        oracle-xe-11g_volumetest</span><br></pre></td></tr></table></figure>
+<p>새로 생성한 Container 하나만 실행 중이다.(oracle-xe-11g_volumetest)<br>이제 추가했던 테이블이 그대로 있는지 확인해 보자.</p>
+<p><img src="https://drive.google.com/uc?id=11goqVWONxi2uduKTx1mUzgBK2MuXuHLc" alt="Oops, Some network ants ate this pic!" title="table check in new container"></p>
+<p>잘 있다.</p>
+<p>일단 Mac에서 Oracle DB를 사용하기 위한 여정은 여기서 끝이다.<br>Docker 마스터의 길은 멀고도 험하느니.</p>
+<hr>
+<h1 id="이번에-알아본-것"><a href="#이번에-알아본-것" class="headerlink" title="이번에 알아본 것"></a>이번에 알아본 것</h1><ul>
+<li>Docker의 기본적인 개념</li>
+<li>Docker를 개념을 알아보다가 궁금해진 것들<ul>
+<li>궁금해진 것들 중 너무 큰 주제들이 많았는데, 별도로 정리를 할 필요가 있어 보인다.</li>
+</ul>
+</li>
+<li>Oracle Database 11g 설치 중 사용한 명령어들의 의미<ul>
+<li>Docker 공식문서가 최고다. 공식문서를 보시오</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/18/lets-start-docker-through-installing-oracle11g-on-mac/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
+                        >
+                            &lt;Python&gt; Map vs List Comprehension
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-12T00:00:00+09:00">
+	
+		    Oct 12, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
+<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
+<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
+<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom">
@@ -323,75 +739,6 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                         <p>
                             <a
                                 href="/2019/10/12/iterator-iterable-generator/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/12/map-versus-list-comprehension/"
-                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
-                        >
-                            &lt;Python&gt; Map vs List Comprehension
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-12T00:00:00+09:00">
-	
-		    Oct 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><a href="https://stackoverflow.com/questions/1247486/list-comprehension-vs-map" target="_blank" rel="noopener">List comprehension vs Map</a><br>위의 Stack Overflow 질문에 아주 좋은 답변들이 달려 있어서,<br>Upvote 상위 두 개 답변을 살펴보았다.</p>
-<h4 id="첫-번째-답변"><a href="#첫-번째-답변" class="headerlink" title="첫 번째 답변 :"></a>첫 번째 답변 :</h4><p>Map이 몇몇 경우에 아주 약간 더 빠르다. (lambda 안 쓰고, 같은 기능을 하는 함수를 사용할 경우)<br>List Comprehension은 나머지 경우에서 더 빠르며, 대부분의 파이썬 사용자들은 List Comprehension이 더 직관적이고 명확하다고 생각한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 터미널에서 아래와 같이 실행해보자</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(hex, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.86</span> usec per loop</span><br><span class="line"><span class="comment"># hex() -&gt; 16진수로 변경</span></span><br><span class="line"></span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[hex(x) for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">5.58</span> usec per loop</span><br><span class="line"><span class="comment"># 그냥 함수를 사용했더니, map이 근소하게 더 빠르다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>하지만 lambda를 쓰면 어떨까?</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'map(lambda x: x+2, xs)'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">4.24</span> usec per loop</span><br><span class="line">$ python -mtimeit -s<span class="string">'xs=range(10)'</span> <span class="string">'[x+2 for x in xs]'</span></span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">2.32</span> usec per loop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 속도가 정 반대가 되었다.</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="두-번째-답변의-일부-발췌"><a href="#두-번째-답변의-일부-발췌" class="headerlink" title="두 번째 답변의 일부 발췌 :"></a>두 번째 답변의 일부 발췌 :</h4><h5 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h5><p>Python에서 Map은 <strong>게으르다</strong>.<br><br>무슨 말인고 하니, 계산 결과 전체를 반환하는 것이 아니라,<br>계산 로직을 보관하고 있다가 값 요청이 왔을 때 계산하여 값을 제공해준다는 것이다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;map object at <span class="number">0x2201d50</span>&gt;</span><br><span class="line"><span class="comment"># 리스트가 아니다</span></span><br></pre></td></tr></table></figure>
-<p><br><br>List Comprehension이라면 전체 계산결과 리스트를 반환한다. (Not lazy)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>)]</span><br><span class="line"><span class="comment"># 이런 짓 하지 말라는 것이다.</span></span><br><span class="line"><span class="comment"># DO NOT TRY THIS AT HOME OR YOU WILL BE SAD #</span></span><br></pre></td></tr></table></figure>
-<p><br><br>‘게으른’ List Comprehension도 Generator expression의 형태로 지원한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(str(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>**<span class="number">100</span>))</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0xacbdef</span>&gt;</span><br></pre></td></tr></table></figure>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/10/12/map-versus-list-comprehension/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -822,108 +1169,6 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
-                        >
-                            &lt;VBA&gt; Multiple file name changer by XLSM
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-09-10T00:00:00+09:00">
-	
-		    Sep 10, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%9E%90%EB%8F%99%ED%99%94-%EC%BD%94%EB%93%9C-%EC%A0%9C%EC%9E%91/">자동화_코드_제작</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br>
-                    
-                        <a
-                            href="/2018/09/10/multiple-file-name-changer-by-xlsm/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": &lt;VBA&gt; Multiple file name changer by XLSM"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2018/04/19/web-broswer-control-with-selenium/"
-                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
-                        >
-                            &lt;Python&gt; Web broswer control with Selenium
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-19T00:00:00+09:00">
-	
-		    Apr 19, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%9E%90%EB%8F%99%ED%99%94-%EC%BD%94%EB%93%9C-%EC%A0%9C%EC%9E%91/">자동화_코드_제작</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>I had to extract 2 years worth of data from the Web.<br>But this dumb tool I had could extract only 2 weeks of data at once<br>and one extracting sequence took 15 minutes!<br>What should I do?</p>
-                    
-                        <a
-                            href="/2018/04/19/web-broswer-control-with-selenium/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": &lt;Python&gt; Web broswer control with Selenium"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1224,10 +1469,10 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1249,7 +1494,7 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                23 posts found
             </p>
         </div>
     </div>
@@ -1260,7 +1505,7 @@ x는 iterable, y와 z는 iterator인 instance이며, iterable x로부터 값을 
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+<script src="/assets/js/script-kxsq3fjhsue9xnfwgpjsxjf9crp3bykgtwnstq4c5h5q2opv7xgn1wdiejq2.min.js"></script>
 
 <!--SCRIPTS END-->
 

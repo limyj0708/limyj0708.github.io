@@ -13,16 +13,16 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유\n10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원\n우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?\n펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가\n\n\n기업신용평가 \n개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; ‘기업’ 신용평가에 ML 탑재한 KB국민은행\n정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제\n\n\n\n2. 부도의 기준\n한국금융연구원의 빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구 보고서의 기준 사용\n이 보고서에서는 아이디어와 접근방법을 참고하였음\n사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님\n\n\n증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행\n‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의\n\n\n상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…\n\n3. 프로젝트 목표\n3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작\n부도 확률을 수치로 나타낼 수 있다면 더욱 좋음\n\n\n웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공\n원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 \n\n\n\n4. 수집한 데이터4-1. 재무 데이터\n금융정보 데이터베이스 Dataguide의 데이터를 사용\n부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터\n\n\nDart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택\n\n4-2. 주가 데이터\n상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용\n예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)\n\n\n생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)\n\n4-3. 기사 데이터\n수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이\n선정기준 : 한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중, 경제지 Top 5\n\n\n각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집\n데이터 전처리 후 남은 총 기사 수 : 2,380,889개\n\n4-4. 감사보고서 데이터\n감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험\nDart 전자공시에서 데이터 수집\n\n","dateCreated":"2020-02-04T00:00:00+09:00","dateModified":"2020-02-06T09:24:51+09:00","datePublished":"2020-02-04T00:00:00+09:00","description":"","headline":"<기업부도예측-1> 프로젝트 개요, 수집 데이터","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유\n10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원\n우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까?\n펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가\n\n\n기업신용평가 \n개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지 평가자의 주관적 의견이 중요한 요소였음 : 현재 뜨거운 주제 -&gt; ‘기업’ 신용평가에 ML 탑재한 KB국민은행\n정형 데이터(재무, 주가)와 비정형 데이터(기사, 감사보고서)가 다수 공개되어 있는 주제\n\n\n\n2. 부도의 기준\n한국금융연구원의 빅데이터를 이용한 딥러닝 기반의 기업 부도예측 연구 보고서의 기준 사용\n이 보고서에서는 아이디어와 접근방법을 참고하였음\n사용한 데이터에 대한 상세 설명 없음, 작성 코드 미공개, 학습모델 튜닝 과정 설명 없음, 모델 평가 수치 기재 미흡 등의 문제가 산재해 있어 좋은 보고서는 아님\n\n\n증권시장에서 ‘상장폐지’가 결정된 기업들 중 부도에 관련된 공시가 발생한 기업들을 부도 발생기업으로 인식하고 분석을 진행\n‘부도발생’, ‘화의절차개시신청’, ‘회사정리절차개시신청’, ‘감사인의 의견 거절’ 및 ‘은행거래정지’ 등 기업의 부실 및 지속 가능성이 심각하게 의심되는 사유로 발생한 상장폐지 사건을 부도로 정의\n\n\n상장폐지된 기업의 부도 여부는, 직접 사람의 손으로 정리하였다…\n\n3. 프로젝트 목표\n3개월 후, 6개월 후, 1년 후에 어떤 기업이 부도를 맞이할 지 아닐 지 판단하는 모델 제작\n부도 확률을 수치로 나타낼 수 있다면 더욱 좋음\n\n\n웹으로 실제 서비스 수준의 시각화, 리포트 화면 제공\n원하는 기업을 검색하면, 해당 기업에 관련된 데이터를 시각화하여 리포트로 제공하는 서비스 \n\n\n\n4. 수집한 데이터4-1. 재무 데이터\n금융정보 데이터베이스 Dataguide의 데이터를 사용\n부도기업 + 생존기업 합 2606개 기업, 2000~2019 연간 재무제표 데이터\n\n\nDart 전자공시 데이터를 직접 크롤링 하려고 했으나, 단 한 부분도 규격이 동일하지 않아서 차선책을 선택\n\n4-2. 주가 데이터\n상장폐지된 기업의 주가 데이터와, 생존 기업의 과거 주가 데이터도 Dataguide의 데이터를 사용\n예측에 충분한 주가 데이터가 존재하는 2560개 기업의 데이터 수집 (2000~2019)\n\n\n생존 기업의 최신 주가 데이터 갱신은 금융사 API 사용 예정 (키움증권, 대신증권)\n\n4-3. 기사 데이터\n수집 대상 언론사 : 한국경제, 서울경제, 헤럴드경제, 머니투데이\n선정기준 : 한국 ABC협회 집계 2019년도 일간신문 발행 유료부수 중, 경제지 Top 5\n\n\n각 언론사 홈페이지에서 대상 기업 이름으로 검색하여 나온 결과들을 수집\n데이터 전처리 후 남은 총 기사 수 : 2,380,889개\n\n4-4. 감사보고서 데이터\n감사보고서에 ‘계속기업 불확실성’관련 키워드가 언급된 회사는 위험\nDart 전자공시에서 데이터 수집\n\n","dateCreated":"2020-02-04T00:00:00+09:00","dateModified":"2020-02-13T12:13:22+09:00","datePublished":"2020-02-04T00:00:00+09:00","description":"","headline":"<기업부도예측-1> 프로젝트 개요, 수집 데이터","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"}</script>
     <meta name="description" content="주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유 10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원 우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까? 펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가   기업신용평가  개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터">
-<meta property="og:url" content="https://limyj0708.github.io/2020/02/04/bankrup-pre-start/index.html">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="주제 : 기업부도예측 with 머신러닝1. 주제 선정 이유 10년 전, 1년 간의 첫 주식 투자 결과 : 200만원 -&gt; 200만원 우량주를 사라고 하는데, 우량주의 기준이 도대체 무엇일까? 펀더멘탈이 튼튼한 기업 -&gt; 기업신용평가   기업신용평가  개인신용평가는 상대적으로 수치화, 모델화가 빠르게 이루어졌으나, 기업신용평가의 경우 최근까지">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-03T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-06T00:24:51.991Z">
+<meta property="article:modified_time" content="2020-02-13T03:13:22.766Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="기업부도예측">
 <meta property="article:tag" content="머신러닝">
@@ -37,7 +37,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+<link rel="stylesheet" href="/assets/css/style-22tzafjcdlcnt88uzcz0qlal4pjrroh71schgqdvvnkd7mmjrd2taoasvunf.min.css">
 
     <!--STYLES END-->
     
@@ -101,19 +101,6 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
                              href="/all-categories"
                             
                             title="Categories"
@@ -160,19 +147,6 @@
                     
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="About"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -337,7 +311,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                     aria-label="PREVIOUS: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                 >
@@ -378,7 +352,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -391,7 +365,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -453,7 +427,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                     aria-label="PREVIOUS: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                 >
@@ -494,7 +468,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -507,7 +481,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -551,7 +525,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -564,7 +538,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-start/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -835,10 +809,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -860,7 +834,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                23 posts found
             </p>
         </div>
     </div>
@@ -871,7 +845,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+<script src="/assets/js/script-kxsq3fjhsue9xnfwgpjsxjf9crp3bykgtwnstq4c5h5q2opv7xgn1wdiejq2.min.js"></script>
 
 <!--SCRIPTS END-->
 
@@ -879,9 +853,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2020/02/04/bankrup-pre-start/';
+            this.page.url = 'https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/';
               
-            this.page.identifier = '2020/02/04/bankrup-pre-start/';
+            this.page.identifier = '2020/02/04/2020-02-04-bankrup-pre-01-start/';
               
           };
           (function() {

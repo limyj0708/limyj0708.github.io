@@ -6,29 +6,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>&lt;VBA&gt; Multiple file name changer by XLSM - Jin&#39;s Code Archive</title>
+    <title>&lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2 - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,VBA,file name change">
+        <meta name="keywords" content="python,javascript,R,AWS,Redshift">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.\n\n1. FeaturesA. Essential functions\n\na. Select multiple files\nb. Change file names by the pairs of original name and new name.\n\n\n2. Blueprint[File select button]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Change name button]\n\n\n\n\n\nOriginal name(After selecting files, this column will be filled automatically)\nNew name(without extension)\n\n\n\n\n1.txt\naaa\n\n\n2.txt\nbbb\n\n\n3.txt\nccc\n\n\n\n\n\n3. Codes[Codes in the File select button]1234567891011121314151617181920212223242526Sub File_Select()    Dim Name_Location_Index As Long    Dim FileName_Cache As String    With Application.FileDialog(msoFileDialogOpen)        .AllowMultiSelect = True        .Show        ' Display paths of all file that are selected        For Name_Location_Index = 1 To .SelectedItems.Count            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 1).Value = .SelectedItems(Name_Location_Index)       ' Name list begins at fifth row, so 5 have to be added.       ' In Column A, put the paths of selected file. In Column B, just put the file names with extension.            Worksheets(\"Main\").Cells(Name_Location_Index + 5, 2).Value = FileName_Cache        Next Name_Location_Index    End WithEnd SubFunction GetFilenameFromPath(ByVal strPath As String) As String   ' This is the function which takes only file name from total file path.   ' Using recursive call to cut the rightmost character in string until meet forward slash.('/')   ' If total path is C:\\example\\exam.txt, exam.txt is the final return.    If Right$(strPath, 1) &lt;&gt; \"\\\" And Len(strPath) &gt; 0 Then        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n[Codes in the Change name button]1234567891011121314151617181920212223242526Sub File_Rename()    Dim OldName, NewName As String    Dim Column_End_Original As Long    Dim Colunm_End_Goal As Long    Dim loop_check As Long    Column_End_Original = Cells(Rows.Count, 1).End(xlUp).Row    Column_End_Goal = Cells(Rows.Count, 3).End(xlUp).Row    ' Get the final rows of original name list and new name list    For loop_check = 6 To Column_End_Original        ' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.        OldName = Cells(loop_check, 1).Text        NewName = Cells(loop_check, 3).Text + \".\" + GetExtention(OldName)        Name OldName As NewName    Next loop_check    MsgBox \"Mission complete\"End SubFunction GetExtention(ByVal strPath As String) As String    ' The function which is get extension from path.    ' Mechanism of this function is exactly same with GetFilenameFromPath.    If Right$(strPath, 1) &lt;&gt; \".\" And Len(strPath) &gt; 0 Then        GetExtention = GetExtention(Left$(strPath, Len(strPath) - 1)) + Right$(strPath, 1)    End IfEnd Function\n\n4. Result\n","dateCreated":"2018-09-10T00:00:00+09:00","dateModified":"2020-02-05T15:53:55+09:00","datePublished":"2018-09-10T00:00:00+09:00","description":"There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.","headline":"<VBA> Multiple file name changer by XLSM","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/","keywords":"VBA"}</script>
-    <meta name="description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n1편인 이유는, Redshift에 사용할 데이터를 적재하기만 했지, 업데이트 되는 데이터들, 특히 매일 나오는 주가 데이터와 기사 데이터를 수집, 변환, 적재하는 ETL 파이프라인을 아직 만들지 않았기 때문이다.\n1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것\n차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어넣는 것이 훨씬 빠르다.\nRedshift에서 직접 SELECT, INSERT 처리를 하면 : 300만행 추가에 예상 완료시간 4일\n로컬 DB에서 연산 후 COPY로 업로드하면 : 300만 행 연산시간 3.5시간, COPY 업로드 시간 5분\nAWS DW 설명 문서의 말을 들었어야 했는데.123456789101112131415161718192021222324252627282930313233343536373839# 같은 코드를 로컬 DB에서 돌리면 3.5시간, Redshift에 연결해서 돌리면 4일with psycopg2.connect(**connect_param_local) as con:    cur_2 = con.cursor()    # fetchall을 사용해서 커서를 재활용하지 않고 커서를 두 개 두는 이유는, redshift의 single-node cluster에서는 fetchall이 지원되지 않기 떄문이다.        # InternalError_: Fetch ALL is not supported on single-node clusters.        # Please specify the fetch size (maximum 1000 for single-node clusters)         # or upgrade to a multi node installation.    # 로컬 머신에서 연산하면 fetchall을 사용할 수 있으므로 이렇게 안 해도 되지만,    # 코드 수정이 더 번거로웠으므로 그냥 사용하였다.        get_companylist_sql = '''select * from target_company_list;'''    target_company_list = sqlio.read_sql_query(get_companylist_sql, con)    # 1mb도 안되는 작은 테이블이라서 데이터프레임으로 한 번에 받아옴    for each_code in target_company_list['stock_code']:        cur_1 = con.cursor('ss_cursor') # server side cursor        # cur_1.itersize = 1000 # redshift single-node cluster에서의 server side cursor의 최대 제한값                print(each_code,'_start')        predict_start = target_company_list[target_company_list['stock_code'] == each_code]['pre_6m'].values[0] - datetime.timedelta(days=1)        predict_end = predict_start - datetime.timedelta(days=1096)        cur_1.execute(            \"\"\"            select * from stock_data_2000_2020_raw            where (date between %(predict_end)s and %(predict_start)s) and (stock_code = %(stock_code)s);            \"\"\",            &#123;'predict_end':predict_end.strftime(\"%Y-%m-%d\"),'predict_start':predict_start.strftime(\"%Y-%m-%d\"),'stock_code': each_code&#125;        )        for each_row in cur_1:             # next(cur_1)로 한줄씩 불러와서 insert            cur_2.execute(\"\"\"insert into stock_data_3years_raw_6m values %s\"\"\", [each_row])            # each_row는 tuple이다.        con.commit()        print(each_code,'_commit complete')    cur_2.close()\n\n\n2. psycopg22-1. Query parameter 전달 시의 유의점\npsycopg2 document에, 아주 빨간색으로 엄청 잘 보이게 써 있는 경고문이 있다.Warning :Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.\n\n\n\n\nSQL Injection의 위험이 있기 때문인데, 어떻게 위험한지는 여기를 참고하자.\n\n그럼 어떻게 하라는 걸까?\n\npsycopg2 document의 예시들 중, 이렇게 써야겠다고 생각한 형식은 아래와 같다.123456789101112131415import psycopg2from psycopg2 import sqlcredentials = 'aws_access_key_id=**************;aws_secret_access_key=**************'s3_bucket_param = 's3://BUCKET-NAME/FILE-NAME'copy_query = sql.SQL(\"\"\"        copy &#123;table_name&#125;        from %(s3_bucket_param)s        credentials %(credentials)s        IGNOREHEADER 1        CSV;    \"\"\").format(table_name = sql.Identifier('TABLE-NAME'))cur.execute(copy_query, &#123;'s3_bucket_param':s3_bucket_param, 'credentials':credentials&#125;)\n{} : 테이블 이름 등의 identifier를 받는다. %s 형식으로 이 값을 받으려고 하면, 제대로 인식이 안 되기 때문에 번거롭지만 .foramt(table_name = sql.Identifier(&#39;TABLE-NAME&#39;))형식으로 인자를 넘겨야 한다. keyword parameter로 안 해도 되지만, 어떤 자리에 무엇이 들어가는 지 명확하게 정의하는 것을 좋아하므로 몽땅 keyword parameter로 진행하였다.\nsql 모듈 설명\n같은 문제로 고통받던 사람의 이슈제기\n\n\n%(keyword)s : value를 받는다. execute 함수 내부에서 인자로 전달하면 된다. keyword parameter로 정의했을 경우 dictionary로 전달하자.\n\n\n\n3. 로컬 DB : postgreSQL3-1. COPY 시의 권한 문제\n작업 폴더 내에 있는 CSV 파일을 그대로 COPY하려고 하면, 무조건 permission error가 발생한다.\nDB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?\n맥에서 Homebrew로 설치한 기준에서는, /usr/local/var/postgres\n예시  12345678910with psycopg2.connect(**connect_param_local) as con:    with con.cursor() as cur:        cur.execute(            \"\"\"            COPY stock_data_2000_2020_raw            from '/usr/local/var/postgres/stock_data_raw_2.csv'            DELIMITER ','            CSV HEADER;            \"\"\")con.commit()\n\n\n\n","dateCreated":"2020-02-11T12:13:00+09:00","dateModified":"2020-02-13T12:50:17+09:00","datePublished":"2020-02-11T12:13:00+09:00","description":"","headline":"<기업부도예측-5> Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/","keywords":"AWS"}</script>
+    <meta name="description" content="1편인 이유는, Redshift에 사용할 데이터를 적재하기만 했지, 업데이트 되는 데이터들, 특히 매일 나오는 주가 데이터와 기사 데이터를 수집, 변환, 적재하는 ETL 파이프라인을 아직 만들지 않았기 때문이다. 1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것 차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="&lt;VBA&gt; Multiple file name changer by XLSM">
-<meta property="og:url" content="https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/index.html">
+<meta property="og:title" content="&lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
-<meta property="og:description" content="There are programs for renaming multiple files like Darknamer,but they cannot handle complex rules.So I decided to use the might of Excel to do more complicated tasks.">
+<meta property="og:description" content="1편인 이유는, Redshift에 사용할 데이터를 적재하기만 했지, 업데이트 되는 데이터들, 특히 매일 나오는 주가 데이터와 기사 데이터를 수집, 변환, 적재하는 ETL 파이프라인을 아직 만들지 않았기 때문이다. 1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것 차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3">
-<meta property="article:published_time" content="2018-09-09T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-05T06:53:55.471Z">
+<meta property="article:published_time" content="2020-02-11T03:13:00.000Z">
+<meta property="article:modified_time" content="2020-02-13T03:50:17.163Z">
 <meta property="article:author" content="Jin">
-<meta property="article:tag" content="VBA">
-<meta property="article:tag" content="file name change">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="Redshift">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3">
     
     
         
@@ -209,20 +207,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            &lt;VBA&gt; Multiple file name changer by XLSM
+            &lt;기업부도예측-5&gt; Redshift 구축과정에서 얻은 교훈과 팁 (1) - 데이터 적재, psycopg2
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2018-09-10T00:00:00+09:00">
+    <time datetime="2020-02-11T12:13:00+09:00">
 	
-		    Sep 10, 2018
+		    Feb 11, 2020
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%EC%9E%90%EB%8F%99%ED%99%94-%EC%BD%94%EB%93%9C-%EC%A0%9C%EC%9E%91/">자동화_코드_제작</a>
+    <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/">프로젝트</a>, <a class="category-link" href="/categories/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B8%B0%EC%97%85%EB%B6%80%EB%8F%84%EC%98%88%EC%B8%A1-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EC%9B%B9-%EB%A6%AC%ED%8F%AC%ED%8A%B8/">기업부도예측 (머신러닝/웹 리포트)</a>, <a class="category-link" href="/categories/%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC/">학습_정리</a>
 
 
     
@@ -234,45 +232,44 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>There are programs for renaming multiple files like Darknamer,<br>but they cannot handle complex rules.<br>So I decided to use the might of Excel to do more complicated tasks.<br><a id="more"></a></p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="table-of-contents">Table of Contents</h1><ul class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것"><span class="toc-text">1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-psycopg2"><span class="toc-text">2. psycopg2</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Query-parameter-전달-시의-유의점"><span class="toc-text">2-1. Query parameter 전달 시의 유의점</span></a></li></ul></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-로컬-DB-postgreSQL"><span class="toc-text">3. 로컬 DB : postgreSQL</span></a><ul class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-COPY-시의-권한-문제"><span class="toc-text">3-1. COPY 시의 권한 문제</span></a></li></ul></li></ul>
 <hr>
-<h2 id="1-Features"><a href="#1-Features" class="headerlink" title="1. Features"></a>1. Features</h2><p><strong>A. Essential functions</strong></p>
-<ul>
-<li>a. Select multiple files</li>
-<li>b. Change file names by the pairs of original name and new name.</li>
+<p>1편인 이유는, Redshift에 사용할 데이터를 적재하기만 했지, 업데이트 되는 데이터들, 특히 매일 나오는 주가 데이터와 기사 데이터를 수집, 변환, 적재하는 ETL 파이프라인을 아직 만들지 않았기 때문이다.</p>
+<h1 id="1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것"><a href="#1-Redshift에-대량의-데이터를-Insert로-넣을-생각은-하지-말-것" class="headerlink" title="1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것"></a>1. Redshift에 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h1><ul>
+<li>차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어넣는 것이 훨씬 빠르다.</li>
+<li>Redshift에서 직접 SELECT, INSERT 처리를 하면 : 300만행 추가에 예상 완료시간 4일</li>
+<li>로컬 DB에서 연산 후 COPY로 업로드하면 : 300만 행 연산시간 3.5시간, COPY 업로드 시간 5분</li>
+<li><a href="https://aws.amazon.com/ko/data-warehouse/" target="_blank" rel="noopener">AWS DW 설명 문서</a>의 말을 들었어야 했는데.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 같은 코드를 로컬 DB에서 돌리면 3.5시간, Redshift에 연결해서 돌리면 4일</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param_local) <span class="keyword">as</span> con:</span><br><span class="line">    cur_2 = con.cursor()</span><br><span class="line">    <span class="comment"># fetchall을 사용해서 커서를 재활용하지 않고 커서를 두 개 두는 이유는, redshift의 single-node cluster에서는 fetchall이 지원되지 않기 떄문이다.</span></span><br><span class="line">        <span class="comment"># InternalError_: Fetch ALL is not supported on single-node clusters.</span></span><br><span class="line">        <span class="comment"># Please specify the fetch size (maximum 1000 for single-node clusters) </span></span><br><span class="line">        <span class="comment"># or upgrade to a multi node installation.</span></span><br><span class="line">    <span class="comment"># 로컬 머신에서 연산하면 fetchall을 사용할 수 있으므로 이렇게 안 해도 되지만,</span></span><br><span class="line">    <span class="comment"># 코드 수정이 더 번거로웠으므로 그냥 사용하였다.</span></span><br><span class="line">    </span><br><span class="line">    get_companylist_sql = <span class="string">'''select * from target_company_list;'''</span></span><br><span class="line">    target_company_list = sqlio.read_sql_query(get_companylist_sql, con)</span><br><span class="line">    <span class="comment"># 1mb도 안되는 작은 테이블이라서 데이터프레임으로 한 번에 받아옴</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> each_code <span class="keyword">in</span> target_company_list[<span class="string">'stock_code'</span>]:</span><br><span class="line">        cur_1 = con.cursor(<span class="string">'ss_cursor'</span>) <span class="comment"># server side cursor</span></span><br><span class="line">        <span class="comment"># cur_1.itersize = 1000 # redshift single-node cluster에서의 server side cursor의 최대 제한값</span></span><br><span class="line">        </span><br><span class="line">        print(each_code,<span class="string">'_start'</span>)</span><br><span class="line">        predict_start = target_company_list[target_company_list[<span class="string">'stock_code'</span>] == each_code][<span class="string">'pre_6m'</span>].values[<span class="number">0</span>] - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line">        predict_end = predict_start - datetime.timedelta(days=<span class="number">1096</span>)</span><br><span class="line"></span><br><span class="line">        cur_1.execute(</span><br><span class="line">            <span class="string">"""</span></span><br><span class="line"><span class="string">            select * from stock_data_2000_2020_raw</span></span><br><span class="line"><span class="string">            where (date between %(predict_end)s and %(predict_start)s) and (stock_code = %(stock_code)s);</span></span><br><span class="line"><span class="string">            """</span>,</span><br><span class="line">            &#123;<span class="string">'predict_end'</span>:predict_end.strftime(<span class="string">"%Y-%m-%d"</span>),<span class="string">'predict_start'</span>:predict_start.strftime(<span class="string">"%Y-%m-%d"</span>),<span class="string">'stock_code'</span>: each_code&#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> each_row <span class="keyword">in</span> cur_1: </span><br><span class="line">            <span class="comment"># next(cur_1)로 한줄씩 불러와서 insert</span></span><br><span class="line">            cur_2.execute(<span class="string">"""insert into stock_data_3years_raw_6m values %s"""</span>, [each_row])</span><br><span class="line">            <span class="comment"># each_row는 tuple이다.</span></span><br><span class="line">        con.commit()</span><br><span class="line">        print(each_code,<span class="string">'_commit complete'</span>)</span><br><span class="line">    cur_2.close()</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<hr>
-<h2 id="2-Blueprint"><a href="#2-Blueprint" class="headerlink" title="2. Blueprint"></a>2. Blueprint</h2><p><strong>[File select button]</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>[Change name button]</strong></p>
-<p><br></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Original name<br>(After selecting files, this column <br>will be filled automatically)</th>
-<th style="text-align:center">New name<br>(without extension)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1.txt</td>
-<td style="text-align:center">aaa</td>
-</tr>
-<tr>
-<td style="text-align:center">2.txt</td>
-<td style="text-align:center">bbb</td>
-</tr>
-<tr>
-<td style="text-align:center">3.txt</td>
-<td style="text-align:center">ccc</td>
-</tr>
-</tbody>
-</table>
+<h1 id="2-psycopg2"><a href="#2-psycopg2" class="headerlink" title="2. psycopg2"></a>2. psycopg2</h1><h2 id="2-1-Query-parameter-전달-시의-유의점"><a href="#2-1-Query-parameter-전달-시의-유의점" class="headerlink" title="2-1. Query parameter 전달 시의 유의점"></a>2-1. Query parameter 전달 시의 유의점</h2><ul>
+<li><a href="https://www.psycopg.org/docs/usage.html#query-parameters" target="_blank" rel="noopener">psycopg2 document</a>에, 아주 빨간색으로 엄청 잘 보이게 써 있는 경고문이 있다.<div class="alert danger"><p>Warning :Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.</p>
 </div>
-<hr>
-<h2 id="3-Codes"><a href="#3-Codes" class="headerlink" title="3. Codes"></a>3. Codes</h2><h3 id="Codes-in-the-File-select-button"><a href="#Codes-in-the-File-select-button" class="headerlink" title="[Codes in the File select button]"></a>[Codes in the File select button]</h3><figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> File_Select()</span><br><span class="line">    <span class="keyword">Dim</span> Name_Location_Index <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> FileName_Cache <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">With</span> Application.FileDialog(msoFileDialogOpen)</span><br><span class="line">        .AllowMultiSelect = <span class="literal">True</span></span><br><span class="line">        .Show</span><br><span class="line">        <span class="comment">' Display paths of all file that are selected</span></span><br><span class="line">        <span class="keyword">For</span> Name_Location_Index = <span class="number">1</span> <span class="keyword">To</span> .SelectedItems.Count</span><br><span class="line">            FileName_Cache = GetFilenameFromPath(.SelectedItems(Name_Location_Index))</span><br><span class="line">            Worksheets(<span class="string">"Main"</span>).Cells(Name_Location_Index + <span class="number">5</span>, <span class="number">1</span>).Value = .SelectedItems(Name_Location_Index)</span><br><span class="line">       <span class="comment">' Name list begins at fifth row, so 5 have to be added.</span></span><br><span class="line">       <span class="comment">' In Column A, put the paths of selected file. In Column B, just put the file names with extension.</span></span><br><span class="line">            Worksheets(<span class="string">"Main"</span>).Cells(Name_Location_Index + <span class="number">5</span>, <span class="number">2</span>).Value = FileName_Cache</span><br><span class="line">        <span class="keyword">Next</span> Name_Location_Index</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">With</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetFilenameFromPath(<span class="keyword">ByVal</span> strPath <span class="keyword">As</span> <span class="built_in">String</span>) <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">   <span class="comment">' This is the function which takes only file name from total file path.</span></span><br><span class="line">   <span class="comment">' Using recursive call to cut the rightmost character in string until meet forward slash.('/')</span></span><br><span class="line">   <span class="comment">' If total path is C:\example\exam.txt, exam.txt is the final return.</span></span><br><span class="line">    <span class="keyword">If</span> Right$(strPath, <span class="number">1</span>) &lt;&gt; <span class="string">"\"</span> <span class="keyword">And</span> Len(strPath) &gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">        GetFilenameFromPath = GetFilenameFromPath(Left$(strPath, Len(strPath) - <span class="number">1</span>)) + Right$(strPath, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
-<h3 id="Codes-in-the-Change-name-button"><a href="#Codes-in-the-Change-name-button" class="headerlink" title="[Codes in the Change name button]"></a>[Codes in the Change name button]</h3><figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sub</span> File_Rename()</span><br><span class="line">    <span class="keyword">Dim</span> OldName, NewName <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">    <span class="keyword">Dim</span> Column_End_Original <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> Colunm_End_Goal <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line">    <span class="keyword">Dim</span> loop_check <span class="keyword">As</span> <span class="built_in">Long</span></span><br><span class="line"></span><br><span class="line">    Column_End_Original = Cells(Rows.Count, <span class="number">1</span>).<span class="keyword">End</span>(xlUp).Row</span><br><span class="line">    Column_End_Goal = Cells(Rows.Count, <span class="number">3</span>).<span class="keyword">End</span>(xlUp).Row</span><br><span class="line">    <span class="comment">' Get the final rows of original name list and new name list</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">For</span> loop_check = <span class="number">6</span> <span class="keyword">To</span> Column_End_Original</span><br><span class="line">        <span class="comment">' If Column_End_Original and Column_End_Goal are not same, it must return error. I need to make exceptional handling.</span></span><br><span class="line">        OldName = Cells(loop_check, <span class="number">1</span>).<span class="keyword">Text</span></span><br><span class="line">        NewName = Cells(loop_check, <span class="number">3</span>).<span class="keyword">Text</span> + <span class="string">"."</span> + GetExtention(OldName)</span><br><span class="line">        Name OldName <span class="keyword">As</span> NewName</span><br><span class="line">    <span class="keyword">Next</span> loop_check</span><br><span class="line">    MsgBox <span class="string">"Mission complete"</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Function</span> GetExtention(<span class="keyword">ByVal</span> strPath <span class="keyword">As</span> <span class="built_in">String</span>) <span class="keyword">As</span> <span class="built_in">String</span></span><br><span class="line">    <span class="comment">' The function which is get extension from path.</span></span><br><span class="line">    <span class="comment">' Mechanism of this function is exactly same with GetFilenameFromPath.</span></span><br><span class="line">    <span class="keyword">If</span> Right$(strPath, <span class="number">1</span>) &lt;&gt; <span class="string">"."</span> <span class="keyword">And</span> Len(strPath) &gt; <span class="number">0</span> <span class="keyword">Then</span></span><br><span class="line">        GetExtention = GetExtention(Left$(strPath, Len(strPath) - <span class="number">1</span>)) + Right$(strPath, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">End</span> <span class="keyword">If</span></span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Function</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="4-Result"><a href="#4-Result" class="headerlink" title="4. Result"></a>4. Result</h2><p><img src="https://drive.google.com/uc?id=1c_y-pdeiLA1CnvhIltEW_HdPBy2xsNn3" alt="Oops, Some network ants ate this pic!" title="The scene when you apply"></p>
+</li>
+</ul>
+<ul>
+<li><p>SQL Injection의 위험이 있기 때문인데, 어떻게 위험한지는 <a href="https://stackoverflow.com/questions/37329370/how-to-avoid-sql-injection-with-select-from-table-name" target="_blank" rel="noopener">여기를</a> 참고하자.</p>
+</li>
+<li><p>그럼 어떻게 하라는 걸까?</p>
+<ul>
+<li><a href="https://www.psycopg.org/docs/usage.html#query-parameters" target="_blank" rel="noopener">psycopg2 document</a>의 예시들 중, 이렇게 써야겠다고 생각한 형식은 아래와 같다.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line"><span class="keyword">from</span> psycopg2 <span class="keyword">import</span> sql</span><br><span class="line"></span><br><span class="line">credentials = <span class="string">'aws_access_key_id=**************;aws_secret_access_key=**************'</span></span><br><span class="line">s3_bucket_param = <span class="string">'s3://BUCKET-NAME/FILE-NAME'</span></span><br><span class="line"></span><br><span class="line">copy_query = sql.SQL(<span class="string">"""</span></span><br><span class="line"><span class="string">        copy &#123;table_name&#125;</span></span><br><span class="line"><span class="string">        from %(s3_bucket_param)s</span></span><br><span class="line"><span class="string">        credentials %(credentials)s</span></span><br><span class="line"><span class="string">        IGNOREHEADER 1</span></span><br><span class="line"><span class="string">        CSV;</span></span><br><span class="line"><span class="string">    """</span>).format(table_name = sql.Identifier(<span class="string">'TABLE-NAME'</span>))</span><br><span class="line"></span><br><span class="line">cur.execute(copy_query, &#123;<span class="string">'s3_bucket_param'</span>:s3_bucket_param, <span class="string">'credentials'</span>:credentials&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><strong>{}</strong> : 테이블 이름 등의 identifier를 받는다. %s 형식으로 이 값을 받으려고 하면, 제대로 인식이 안 되기 때문에 번거롭지만 <code>.foramt(table_name = sql.Identifier(&#39;TABLE-NAME&#39;))</code>형식으로 인자를 넘겨야 한다. keyword parameter로 안 해도 되지만, 어떤 자리에 무엇이 들어가는 지 명확하게 정의하는 것을 좋아하므로 몽땅 keyword parameter로 진행하였다.<ul>
+<li><a href="https://www.psycopg.org/docs/sql.html" target="_blank" rel="noopener">sql 모듈 설명</a></li>
+<li><a href="https://github.com/psycopg/psycopg2/issues/423" target="_blank" rel="noopener">같은 문제로 고통받던 사람의 이슈제기</a></li>
+</ul>
+</li>
+<li><strong>%(keyword)s</strong> : value를 받는다. execute 함수 내부에서 인자로 전달하면 된다. keyword parameter로 정의했을 경우 dictionary로 전달하자.</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-로컬-DB-postgreSQL"><a href="#3-로컬-DB-postgreSQL" class="headerlink" title="3. 로컬 DB : postgreSQL"></a>3. 로컬 DB : postgreSQL</h1><h2 id="3-1-COPY-시의-권한-문제"><a href="#3-1-COPY-시의-권한-문제" class="headerlink" title="3-1. COPY 시의 권한 문제"></a>3-1. COPY 시의 권한 문제</h2><ul>
+<li>작업 폴더 내에 있는 CSV 파일을 그대로 COPY하려고 하면, 무조건 permission error가 발생한다.</li>
+<li>DB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?<ul>
+<li>맥에서 Homebrew로 설치한 기준에서는, /usr/local/var/postgres</li>
+<li>예시  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> psycopg2.connect(**connect_param_local) <span class="keyword">as</span> con:</span><br><span class="line">    <span class="keyword">with</span> con.cursor() <span class="keyword">as</span> cur:</span><br><span class="line">        cur.execute(</span><br><span class="line">            <span class="string">"""</span></span><br><span class="line"><span class="string">            COPY stock_data_2000_2020_raw</span></span><br><span class="line"><span class="string">            from '/usr/local/var/postgres/stock_data_raw_2.csv'</span></span><br><span class="line"><span class="string">            DELIMITER ','</span></span><br><span class="line"><span class="string">            CSV HEADER;</span></span><br><span class="line"><span class="string">            """</span>)</span><br><span class="line">con.commit()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
 
             
 
@@ -284,7 +281,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/vba/" rel="tag">VBA</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/aws/" rel="tag">AWS</a>
 
             </div>
         
@@ -294,14 +291,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
-                    aria-label="PREVIOUS: &lt;VBA&gt; XLSX file merging script"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -311,9 +305,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/04/19/web-broswer-control-with-selenium/"
-                    data-tooltip="&lt;Python&gt; Web broswer control with Selenium"
-                    aria-label="NEXT: &lt;Python&gt; Web broswer control with Selenium"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
+                    data-tooltip="&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                    aria-label="NEXT: &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -338,7 +332,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -351,7 +345,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -374,7 +368,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -410,14 +404,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/09/15/xlsx-file-merging-script/"
-                    data-tooltip="&lt;VBA&gt; XLSX file merging script"
-                    aria-label="PREVIOUS: &lt;VBA&gt; XLSX file merging script"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -427,9 +418,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2018/04/19/web-broswer-control-with-selenium/"
-                    data-tooltip="&lt;Python&gt; Web broswer control with Selenium"
-                    aria-label="NEXT: &lt;Python&gt; Web broswer control with Selenium"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
+                    data-tooltip="&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                    aria-label="NEXT: &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -454,7 +445,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -467,7 +458,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -490,7 +481,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="Table of Contents">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -511,7 +502,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -524,7 +515,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -839,9 +830,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2018/09/10/multiple-file-name-changer-by-xlsm/';
+            this.page.url = 'https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/';
               
-            this.page.identifier = '2018/09/10/multiple-file-name-changer-by-xlsm/';
+            this.page.identifier = '2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/';
               
           };
           (function() {

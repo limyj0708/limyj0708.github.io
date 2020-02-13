@@ -6,26 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Jin&#39;s Code Archive">
-    <title>&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1) - Jin&#39;s Code Archive</title>
+    <title>&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1) - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,크롤링,google cloud">
+        <meta name="keywords" content="python,javascript,R,기업부도예측,머신러닝">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.Hyperparameter 튜닝도 진행하지 않았음.(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정.\n1. 학습에 사용한 데이터\n상세 수집조건은 &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터 참조\n2606개 기업의 3년치 재무 데이터\n생존 기업은 2019/12/31 기준 최신 3년치, 상장폐지된 기업은 상장폐지일 기준 최신 3년치\n사용한 feature\n부채비율\n자기자본비율\n현금자산비율\n당기순이익율\n총자산회전율\n총자산증가율(전년동기)\n당기순이익증가율(전년동기)\n\n\n\n\n2606개 기업의 지난 3개 감사보고서 데이터\n사용한 feature\n지난 3개 감사보고서에서, ‘계속기업 불확실성’관련 키워드가 언급된 경우 1, 아니면 0으로 표시\n\n\n\n\n상장시장 (코스닥, 코스피)\n\n1-1. Oversampling\n전체 2606개 기업 중, 부도 기업은 전체의 16.04%\n불균형한 데이터(Imbalanced data)\nImbalanced data를 그대로 학습시키면, Recall이 낮게 나옴. Precision이 좀 낮아도 모든 부도 기업을 잡아내는 것이 좋은 부도 예측이라는 주제에서는, 허용할 수 없는 일\n\n\nImbalanced-learn 패키지를 사용하여, 소수 클래스를 증폭시키는 Oversampling을 진행\nRandomOverSampling 사용 : 소수 클래스의 데이터를 반복해서 넣는 방법\n가상 데이터를 생성하는 Adaptive Synthetic Sampling, SMOTE 기법을 사용하지 못한 이유\n재무데이터에서 ‘수치를 계산할 수 없는 경우’에는, 구분을 위해 동종의 데이터가 절대로 절대로 가질 수 없는 큰 값을 할당하였음(100,000% 등)\n예 &gt; [ 부채비율 = (유동부채 + 비유동부채)/자기자본 ] 에서,완전자본잠식이 되어 자기자본이 0이 된 경우\n\n\n가상의 값을 생성하게 되면, 등장해서는 안 되는 50,000%, 70,000% 등의 값이 생성됨\n\n\n\n\n\n2. 모델 학습\nDecision Tree 기반의 다음 세 모델을 사용하였음\nRandomForest\nGradientBoosting\nXGBoost\n\n\n각 모델들의 상세 설명은 다른 게시글에서 정리\n\n2-1. StratifiedSuffleSplit\n정말 기가 막힌 운으로 데이터가 분할되어 성능이 좋게 나온 모델이 있었기 때문에, StratifiedSuffleSplit으로 Train set과 Test set 100건에 대한 검증 진행\n앞으로도 한참 써야 하기 때문에 별도의 모듈을 만들어서 진행\nOversampling, 학습, 예측, 평가결과 출력을 한 번에 진행함\n모듈 코드는 Github에서 확인 가능\n\n\n\n2-2. 결과비교\n학습 코드는 Github에서 확인 가능\n요약 : 하나의 모델을 사용해야 한다면, 가장 Recall이 높은 GradientBoost-RandomOversampling 데이터 학습 모델을 선정\n\n2-2-1. Oversampling 진행하지 않은 Raw 데이터\nRaw 데이터에서는 RandomForest가 가장 Recall이 높음\nF1-score는 세 모델이 거의 유사함\n\n1. RandomForest, Non-sampling, 100회 최종평균결과 \n   \n    Train - 완전히 과적합됨. Hyperparameter 튜닝 필요\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    1.0\n    1.0\n    1.0\n  \n  \n    1(부도)\n    1.0\n    1.0\n    1.0\n  \n    \n    accuracy : 1.0\n  \n\n \n   \n    Test - 역시 Imbalanced data는 Recall이 낮음\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.921\n    0.962\n    0.941\n  \n  \n    1(부도)\n    0.754\n    0.65\n    0.698\n  \n    \n    accuracy :0.906\n  \n\n\n\n2. GradientBoosting, Non-sampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.969\n    0.995\n    0.982\n  \n  \n    1(부도)\n    0.972\n    0.842\n    0.902\n  \n    \n    accuracy : 0.97\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.929\n    0.965\n    0.946\n  \n  \n    1(부도)\n    0.783\n    0.632\n    0.698\n  \n    \n    accuracy : 0.909\n  \n\n\n\n\n3. XGBoost, Non-sampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.963\n    0.991\n    0.977\n  \n  \n    1(부도)\n    0.949\n    0.808\n    0.873\n  \n    \n    accuracy : 0.961\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.927\n    0.968\n    0.947\n  \n  \n    1(부도)\n    0.796\n    0.622\n    0.697\n  \n    \n    accuracy :0.91\n  \n\n\n2-2-2. RandomOversampling 진행한 데이터\nPrecision이 감소하고, Recall이 증가함. F1 score는 거의 변화하지 않음\n더 나은 검증결과를 얻기 위해서는 데이터를 추가해야 할 것 같음\nGradientBoosting이 가장 Recall이 높음\n\n1. RandomForest, RandomOversampling, 100회 최종평균결과 \n   \n    Train - 완전히 과적합됨. Hyperparameter 튜닝 필요\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    1.0\n    1.0\n    1.0\n  \n  \n    1(부도)\n    1.0\n    1.0\n    1.0\n  \n    \n    accuracy : 1.0\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.932\n    0.957\n    0.944\n  \n  \n    1(부도)\n    0.754\n    0.65\n    0.698\n  \n    \n    accuracy :0.906\n  \n\n\n\n2. GradientBoosting, RandomOversampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.969\n    0.948\n    0.958\n  \n  \n    1(부도)\n    0.949\n    0.97\n    0.959\n  \n    \n    accuracy : 0.959\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.952\n    0.913\n    0.932\n  \n  \n    1(부도)\n    0.642\n    0.772\n    0.7\n  \n    \n    accuracy :0.889\n  \n\n\n\n\n3. XGBoost, RandomOversampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.961\n    0.945\n    0.953\n  \n  \n    1(부도)\n    0.946\n    0.962\n    0.954\n  \n    \n    accuracy : 0.954\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.952\n    0.913\n    0.932\n  \n  \n    1(부도)\n    0.641\n    0.768\n    0.698\n  \n    \n    accuracy :0.889\n  \n","dateCreated":"2020-02-05T00:00:00+09:00","dateModified":"2020-02-06T09:37:24+09:00","datePublished":"2020-02-05T00:00:00+09:00","description":"","headline":"<기업부도예측-3> Decision Tree 기반 모델들 학습 및 평가(1)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/","keywords":"Machine_learning"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.Hyperparameter 튜닝도 진행하지 않았음.(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정.\n1. 학습에 사용한 데이터\n상세 수집조건은 &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터 참조\n2606개 기업의 3년치 재무 데이터\n생존 기업은 2019/12/31 기준 최신 3년치, 상장폐지된 기업은 상장폐지일 기준 최신 3년치\n사용한 feature\n부채비율\n자기자본비율\n현금자산비율\n당기순이익율\n총자산회전율\n총자산증가율(전년동기)\n당기순이익증가율(전년동기)\n\n\n\n\n2606개 기업의 지난 3개 감사보고서 데이터\n사용한 feature\n지난 3개 감사보고서에서, ‘계속기업 불확실성’관련 키워드가 언급된 경우 1, 아니면 0으로 표시\n\n\n\n\n상장시장 (코스닥, 코스피)\n\n1-1. Oversampling\n전체 2606개 기업 중, 부도 기업은 전체의 16.04%\n불균형한 데이터(Imbalanced data)\nImbalanced data를 그대로 학습시키면, Recall이 낮게 나옴. Precision이 좀 낮아도 모든 부도 기업을 잡아내는 것이 좋은 부도 예측이라는 주제에서는, 허용할 수 없는 일\n\n\nImbalanced-learn 패키지를 사용하여, 소수 클래스를 증폭시키는 Oversampling을 진행\nRandomOverSampling 사용 : 소수 클래스의 데이터를 반복해서 넣는 방법\n가상 데이터를 생성하는 Adaptive Synthetic Sampling, SMOTE 기법을 사용하지 못한 이유\n재무데이터에서 ‘수치를 계산할 수 없는 경우’에는, 구분을 위해 동종의 데이터가 절대로 절대로 가질 수 없는 큰 값을 할당하였음(100,000% 등)\n예 &gt; [ 부채비율 = (유동부채 + 비유동부채)/자기자본 ] 에서,완전자본잠식이 되어 자기자본이 0이 된 경우\n\n\n가상의 값을 생성하게 되면, 등장해서는 안 되는 50,000%, 70,000% 등의 값이 생성됨\n\n\n\n\n\n2. 모델 학습\nDecision Tree 기반의 다음 세 모델을 사용하였음\nRandomForest\nGradientBoosting\nXGBoost\n\n\n각 모델들의 상세 설명은 다른 게시글에서 정리\n\n2-1. StratifiedSuffleSplit\n정말 기가 막힌 운으로 데이터가 분할되어 성능이 좋게 나온 모델이 있었기 때문에, StratifiedSuffleSplit으로 Train set과 Test set 100건에 대한 검증 진행\n앞으로도 한참 써야 하기 때문에 별도의 모듈을 만들어서 진행\nOversampling, 학습, 예측, 평가결과 출력을 한 번에 진행함\n모듈 코드는 Github에서 확인 가능\n\n\n\n2-2. 결과비교\n학습 코드는 Github에서 확인 가능\n요약 : 하나의 모델을 사용해야 한다면, 가장 Recall이 높은 GradientBoost-RandomOversampling 데이터 학습 모델을 선정\n\n2-2-1. Oversampling 진행하지 않은 Raw 데이터\nRaw 데이터에서는 RandomForest가 가장 Recall이 높음\nF1-score는 세 모델이 거의 유사함\n\n1. RandomForest, Non-sampling, 100회 최종평균결과 \n   \n    Train - 완전히 과적합됨. Hyperparameter 튜닝 필요\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    1.0\n    1.0\n    1.0\n  \n  \n    1(부도)\n    1.0\n    1.0\n    1.0\n  \n    \n    accuracy : 1.0\n  \n\n \n   \n    Test - 역시 Imbalanced data는 Recall이 낮음\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.921\n    0.962\n    0.941\n  \n  \n    1(부도)\n    0.754\n    0.65\n    0.698\n  \n    \n    accuracy :0.906\n  \n\n\n\n2. GradientBoosting, Non-sampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.969\n    0.995\n    0.982\n  \n  \n    1(부도)\n    0.972\n    0.842\n    0.902\n  \n    \n    accuracy : 0.97\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.929\n    0.965\n    0.946\n  \n  \n    1(부도)\n    0.783\n    0.632\n    0.698\n  \n    \n    accuracy : 0.909\n  \n\n\n\n\n3. XGBoost, Non-sampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.963\n    0.991\n    0.977\n  \n  \n    1(부도)\n    0.949\n    0.808\n    0.873\n  \n    \n    accuracy : 0.961\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.927\n    0.968\n    0.947\n  \n  \n    1(부도)\n    0.796\n    0.622\n    0.697\n  \n    \n    accuracy :0.91\n  \n\n\n2-2-2. RandomOversampling 진행한 데이터\nPrecision이 감소하고, Recall이 증가함. F1 score는 거의 변화하지 않음\n더 나은 검증결과를 얻기 위해서는 데이터를 추가해야 할 것 같음\nGradientBoosting이 가장 Recall이 높음\n\n1. RandomForest, RandomOversampling, 100회 최종평균결과 \n   \n    Train - 완전히 과적합됨. Hyperparameter 튜닝 필요\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    1.0\n    1.0\n    1.0\n  \n  \n    1(부도)\n    1.0\n    1.0\n    1.0\n  \n    \n    accuracy : 1.0\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.932\n    0.957\n    0.944\n  \n  \n    1(부도)\n    0.754\n    0.65\n    0.698\n  \n    \n    accuracy :0.906\n  \n\n\n\n2. GradientBoosting, RandomOversampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.969\n    0.948\n    0.958\n  \n  \n    1(부도)\n    0.949\n    0.97\n    0.959\n  \n    \n    accuracy : 0.959\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.952\n    0.913\n    0.932\n  \n  \n    1(부도)\n    0.642\n    0.772\n    0.7\n  \n    \n    accuracy :0.889\n  \n\n\n\n\n3. XGBoost, RandomOversampling, 100회 최종평균결과 \n   \n    Train\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.961\n    0.945\n    0.953\n  \n  \n    1(부도)\n    0.946\n    0.962\n    0.954\n  \n    \n    accuracy : 0.954\n  \n\n \n   \n    Test\n  \n  \n    Label\n    Precision\n    Recall\n    F1-Score\n  \n  \n    0(생존)\n    0.952\n    0.913\n    0.932\n  \n  \n    1(부도)\n    0.641\n    0.768\n    0.698\n  \n    \n    accuracy :0.889\n  \n","dateCreated":"2020-02-06T12:13:00+09:00","dateModified":"2020-02-13T12:14:27+09:00","datePublished":"2020-02-06T12:13:00+09:00","description":"","headline":"<기업부도예측-3> Decision Tree 기반 모델들 학습 및 평가 (1)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/","keywords":"Machine_learning"}</script>
     <meta name="description" content="제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.Hyperparameter 튜닝도 진행하지 않았음.(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정. 1. 학습에 사용한 데이터 상세 수집조건은 &lt;기업부도예측-1&gt; 프로젝트 개">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)">
-<meta property="og:url" content="https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/index.html">
+<meta property="og:title" content="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="제목에 (1)이 붙은 이유는, 수집한 모든 데이터를 사용하여 모델을 학습시킨 것이 아니기 때문.Hyperparameter 튜닝도 진행하지 않았음.(2)에서는 모든 데이터를 사용하여 학습하고, 결과가 가장 좋게 나온 모델에 Hyperparameter 튜닝도 진행할 예정. 1. 학습에 사용한 데이터 상세 수집조건은 &lt;기업부도예측-1&gt; 프로젝트 개">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-04T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-06T00:37:24.281Z">
+<meta property="article:published_time" content="2020-02-06T03:13:00.000Z">
+<meta property="article:modified_time" content="2020-02-13T03:14:27.636Z">
 <meta property="article:author" content="Jin">
-<meta property="article:tag" content="크롤링">
-<meta property="article:tag" content="google cloud">
+<meta property="article:tag" content="기업부도예측">
+<meta property="article:tag" content="머신러닝">
 <meta name="twitter:card" content="summary">
     
     
@@ -37,7 +37,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+<link rel="stylesheet" href="/assets/css/style-22tzafjcdlcnt88uzcz0qlal4pjrroh71schgqdvvnkd7mmjrd2taoasvunf.min.css">
 
     <!--STYLES END-->
     
@@ -101,19 +101,6 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
                              href="/all-categories"
                             
                             title="Categories"
@@ -160,19 +147,6 @@
                     
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="About"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -233,14 +207,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)
+            &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-02-05T00:00:00+09:00">
+    <time datetime="2020-02-06T12:13:00+09:00">
 	
-		    Feb 05, 2020
+		    Feb 06, 2020
     	
     </time>
     
@@ -678,11 +652,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
+                    data-tooltip="&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                    aria-label="PREVIOUS: &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -692,7 +669,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                     aria-label="NEXT: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                 >
@@ -719,7 +696,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -732,7 +709,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -791,11 +768,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/"
+                    data-tooltip="&lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                    aria-label="PREVIOUS: &lt;기업부도예측-4&gt; 로컬 머신에서 AWS Redshift에 접근하기"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -805,7 +785,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     data-tooltip="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                     aria-label="NEXT: &lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링"
                 >
@@ -832,7 +812,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -845,7 +825,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -889,7 +869,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -902,7 +882,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -1173,10 +1153,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -1198,7 +1178,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                23 posts found
             </p>
         </div>
     </div>
@@ -1209,7 +1189,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+<script src="/assets/js/script-kxsq3fjhsue9xnfwgpjsxjf9crp3bykgtwnstq4c5h5q2opv7xgn1wdiejq2.min.js"></script>
 
 <!--SCRIPTS END-->
 
@@ -1217,9 +1197,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/';
+            this.page.url = 'https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/';
               
-            this.page.identifier = '2020/02/05/bankrup-pre-decision-tree-based-model/';
+            this.page.identifier = '2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/';
               
           };
           (function() {

@@ -8,24 +8,40 @@
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2020/02/05/bankrup-pre-decision-tree-based-model/</loc>
-        <lastmod>2020-02-06T00:37:24.281Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/11/2020-02-11-bankrup-pre-05-aws-redshift-lesson-from-actual-engage/</loc>
+        <lastmod>2020-02-13T03:50:17.163Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/</loc>
-        <lastmod>2020-02-06T00:27:27.069Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/</loc>
+        <lastmod>2020-02-13T03:14:27.636Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://limyj0708.github.io/2020/02/04/bankrup-pre-start/</loc>
-        <lastmod>2020-02-06T00:24:51.991Z</lastmod>
+        <loc>https://limyj0708.github.io/2020/02/06/2020-02-06-bankrup-pre-04-aws-redshift-connect/</loc>
+        <lastmod>2020-02-13T03:13:38.206Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/</loc>
+        <lastmod>2020-02-13T03:13:28.306Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-01-start/</loc>
+        <lastmod>2020-02-13T03:13:22.766Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -34,6 +50,14 @@
     <url>
         <loc>https://limyj0708.github.io/2019/11/10/python-asyncio-for-web-crawling/</loc>
         <lastmod>2020-02-05T09:18:36.963Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/</loc>
+        <lastmod>2020-02-05T09:14:41.464Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -130,14 +154,6 @@
     <url>
         <loc>https://limyj0708.github.io/2019/10/30/Decorator-Scope-Namespace/</loc>
         <lastmod>2020-02-05T06:53:46.512Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/</loc>
-        <lastmod>2020-02-05T06:53:41.892Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

@@ -9,21 +9,23 @@
     <title>&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링 - Jin&#39;s Code Archive</title>
     <meta name="author" content="Jin">
     
-        <meta name="keywords" content="python,javascript,R,크롤링,google cloud">
+        <meta name="keywords" content="python,javascript,R,기업부도예측,경제기사,크롤링,google cloud">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 비동기로 40만개를 크롤링 했을 때보다 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는 데 GCP compute instance를 어떻게 활용하였는지 정리하였다.\n비동기 크롤링 내용은 이미 충분히 다루었으니, gcloud SDK 명령어와 Shell script에 대한 내용이 되겠다.\n1. 어떻게 활용하였는가?\n발행일/제목/본문을 수집해야하는 기사들의 URL 준비 (이하 URL.csv)\n기사 URL을 패러미터에 전달하면, 발행일/제목/본문을 수집하는 코드 작성 (이하 body_crawl.py)\n32개의 Compute instance 생성 (Ubuntu 18.04) 및 환경세팅\nURL.csv를 64개로 분할하여 각 instance에 업로드\nbody_crawl.py를 각 instance에 업로드\n수집 시작 : 결과물은 csv 파일\n수집 결과 파일들을 로컬 머신에 다운로드\n수집 결과 파일 병합\n끝비고 &gt; 32개를 한 번에 실행 시, 몇몇 instance가 불안정한 문제가 있어서 최종적으로는 8개를 사용했다.\n\n2. 한 걸음씩 살펴보기2-1. Google cloud SDK 설치\nShell에서 다량의 instance를 제어하기 위해 SDK 설치\nhttps://cloud.google.com/sdk/docs/quickstart-macos\n\n2-2. URL.csv 분할\n아래 shell script를 분할하려는 csv 파일과 같은 폴더에 넣고 실행하자.1234567891011121314151617FILENAME=URL.csvHDR=$(head -1 $FILENAME)     # 첫 줄, header를 저장함.split -l 20000 $FILENAME xyz    # xyzaa, xyzab... 이렇게 분할된 파일들 이름이 prefix+aa...가 됨    #-l NUMBER, --lines=NUMBER, 20000줄씩 자르거라.n=1for f in xyz* # xyz~ 라는 이름이 붙은 모든 파일에 대하여do     if [ $n -gt 1 ]; then # -gt : greater than and not equal.     # 알아서 header가 포함될 첫 번째 파일 이외에는, 따로 header를 추가함          echo $HDR &gt;&gt; \"URL_\"$&#123;n&#125;'.csv'     fi     cat $f &gt;&gt; \"URL_\"$&#123;n&#125;'.csv' # &gt;&gt;를 써서 내용 추가 방식으로 기록하는 이유는, header만 사용해서 생성한 파일에 본 내용을 추가하기 위해서이다.     rm $f # 내용 사용이 끝난 파일은 제거     ((n++))done\nsplit 명령어에 대한 더 상세한 설명은 여기를 참고하자.\n\n2-3. Compute instance 생성\nGCP Console에서 Compute instance를 하나 생성하여 환경세팅까지 완료하자. 이 instance로 이미지를 생성하여, 이미지를 기반으로 나머지 instance를 한 번에 만들 것이다.\ngcloud compute images create &quot;cw-machine&quot; --source-disk &quot;cw-machine-1&quot;\ncw-machine-1 instance를 기반으로, cw-machine 이미지를 만든다.\n\n\ngcloud compute instances create &quot;cw-machine-2&quot; --image-project &quot;ml-practice-261005&quot; --image &quot;cw-machine&quot;\ncw-machine 이미지에서 cw-machine-2 instance를 만든다.\n이 명령어를 기반으로, 여러 instance를 한 번에 실행하기 위핸 shell script를 만들었다.\n\n\n\n1234567891011121314151617181920212223242526272829start_num=2 # 1번은 이미지를 만들기 위해 이미 생성했으므로 2번부터 시작last_num=32instance_num=$&#123;start_num&#125;create_prefix=\"gcloud compute instances create\"machine_prefix=\" cw-machine-\"image=\" --image-project ml-practice-261005 --image cw-machine\"zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"         # 각 zone별로 cpu 할당 제한이 8개다. 그래서 8개마다 zone을 바꿔 준다.    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $create_prefix$machine_prefix$instance_num$image$zone_prefix$zone    # 이 echo는 명령어가 어떻게 입력되는지 확인하는 용도    $create_prefix$machine_prefix$instance_num$image$zone_prefix$zone &amp;    # 끝에 &amp;를 붙이면 명령어가 백그라운드에서 실행된다.    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewait # 모든 백그라운드에서 실행 중인 자식 프로세스가 실행되길 기다림echo \"All creating processes are done!\"\n2-4. 크롤링 코드, 분할한 URL 파일 업로드2-4-1. 크롤링 코드 업로드\n파일 하나를 업로드 하는 건 별 일 아니다.\ngcloud SDK 명령어만 좀 바뀌었을 뿐, instance 생성 시의 코드와 별로 다르지 않다.1234567891011121314151617181920212223242526272829#!/bin/shstart_num=1last_num=8((instance_num=\"$&#123;start_num&#125;\"))machine_prefix=\" cw-machine-\"scp_upload_prefix=\"gcloud compute scp \" # scp 명령어를 사용zone_prefix=\" --zone\"name_tosend=\"SeoulK/SeoulK_crawl_body.py\" # 보내려는 파일remote_dir=\":~/SeoulK\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewaitecho \"All processes are done!\"\n\n\n2-4-2. 분할한 URL 파일 업로드\n머신 이름을 받아와서 URL 파일과 크롤링 코드에 사용했으면 그냥 올려도 되겠으나, 크롤링 코드가 URL.csv를 읽게 되어있기 때문에 각 머신에 분할된 URL 파일(URL_1.csv…)을 올릴 때 이름을 URL.csv로 바꿔주어야 한다.\n그 외에는 유사함1234567891011121314151617181920212223242526272829303132#!/bin/shstart_num=1last_num=32((instance_num=\"$&#123;start_num&#125;\"))machine_prefix=\" cw-machine-\"scp_upload_prefix=\"gcloud compute scp \"zone_prefix=\" --zone\"name_tosend=\"SeoulK/seoulK_url/URL.csv\"remote_dir=\":~/SeoulK\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    name_origin=\"SeoulK/seoulK_url/URL_\"$instance_num\".csv\"    mv $name_origin $name_tosend # 이름을 바꿔준다    machine_name=$machine_prefix$instance_num    echo $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    mv $name_tosend $name_origin # 보낸 파일은 이름을 원상복귀 시킨다    ((instance_num=\"$&#123;instance_num&#125;\"+1))doneecho \"All processes are done!\"\n\n\n2-5. 수집 실행\n모든 머신에서 한 번에 명령을 실행시킬 때 두 가지 방법을 고려했다.\niterms2 같은 multi-pane, multi-tab 지원 ssh 클라이언트에서 모든 머신에 한 번에 접속하여 동시에 명령 보내기\ngcloud SDK로 머신에 명령어 보내기\n\n\nssh 클라이언트에서 보내는 것은, 모든 머신에 로그인하는 스크립트를 짜기 번거롭기도 하고 화면에 뭐가 계속 떠 있으니, gcloud SDK로 명령어를 보내 보자.\n크롤링 완료 알림은, 크롤링 코드 내에서 텔레그램 봇으로 메세지를 보내는 것으로 처리했다.123456789101112131415161718192021222324252627282930#!/bin/bashstart_num=33last_num=64instance_num=$&#123;start_num&#125;ssh_prefix=\"gcloud compute ssh\"machine_prefix=\" cw-machine-\"command_prefix=\" --command \"command_send_part1='cd SeoulK &amp;&amp; python SeoulK_crawl_body.py'zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $ssh_prefix$machine_name$zone_prefix$zone$command_prefix\"$command_send_part1\"    $ssh_prefix$machine_name$zone_prefix$zone$command_prefix\"$command_send_part1\" &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))doneecho \"All processes are done!\"\n\n\n2-6. 수집 결과 다운로드, 수집 결과 병합2-6-1. 수집 결과 다운로드\n각 머신에서 수집 결과 파일을 받는다.\n결과 파일 이름은 머신이름_seoulK_with_body.csv 이기 때문에, 여기에 맞춰서 코드가 작성되었다.123456789101112131415161718192021222324252627282930313233#!/bin/shstart_num=1last_num=32instance_num=$&#123;start_num&#125;scp_upload_prefix=\"gcloud compute scp --recurse \"machine_prefix=\"cw-machine-\"remote_dir=\":~/SeoulK/\"name_todownload=\"_seoulK_with_body.csv\"local_destination=\" /Users/youngjinlim/Downloads/file_from_instances\"zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    final_file_name=$machine_name$name_todownload        echo $scp_upload_prefix$machine_name$remote_dir$final_file_name$local_destination$zone_prefix$zone    $scp_upload_prefix$machine_name$remote_dir$final_file_name$local_destination$zone_prefix$zone &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewaitecho \"All processes are done!\"\n2-6-2. 수집 결과 병합\n수집 결과 파일(csv)이 여러 개 쌓였을 텐데, 하나로 병합하자.\n결과 파일 하나하나가 몇백MB 단위이기 때문에 때문에 외부 툴을 사용하는 건 무리고, shell에서 바로 합치자.\nawk ‘FNR &gt; 1’ *.csv &gt; merged_body.csv`\n모든 csv 파일들에서, 1행 이후의 내용을 가져와서, merged_body.csv로 만든다.\nawk에 대한 상세 설명은 여기로\nFNR : 현재 파일에서 현재 레코드의 순서 값.\n‘FNR &gt; 1’ : 1번째 레코드보다 큰 것만. 따라서 header가 전부 빠진다.\n이 처리를 안 해주면 파일의 갯수만큼 header가 반복된다.\n\n\n\n\nheader는 따로 파일을 만들어서 보관하고 있다가, 따로 병합해 준다.\n\n2-6-3. shell에서 csv 다루기 보너스\nfile.csv의 특정 열에서 중복 제거하기\nawk -F &quot;,&quot; &#39;!x[$1]++&#39; file.csv &gt; file_unique.csv\n-F : 필드 구분 문자 지정. csv이므로 ,를 지정함\n&#39;!x[$1]++&#39;\n$1 : 1번째 행.\n!x[$1]++ : 어떻게 작동하는지는 여기를 참고하자. 간단히 요약하면, 처음 만나는 값에 대해서는 값이 x[value]가 0이고, 1이 증가한다. 0이 아닌 값은 출력하지 않는다.\n\n\n\n\n\n","dateCreated":"2020-02-04T00:00:00+09:00","dateModified":"2020-02-06T09:27:27+09:00","datePublished":"2020-02-04T00:00:00+09:00","description":"","headline":"<기업부도예측-2> GCP compute instances + shell script로 경제기사 크롤링","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/","keywords":"Shell_Script, GCP"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"articleBody":"\n\n기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 비동기로 40만개를 크롤링 했을 때보다 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는 데 GCP compute instance를 어떻게 활용하였는지 정리하였다.\n비동기 크롤링 내용은 이미 충분히 다루었으니, gcloud SDK 명령어와 Shell script에 대한 내용이 되겠다.\n1. 어떻게 활용하였는가?\n발행일/제목/본문을 수집해야하는 기사들의 URL 준비 (이하 URL.csv)\n기사 URL을 패러미터에 전달하면, 발행일/제목/본문을 수집하는 코드 작성 (이하 body_crawl.py)\n32개의 Compute instance 생성 (Ubuntu 18.04) 및 환경세팅\nURL.csv를 64개로 분할하여 각 instance에 업로드\nbody_crawl.py를 각 instance에 업로드\n수집 시작 : 결과물은 csv 파일\n수집 결과 파일들을 로컬 머신에 다운로드\n수집 결과 파일 병합\n끝비고 &gt; 32개를 한 번에 실행 시, 몇몇 instance가 불안정한 문제가 있어서 최종적으로는 8개를 사용했다.\n\n2. 한 걸음씩 살펴보기2-1. Google cloud SDK 설치\nShell에서 다량의 instance를 제어하기 위해 SDK 설치\nhttps://cloud.google.com/sdk/docs/quickstart-macos\n\n2-2. URL.csv 분할\n아래 shell script를 분할하려는 csv 파일과 같은 폴더에 넣고 실행하자.1234567891011121314151617FILENAME=URL.csvHDR=$(head -1 $FILENAME)     # 첫 줄, header를 저장함.split -l 20000 $FILENAME xyz    # xyzaa, xyzab... 이렇게 분할된 파일들 이름이 prefix+aa...가 됨    #-l NUMBER, --lines=NUMBER, 20000줄씩 자르거라.n=1for f in xyz* # xyz~ 라는 이름이 붙은 모든 파일에 대하여do     if [ $n -gt 1 ]; then # -gt : greater than and not equal.     # 알아서 header가 포함될 첫 번째 파일 이외에는, 따로 header를 추가함          echo $HDR &gt;&gt; \"URL_\"$&#123;n&#125;'.csv'     fi     cat $f &gt;&gt; \"URL_\"$&#123;n&#125;'.csv' # &gt;&gt;를 써서 내용 추가 방식으로 기록하는 이유는, header만 사용해서 생성한 파일에 본 내용을 추가하기 위해서이다.     rm $f # 내용 사용이 끝난 파일은 제거     ((n++))done\nsplit 명령어에 대한 더 상세한 설명은 여기를 참고하자.\n\n2-3. Compute instance 생성\nGCP Console에서 Compute instance를 하나 생성하여 환경세팅까지 완료하자. 이 instance로 이미지를 생성하여, 이미지를 기반으로 나머지 instance를 한 번에 만들 것이다.\ngcloud compute images create &quot;cw-machine&quot; --source-disk &quot;cw-machine-1&quot;\ncw-machine-1 instance를 기반으로, cw-machine 이미지를 만든다.\n\n\ngcloud compute instances create &quot;cw-machine-2&quot; --image-project &quot;ml-practice-261005&quot; --image &quot;cw-machine&quot;\ncw-machine 이미지에서 cw-machine-2 instance를 만든다.\n이 명령어를 기반으로, 여러 instance를 한 번에 실행하기 위핸 shell script를 만들었다.\n\n\n\n1234567891011121314151617181920212223242526272829start_num=2 # 1번은 이미지를 만들기 위해 이미 생성했으므로 2번부터 시작last_num=32instance_num=$&#123;start_num&#125;create_prefix=\"gcloud compute instances create\"machine_prefix=\" cw-machine-\"image=\" --image-project ml-practice-261005 --image cw-machine\"zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"         # 각 zone별로 cpu 할당 제한이 8개다. 그래서 8개마다 zone을 바꿔 준다.    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $create_prefix$machine_prefix$instance_num$image$zone_prefix$zone    # 이 echo는 명령어가 어떻게 입력되는지 확인하는 용도    $create_prefix$machine_prefix$instance_num$image$zone_prefix$zone &amp;    # 끝에 &amp;를 붙이면 명령어가 백그라운드에서 실행된다.    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewait # 모든 백그라운드에서 실행 중인 자식 프로세스가 실행되길 기다림echo \"All creating processes are done!\"\n2-4. 크롤링 코드, 분할한 URL 파일 업로드2-4-1. 크롤링 코드 업로드\n파일 하나를 업로드 하는 건 별 일 아니다.\ngcloud SDK 명령어만 좀 바뀌었을 뿐, instance 생성 시의 코드와 별로 다르지 않다.1234567891011121314151617181920212223242526272829#!/bin/shstart_num=1last_num=8((instance_num=\"$&#123;start_num&#125;\"))machine_prefix=\" cw-machine-\"scp_upload_prefix=\"gcloud compute scp \" # scp 명령어를 사용zone_prefix=\" --zone\"name_tosend=\"SeoulK/SeoulK_crawl_body.py\" # 보내려는 파일remote_dir=\":~/SeoulK\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewaitecho \"All processes are done!\"\n\n\n2-4-2. 분할한 URL 파일 업로드\n머신 이름을 받아와서 URL 파일과 크롤링 코드에 사용했으면 그냥 올려도 되겠으나, 크롤링 코드가 URL.csv를 읽게 되어있기 때문에 각 머신에 분할된 URL 파일(URL_1.csv…)을 올릴 때 이름을 URL.csv로 바꿔주어야 한다.\n그 외에는 유사함1234567891011121314151617181920212223242526272829303132#!/bin/shstart_num=1last_num=32((instance_num=\"$&#123;start_num&#125;\"))machine_prefix=\" cw-machine-\"scp_upload_prefix=\"gcloud compute scp \"zone_prefix=\" --zone\"name_tosend=\"SeoulK/seoulK_url/URL.csv\"remote_dir=\":~/SeoulK\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    name_origin=\"SeoulK/seoulK_url/URL_\"$instance_num\".csv\"    mv $name_origin $name_tosend # 이름을 바꿔준다    machine_name=$machine_prefix$instance_num    echo $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    $scp_upload_prefix$name_tosend$zone_prefix$zone$machine_name$remote_dir    mv $name_tosend $name_origin # 보낸 파일은 이름을 원상복귀 시킨다    ((instance_num=\"$&#123;instance_num&#125;\"+1))doneecho \"All processes are done!\"\n\n\n2-5. 수집 실행\n모든 머신에서 한 번에 명령을 실행시킬 때 두 가지 방법을 고려했다.\niterms2 같은 multi-pane, multi-tab 지원 ssh 클라이언트에서 모든 머신에 한 번에 접속하여 동시에 명령 보내기\ngcloud SDK로 머신에 명령어 보내기\n\n\nssh 클라이언트에서 보내는 것은, 모든 머신에 로그인하는 스크립트를 짜기 번거롭기도 하고 화면에 뭐가 계속 떠 있으니, gcloud SDK로 명령어를 보내 보자.\n크롤링 완료 알림은, 크롤링 코드 내에서 텔레그램 봇으로 메세지를 보내는 것으로 처리했다.123456789101112131415161718192021222324252627282930#!/bin/bashstart_num=33last_num=64instance_num=$&#123;start_num&#125;ssh_prefix=\"gcloud compute ssh\"machine_prefix=\" cw-machine-\"command_prefix=\" --command \"command_send_part1='cd SeoulK &amp;&amp; python SeoulK_crawl_body.py'zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    echo $ssh_prefix$machine_name$zone_prefix$zone$command_prefix\"$command_send_part1\"    $ssh_prefix$machine_name$zone_prefix$zone$command_prefix\"$command_send_part1\" &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))doneecho \"All processes are done!\"\n\n\n2-6. 수집 결과 다운로드, 수집 결과 병합2-6-1. 수집 결과 다운로드\n각 머신에서 수집 결과 파일을 받는다.\n결과 파일 이름은 머신이름_seoulK_with_body.csv 이기 때문에, 여기에 맞춰서 코드가 작성되었다.123456789101112131415161718192021222324252627282930313233#!/bin/shstart_num=1last_num=32instance_num=$&#123;start_num&#125;scp_upload_prefix=\"gcloud compute scp --recurse \"machine_prefix=\"cw-machine-\"remote_dir=\":~/SeoulK/\"name_todownload=\"_seoulK_with_body.csv\"local_destination=\" /Users/youngjinlim/Downloads/file_from_instances\"zone_prefix=\" --zone\"while ((\"$&#123;instance_num&#125;\"&lt;=last_num)); do    if ((\"$&#123;instance_num&#125;\"&lt;=(start_num+7) )); then        zone=\" us-east1-b\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+8) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+15) )); then        zone=\" us-west1-a\"    elif (( \"$&#123;instance_num&#125;\"&gt;=(start_num+16) &amp;&amp; \"$&#123;instance_num&#125;\"&lt;=(start_num+23) )); then        zone=\" us-central1-a\"    else        zone=\" northamerica-northeast1-a\"    fi    machine_name=$machine_prefix$instance_num    final_file_name=$machine_name$name_todownload        echo $scp_upload_prefix$machine_name$remote_dir$final_file_name$local_destination$zone_prefix$zone    $scp_upload_prefix$machine_name$remote_dir$final_file_name$local_destination$zone_prefix$zone &amp;    ((instance_num=\"$&#123;instance_num&#125;\"+1))donewaitecho \"All processes are done!\"\n2-6-2. 수집 결과 병합\n수집 결과 파일(csv)이 여러 개 쌓였을 텐데, 하나로 병합하자.\n결과 파일 하나하나가 몇백MB 단위이기 때문에 때문에 외부 툴을 사용하는 건 무리고, shell에서 바로 합치자.\nawk ‘FNR &gt; 1’ *.csv &gt; merged_body.csv`\n모든 csv 파일들에서, 1행 이후의 내용을 가져와서, merged_body.csv로 만든다.\nawk에 대한 상세 설명은 여기로\nFNR : 현재 파일에서 현재 레코드의 순서 값.\n‘FNR &gt; 1’ : 1번째 레코드보다 큰 것만. 따라서 header가 전부 빠진다.\n이 처리를 안 해주면 파일의 갯수만큼 header가 반복된다.\n\n\n\n\nheader는 따로 파일을 만들어서 보관하고 있다가, 따로 병합해 준다.\n\n2-6-3. shell에서 csv 다루기 보너스\nfile.csv의 특정 열에서 중복 제거하기\nawk -F &quot;,&quot; &#39;!x[$1]++&#39; file.csv &gt; file_unique.csv\n-F : 필드 구분 문자 지정. csv이므로 ,를 지정함\n&#39;!x[$1]++&#39;\n$1 : 1번째 행.\n!x[$1]++ : 어떻게 작동하는지는 여기를 참고하자. 간단히 요약하면, 처음 만나는 값에 대해서는 값이 x[value]가 0이고, 1이 증가한다. 0이 아닌 값은 출력하지 않는다.\n\n\n\n\n\n","dateCreated":"2020-02-04T01:00:00+09:00","dateModified":"2020-02-13T12:13:28+09:00","datePublished":"2020-02-04T01:00:00+09:00","description":"","headline":"<기업부도예측-2> GCP compute instances + shell script로 경제기사 크롤링","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"},"publisher":{"@type":"Organization","name":"Jin","sameAs":["https://github.com/limyj0708","https://www.facebook.com/youngjin.lim.12","https://www.linkedin.com/in/young-jin-lim-b499a0111/","mailto:limyj0708@gmail.com"]},"url":"https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/","keywords":"Shell_Script, GCP"}</script>
     <meta name="description" content="기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 비동기로 40만개를 크롤링 했을 때보다 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="&lt;기업부도예측-2&gt; GCP compute instances + shell script로 경제기사 크롤링">
-<meta property="og:url" content="https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/index.html">
+<meta property="og:url" content="https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/index.html">
 <meta property="og:site_name" content="Jin&#39;s Code Archive">
 <meta property="og:description" content="기업부도예측 프로젝트를 진행하기 위해 고른 데이터 중 하나는 경제지 기사 데이터다.한국ABC협회 기준, 2018 일간 경제지 유료부수 판매 Top5에 드는 신문사에서 2708개 기업의 3년치 기사를 크롤링했다. 수집한 총 기사 수는 약 400만개로, 이전에 비동기로 40만개를 크롤링 했을 때보다 10배의 기사를 수집하게 되었는데, 이 기사들을 수집하는">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-03T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-06T00:27:27.069Z">
+<meta property="article:published_time" content="2020-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-13T03:13:28.306Z">
 <meta property="article:author" content="Jin">
+<meta property="article:tag" content="기업부도예측">
+<meta property="article:tag" content="경제기사">
 <meta property="article:tag" content="크롤링">
 <meta property="article:tag" content="google cloud">
 <meta name="twitter:card" content="summary">
@@ -37,7 +39,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/assets/css/style-x7xyv3ocxaxcsrohip2pvda9nswxpenahljapbznimtac1wz4a9o90gz8nv6.min.css">
+<link rel="stylesheet" href="/assets/css/style-22tzafjcdlcnt88uzcz0qlal4pjrroh71schgqdvvnkd7mmjrd2taoasvunf.min.css">
 
     <!--STYLES END-->
     
@@ -101,19 +103,6 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/%20"
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
                              href="/all-categories"
                             
                             title="Categories"
@@ -160,19 +149,6 @@
                     
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="About"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -238,7 +214,7 @@
     
     
         <div class="post-meta">
-    <time datetime="2020-02-04T00:00:00+09:00">
+    <time datetime="2020-02-04T01:00:00+09:00">
 	
 		    Feb 04, 2020
     	
@@ -368,9 +344,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/05/bankrup-pre-decision-tree-based-model/"
-                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
-                    aria-label="PREVIOUS: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
+                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
+                    aria-label="PREVIOUS: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -382,7 +358,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-start/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     data-tooltip="&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
                     aria-label="NEXT: &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
                 >
@@ -409,7 +385,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -422,7 +398,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -484,9 +460,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/05/bankrup-pre-decision-tree-based-model/"
-                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
-                    aria-label="PREVIOUS: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가(1)"
+                    href="/2020/02/06/2020-02-06-bankrup-pre-03-decision-tree-based-model/"
+                    data-tooltip="&lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
+                    aria-label="PREVIOUS: &lt;기업부도예측-3&gt; Decision Tree 기반 모델들 학습 및 평가 (1)"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -498,7 +474,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/04/bankrup-pre-start/"
+                    href="/2020/02/04/2020-02-04-bankrup-pre-01-start/"
                     data-tooltip="&lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
                     aria-label="NEXT: &lt;기업부도예측-1&gt; 프로젝트 개요, 수집 데이터"
                 >
@@ -525,7 +501,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -538,7 +514,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -582,7 +558,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -595,7 +571,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/"
+                        href="https://twitter.com/intent/tweet?text=https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -866,10 +842,10 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://limyj0708.github.io/2019/10/12/iterator-iterable-generator/"
-                            aria-label=": &lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?"
+                            href="https://limyj0708.github.io/2019/10/12/map-versus-list-comprehension/"
+                            aria-label=": &lt;Python&gt; Map vs List Comprehension"
                         >
-                            <h3 class="media-heading">&lt;Python&gt; Iterable, Iterator, Generator - 너희는 누구니?</h3>
+                            <h3 class="media-heading">&lt;Python&gt; Map vs List Comprehension</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
@@ -891,7 +867,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                23 posts found
             </p>
         </div>
     </div>
@@ -902,7 +878,7 @@
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/assets/js/script-gncnpcghwjaxwnrk7tyt123wkqoascs1synsvknjgngcecekchnovmzddthz.min.js"></script>
+<script src="/assets/js/script-kxsq3fjhsue9xnfwgpjsxjf9crp3bykgtwnstq4c5h5q2opv7xgn1wdiejq2.min.js"></script>
 
 <!--SCRIPTS END-->
 
@@ -910,9 +886,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://limyj0708.github.io/2020/02/04/bankrup-pre-gcp-instances-crawl/';
+            this.page.url = 'https://limyj0708.github.io/2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/';
               
-            this.page.identifier = '2020/02/04/bankrup-pre-gcp-instances-crawl/';
+            this.page.identifier = '2020/02/04/2020-02-04-bankrup-pre-02-gcp-instances-crawl/';
               
           };
           (function() {
