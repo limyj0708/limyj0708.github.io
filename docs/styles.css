@@ -1,0 +1,55 @@
+/* css styles */
+.quarto-title-banner {
+    color: #ffffff;
+}
+
+.quarto-title-banner {
+    margin-bottom: 1em;
+    color: rgb(35, 35, 35);
+    background: #ffffff;
+}
+
+.navbar-dark {
+    background-color: #5e5e5e;
+}
+
+div.sourceCode {
+    background-color: rgba(245,245,245,.65);
+    border: 1px solid rgba(233,236,239,.65);
+    border-radius: .25rem;
+}
+
+div.cell-output > pre > code {
+    background-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(232, 232, 232);
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-left-color: rgb(232, 232, 232);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgb(232, 232, 232);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgb(232, 232, 232);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-sizing: border-box;
+    color: rgb(35, 35, 35);
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+code span.co {
+    color: rgb(80, 127, 127);
+}

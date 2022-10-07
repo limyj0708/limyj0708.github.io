@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lim's Code Archive – os-pyenv-세팅-101</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Lim’s Code Archive</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+<section id="맥-os-pyenv-세팅-101" class="level1">
+<h1>맥 OS pyenv 세팅 101</h1>
+<ul>
+<li>badges: False</li>
+<li>comments: true</li>
+<li>author: limyj0708</li>
+<li>categories: [Python]</li>
+</ul>
+<section id="brew-설치" class="level2">
+<h2 class="anchored" data-anchor-id="brew-설치">1. brew 설치</h2>
+<ul>
+<li>https://brew.sh 확인하여 설치</li>
+<li>설치 후 ~/.zprofile에 <code>eval "$(/opt/homebrew/bin/brew shellenv)"</code> 추가
+<ul>
+<li>다 설치하면 맨 마지막에 안내문으로 추가하라고 나오니 따라하기만 하자.</li>
+</ul></li>
+</ul>
+</section>
+<section id="pyenv-설치" class="level2">
+<h2 class="anchored" data-anchor-id="pyenv-설치">2. pyenv 설치</h2>
+<ul>
+<li><code>brew install pyenv</code> : 설치가 끝났다면…
+<ul>
+<li>.zshrc에 <code>eval "$(pyenv init -)"</code> 추가</li>
+<li>.zprofile에 <code>eval "$(pyenv init --path)"</code> 추가</li>
+</ul></li>
+</ul>
+</section>
+<section id="pyenv로-원하는-파이썬-버전-설치" class="level2">
+<h2 class="anchored" data-anchor-id="pyenv로-원하는-파이썬-버전-설치">3. pyenv로 원하는 파이썬 버전 설치</h2>
+<ul>
+<li><code>pyenv install -list</code> : 설치가능한 파이썬 버전 목록 확인</li>
+<li><code>pyenv install 3.10.3</code> : 예) 3.10.3 버전 설치</li>
+</ul>
+</section>
+<section id="pyenv-virtualenv-설치" class="level2">
+<h2 class="anchored" data-anchor-id="pyenv-virtualenv-설치">4. pyenv-virtualenv 설치</h2>
+<ul>
+<li><code>brew install pyenv-virtualenv</code>
+<ul>
+<li>.zshrc에 <code>eval "$(pyenv virtualenv-init -)"</code> 추가</li>
+</ul></li>
+</ul>
+</section>
+<section id="pyenv로-가상환경-생성" class="level2">
+<h2 class="anchored" data-anchor-id="pyenv로-가상환경-생성">5. pyenv로 가상환경 생성</h2>
+<ul>
+<li><code>pyenv virtualenv [파이썬 버전] [가상환경 이름]</code>
+<ul>
+<li>예) <code>pyenv virtualenv 3.10.3 requests-3.10.3</code></li>
+</ul></li>
+<li><code>pyenv versions</code> : 생성한 가상환경이 추가되었음을 알 수 있음</li>
+</ul>
+</section>
+<section id="가상환경-onoff" class="level2">
+<h2 class="anchored" data-anchor-id="가상환경-onoff">6. 가상환경 on/off</h2>
+<ul>
+<li>직접 on/off
+<ul>
+<li>pyenv activate requests-3.10.3
+<ul>
+<li>실행하면 아래와 같은 메세지가 출력된다.</li>
+<li>pyenv-virtualenv: prompt changing will be removed from future release. configure “export PYENV_VIRTUALENV_DISABLE_PROMPT=1” to simulate the behavior</li>
+<li>곧 이 기능은 사라질 모양이다.</li>
+</ul></li>
+<li>pyenv deactivate</li>
+</ul></li>
+<li>shell의 세션이 유지되는 동안 가상환경 유지
+<ul>
+<li>pyenv shell requests-3.10.3</li>
+</ul></li>
+<li>원하는 폴더에 가서 실행하면, 이후 shell에서 해당 폴더로 가면 자동으로 원하는 가상환경이 켜지게 됨 (.python-version 파일이 해당 폴더에 생성)
+<ul>
+<li>pyenv local requests-3.10.3</li>
+<li>pyenv local system : 다시 기본 시스템 버전으로 돌리고 싶을 때</li>
+<li>해당 폴더에서 나가면 자동으로 기본 환경으로 돌아가게 된다. 편리하네!</li>
+</ul></li>
+<li>전체 적용
+<ul>
+<li>pyenv global requests-3.10.3</li>
+<li>pyenv global system : 다시 기본 시스템 버전으로 돌리고 싶을 때</li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

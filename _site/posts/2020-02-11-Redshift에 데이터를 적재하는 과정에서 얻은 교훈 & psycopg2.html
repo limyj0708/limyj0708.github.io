@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>limyj_code_archive - Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">limyj_code_archive</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#redshift" id="toc-redshift" class="nav-link active" data-scroll-target="#redshift">1. Redshift</a>
+  <ul class="collapse">
+  <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
+  </ul></li>
+  <li><a href="#psycopg2" id="toc-psycopg2" class="nav-link" data-scroll-target="#psycopg2">2. psycopg2</a>
+  <ul class="collapse">
+  <li><a href="#query-parameter-전달-시의-유의점" id="toc-query-parameter-전달-시의-유의점" class="nav-link" data-scroll-target="#query-parameter-전달-시의-유의점">2-1. Query parameter 전달 시의 유의점</a></li>
+  <li><a href="#server-side-cursor" id="toc-server-side-cursor" class="nav-link" data-scroll-target="#server-side-cursor">2-2. Server Side Cursor</a></li>
+  </ul></li>
+  <li><a href="#로컬-db-postgresql" id="toc-로컬-db-postgresql" class="nav-link" data-scroll-target="#로컬-db-postgresql">3. 로컬 DB : postgreSQL</a>
+  <ul class="collapse">
+  <li><a href="#copy-시의-권한-문제" id="toc-copy-시의-권한-문제" class="nav-link" data-scroll-target="#copy-시의-권한-문제">3-1. COPY 시의 권한 문제</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="redshift" class="level2">
+<h2 class="anchored" data-anchor-id="redshift">1. Redshift</h2>
+<section id="대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="level3">
+<h3 class="anchored" data-anchor-id="대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h3>
+<ul>
+<li>차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어넣는 것이 훨씬 빠르다.</li>
+<li>Redshift에서 직접 SELECT, INSERT 처리를 하면 : 300만행 추가에 예상 완료시간 4일</li>
+<li>로컬 DB에서 연산 후 COPY로 업로드하면 : 300만 행 연산시간 3.5시간, COPY 업로드 시간 5분</li>
+<li><a href="https://aws.amazon.com/ko/data-warehouse/">AWS DW 설명 문서</a>의 말을 들었어야 했는데.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 같은 코드를 로컬 DB에서 돌리면 3.5시간, Redshift에 연결해서 돌리면 4일</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> psycopg2.<span class="ex">connect</span>(<span class="op">**</span>connect_param_local) <span class="im">as</span> con:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    cur_2 <span class="op">=</span> con.cursor()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fetchall을 사용해서 커서를 재활용하지 않고 커서를 두 개 두는 이유는, redshift의 single-node cluster에서는 fetchall이 지원되지 않기 떄문이다.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># InternalError_: Fetch ALL is not supported on single-node clusters.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Please specify the fetch size (maximum 1000 for single-node clusters) </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># or upgrade to a multi node installation.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 로컬 머신에서 연산하면 fetchall을 사용할 수 있으므로 이렇게 안 해도 되지만,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 코드 수정이 더 번거로웠으므로 그냥 사용하였다.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    get_companylist_sql <span class="op">=</span> <span class="st">'''select * from target_company_list;'''</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    target_company_list <span class="op">=</span> sqlio.read_sql_query(get_companylist_sql, con)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1mb도 안되는 작은 테이블이라서 데이터프레임으로 한 번에 받아옴</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> each_code <span class="kw">in</span> target_company_list[<span class="st">'stock_code'</span>]:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        cur_1 <span class="op">=</span> con.cursor(<span class="st">'ss_cursor'</span>) <span class="co"># server side cursor</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># cur_1.itersize = 1000 # redshift single-node cluster에서의 server side cursor의 최대 제한값</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(each_code,<span class="st">'_start'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        predict_start <span class="op">=</span> target_company_list[target_company_list[<span class="st">'stock_code'</span>] <span class="op">==</span> each_code][<span class="st">'pre_6m'</span>].values[<span class="dv">0</span>] <span class="op">-</span> datetime.timedelta(days<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        predict_end <span class="op">=</span> predict_start <span class="op">-</span> datetime.timedelta(days<span class="op">=</span><span class="dv">1096</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        cur_1.execute(</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="st">"""</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">            select * from stock_data_2000_2020_raw</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">            where (date between </span><span class="sc">%(predict_end)s</span><span class="st"> and </span><span class="sc">%(predict_start)s</span><span class="st">) and (stock_code = </span><span class="sc">%(stock_code)s</span><span class="st">);</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">            """</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            {<span class="st">'predict_end'</span>:predict_end.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),<span class="st">'predict_start'</span>:predict_start.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),<span class="st">'stock_code'</span>: each_code}</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> each_row <span class="kw">in</span> cur_1: </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="co"># next(cur_1)로 한줄씩 불러와서 insert</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>            cur_2.execute(<span class="st">"""insert into stock_data_3years_raw_6m values </span><span class="sc">%s</span><span class="st">"""</span>, [each_row])</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            <span class="co"># each_row는 tuple이다.</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        con.commit()</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(each_code,<span class="st">'_commit complete'</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    cur_2.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="psycopg2" class="level2">
+<h2 class="anchored" data-anchor-id="psycopg2">2. psycopg2</h2>
+<section id="query-parameter-전달-시의-유의점" class="level3">
+<h3 class="anchored" data-anchor-id="query-parameter-전달-시의-유의점">2-1. Query parameter 전달 시의 유의점</h3>
+<ul>
+<li><a href="https://www.psycopg.org/docs/usage.html#query-parameters">psycopg2 document</a>에는, 빨간색으로 엄청 잘 보이게 써 있는 경고문이 있다.</li>
+</ul>
+<blockquote class="blockquote">
+<p>Warning: Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.</p>
+</blockquote>
+<ul>
+<li>SQL Injection의 위험이 있기 때문인데, 어떻게 위험한지는 <a href="https://stackoverflow.com/questions/37329370/how-to-avoid-sql-injection-with-select-from-table-name">여기를</a> 참고하자.</li>
+<li>그럼 어떻게 하라는 걸까?
+<ul>
+<li>최종적으로 사용한 형식은 아래와 같다.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psycopg2</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> psycopg2 <span class="im">import</span> sql</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>credentials <span class="op">=</span> <span class="st">'aws_access_key_id=**************;aws_secret_access_key=**************'</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>s3_bucket_param <span class="op">=</span> <span class="st">'s3://BUCKET-NAME/FILE-NAME'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>copy_query <span class="op">=</span> sql.SQL(<span class="st">"""</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">        copy </span><span class="sc">{table_name}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">        from </span><span class="sc">%(s3_bucket_param)s</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">        credentials </span><span class="sc">%(credentials)s</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">        IGNOREHEADER 1</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">        CSV;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>).<span class="bu">format</span>(table_name <span class="op">=</span> sql.Identifier(<span class="st">'TABLE-NAME'</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>cur.execute(copy_query, {<span class="st">'s3_bucket_param'</span>:s3_bucket_param, <span class="st">'credentials'</span>:credentials})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>{}</strong> : 테이블 이름 등의 identifier를 받는다. %s 형식으로 identifier를 받으려고 하면, 제대로 인식이 안 되기 때문에 번거롭지만 <code>.foramt(table_name = sql.Identifier('TABLE-NAME'))</code>형식으로 인자를 넘겨야 한다. keyword parameter로 안 해도 되지만, 어떤 자리에 무엇이 들어가는 지 명확하게 정의하는 것을 좋아하므로 몽땅 keyword parameter로 진행하였다.
+<ul>
+<li><a href="https://www.psycopg.org/docs/sql.html">sql 모듈 설명</a></li>
+<li><a href="https://github.com/psycopg/psycopg2/issues/423">같은 문제로 고통받던 사람의 이슈제기</a></li>
+</ul></li>
+<li><strong>%(keyword)s</strong> : value를 받는다. execute 함수 내부에서 인자로 전달하면 된다. keyword parameter로 정의했을 경우 dictionary로 전달하자.</li>
+</ul></li>
+</ul>
+</section>
+<section id="server-side-cursor" class="level3">
+<h3 class="anchored" data-anchor-id="server-side-cursor">2-2. Server Side Cursor</h3>
+<ul>
+<li>Client Side Cursor를 사용하면, 일단 데이터를 클라이언트의 메모리에 저장한 후 거기서 결과값을 계산하게 된다.</li>
+<li>엄청 큰 테이블의 일부를 select 하려고 하면 반드시 메모리 부족으로 문제가 생기게 된다.</li>
+<li>Server Side Cursor를 사용하면, 서버에서 연산 처리 후 결과값만 반환해주기 때문에, 클라이언트 메모리 문제에서 좀 자유로워진다.</li>
+<li>서버 리소스는 더 쓰게 되고, 네트워크 부하는 줄어들게 된다.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 편리하게도 커서에 이름만 지정해주면 된다!</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cur_1 <span class="op">=</span> con.cursor(<span class="st">'ss_cursor'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="로컬-db-postgresql" class="level2">
+<h2 class="anchored" data-anchor-id="로컬-db-postgresql">3. 로컬 DB : postgreSQL</h2>
+<section id="copy-시의-권한-문제" class="level3">
+<h3 class="anchored" data-anchor-id="copy-시의-권한-문제">3-1. COPY 시의 권한 문제</h3>
+<ul>
+<li>작업 폴더 내에 있는 CSV 파일을 그대로 COPY하려고 하면, 무조건 permission error가 발생한다.</li>
+<li>DB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?
+<ul>
+<li>postgreSQL을 Mac에서 Homebrew로 설치했다면, /usr/local/var/postgres</li>
+<li>예시 <code>Python       with psycopg2.connect(**connect_param_local) as con:           with con.cursor() as cur:               cur.execute(                   """                   COPY stock_data_2000_2020_raw                   from '/usr/local/var/postgres/stock_data_raw_2.csv'                   DELIMITER ','                   CSV HEADER;                   """)       con.commit()</code></li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
