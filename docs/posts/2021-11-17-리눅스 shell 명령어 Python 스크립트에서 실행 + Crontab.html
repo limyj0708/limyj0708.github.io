@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2021-11-17">
 
 <title>Lim's Code Archive – shell-명령어-python-스크립트에서-실행--crontab</title>
 <style>
@@ -126,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -146,7 +148,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -160,9 +167,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#리눅스-shell-명령어-python-스크립트에서-실행하기-crontab" id="toc-리눅스-shell-명령어-python-스크립트에서-실행하기-crontab" class="nav-link active" data-scroll-target="#리눅스-shell-명령어-python-스크립트에서-실행하기-crontab">리눅스 Shell 명령어 Python 스크립트에서 실행하기 + Crontab</a>
+  <ul class="collapse">
+  <li><a href="#배경" id="toc-배경" class="nav-link" data-scroll-target="#배경">1. 배경</a></li>
+  <li><a href="#실행" id="toc-실행" class="nav-link" data-scroll-target="#실행">2. 실행</a>
+  <ul class="collapse">
+  <li><a href="#shell-명령어" id="toc-shell-명령어" class="nav-link" data-scroll-target="#shell-명령어">1. Shell 명령어</a></li>
+  <li><a href="#python-스크립트에서" id="toc-python-스크립트에서" class="nav-link" data-scroll-target="#python-스크립트에서">2. Python 스크립트에서</a></li>
+  <li><a href="#crontab에서" id="toc-crontab에서" class="nav-link" data-scroll-target="#crontab에서">3. Crontab에서</a></li>
+  <li><a href="#결과" id="toc-결과" class="nav-link" data-scroll-target="#결과">4. 결과</a></li>
+  </ul></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
@@ -171,12 +197,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>“그리고 Crontab으로도 실행해보기”</p>
 </blockquote>
-<ul>
-<li>badges: false</li>
-<li>comments: true</li>
-<li>author: limyj0708</li>
-<li>categories: [Python, Linux]</li>
-</ul>
 <section id="배경" class="level2">
 <h2 class="anchored" data-anchor-id="배경">1. 배경</h2>
 <ul>
@@ -193,7 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="실행">2. 실행</h2>
 <section id="shell-명령어" class="level3">
 <h3 class="anchored" data-anchor-id="shell-명령어">1. Shell 명령어</h3>
-<pre class="shell"><code>ifconfig [원하는 네트워크 인터페이스명] | grep -Eo '([0-9]{1,3}[\.]){3}[0-9]{1,3}'</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ifconfig</span> [원하는 네트워크 인터페이스명] <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Eo</span> <span class="st">'([0-9]{1,3}[\.]){3}[0-9]{1,3}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>grep
 <ul>
@@ -234,13 +254,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>그래서 쪼개서 실행시켜야 한다. Popen으로 ifconfig를 실행시키고, 그 출력값을 check_output에 연결하여 최종 출력값을 만든다.</li>
 <li>추출한 IP를 Line Notify를 통해 라인으로 받는다.</li>
 </ul>
-<p>### 3. Crontab에서</p>
-<pre class="shell"><code> PATH=/usr/bin:/usr/sbin:/sbin:/usr/local/bin
- # ifconfig, grep을 잘 실행시키기 위한 환경 지정
- 
- # ssh 접속용 사내 Wifi ipv4 전송용
- # 매주 월요일 오전 10시에 전송 
-00 10 * * 1 /usr/bin/python3.9 /home/limyj0708/Code/ipv4_internal_alarm/ipv4_internal_alarm.py &gt;&gt; /home/limyj0708/Code/ipv4_internal_alarm/cron_log.log 2&gt;&amp;1</code></pre>
+</section>
+<section id="crontab에서" class="level3">
+<h3 class="anchored" data-anchor-id="crontab에서">3. Crontab에서</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a> <span class="va">PATH</span><span class="op">=</span>/usr/bin:/usr/sbin:/sbin:/usr/local/bin</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># ifconfig, grep을 잘 실행시키기 위한 환경 지정</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># ssh 접속용 사내 Wifi ipv4 전송용</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># 매주 월요일 오전 10시에 전송 </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">00</span> 10 <span class="pp">*</span> <span class="pp">*</span> 1 /usr/bin/python3.9 /home/limyj0708/Code/ipv4_internal_alarm/ipv4_internal_alarm.py <span class="op">&gt;&gt;</span> /home/limyj0708/Code/ipv4_internal_alarm/cron_log.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="결과" class="level3">
 <h3 class="anchored" data-anchor-id="결과">4. 결과</h3>
@@ -248,8 +270,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>지정한 Line Notify 봇을 통해 IP가 잘 날아온다.</li>
 </ul>
 </section>
-<section id="reference" class="level3">
-<h3 class="anchored" data-anchor-id="reference">Reference</h3>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
 <ol type="1">
 <li><a href="https://hashcode.co.kr/questions/2567/%ED%8C%8C%EC%9D%B4%EC%8D%AC-shelltrue-%EC%9D%B4-%EB%AC%B4%EC%97%87%EC%9D%84-%ED%95%98%EB%8A%94%EC%A7%80-%EC%9E%98-%EB%AA%A8%EB%A5%B4%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4">Shell=True는 Shell Injection에 취약</a></li>
 <li><a href="http://theyoonicon.com/python-popen-%ED%81%B4%EB%9E%98%EC%8A%A4/">Popen 클래스 개괄</a></li>
@@ -257,7 +280,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 
 
-</section>
 </section>
 </section>
 
@@ -359,6 +381,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

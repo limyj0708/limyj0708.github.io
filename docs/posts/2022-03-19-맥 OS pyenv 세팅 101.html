@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2022-03-19">
 
 <title>Lim's Code Archive – os-pyenv-세팅-101</title>
 <style>
@@ -63,7 +65,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -83,7 +85,12 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -97,24 +104,34 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#맥-os-pyenv-세팅-101" id="toc-맥-os-pyenv-세팅-101" class="nav-link active" data-scroll-target="#맥-os-pyenv-세팅-101">맥 OS pyenv 세팅 101</a>
+  <ul class="collapse">
+  <li><a href="#brew-설치" id="toc-brew-설치" class="nav-link" data-scroll-target="#brew-설치">1. brew 설치</a></li>
+  <li><a href="#pyenv-설치" id="toc-pyenv-설치" class="nav-link" data-scroll-target="#pyenv-설치">2. pyenv 설치</a></li>
+  <li><a href="#pyenv로-원하는-파이썬-버전-설치" id="toc-pyenv로-원하는-파이썬-버전-설치" class="nav-link" data-scroll-target="#pyenv로-원하는-파이썬-버전-설치">3. pyenv로 원하는 파이썬 버전 설치</a></li>
+  <li><a href="#pyenv-virtualenv-설치" id="toc-pyenv-virtualenv-설치" class="nav-link" data-scroll-target="#pyenv-virtualenv-설치">4. pyenv-virtualenv 설치</a></li>
+  <li><a href="#pyenv로-가상환경-생성" id="toc-pyenv로-가상환경-생성" class="nav-link" data-scroll-target="#pyenv로-가상환경-생성">5. pyenv로 가상환경 생성</a></li>
+  <li><a href="#가상환경-onoff" id="toc-가상환경-onoff" class="nav-link" data-scroll-target="#가상환경-onoff">6. 가상환경 on/off</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
 <section id="맥-os-pyenv-세팅-101" class="level1">
 <h1>맥 OS pyenv 세팅 101</h1>
-<ul>
-<li>badges: False</li>
-<li>comments: true</li>
-<li>author: limyj0708</li>
-<li>categories: [Python]</li>
-</ul>
 <section id="brew-설치" class="level2">
 <h2 class="anchored" data-anchor-id="brew-설치">1. brew 설치</h2>
 <ul>
-<li>https://brew.sh 확인하여 설치</li>
+<li><a href="https://brew.sh">https://brew.sh</a> 확인하여 설치</li>
 <li>설치 후 ~/.zprofile에 <code>eval "$(/opt/homebrew/bin/brew shellenv)"</code> 추가
 <ul>
 <li>다 설치하면 맨 마지막에 안내문으로 추가하라고 나오니 따라하기만 하자.</li>
@@ -184,6 +201,10 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>pyenv global requests-3.10.3</li>
 <li>pyenv global system : 다시 기본 시스템 버전으로 돌리고 싶을 때</li>
+</ul></li>
+<li>shell의 세션이 유지되는 동안 가상환경 유지
+<ul>
+<li>pyenv shell requests-3.10.3</li>
 </ul></li>
 </ul>
 
@@ -289,6 +310,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

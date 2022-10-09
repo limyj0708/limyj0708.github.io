@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2022-06-13">
 
 <title>Lim's Code Archive – git_cheatsheet</title>
 <style>
@@ -126,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -146,7 +148,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -160,9 +167,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#git-cheatsheet" id="toc-git-cheatsheet" class="nav-link active" data-scroll-target="#git-cheatsheet">Git CheatSheet</a>
+  <ul class="collapse">
+  <li><a href="#기존-디렉토리를-git-저장소로-만들기" id="toc-기존-디렉토리를-git-저장소로-만들기" class="nav-link" data-scroll-target="#기존-디렉토리를-git-저장소로-만들기">1. 기존 디렉토리를 Git 저장소로 만들기</a></li>
+  <li><a href="#수정과-저장" id="toc-수정과-저장" class="nav-link" data-scroll-target="#수정과-저장">2. 수정과 저장</a>
+  <ul class="collapse">
+  <li><a href="#상태-확인" id="toc-상태-확인" class="nav-link" data-scroll-target="#상태-확인">2-1. 상태 확인</a></li>
+  <li><a href="#파일을-새로-추적하기" id="toc-파일을-새로-추적하기" class="nav-link" data-scroll-target="#파일을-새로-추적하기">2-2. 파일을 새로 추적하기</a></li>
+  <li><a href="#modified-상태의-파일을-staging-하기" id="toc-modified-상태의-파일을-staging-하기" class="nav-link" data-scroll-target="#modified-상태의-파일을-staging-하기">2-3. Modified 상태의 파일을 Staging 하기</a></li>
+  <li><a href="#commit" id="toc-commit" class="nav-link" data-scroll-target="#commit">2-4. commit</a></li>
+  <li><a href="#파일-삭제" id="toc-파일-삭제" class="nav-link" data-scroll-target="#파일-삭제">2-5. 파일 삭제</a></li>
+  <li><a href="#파일-이동-이름-바꾸기" id="toc-파일-이동-이름-바꾸기" class="nav-link" data-scroll-target="#파일-이동-이름-바꾸기">2-6 파일 이동, 이름 바꾸기</a></li>
+  </ul></li>
+  <li><a href="#원격-저장소" id="toc-원격-저장소" class="nav-link" data-scroll-target="#원격-저장소">3. 원격 저장소</a>
+  <ul class="collapse">
+  <li><a href="#원격-저장소-확인하기" id="toc-원격-저장소-확인하기" class="nav-link" data-scroll-target="#원격-저장소-확인하기">3-1 원격 저장소 확인하기</a></li>
+  <li><a href="#원격-저장소-추가하기" id="toc-원격-저장소-추가하기" class="nav-link" data-scroll-target="#원격-저장소-추가하기">3-2. 원격 저장소 추가하기</a></li>
+  <li><a href="#원격-저장소에서-pull-fetch" id="toc-원격-저장소에서-pull-fetch" class="nav-link" data-scroll-target="#원격-저장소에서-pull-fetch">3-3. 원격 저장소에서 Pull, Fetch</a></li>
+  <li><a href="#원격-저장소에-push-하기" id="toc-원격-저장소에-push-하기" class="nav-link" data-scroll-target="#원격-저장소에-push-하기">3-4. 원격 저장소에 Push 하기</a></li>
+  <li><a href="#원격-저장소-정보-보기" id="toc-원격-저장소-정보-보기" class="nav-link" data-scroll-target="#원격-저장소-정보-보기">3-5. 원격 저장소 정보 보기</a></li>
+  <li><a href="#원격-저장소-이름-바꾸기-삭제하기" id="toc-원격-저장소-이름-바꾸기-삭제하기" class="nav-link" data-scroll-target="#원격-저장소-이름-바꾸기-삭제하기">3-6. 원격 저장소 이름 바꾸기, 삭제하기</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
@@ -171,14 +207,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>안 쓰면 잊어버리는, git 주요 조작법들을 정리</p>
 </blockquote>
-<ul>
-<li>badges: false</li>
-<li>comments: true</li>
-<li>author: limyj0708</li>
-<li>categories: [git]</li>
-<li>sticky_rank: 2</li>
-<li>toc: true</li>
-</ul>
 <p><strong>교과서 : https://git-scm.com/book/ko/v2</strong></p>
 <section id="기존-디렉토리를-git-저장소로-만들기" class="level2">
 <h2 class="anchored" data-anchor-id="기존-디렉토리를-git-저장소로-만들기">1. 기존 디렉토리를 Git 저장소로 만들기</h2>
@@ -522,6 +550,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

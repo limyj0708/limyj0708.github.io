@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2022-05-26">
 
 <title>Lim's Code Archive – python-google-drive-api-v3로-파일-업로드</title>
 <style>
@@ -126,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -146,7 +148,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -160,21 +167,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#python-google-drive-api-v3로-파일-업로드" id="toc-python-google-drive-api-v3로-파일-업로드" class="nav-link active" data-scroll-target="#python-google-drive-api-v3로-파일-업로드">Python Google Drive API v3로 파일 업로드</a>
+  <ul class="collapse">
+  <li><a href="#google-api-패키지-설치" id="toc-google-api-패키지-설치" class="nav-link" data-scroll-target="#google-api-패키지-설치">1. google api 패키지 설치</a></li>
+  <li><a href="#credential-세팅-후-실행" id="toc-credential-세팅-후-실행" class="nav-link" data-scroll-target="#credential-세팅-후-실행">2. Credential 세팅 후 실행</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
 <section id="python-google-drive-api-v3로-파일-업로드" class="level1">
 <h1>Python Google Drive API v3로 파일 업로드</h1>
-<ul>
-<li>badges: False</li>
-<li>comments: true</li>
-<li>author: limyj0708</li>
-<li>categories: [Python]</li>
-<li>toc: true</li>
-</ul>
 <section id="google-api-패키지-설치" class="level3">
 <h3 class="anchored" data-anchor-id="google-api-패키지-설치">1. google api 패키지 설치</h3>
 <div class="cell">
@@ -184,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="credential-세팅-후-실행" class="level3">
 <h3 class="anchored" data-anchor-id="credential-세팅-후-실행">2. Credential 세팅 후 실행</h3>
 <ol type="1">
-<li>https://console.cloud.google.com/ 접속</li>
+<li><a href="https://console.cloud.google.com/">https://console.cloud.google.com/</a> 접속</li>
 <li>원하는 프로젝트 선택</li>
 <li>API &amp; Services
 <ol type="1">
@@ -202,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ol></li>
 </ol></li>
-<li>https://developers.google.com/drive/api/quickstart/python
+<li><a href="https://developers.google.com/drive/api/quickstart/python">https://developers.google.com/drive/api/quickstart/python</a>
 <ol type="1">
 <li>quickstart 스크립트를 적절하게 바꾸어서 실행한다.</li>
 <li>최초로 실행하면 로그인 과정 후에 token.json이 생성되고, 이후에는 token.json을 읽어서 실행된다.</li>
@@ -365,6 +377,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

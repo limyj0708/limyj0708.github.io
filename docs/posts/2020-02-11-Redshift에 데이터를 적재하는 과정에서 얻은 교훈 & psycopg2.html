@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2020-02-11">
 
-<title>Lim’s Code Archive - Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</title>
+<title>Lim's Code Archive – redshift에-데이터를-적재하는-과정에서-얻은-교훈--psycopg2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -146,7 +148,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -157,22 +164,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -180,7 +172,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#redshift" id="toc-redshift" class="nav-link active" data-scroll-target="#redshift">1. Redshift</a>
+  <li><a href="#redshift에-데이터를-적재하는-과정에서-얻은-교훈-psycopg2" id="toc-redshift에-데이터를-적재하는-과정에서-얻은-교훈-psycopg2" class="nav-link active" data-scroll-target="#redshift에-데이터를-적재하는-과정에서-얻은-교훈-psycopg2">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</a>
+  <ul class="collapse">
+  <li><a href="#redshift" id="toc-redshift" class="nav-link" data-scroll-target="#redshift">1. Redshift</a>
   <ul class="collapse">
   <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
   </ul></li>
@@ -193,15 +187,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#copy-시의-권한-문제" id="toc-copy-시의-권한-문제" class="nav-link" data-scroll-target="#copy-시의-권한-문제">3-1. COPY 시의 권한 문제</a></li>
   </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
-
+<section id="redshift에-데이터를-적재하는-과정에서-얻은-교훈-psycopg2" class="level1">
+<h1>Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</h1>
 <section id="redshift" class="level2">
 <h2 class="anchored" data-anchor-id="redshift">1. Redshift</h2>
 <section id="대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="level3">
@@ -314,11 +310,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>DB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?
 <ul>
 <li>postgreSQL을 Mac에서 Homebrew로 설치했다면, /usr/local/var/postgres</li>
-<li>예시 <code>Python       with psycopg2.connect(**connect_param_local) as con:           with con.cursor() as cur:               cur.execute(                   """                   COPY stock_data_2000_2020_raw                   from '/usr/local/var/postgres/stock_data_raw_2.csv'                   DELIMITER ','                   CSV HEADER;                   """)       con.commit()</code></li>
+<li>예시</li>
 </ul></li>
 </ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> psycopg2.<span class="ex">connect</span>(<span class="op">**</span>connect_param_local) <span class="im">as</span> con:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> con.cursor() <span class="im">as</span> cur:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        cur.execute(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"""</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">            COPY stock_data_2000_2020_raw</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">            from '/usr/local/var/postgres/stock_data_raw_2.csv'</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">            DELIMITER ','</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">            CSV HEADER;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">            """</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>con.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 </section>
 
@@ -420,6 +427,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

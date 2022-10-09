@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="9999-12-31">
 
 <title>Lim's Code Archive – pandas_cheatsheet</title>
 <style>
@@ -149,7 +151,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -211,17 +218,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#select_dtypes-특정-타입의-컬럼을-선택-혹은-배제" id="toc-select_dtypes-특정-타입의-컬럼을-선택-혹은-배제" class="nav-link" data-scroll-target="#select_dtypes-특정-타입의-컬럼을-선택-혹은-배제">6-2. select_dtypes : 특정 타입의 컬럼을 선택, 혹은 배제</a></li>
   <li><a href="#astype-타입-변경.-bigquery에-df-업로드-시-반드시-사용" id="toc-astype-타입-변경.-bigquery에-df-업로드-시-반드시-사용" class="nav-link" data-scroll-target="#astype-타입-변경.-bigquery에-df-업로드-시-반드시-사용">6-3. astype : 타입 변경. Bigquery에 df 업로드 시 반드시 사용</a></li>
   </ul></li>
-  <li><a href="#파일-입출력" id="toc-파일-입출력" class="nav-link" data-scroll-target="#파일-입출력">7. 파일 입출력</a>
+  <li><a href="#데이터-집계" id="toc-데이터-집계" class="nav-link" data-scroll-target="#데이터-집계">7. 데이터 집계</a>
   <ul class="collapse">
-  <li><a href="#read_excel-xlsx-파일을-읽기-위해서는" id="toc-read_excel-xlsx-파일을-읽기-위해서는" class="nav-link" data-scroll-target="#read_excel-xlsx-파일을-읽기-위해서는">7-1. read_excel : xlsx 파일을 읽기 위해서는?</a></li>
-  <li><a href="#dataframe을-이미지로-추출" id="toc-dataframe을-이미지로-추출" class="nav-link" data-scroll-target="#dataframe을-이미지로-추출">7-2. Dataframe을 이미지로 추출</a></li>
+  <li><a href="#groupby-agg" id="toc-groupby-agg" class="nav-link" data-scroll-target="#groupby-agg">7-1. groupby : agg</a></li>
+  </ul></li>
+  <li><a href="#파일-입출력" id="toc-파일-입출력" class="nav-link" data-scroll-target="#파일-입출력">8. 파일 입출력</a>
+  <ul class="collapse">
+  <li><a href="#read_excel" id="toc-read_excel" class="nav-link" data-scroll-target="#read_excel">8-1. read_excel</a></li>
+  <li><a href="#to_excel" id="toc-to_excel" class="nav-link" data-scroll-target="#to_excel">8-2. to_excel</a></li>
+  <li><a href="#read_csv" id="toc-read_csv" class="nav-link" data-scroll-target="#read_csv">8-3. read_csv</a></li>
+  <li><a href="#to_csv" id="toc-to_csv" class="nav-link" data-scroll-target="#to_csv">8-4. to_csv</a></li>
+  <li><a href="#dataframe을-이미지로-추출" id="toc-dataframe을-이미지로-추출" class="nav-link" data-scroll-target="#dataframe을-이미지로-추출">8-5. Dataframe을 이미지로 추출</a></li>
   </ul></li>
   </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
@@ -6426,13 +6440,105 @@ dtype: object</code></pre>
 </div>
 </section>
 </section>
+<section id="데이터-집계" class="level2">
+<h2 class="anchored" data-anchor-id="데이터-집계">7. 데이터 집계</h2>
+<section id="groupby-agg" class="level3">
+<h3 class="anchored" data-anchor-id="groupby-agg">7-1. groupby : agg</h3>
+<ul>
+<li>{컬럼명 : 집계함수} 구조의 dictionary를 변수로 주면, 각 컬럼마다 할당된 집계함수로 집계한다.
+<ul>
+<li>집계함수는 커스텀 함수를 사용해도 됨. 아래 코드처럼.</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'month'</span>: [<span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'11월'</span>, <span class="st">'12월'</span>, <span class="st">'12월'</span>],</span>
+<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'fruits'</span>: [<span class="st">'apple'</span>, <span class="st">'orange'</span>, <span class="st">'banana'</span>, <span class="st">'banana'</span>, <span class="st">'apple'</span>, <span class="st">'apple'</span>, <span class="st">'banana'</span>],</span>
+<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'price'</span>: [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">250</span>, <span class="dv">300</span>, <span class="dv">150</span>, <span class="dv">200</span>, <span class="dv">400</span>],</span>
+<span id="cb148-5"><a href="#cb148-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'quantity'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb148-6"><a href="#cb148-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb148-7"><a href="#cb148-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-8"><a href="#cb148-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_and_sqrt(x): <span class="co"># 이런 묘한 출력값이 필요한 상황이 있다고 치자.</span></span>
+<span id="cb148-9"><a href="#cb148-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.sqrt(np.mean(x))</span>
+<span id="cb148-10"><a href="#cb148-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb148-11"><a href="#cb148-11" aria-hidden="true" tabindex="-1"></a>df.groupby(by<span class="op">=</span>[<span class="st">'month'</span>,<span class="st">'fruits'</span>]).agg({<span class="st">'price'</span>:mean_and_exp, <span class="st">'quantity'</span>:np.<span class="bu">sum</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>price</th>
+      <th>quantity</th>
+    </tr>
+    <tr>
+      <th>month</th>
+      <th>fruits</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3" valign="top">10월</th>
+      <th>apple</th>
+      <td>10.000000</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>banana</th>
+      <td>16.583124</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>orange</th>
+      <td>14.142136</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>11월</th>
+      <th>apple</th>
+      <td>12.247449</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">12월</th>
+      <th>apple</th>
+      <td>14.142136</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>banana</th>
+      <td>20.000000</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<ul>
+<li><p>데이터 집계 방식 중, 가장 범용성이 좋고, 함수화하기도 편한 방식이었다.</p></li>
+<li><p>실제로 사용했던 예시</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>agg_dict <span class="op">=</span> {key:np.<span class="bu">sum</span> <span class="cf">for</span> key <span class="kw">in</span> target_column} <span class="co"># 전부 집계함수 sum으로 세팅</span></span>
+<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>agg_dict[<span class="st">'accountId'</span>] <span class="op">=</span> <span class="st">'count'</span> <span class="co"># accountId 수만 count로 세팅. accountId 수를 센다.</span></span>
+<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a>ready_for_stacked <span class="op">=</span> for_stackbar.groupby(by<span class="op">=</span>[<span class="st">'log_cate'</span>]).agg(agg_dict) <span class="co"># 집계 적용</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
 <section id="파일-입출력" class="level2">
-<h2 class="anchored" data-anchor-id="파일-입출력">7. 파일 입출력</h2>
-<section id="read_excel-xlsx-파일을-읽기-위해서는" class="level3">
-<h3 class="anchored" data-anchor-id="read_excel-xlsx-파일을-읽기-위해서는">7-1. read_excel : xlsx 파일을 읽기 위해서는?</h3>
-<div class="cell" data-tags="[]" data-execution_count="81">
-<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>string_quest <span class="op">=</span> pd.read_excel(<span class="vs">r"C:\Users\limyj0708\Documents\data\string\string_quest.xlsx"</span>,</span>
-<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>                             header<span class="op">=</span><span class="dv">6</span>, usecols<span class="op">=</span><span class="st">"H,I"</span>, sheet_name <span class="op">=</span> <span class="st">"string_quest"</span>, engine<span class="op">=</span><span class="st">"openpyxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h2 class="anchored" data-anchor-id="파일-입출력">8. 파일 입출력</h2>
+<section id="read_excel" class="level3">
+<h3 class="anchored" data-anchor-id="read_excel">8-1. read_excel</h3>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>string_quest <span class="op">=</span> pd.read_excel(<span class="vs">r"C:\Users\Documents\data\string\string_quest.xlsx"</span>,</span>
+<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a>                             header<span class="op">=</span><span class="dv">6</span>, usecols<span class="op">=</span><span class="st">"H,I"</span>, sheet_name <span class="op">=</span> <span class="st">"string_quest"</span>, engine<span class="op">=</span><span class="st">"openpyxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>header : 몇 번째 row를 header로 할까?</li>
@@ -6441,59 +6547,114 @@ dtype: object</code></pre>
 <li>engine : openpyxl을 사용하여야 xlsx 파일의 불러오기가 가능</li>
 </ul>
 </section>
+<section id="to_excel" class="level3">
+<h3 class="anchored" data-anchor-id="to_excel">8-2. to_excel</h3>
+<ul>
+<li>데이터프레임을 잘 구성했다면, 기본적으로는 아래와 같이 특별한 argument 없이 사용해도 별 문제는 없다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> each_key <span class="kw">in</span> dict_account_id.keys():</span>
+<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a>    target_dataframe <span class="op">=</span> pd.DataFrame.from_dict(dict_account_id[each_key])</span>
+<span id="cb151-3"><a href="#cb151-3" aria-hidden="true" tabindex="-1"></a>    target_dataframe.to_excel(<span class="ss">f"</span><span class="sc">{</span>each_key<span class="sc">}</span><span class="ss">_성장재료_출처.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>내용 추가 모드 (append)를 사용하고 싶다면, 아래와 같이 할 수 있다.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.ExcelWriter(<span class="st">'output.xlsx'</span>, mode<span class="op">=</span><span class="st">'a'</span>) <span class="im">as</span> writer: <span class="co"># mode='a'로 append 설정</span></span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a>    df.to_excel(writer, sheet_name<span class="op">=</span><span class="st">'Sheet_name_3'</span>) <span class="co">#sheet 이름도 지정함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_excel.html</li>
+</ul>
+</section>
+<section id="read_csv" class="level3">
+<h3 class="anchored" data-anchor-id="read_csv">8-3. read_csv</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
+<li>header : 몇 번째 row를 header로 할까?</li>
+<li>usercols : 어떤 열을 가져올까?</li>
+<li>chunksize : 파일이 너무 클 경우, 한 번에 불러올 행 수를 지정 가능. 이후 iterable하게 다음 size를 불러올 수 있다. 아래와 같이 사용.</li>
+</ul>
+<div class="sourceCode" id="cb154"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>chunksize <span class="op">=</span> <span class="dv">10</span> <span class="op">**</span> <span class="dv">6</span></span>
+<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.read_csv(filename, chunksize<span class="op">=</span>chunksize) <span class="im">as</span> reader:</span>
+<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chunk <span class="kw">in</span> reader:</span>
+<span id="cb154-4"><a href="#cb154-4" aria-hidden="true" tabindex="-1"></a>        process(chunk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</li>
+</ul>
+</section>
+<section id="to_csv" class="level3">
+<h3 class="anchored" data-anchor-id="to_csv">8-4. to_csv</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
+<li>columns : 쓰기에 사용할 컬럼 이름 리스트.</li>
+<li>header : bool or list of str, default True
+<ul>
+<li>문자열 리스트가 주어지면, 각 컬럼에 대한 alias로 취급된다.</li>
+</ul></li>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html</li>
+</ul>
+</section>
 <section id="dataframe을-이미지로-추출" class="level3">
-<h3 class="anchored" data-anchor-id="dataframe을-이미지로-추출">7-2. Dataframe을 이미지로 추출</h3>
+<h3 class="anchored" data-anchor-id="dataframe을-이미지로-추출">8-5. Dataframe을 이미지로 추출</h3>
 <section id="matplotlib를-이용" class="level4">
 <h4 class="anchored" data-anchor-id="matplotlib를-이용">matplotlib를 이용</h4>
 <ul>
 <li>dataframe-image 패키지를 이용 시, linux에서 crontab으로 실행할 경우 복잡한 권한 문제에 직면하게 됨</li>
 <li>dataframe-image 패키지도 matplotlib 기반이므로, 그냥 matplotlib를 사용</li>
 </ul>
-<div class="cell" data-execution_count="108">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> six</span>
-<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
-<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-5"><a href="#cb149-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matplotlib에서 한글이 안 나오는 문제 해결</span></span>
-<span id="cb149-6"><a href="#cb149-6" aria-hidden="true" tabindex="-1"></a>NANUM <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothic.ttf'</span>)</span>
-<span id="cb149-7"><a href="#cb149-7" aria-hidden="true" tabindex="-1"></a>NANUM_bold <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothicBold.ttf'</span>)</span>
-<span id="cb149-8"><a href="#cb149-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-9"><a href="#cb149-9" aria-hidden="true" tabindex="-1"></a><span class="co"># centos라면 폰트 경로는 아래와 같음</span></span>
-<span id="cb149-10"><a href="#cb149-10" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumBarunGothic.ttf</span></span>
-<span id="cb149-11"><a href="#cb149-11" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumGothicBold.ttf</span></span>
-<span id="cb149-12"><a href="#cb149-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-13"><a href="#cb149-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_mpl_table(data, col_width<span class="op">=</span><span class="fl">3.0</span>, row_height<span class="op">=</span><span class="fl">0.625</span>, font_size_header<span class="op">=</span><span class="dv">16</span>, font_size<span class="op">=</span><span class="dv">14</span>,</span>
-<span id="cb149-14"><a href="#cb149-14" aria-hidden="true" tabindex="-1"></a>                     header_color<span class="op">=</span><span class="st">'#C2DED1'</span>, row_colors<span class="op">=</span>[<span class="st">'#f1f1f2'</span>, <span class="st">'w'</span>], edge_color<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb149-15"><a href="#cb149-15" aria-hidden="true" tabindex="-1"></a>                     bbox<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>], header_columns<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb149-16"><a href="#cb149-16" aria-hidden="true" tabindex="-1"></a>                     ax<span class="op">=</span><span class="va">None</span>, align_head<span class="op">=</span><span class="st">'center'</span>, align_cell<span class="op">=</span><span class="st">'center'</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb149-17"><a href="#cb149-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb149-18"><a href="#cb149-18" aria-hidden="true" tabindex="-1"></a><span class="co">    align_head, align_cell : [ 'center' | 'right' | 'left' ] </span></span>
-<span id="cb149-19"><a href="#cb149-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb149-20"><a href="#cb149-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb149-21"><a href="#cb149-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb149-22"><a href="#cb149-22" aria-hidden="true" tabindex="-1"></a>        size <span class="op">=</span> (np.array(data.shape[::<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>])) <span class="op">*</span> np.array([col_width, row_height])</span>
-<span id="cb149-23"><a href="#cb149-23" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>size)</span>
-<span id="cb149-24"><a href="#cb149-24" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb149-25"><a href="#cb149-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-26"><a href="#cb149-26" aria-hidden="true" tabindex="-1"></a>    mpl_table <span class="op">=</span> ax.table(cellText<span class="op">=</span>data.values, bbox<span class="op">=</span>bbox, colLabels<span class="op">=</span>data.columns, <span class="op">**</span>kwargs)</span>
-<span id="cb149-27"><a href="#cb149-27" aria-hidden="true" tabindex="-1"></a>    mpl_table.auto_set_font_size(<span class="va">False</span>)</span>
-<span id="cb149-28"><a href="#cb149-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-29"><a href="#cb149-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, cell <span class="kw">in</span>  six.iteritems(mpl_table._cells):</span>
-<span id="cb149-30"><a href="#cb149-30" aria-hidden="true" tabindex="-1"></a>        cell.set_edgecolor(edge_color)</span>
-<span id="cb149-31"><a href="#cb149-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> k[<span class="dv">1</span>] <span class="op">&lt;</span> header_columns:</span>
-<span id="cb149-32"><a href="#cb149-32" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(header_color)</span>
-<span id="cb149-33"><a href="#cb149-33" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(color<span class="op">=</span><span class="st">'black'</span>, fontproperties <span class="op">=</span> NANUM_bold, fontsize<span class="op">=</span>font_size_header, ha<span class="op">=</span>align_head)</span>
-<span id="cb149-34"><a href="#cb149-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb149-35"><a href="#cb149-35" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(row_colors[k[<span class="dv">0</span>]<span class="op">%</span><span class="bu">len</span>(row_colors)])</span>
-<span id="cb149-36"><a href="#cb149-36" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(fontproperties <span class="op">=</span> NANUM, fontsize<span class="op">=</span>font_size, ha<span class="op">=</span>align_cell)</span>
-<span id="cb149-37"><a href="#cb149-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
-<span id="cb149-38"><a href="#cb149-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-39"><a href="#cb149-39" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> render_mpl_table(caller, col_width<span class="op">=</span><span class="fl">2.0</span>, align_head<span class="op">=</span><span class="st">'left'</span>)</span>
-<span id="cb149-40"><a href="#cb149-40" aria-hidden="true" tabindex="-1"></a>image</span>
-<span id="cb149-41"><a href="#cb149-41" aria-hidden="true" tabindex="-1"></a>image.figure.savefig(<span class="st">"caller.png"</span>) <span class="co"># 이미지 저장</span></span>
-<span id="cb149-42"><a href="#cb149-42" aria-hidden="true" tabindex="-1"></a><span class="co"># crontab으로 돌릴 것이라면 이미지 저장 경로도 절대경로로 지정</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> six</span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb156-3"><a href="#cb156-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
+<span id="cb156-4"><a href="#cb156-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-5"><a href="#cb156-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matplotlib에서 한글이 안 나오는 문제 해결</span></span>
+<span id="cb156-6"><a href="#cb156-6" aria-hidden="true" tabindex="-1"></a>NANUM <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothic.ttf'</span>)</span>
+<span id="cb156-7"><a href="#cb156-7" aria-hidden="true" tabindex="-1"></a>NANUM_bold <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothicBold.ttf'</span>)</span>
+<span id="cb156-8"><a href="#cb156-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-9"><a href="#cb156-9" aria-hidden="true" tabindex="-1"></a><span class="co"># centos라면 폰트 경로는 아래와 같음</span></span>
+<span id="cb156-10"><a href="#cb156-10" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumBarunGothic.ttf</span></span>
+<span id="cb156-11"><a href="#cb156-11" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumGothicBold.ttf</span></span>
+<span id="cb156-12"><a href="#cb156-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-13"><a href="#cb156-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_mpl_table(data, col_width<span class="op">=</span><span class="fl">3.0</span>, row_height<span class="op">=</span><span class="fl">0.625</span>, font_size_header<span class="op">=</span><span class="dv">16</span>, font_size<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb156-14"><a href="#cb156-14" aria-hidden="true" tabindex="-1"></a>                     header_color<span class="op">=</span><span class="st">'#C2DED1'</span>, row_colors<span class="op">=</span>[<span class="st">'#f1f1f2'</span>, <span class="st">'w'</span>], edge_color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb156-15"><a href="#cb156-15" aria-hidden="true" tabindex="-1"></a>                     bbox<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>], header_columns<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb156-16"><a href="#cb156-16" aria-hidden="true" tabindex="-1"></a>                     ax<span class="op">=</span><span class="va">None</span>, align_head<span class="op">=</span><span class="st">'center'</span>, align_cell<span class="op">=</span><span class="st">'center'</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb156-17"><a href="#cb156-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb156-18"><a href="#cb156-18" aria-hidden="true" tabindex="-1"></a><span class="co">    align_head, align_cell : [ 'center' | 'right' | 'left' ] </span></span>
+<span id="cb156-19"><a href="#cb156-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb156-20"><a href="#cb156-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb156-21"><a href="#cb156-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb156-22"><a href="#cb156-22" aria-hidden="true" tabindex="-1"></a>        size <span class="op">=</span> (np.array(data.shape[::<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>])) <span class="op">*</span> np.array([col_width, row_height])</span>
+<span id="cb156-23"><a href="#cb156-23" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>size)</span>
+<span id="cb156-24"><a href="#cb156-24" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb156-25"><a href="#cb156-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-26"><a href="#cb156-26" aria-hidden="true" tabindex="-1"></a>    mpl_table <span class="op">=</span> ax.table(cellText<span class="op">=</span>data.values, bbox<span class="op">=</span>bbox, colLabels<span class="op">=</span>data.columns, <span class="op">**</span>kwargs)</span>
+<span id="cb156-27"><a href="#cb156-27" aria-hidden="true" tabindex="-1"></a>    mpl_table.auto_set_font_size(<span class="va">False</span>)</span>
+<span id="cb156-28"><a href="#cb156-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-29"><a href="#cb156-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, cell <span class="kw">in</span>  six.iteritems(mpl_table._cells):</span>
+<span id="cb156-30"><a href="#cb156-30" aria-hidden="true" tabindex="-1"></a>        cell.set_edgecolor(edge_color)</span>
+<span id="cb156-31"><a href="#cb156-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> k[<span class="dv">1</span>] <span class="op">&lt;</span> header_columns:</span>
+<span id="cb156-32"><a href="#cb156-32" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(header_color)</span>
+<span id="cb156-33"><a href="#cb156-33" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(color<span class="op">=</span><span class="st">'black'</span>, fontproperties <span class="op">=</span> NANUM_bold, fontsize<span class="op">=</span>font_size_header, ha<span class="op">=</span>align_head)</span>
+<span id="cb156-34"><a href="#cb156-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb156-35"><a href="#cb156-35" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(row_colors[k[<span class="dv">0</span>]<span class="op">%</span><span class="bu">len</span>(row_colors)])</span>
+<span id="cb156-36"><a href="#cb156-36" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(fontproperties <span class="op">=</span> NANUM, fontsize<span class="op">=</span>font_size, ha<span class="op">=</span>align_cell)</span>
+<span id="cb156-37"><a href="#cb156-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
+<span id="cb156-38"><a href="#cb156-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-39"><a href="#cb156-39" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> render_mpl_table(caller, col_width<span class="op">=</span><span class="fl">2.0</span>, align_head<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb156-40"><a href="#cb156-40" aria-hidden="true" tabindex="-1"></a>image</span>
+<span id="cb156-41"><a href="#cb156-41" aria-hidden="true" tabindex="-1"></a>image.figure.savefig(<span class="st">"caller.png"</span>) <span class="co"># 이미지 저장</span></span>
+<span id="cb156-42"><a href="#cb156-42" aria-hidden="true" tabindex="-1"></a><span class="co"># crontab으로 돌릴 것이라면 이미지 저장 경로도 절대경로로 지정</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="2021-11-05-pandas_cheatsheet_files/figure-html/cell-120-output-1.png" class="img-fluid"></p>
+<p><img src="2021-11-05-pandas_cheatsheet_files/figure-html/cell-126-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 

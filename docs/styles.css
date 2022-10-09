@@ -53,3 +53,15 @@ div.cell-output > pre > code {
 code span.co {
     color: rgb(80, 127, 127);
 }
+
+code span.im {
+    color: rgb(58, 128, 38);
+}
+
+code span.kw {
+    color: rgb(58, 128, 38);
+}
+
+code span.cf {
+    color: rgb(58, 128, 38);
+}

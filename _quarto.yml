@@ -8,7 +8,9 @@ website:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/limyj0708
+      - icon: Linkedin
+        href: https://www.linkedin.com/feed/
 
 format:
   html:

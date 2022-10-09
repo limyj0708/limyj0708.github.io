@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2021-09-06">
 
-<title>Lim’s Code Archive - Linux 비밀번호 만료 안 되게 하기</title>
+<title>Lim's Code Archive – linux_비밀번호-만료-안-되게-하기</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,7 +65,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -83,7 +85,12 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -94,40 +101,36 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Linux 비밀번호 만료 안 되게 하기</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">Linux</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#linux_비밀번호-만료-안-되게-하기" id="toc-linux_비밀번호-만료-안-되게-하기" class="nav-link active" data-scroll-target="#linux_비밀번호-만료-안-되게-하기">Linux_비밀번호 만료 안 되게 하기</a>
+  <ul class="collapse">
+  <li><a href="#빠른-결론" id="toc-빠른-결론" class="nav-link" data-scroll-target="#빠른-결론">1. 빠른 결론</a></li>
+  <li><a href="#각-명령어-구성품의-의미" id="toc-각-명령어-구성품의-의미" class="nav-link" data-scroll-target="#각-명령어-구성품의-의미">2. 각 명령어 구성품의 의미</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">3. Reference</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 
-
-<section id="빠른-결론" class="level4">
-<h4 class="anchored" data-anchor-id="빠른-결론">1. 빠른 결론</h4>
+<section id="linux_비밀번호-만료-안-되게-하기" class="level1">
+<h1>Linux_비밀번호 만료 안 되게 하기</h1>
+<section id="빠른-결론" class="level2">
+<h2 class="anchored" data-anchor-id="빠른-결론">1. 빠른 결론</h2>
 <pre class="shell"><code>chage -E -1 -M 99999 계정명</code></pre>
 </section>
-<section id="각-명령어-구성품의-의미" class="level4">
-<h4 class="anchored" data-anchor-id="각-명령어-구성품의-의미">2. 각 명령어 구성품의 의미</h4>
+<section id="각-명령어-구성품의-의미" class="level2">
+<h2 class="anchored" data-anchor-id="각-명령어-구성품의-의미">2. 각 명령어 구성품의 의미</h2>
 <ul>
 <li><p>chage : 사용자의 패스워드 정보를 관리하는 명령어</p>
 <ul>
@@ -147,11 +150,15 @@ Maximum number of days between password change        : 99999
 Number of days of warning before password expires : 7</code></pre></li>
 </ul>
 </section>
-<section id="reference" class="level4">
-<h4 class="anchored" data-anchor-id="reference">3. Reference</h4>
-<p><a href="https://zetawiki.com/wiki/리눅스_패스워드_만료_안되게_하기">리눅스 패스워드 만료 안되게 하기 - 제타위키 (zetawiki.com)</a> [<a href="https://tragramming.tistory.com/87">Linux] chage 명령어 (사용자 패스워드 만기 정보 관리) (tistory.com)</a></p>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">3. Reference</h2>
+<ul>
+<li><a href="https://zetawiki.com/wiki/리눅스_패스워드_만료_안되게_하기">리눅스 패스워드 만료 안되게 하기 - 제타위키 (zetawiki.com)</a></li>
+<li>[<a href="https://tragramming.tistory.com/87">Linux] chage 명령어 (사용자 패스워드 만기 정보 관리) (tistory.com)</a></li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -252,6 +259,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 
