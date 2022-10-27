@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Tristan O’Malley">
-<meta name="dcterms.date" content="2022-10-04">
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2019-10-12">
 
-<title>Lim’s Code Archive - Welcome To My Blog</title>
+<title>Lim's Code Archive – ubuntu-add-new-user-ssh-key</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,22 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -62,17 +62,17 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Lim’s Code Archive</span>
     </a>
   </div>
@@ -82,10 +82,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">About</a>
+    <a class="nav-link" href="../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/limyj0708"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/"><i class="bi bi-Linkedin" role="img">
 </i> 
  </a>
   </li>  
@@ -99,46 +104,90 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#ubuntu-새-유저-ssh-key-추가" id="toc-ubuntu-새-유저-ssh-key-추가" class="nav-link active" data-scroll-target="#ubuntu-새-유저-ssh-key-추가">Ubuntu 새 유저 SSH key 추가</a>
+  <ul class="collapse">
+  <li><a href="#배경" id="toc-배경" class="nav-link" data-scroll-target="#배경">1. 배경</a></li>
+  <li><a href="#새-계정-생성" id="toc-새-계정-생성" class="nav-link" data-scroll-target="#새-계정-생성">2. 새 계정 생성</a></li>
+  <li><a href="#ssh-key-생성" id="toc-ssh-key-생성" class="nav-link" data-scroll-target="#ssh-key-생성">3. SSH key 생성</a></li>
+  <li><a href="#instance에-ssh-key-등록" id="toc-instance에-ssh-key-등록" class="nav-link" data-scroll-target="#instance에-ssh-key-등록">4. instance에 SSH key 등록</a></li>
+  <li><a href="#instance에-접속" id="toc-instance에-접속" class="nav-link" data-scroll-target="#instance에-접속">5. instance에 접속</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Welcome To My Blog</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">news</div>
-  </div>
-  </div>
 
 
+<section id="ubuntu-새-유저-ssh-key-추가" class="level1">
+<h1>Ubuntu 새 유저 SSH key 추가</h1>
+<section id="배경" class="level2">
+<h2 class="anchored" data-anchor-id="배경">1. 배경</h2>
+<ul>
+<li>Oracle Free tier에서 Ubuntu instance를 만들면, 기본 계정명이 ubuntu다.
+<ul>
+<li>계정을 새로 만들면, 처음에 생성했던 SSH key로는 접속이 되지 않는다.</li>
+</ul></li>
+<li>key를 새로 만든 후에, instance에 등록해보자.</li>
+</ul>
+</section>
+<section id="새-계정-생성" class="level2">
+<h2 class="anchored" data-anchor-id="새-계정-생성">2. 새 계정 생성</h2>
+<ul>
+<li><code>sudo adduser limyj0708</code> : limyj0708 계정 생성
+<ul>
+<li>password 설정 진행</li>
+<li>몇 가지 정보 적당히 씀 (Full_name 등)</li>
+</ul></li>
+<li><code>sudo usermod -aG sudo limyj0708</code> : sudo 그룹을 limyj0708에 추가하여 sudo 명령어를 사용 가능하게 세팅</li>
+</ul>
+</section>
+<section id="ssh-key-생성" class="level2">
+<h2 class="anchored" data-anchor-id="ssh-key-생성">3. SSH key 생성</h2>
+<pre class="shell"><code> ssh-keygen -t rsa -N "원하는 password" -b 2048 -C "원하는 comment" -f "원하는 file path"</code></pre>
+<ul>
+<li>byte는 최소 2048로 진행</li>
+<li>file path에 지정한 경로, 이름으로 공개키와 비밀키가 생성된다.</li>
+</ul>
+</section>
+<section id="instance에-ssh-key-등록" class="level2">
+<h2 class="anchored" data-anchor-id="instance에-ssh-key-등록">4. instance에 SSH key 등록</h2>
+<ul>
+<li>local이 리눅스면 ssh-copy-id를 쓰고, 윈도우에서도 해당 명령어에 대응하는 powershell 명령어가 있던데, 솔직히 잘 안 되었다. 권한 문제 뜨고.</li>
+<li>그래서 수동으로 추가하기로 한다.</li>
+</ul>
+<ol type="1">
+<li>새로 생성한 계정에서는 처음에 /.ssh 폴더가 없다. 생성해줘야 한다.</li>
+<li>ubuntu 계정으로 접속
+<ol type="1">
+<li><code>sudo su</code> : root 계정으로 변경</li>
+<li><code>mkdir /home/limyj0708/.ssh</code> : .ssh 폴더 생성</li>
+<li><code>nano /home/limyj0708/.ssh/authorized_keys</code> : authorized_keys 파일도 없어서 새로 생성된다.
+<ul>
+<li>이제 위에서 생성했던 공개키의 내용을 붙여넣고 저장한다.</li>
+</ul></li>
+</ol></li>
+</ol>
+</section>
+<section id="instance에-접속" class="level2">
+<h2 class="anchored" data-anchor-id="instance에-접속">5. instance에 접속</h2>
+<ul>
+<li>Openssh 윈도우에서도 잘 되니까, Powershell에서 아래 명령어로 접속한다.</li>
+</ul>
+<pre class="shell"><code>ssh -i "비밀키 경로" limyj0708@서버ip</code></pre>
+<ul>
+<li>Profit!</li>
+</ul>
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Tristan O’Malley </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 4, 2022</p>
-    </div>
-  </div>
-    
-  </div>
-  
-
-</header>
-
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
-
-
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -238,6 +287,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

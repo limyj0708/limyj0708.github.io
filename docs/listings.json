@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/posts/2021-11-05-pandas_cheatsheet.html",
+      "/posts/2022-10-25-7일 연속 미접속 시작일 쉽게 추출하기.html",
       "/posts/2022-06-13-git_cheatsheet.html",
       "/posts/2022-05-26-Jupyter Lab Server 세팅.html",
       "/posts/2022-05-26-Python Google Drive API v3로 파일 업로드.html",
@@ -14,7 +15,7 @@
       "/posts/2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 & psycopg2.html",
       "/posts/2020-02-06-로컬 머신에서 AWS Redshift에 접근하기.html",
       "/posts/2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.html",
-      "/posts/2022-07-05-Ubuntu 새 유저 SSH key 추가.html",
+      "/posts/2022-07-05-Ubuntu add new user SSH key.html",
       "/posts/2019-10-12-Map vs List Comprehension.html"
     ]
   }
