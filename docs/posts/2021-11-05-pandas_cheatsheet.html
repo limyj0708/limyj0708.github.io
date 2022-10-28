@@ -2798,6 +2798,10 @@ cool</code></pre>
 <li><a href="https://datascience.stackexchange.com/questions/37878/difference-between-isna-and-isnull-in-pandas">https://datascience.stackexchange.com/questions/37878/difference-between-isna-and-isnull-in-pandas</a></li>
 <li>This is because pandas’ DataFrames are based on R’s DataFrames. In R na and null are two separate things. Read <a href="https://www.r-bloggers.com/2010/04/r-na-vs-null/">this post</a> for more information. However, in python, pandas is built on top of numpy, <strong>which has neither na nor null values. Instead numpy has NaN values (which stands for “Not a Number”).</strong> Consequently, pandas also uses NaN values.</li>
 </ul></li>
+<li>완전히 반대의 기능을 하는 함수로 notnull()이 있다.
+<ul>
+<li><a href="https://pandas.pydata.org/docs/reference/api/pandas.notnull.html">pandas.notnull(obj)</a></li>
+</ul></li>
 </ul>
 <div class="cell" data-execution_count="58">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>df.isna()</span>
