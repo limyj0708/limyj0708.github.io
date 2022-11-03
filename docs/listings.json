@@ -2,6 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2022-10-29-Bigquery_사용자 정의 함수(UDF).html",
+      "/posts/2022-10-29-Bigquery_Array, Struct 실전사용.html",
+      "/posts/2022-10-29-Bigquery_사분위수 구하기.html",
       "/posts/2021-11-05-pandas_cheatsheet.html",
       "/posts/2022-10-25-Bigquery 7일 연속 미접속 시작일 쉽게 추출하기.html",
       "/posts/2022-06-13-git_cheatsheet.html",
@@ -17,7 +20,8 @@
       "/posts/2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.html",
       "/posts/2019-10-30-Decorator가 뭐지 with Scope, Namespace.html",
       "/posts/2022-07-05-Ubuntu에 새 유저 SSH key 추가.html",
-      "/posts/2019-10-12-Map vs List Comprehension.html"
+      "/posts/2019-10-12-Map vs List Comprehension.html",
+      "/posts/2019-10-11-Python_Parameters, Arguments 정의와 차이점.html"
     ]
   }
 ]
