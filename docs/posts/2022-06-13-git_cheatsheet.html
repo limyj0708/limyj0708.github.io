@@ -191,7 +191,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#원격-저장소-정보-보기" id="toc-원격-저장소-정보-보기" class="nav-link" data-scroll-target="#원격-저장소-정보-보기">3-5. 원격 저장소 정보 보기</a></li>
   <li><a href="#원격-저장소-이름-바꾸기-삭제하기" id="toc-원격-저장소-이름-바꾸기-삭제하기" class="nav-link" data-scroll-target="#원격-저장소-이름-바꾸기-삭제하기">3-6. 원격 저장소 이름 바꾸기, 삭제하기</a></li>
   </ul></li>
-  <li><a href="#다중-계정-사용" id="toc-다중-계정-사용" class="nav-link" data-scroll-target="#다중-계정-사용">4. 다중 계정 사용</a></li>
+  <li><a href="#다중-계정-사용" id="toc-다중-계정-사용" class="nav-link" data-scroll-target="#다중-계정-사용">4. 다중 계정 사용</a>
+  <ul class="collapse">
+  <li><a href="#config-분리" id="toc-config-분리" class="nav-link" data-scroll-target="#config-분리">4-1. config 분리</a></li>
+  <li><a href="#ssk_key-등록" id="toc-ssk_key-등록" class="nav-link" data-scroll-target="#ssk_key-등록">4-2. ssk_key 등록</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -475,6 +479,8 @@ origin  https://github.com/limyj0708/bigquery_module.git (push)
 </section>
 <section id="다중-계정-사용" class="level2">
 <h2 class="anchored" data-anchor-id="다중-계정-사용">4. 다중 계정 사용</h2>
+<section id="config-분리" class="level3">
+<h3 class="anchored" data-anchor-id="config-분리">4-1. config 분리</h3>
 <ul>
 <li>한 PC에서 업무용 repository 접근계정, 개인용 repository 접근계정을 분리해서 사용하고 싶을 때</li>
 <li>윈도우의 경우, C:{계정명} 에 .gitconfig가 존재한다.</li>
@@ -494,8 +500,48 @@ origin  https://github.com/limyj0708/bigquery_module.git (push)
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git config <span class="at">--show-origin</span> user.email</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">file:C:/Users/limyj0708/.gitconfig_personal.config</span>      limyj0708@gmail.com</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ssk_key-등록" class="level3">
+<h3 class="anchored" data-anchor-id="ssk_key-등록">4-2. ssk_key 등록</h3>
+<ul>
+<li>ssh_key를 각각 분리해서 등록해주면, 원격 저장소에 push할 때 귀찮은 일이 없어진다.</li>
+</ul>
+<pre><code>&gt; ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\limyj0708/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\limyj0708/.ssh/id_rsa.
+Your public key has been saved in C:\Users\limyj0708/.ssh/id_rsa.pub.
+The key fingerprint is:</code></pre>
+<ul>
+<li>passphrase는 <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases">설정을 권장</a>하고 있으므로 설정해준다.</li>
+<li>C:/.ssh에 가서, 공개키(pub)를 열고 내용을 복사하자.</li>
+<li>github 계정 &gt; Settings &gt; SSH and GPG keys 메뉴로 이동
+<ul>
+<li>SSH keys &gt; New SSH key</li>
+<li>공개키 내용을 붙여넣고, 적절히 이름을 붙여서 등록</li>
+</ul></li>
+<li>C:.ssh내용을 추가하자.</li>
+</ul>
+<pre class="config"><code>Host github_personal
+  IdentityFile C:\Users\limyj0708\.ssh\{공개키 이름}
+  User git
+  HostName github.com</code></pre>
+<ul>
+<li>이후, 로컬 저장소에서 원격 저장소를 어떻게 등록해주면 되냐면…
+<ul>
+<li><code>git remote add origin git@github_personal:limyj0708/blog.git</code>
+<ul>
+<li>git@github.com:limyj0708/blog.git에서, github.com 부분을 github_personal으로 바꿔 준 것이다.</li>
+</ul></li>
+<li>이미 연결되어있던 원격 저장소가 있어서, 바꿔줘야 되는 상황이라면 미리 <code>git remote remove {저장소명}</code>을 해 주자.</li>
+</ul></li>
+<li>이제 원격 저장소로 push 할 때, passphrase만 잘 입력해 주면 추가 조치 없이 잘 진행된다.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
