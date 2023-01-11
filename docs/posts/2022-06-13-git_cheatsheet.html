@@ -516,13 +516,13 @@ Your public key has been saved in C:\Users\limyj0708/.ssh/id_rsa.pub.
 The key fingerprint is:</code></pre>
 <ul>
 <li>passphrase는 <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases">설정을 권장</a>하고 있으므로 설정해준다.</li>
-<li>C:/.ssh에 가서, 공개키(pub)를 열고 내용을 복사하자.</li>
+<li><code>C:\Users\limyj0708\.ssh</code>에 가서, 공개키(pub)를 열고 내용을 복사하자.</li>
 <li>github 계정 &gt; Settings &gt; SSH and GPG keys 메뉴로 이동
 <ul>
 <li>SSH keys &gt; New SSH key</li>
 <li>공개키 내용을 붙여넣고, 적절히 이름을 붙여서 등록</li>
 </ul></li>
-<li>C:.ssh내용을 추가하자.</li>
+<li><code>C:\Users\limyj0708\.ssh\config</code>에 내용을 추가하자.</li>
 </ul>
 <pre class="config"><code>Host github_personal
   IdentityFile C:\Users\limyj0708\.ssh\{공개키 이름}
@@ -538,6 +538,7 @@ The key fingerprint is:</code></pre>
 <li>이미 연결되어있던 원격 저장소가 있어서, 바꿔줘야 되는 상황이라면 미리 <code>git remote remove {저장소명}</code>을 해 주자.</li>
 </ul></li>
 <li>이제 원격 저장소로 push 할 때, passphrase만 잘 입력해 주면 추가 조치 없이 잘 진행된다.</li>
+<li>회사 계정은 github_work 등으로 추가할 수 있다.</li>
 </ul>
 
 
