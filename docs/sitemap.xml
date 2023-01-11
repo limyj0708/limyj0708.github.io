@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://limyj0708.github.io/blog/about.html</loc>
+    <lastmod>2023-01-11T08:34:20.126Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/index.html</loc>
+    <lastmod>2023-01-11T08:34:20.911Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2019-10-11-Python_Parameters, Arguments 정의와 차이점.html</loc>
+    <lastmod>2023-01-11T08:34:22.240Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2019-10-12-Map vs List Comprehension.html</loc>
+    <lastmod>2023-01-11T08:34:23.676Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2019-10-30-Decorator가 뭐지 with Scope, Namespace.html</loc>
+    <lastmod>2023-01-11T08:34:24.764Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.html</loc>
+    <lastmod>2023-01-11T08:34:25.829Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2020-02-06-로컬 머신에서 AWS Redshift에 접근하기.html</loc>
+    <lastmod>2023-01-11T08:34:27.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 & psycopg2.html</loc>
+    <lastmod>2023-01-11T08:34:28.388Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2021-09-06-Linux_비밀번호 만료 안 되게 하기.html</loc>
+    <lastmod>2023-01-11T08:34:30.072Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2021-09-07-Crontab으로 Python 스크립트 주기적으로 실행하기.html</loc>
+    <lastmod>2023-01-11T08:34:31.230Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2021-11-05-pandas_cheatsheet.html</loc>
+    <lastmod>2023-01-11T08:34:32.941Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-03-19-맥 OS pyenv 세팅 101.html</loc>
+    <lastmod>2023-01-11T08:34:34.048Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-05-26-Jupyter Lab Server 세팅.html</loc>
+    <lastmod>2023-01-11T08:34:35.044Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-05-26-Python Google Drive API v3로 파일 업로드.html</loc>
+    <lastmod>2023-01-11T08:34:36.049Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-06-13-git_cheatsheet.html</loc>
+    <lastmod>2023-01-11T08:34:37.186Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-07-05-Ubuntu에 새 유저 SSH key 추가.html</loc>
+    <lastmod>2023-01-11T08:34:38.312Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-10-25-Bigquery 7일 연속 미접속 시작일 쉽게 추출하기.html</loc>
+    <lastmod>2023-01-11T08:34:39.452Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-10-29-Bigquery_Array, Struct 실전사용.html</loc>
+    <lastmod>2023-01-11T08:34:40.538Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-10-29-Bigquery_사분위수 구하기.html</loc>
+    <lastmod>2023-01-11T08:34:41.539Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-10-29-Bigquery_사용자 정의 함수(UDF).html</loc>
+    <lastmod>2023-01-11T08:34:42.580Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-11-08-Python 스크립트 Console 유저 입력 받기.html</loc>
+    <lastmod>2023-01-11T08:34:43.720Z</lastmod>
+  </url>
+  <url>
+    <loc>https://limyj0708.github.io/blog/posts/2022-11-17-리눅스 Shell 명령어 Python 스크립트에서 실행하기 + Crontab.html</loc>
+    <lastmod>2023-01-11T08:34:44.892Z</lastmod>
+  </url>
+</urlset>
