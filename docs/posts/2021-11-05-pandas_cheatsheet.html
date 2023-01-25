@@ -9,7 +9,7 @@
 <meta name="author" content="limyj0708">
 <meta name="dcterms.date" content="9999-12-31">
 
-<title>Lim’s Code Archive - Pandas CheatSheet</title>
+<title>Lim’s Code Archive - Pandas CheatSheet (지속적으로 업데이트함)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -205,11 +205,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#merge-database의-join처럼-dataframe-합치기" id="toc-merge-database의-join처럼-dataframe-합치기" class="nav-link" data-scroll-target="#merge-database의-join처럼-dataframe-합치기">4-2. Merge : Database의 Join처럼 Dataframe 합치기</a></li>
   <li><a href="#join-merge보다-빠르다" id="toc-join-merge보다-빠르다" class="nav-link" data-scroll-target="#join-merge보다-빠르다">4-3. Join : Merge보다 빠르다</a></li>
   </ul></li>
-  <li><a href="#데이터-재구조화" id="toc-데이터-재구조화" class="nav-link" data-scroll-target="#데이터-재구조화">5. 데이터 재구조화</a>
+  <li><a href="#데이터-구조-변경" id="toc-데이터-구조-변경" class="nav-link" data-scroll-target="#데이터-구조-변경">5. 데이터 구조 변경</a>
   <ul class="collapse">
   <li><a href="#pivot-엑셀에서-보던-그것" id="toc-pivot-엑셀에서-보던-그것" class="nav-link" data-scroll-target="#pivot-엑셀에서-보던-그것">5.1 Pivot : 엑셀에서 보던 그것</a></li>
   <li><a href="#pivot_table-pivot의-확장-버전" id="toc-pivot_table-pivot의-확장-버전" class="nav-link" data-scroll-target="#pivot_table-pivot의-확장-버전">5.2 Pivot_table : Pivot의 확장 버전</a></li>
   <li><a href="#melt-unpivot-하기" id="toc-melt-unpivot-하기" class="nav-link" data-scroll-target="#melt-unpivot-하기">5.3 melt : Unpivot 하기</a></li>
+  <li><a href="#sort_values-정렬" id="toc-sort_values-정렬" class="nav-link" data-scroll-target="#sort_values-정렬">5.4 sort_values : 정렬</a></li>
+  <li><a href="#shift-bigquery의-lead-lag에-대응되는-함수" id="toc-shift-bigquery의-lead-lag에-대응되는-함수" class="nav-link" data-scroll-target="#shift-bigquery의-lead-lag에-대응되는-함수">5.5 shift : Bigquery의 lead, lag에 대응되는 함수</a></li>
   </ul></li>
   <li><a href="#데이터-타입" id="toc-데이터-타입" class="nav-link" data-scroll-target="#데이터-타입">6. 데이터 타입</a>
   <ul class="collapse">
@@ -237,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Pandas CheatSheet</h1>
+<h1 class="title">Pandas CheatSheet (지속적으로 업데이트함)</h1>
   <div class="quarto-categories">
     <div class="quarto-category">pandas</div>
   </div>
@@ -269,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>” 안 쓰면 잊어버리는, pandas에서의 주요 Dataframe 조작 방법들을 정리”</li>
 </ul>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display_html </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4913,12 +4915,12 @@ MultiIndex([('s1', 0),
 <li>lsuffix, rsuffix : join된 결과물 컬럼의 접미사 세팅.</li>
 <li>sort : TRUE면, join key의 사전 순서대로 정렬됨. FALSE면, how에서의 기본 처리방식을 따름.</li>
 </ul>
-<div class="cell" data-execution_count="24">
+<div class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>caller <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>, <span class="st">'K3'</span>, <span class="st">'K4'</span>, <span class="st">'K5'</span>], <span class="st">'A'</span>: [<span class="st">'A0'</span>, <span class="st">'A1'</span>, <span class="st">'A2'</span>, <span class="st">'A3'</span>, <span class="st">'A4'</span>, <span class="st">'A5'</span>]})</span>
 <span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>other <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>], <span class="st">'B'</span>: [<span class="st">'B0'</span>, <span class="st">'B1'</span>, <span class="st">'B2'</span>]})</span>
 <span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>other2 <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>], <span class="st">'C'</span>: [<span class="st">'C0'</span>, <span class="st">'C1'</span>, <span class="st">'C2'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="73">
+<div class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb116"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>caller_styler <span class="op">=</span> caller.style.set_table_attributes(<span class="st">"style='display:inline;margin:5px'"</span>).set_caption(<span class="st">'caller'</span>)</span>
 <span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>other_styler <span class="op">=</span> other.style.set_table_attributes(<span class="st">"style='display:inline;margin:5px'"</span>).set_caption(<span class="st">'other'</span>)</span>
 <span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>other2_styler <span class="op">=</span> other2.style.set_table_attributes(<span class="st">"style='display:inline;margin:5px'"</span>).set_caption(<span class="st">'other2'</span>)</span>
@@ -4926,72 +4928,107 @@ MultiIndex([('s1', 0),
 <div class="cell-output cell-output-display">
 
 <style type="text/css">
-</style><table id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184" style="display:inline;margin:5px"><caption>caller</caption><thead>    <tr>        <th class="blank level0"></th>        <th class="col_heading level0 col0">key</th>        <th class="col_heading level0 col1">A</th>    </tr></thead><tbody>
-                <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row0" class="row_heading level0 row0">0</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row0_col0" class="data row0 col0">K0</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row0_col1" class="data row0 col1">A0</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row1" class="row_heading level0 row1">1</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row1_col0" class="data row1 col0">K1</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row1_col1" class="data row1 col1">A1</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row2" class="row_heading level0 row2">2</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row2_col0" class="data row2 col0">K2</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row2_col1" class="data row2 col1">A2</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row3" class="row_heading level0 row3">3</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row3_col0" class="data row3 col0">K3</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row3_col1" class="data row3 col1">A3</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row4" class="row_heading level0 row4">4</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row4_col0" class="data row4 col0">K4</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row4_col1" class="data row4 col1">A4</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184level0_row5" class="row_heading level0 row5">5</th>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row5_col0" class="data row5 col0">K5</td>
-                        <td id="T_14cb3d45_dcb2_11ec_b51b_f8ac65d94184row5_col1" class="data row5 col1">A5</td>
-            </tr>
-    </tbody></table><style type="text/css">
-</style><table id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184" style="display:inline;margin:5px"><caption>other</caption><thead>    <tr>        <th class="blank level0"></th>        <th class="col_heading level0 col0">key</th>        <th class="col_heading level0 col1">B</th>    </tr></thead><tbody>
-                <tr>
-                        <th id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184level0_row0" class="row_heading level0 row0">0</th>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row0_col0" class="data row0 col0">K0</td>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row0_col1" class="data row0 col1">B0</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184level0_row1" class="row_heading level0 row1">1</th>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row1_col0" class="data row1 col0">K1</td>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row1_col1" class="data row1 col1">B1</td>
-            </tr>
-            <tr>
-                        <th id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184level0_row2" class="row_heading level0 row2">2</th>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row2_col0" class="data row2 col0">K2</td>
-                        <td id="T_14cb6461_dcb2_11ec_8582_f8ac65d94184row2_col1" class="data row2 col1">B2</td>
-            </tr>
-    </tbody></table><style type="text/css">
-</style><table id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184" style="display:inline;margin:5px"><caption>other2</caption><thead>    <tr>        <th class="blank level0"></th>        <th class="col_heading level0 col0">key</th>        <th class="col_heading level0 col1">C</th>    </tr></thead><tbody>
-                <tr>
-                        <th id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184level0_row0" class="row_heading level0 row0">0</th>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row0_col0" class="data row0 col0">K0</td>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row0_col1" class="data row0 col1">C0</td>
-            </tr>
-            <tr>
-                        <th id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184level0_row1" class="row_heading level0 row1">1</th>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row1_col0" class="data row1 col0">K1</td>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row1_col1" class="data row1 col1">C1</td>
-            </tr>
-            <tr>
-                        <th id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184level0_row2" class="row_heading level0 row2">2</th>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row2_col0" class="data row2 col0">K2</td>
-                        <td id="T_14cbb26d_dcb2_11ec_b836_f8ac65d94184row2_col1" class="data row2 col1">C2</td>
-            </tr>
-    </tbody></table>
+</style>
+<table id="T_b151a" style="display:inline;margin:5px">
+  <caption>caller</caption>
+  <thead>
+    <tr>
+      <th class="blank level0">&nbsp;</th>
+      <th id="T_b151a_level0_col0" class="col_heading level0 col0">key</th>
+      <th id="T_b151a_level0_col1" class="col_heading level0 col1">A</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_b151a_level0_row0" class="row_heading level0 row0">0</th>
+      <td id="T_b151a_row0_col0" class="data row0 col0">K0</td>
+      <td id="T_b151a_row0_col1" class="data row0 col1">A0</td>
+    </tr>
+    <tr>
+      <th id="T_b151a_level0_row1" class="row_heading level0 row1">1</th>
+      <td id="T_b151a_row1_col0" class="data row1 col0">K1</td>
+      <td id="T_b151a_row1_col1" class="data row1 col1">A1</td>
+    </tr>
+    <tr>
+      <th id="T_b151a_level0_row2" class="row_heading level0 row2">2</th>
+      <td id="T_b151a_row2_col0" class="data row2 col0">K2</td>
+      <td id="T_b151a_row2_col1" class="data row2 col1">A2</td>
+    </tr>
+    <tr>
+      <th id="T_b151a_level0_row3" class="row_heading level0 row3">3</th>
+      <td id="T_b151a_row3_col0" class="data row3 col0">K3</td>
+      <td id="T_b151a_row3_col1" class="data row3 col1">A3</td>
+    </tr>
+    <tr>
+      <th id="T_b151a_level0_row4" class="row_heading level0 row4">4</th>
+      <td id="T_b151a_row4_col0" class="data row4 col0">K4</td>
+      <td id="T_b151a_row4_col1" class="data row4 col1">A4</td>
+    </tr>
+    <tr>
+      <th id="T_b151a_level0_row5" class="row_heading level0 row5">5</th>
+      <td id="T_b151a_row5_col0" class="data row5 col0">K5</td>
+      <td id="T_b151a_row5_col1" class="data row5 col1">A5</td>
+    </tr>
+  </tbody>
+</table>
+<style type="text/css">
+</style>
+<table id="T_9979d" style="display:inline;margin:5px">
+  <caption>other</caption>
+  <thead>
+    <tr>
+      <th class="blank level0">&nbsp;</th>
+      <th id="T_9979d_level0_col0" class="col_heading level0 col0">key</th>
+      <th id="T_9979d_level0_col1" class="col_heading level0 col1">B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_9979d_level0_row0" class="row_heading level0 row0">0</th>
+      <td id="T_9979d_row0_col0" class="data row0 col0">K0</td>
+      <td id="T_9979d_row0_col1" class="data row0 col1">B0</td>
+    </tr>
+    <tr>
+      <th id="T_9979d_level0_row1" class="row_heading level0 row1">1</th>
+      <td id="T_9979d_row1_col0" class="data row1 col0">K1</td>
+      <td id="T_9979d_row1_col1" class="data row1 col1">B1</td>
+    </tr>
+    <tr>
+      <th id="T_9979d_level0_row2" class="row_heading level0 row2">2</th>
+      <td id="T_9979d_row2_col0" class="data row2 col0">K2</td>
+      <td id="T_9979d_row2_col1" class="data row2 col1">B2</td>
+    </tr>
+  </tbody>
+</table>
+<style type="text/css">
+</style>
+<table id="T_fd73b" style="display:inline;margin:5px">
+  <caption>other2</caption>
+  <thead>
+    <tr>
+      <th class="blank level0">&nbsp;</th>
+      <th id="T_fd73b_level0_col0" class="col_heading level0 col0">key</th>
+      <th id="T_fd73b_level0_col1" class="col_heading level0 col1">C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_fd73b_level0_row0" class="row_heading level0 row0">0</th>
+      <td id="T_fd73b_row0_col0" class="data row0 col0">K0</td>
+      <td id="T_fd73b_row0_col1" class="data row0 col1">C0</td>
+    </tr>
+    <tr>
+      <th id="T_fd73b_level0_row1" class="row_heading level0 row1">1</th>
+      <td id="T_fd73b_row1_col0" class="data row1 col0">K1</td>
+      <td id="T_fd73b_row1_col1" class="data row1 col1">C1</td>
+    </tr>
+    <tr>
+      <th id="T_fd73b_level0_row2" class="row_heading level0 row2">2</th>
+      <td id="T_fd73b_row2_col0" class="data row2 col0">K2</td>
+      <td id="T_fd73b_row2_col1" class="data row2 col1">C2</td>
+    </tr>
+  </tbody>
+</table>
 </div>
 </div>
 <div class="cell" data-execution_count="74">
@@ -5241,8 +5278,8 @@ MultiIndex([('s1', 0),
 </div>
 </section>
 </section>
-<section id="데이터-재구조화" class="level2">
-<h2 class="anchored" data-anchor-id="데이터-재구조화">5. 데이터 재구조화</h2>
+<section id="데이터-구조-변경" class="level2">
+<h2 class="anchored" data-anchor-id="데이터-구조-변경">5. 데이터 구조 변경</h2>
 <section id="pivot-엑셀에서-보던-그것" class="level3">
 <h3 class="anchored" data-anchor-id="pivot-엑셀에서-보던-그것">5.1 Pivot : 엑셀에서 보던 그것</h3>
 <p><code>DataFrame.pivot(index=None, columns=None, values=None)</code></p>
@@ -6295,18 +6332,603 @@ MultiIndex([('s1', 0),
 </div>
 </div>
 </section>
+<section id="sort_values-정렬" class="level3">
+<h3 class="anchored" data-anchor-id="sort_values-정렬">5.4 sort_values : 정렬</h3>
+<p><code>DataFrame.sort_values(by, *, axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last', ignore_index=False, key=None)</code></p>
+<ul>
+<li>by : str, 혹은 str의 리스트</li>
+<li>axis : {0 or ‘index’, 1 or ‘columns’}, default 0</li>
+<li>ascending : bool, default True, True일 경우 오름차순</li>
+<li>inplace : bool, default False, 원본을 변경하는지</li>
+<li>kind : {‘quicksort’, ‘mergesort’, ‘heapsort’, ‘stable’}, default ‘quicksort’
+<ul>
+<li>정렬 알고리즘 종류. 자세한 사항은 <a href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort">numpy.sort</a> 참고</li>
+</ul></li>
+<li>na_position : {‘first’, ‘last’}, default ‘last’, NaN의 위치는 어디에 둘 지 선택</li>
+<li>ignore_index : bool, default False, If True, the resulting axis will be labeled 0, 1, …, n - 1.</li>
+<li>key : callable, optional
+<ul>
+<li>정렬하기 전에 key에 할당된 함수를 값에 적용한다.</li>
+<li>by에 할당된 컬럼들에 각각 적용된다.</li>
+<li>input과 output의 크기가 같을 것이 요구된다. (정렬을 해야 하니, 당연한 이야기지만)
+<ul>
+<li>It should expect a Series and return a Series with the same shape as the input.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>df_sample <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col1'</span>: [<span class="st">'A'</span>, <span class="st">'A'</span>, <span class="st">'B'</span>, np.nan, <span class="st">'D'</span>, <span class="st">'C'</span>],</span>
+<span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col2'</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">4</span>],</span>
+<span id="cb141-4"><a href="#cb141-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col3'</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb141-5"><a href="#cb141-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col4'</span>: [<span class="st">'a'</span>, <span class="st">'B'</span>, <span class="st">'c'</span>, <span class="st">'D'</span>, <span class="st">'e'</span>, <span class="st">'F'</span>]</span>
+<span id="cb141-6"><a href="#cb141-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb141-7"><a href="#cb141-7" aria-hidden="true" tabindex="-1"></a>df_sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>D</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>C</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a>df_sample.sort_values(by<span class="op">=</span>[<span class="st">'col1'</span>])</span>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="co"># col1 기준 정렬</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>C</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>D</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>df_sample.sort_values(by<span class="op">=</span>[<span class="st">'col1'</span>, <span class="st">'col2'</span>])</span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="co"># col1, col2 기준 정렬</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>C</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>D</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>df_sample.sort_values(by<span class="op">=</span><span class="st">'col1'</span>, ascending<span class="op">=</span><span class="va">False</span>, na_position<span class="op">=</span><span class="st">'first'</span>)</span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="co"># col1 기준, 내림차순, NaN을 상단에 두고 정렬</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>D</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>C</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>col4 <span class="op">=</span> df_sample.sort_values(by<span class="op">=</span><span class="st">'col4'</span>)</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a><span class="co">#col4를 그냥 정렬하면, 대문자에서 소문자 순서로 정렬된다.</span></span>
+<span id="cb145-3"><a href="#cb145-3" aria-hidden="true" tabindex="-1"></a>col4_key_lowercase <span class="op">=</span> df_sample.sort_values(by<span class="op">=</span><span class="st">'col4'</span>, key <span class="op">=</span> <span class="kw">lambda</span> col: col.<span class="bu">str</span>.lower())</span>
+<span id="cb145-4"><a href="#cb145-4" aria-hidden="true" tabindex="-1"></a><span class="co"># col4의 각 알파벳들을 다 소문자로 치환 후 정렬하였다.</span></span>
+<span id="cb145-5"><a href="#cb145-5" aria-hidden="true" tabindex="-1"></a>col4_style <span class="op">=</span> col4.style.set_table_attributes(<span class="st">"style='display:inline;margin:5px'"</span>).set_caption(<span class="st">'col4_sort'</span>)</span>
+<span id="cb145-6"><a href="#cb145-6" aria-hidden="true" tabindex="-1"></a>col4_key_lowercase_style <span class="op">=</span> col4_key.style.set_table_attributes(<span class="st">"style='display:inline;margin:5px'"</span>).set_caption(<span class="st">'col4_sort_key_lowercase'</span>)</span>
+<span id="cb145-7"><a href="#cb145-7" aria-hidden="true" tabindex="-1"></a>display_html(col4_style._repr_html_() <span class="op">+</span> col4_key_lowercase_style._repr_html_(), raw<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style type="text/css">
+</style>
+<table id="T_46c11" style="display:inline;margin:5px">
+  <caption>col4_sort</caption>
+  <thead>
+    <tr>
+      <th class="blank level0">&nbsp;</th>
+      <th id="T_46c11_level0_col0" class="col_heading level0 col0">col1</th>
+      <th id="T_46c11_level0_col1" class="col_heading level0 col1">col2</th>
+      <th id="T_46c11_level0_col2" class="col_heading level0 col2">col3</th>
+      <th id="T_46c11_level0_col3" class="col_heading level0 col3">col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_46c11_level0_row0" class="row_heading level0 row0">1</th>
+      <td id="T_46c11_row0_col0" class="data row0 col0">A</td>
+      <td id="T_46c11_row0_col1" class="data row0 col1">1</td>
+      <td id="T_46c11_row0_col2" class="data row0 col2">1</td>
+      <td id="T_46c11_row0_col3" class="data row0 col3">B</td>
+    </tr>
+    <tr>
+      <th id="T_46c11_level0_row1" class="row_heading level0 row1">3</th>
+      <td id="T_46c11_row1_col0" class="data row1 col0">nan</td>
+      <td id="T_46c11_row1_col1" class="data row1 col1">8</td>
+      <td id="T_46c11_row1_col2" class="data row1 col2">4</td>
+      <td id="T_46c11_row1_col3" class="data row1 col3">D</td>
+    </tr>
+    <tr>
+      <th id="T_46c11_level0_row2" class="row_heading level0 row2">5</th>
+      <td id="T_46c11_row2_col0" class="data row2 col0">C</td>
+      <td id="T_46c11_row2_col1" class="data row2 col1">4</td>
+      <td id="T_46c11_row2_col2" class="data row2 col2">3</td>
+      <td id="T_46c11_row2_col3" class="data row2 col3">F</td>
+    </tr>
+    <tr>
+      <th id="T_46c11_level0_row3" class="row_heading level0 row3">0</th>
+      <td id="T_46c11_row3_col0" class="data row3 col0">A</td>
+      <td id="T_46c11_row3_col1" class="data row3 col1">2</td>
+      <td id="T_46c11_row3_col2" class="data row3 col2">0</td>
+      <td id="T_46c11_row3_col3" class="data row3 col3">a</td>
+    </tr>
+    <tr>
+      <th id="T_46c11_level0_row4" class="row_heading level0 row4">2</th>
+      <td id="T_46c11_row4_col0" class="data row4 col0">B</td>
+      <td id="T_46c11_row4_col1" class="data row4 col1">9</td>
+      <td id="T_46c11_row4_col2" class="data row4 col2">9</td>
+      <td id="T_46c11_row4_col3" class="data row4 col3">c</td>
+    </tr>
+    <tr>
+      <th id="T_46c11_level0_row5" class="row_heading level0 row5">4</th>
+      <td id="T_46c11_row5_col0" class="data row5 col0">D</td>
+      <td id="T_46c11_row5_col1" class="data row5 col1">7</td>
+      <td id="T_46c11_row5_col2" class="data row5 col2">2</td>
+      <td id="T_46c11_row5_col3" class="data row5 col3">e</td>
+    </tr>
+  </tbody>
+</table>
+<style type="text/css">
+</style>
+<table id="T_6e121" style="display:inline;margin:5px">
+  <caption>col4_sort_key_lowercase</caption>
+  <thead>
+    <tr>
+      <th class="blank level0">&nbsp;</th>
+      <th id="T_6e121_level0_col0" class="col_heading level0 col0">col1</th>
+      <th id="T_6e121_level0_col1" class="col_heading level0 col1">col2</th>
+      <th id="T_6e121_level0_col2" class="col_heading level0 col2">col3</th>
+      <th id="T_6e121_level0_col3" class="col_heading level0 col3">col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_6e121_level0_row0" class="row_heading level0 row0">0</th>
+      <td id="T_6e121_row0_col0" class="data row0 col0">A</td>
+      <td id="T_6e121_row0_col1" class="data row0 col1">2</td>
+      <td id="T_6e121_row0_col2" class="data row0 col2">0</td>
+      <td id="T_6e121_row0_col3" class="data row0 col3">a</td>
+    </tr>
+    <tr>
+      <th id="T_6e121_level0_row1" class="row_heading level0 row1">1</th>
+      <td id="T_6e121_row1_col0" class="data row1 col0">A</td>
+      <td id="T_6e121_row1_col1" class="data row1 col1">1</td>
+      <td id="T_6e121_row1_col2" class="data row1 col2">1</td>
+      <td id="T_6e121_row1_col3" class="data row1 col3">B</td>
+    </tr>
+    <tr>
+      <th id="T_6e121_level0_row2" class="row_heading level0 row2">2</th>
+      <td id="T_6e121_row2_col0" class="data row2 col0">B</td>
+      <td id="T_6e121_row2_col1" class="data row2 col1">9</td>
+      <td id="T_6e121_row2_col2" class="data row2 col2">9</td>
+      <td id="T_6e121_row2_col3" class="data row2 col3">c</td>
+    </tr>
+    <tr>
+      <th id="T_6e121_level0_row3" class="row_heading level0 row3">3</th>
+      <td id="T_6e121_row3_col0" class="data row3 col0">nan</td>
+      <td id="T_6e121_row3_col1" class="data row3 col1">8</td>
+      <td id="T_6e121_row3_col2" class="data row3 col2">4</td>
+      <td id="T_6e121_row3_col3" class="data row3 col3">D</td>
+    </tr>
+    <tr>
+      <th id="T_6e121_level0_row4" class="row_heading level0 row4">4</th>
+      <td id="T_6e121_row4_col0" class="data row4 col0">D</td>
+      <td id="T_6e121_row4_col1" class="data row4 col1">7</td>
+      <td id="T_6e121_row4_col2" class="data row4 col2">2</td>
+      <td id="T_6e121_row4_col3" class="data row4 col3">e</td>
+    </tr>
+    <tr>
+      <th id="T_6e121_level0_row5" class="row_heading level0 row5">5</th>
+      <td id="T_6e121_row5_col0" class="data row5 col0">C</td>
+      <td id="T_6e121_row5_col1" class="data row5 col1">4</td>
+      <td id="T_6e121_row5_col2" class="data row5 col2">3</td>
+      <td id="T_6e121_row5_col3" class="data row5 col3">F</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="shift-bigquery의-lead-lag에-대응되는-함수" class="level3">
+<h3 class="anchored" data-anchor-id="shift-bigquery의-lead-lag에-대응되는-함수">5.5 shift : Bigquery의 lead, lag에 대응되는 함수</h3>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>df_sample <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'base_date'</span>: [  np.datetime64(<span class="st">'2023-01-12'</span>)</span>
+<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>                      , np.datetime64(<span class="st">'2023-01-12'</span>)</span>
+<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a>                      , np.datetime64(<span class="st">'2023-01-12'</span>)</span>
+<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>                      , np.datetime64(<span class="st">'2023-01-12'</span>)</span>
+<span id="cb146-6"><a href="#cb146-6" aria-hidden="true" tabindex="-1"></a>                      , np.datetime64(<span class="st">'2023-01-13'</span>)</span>
+<span id="cb146-7"><a href="#cb146-7" aria-hidden="true" tabindex="-1"></a>                      , np.datetime64(<span class="st">'2023-01-13'</span>)</span>
+<span id="cb146-8"><a href="#cb146-8" aria-hidden="true" tabindex="-1"></a>                      </span>
+<span id="cb146-9"><a href="#cb146-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb146-10"><a href="#cb146-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col2'</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">4</span>],</span>
+<span id="cb146-11"><a href="#cb146-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col3'</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb146-12"><a href="#cb146-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'col4'</span>: [<span class="st">'a'</span>, <span class="st">'B'</span>, <span class="st">'c'</span>, <span class="st">'D'</span>, <span class="st">'e'</span>, <span class="st">'F'</span>]</span>
+<span id="cb146-13"><a href="#cb146-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb146-14"><a href="#cb146-14" aria-hidden="true" tabindex="-1"></a>df_sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>base_date</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-01-12</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-01-12</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-01-12</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-01-12</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-01-13</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-01-13</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>df_sample[<span class="st">'col2_shift_lag1'</span>] <span class="op">=</span> df_sample.groupby([<span class="st">'base_date'</span>])[<span class="st">'col2'</span>].shift(<span class="dv">1</span>)</span>
+<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a><span class="co"># base_date를 기준으로, col2에 대하여 shift 1 적용</span></span>
+<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 즉, 이전 행의 col2 값을 출력</span></span>
+<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb147-5"><a href="#cb147-5" aria-hidden="true" tabindex="-1"></a>df_sample[<span class="st">'col2_shift_lead1'</span>] <span class="op">=</span> df_sample.groupby([<span class="st">'base_date'</span>])[<span class="st">'col2'</span>].shift(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb147-6"><a href="#cb147-6" aria-hidden="true" tabindex="-1"></a><span class="co"># base_date를 기준으로, col2에 대하여 shift -1 적용</span></span>
+<span id="cb147-7"><a href="#cb147-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 즉, 다음 행의 col2 값을 출력</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>df_sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>base_date</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+      <th>col2_shift_lag1</th>
+      <th>col2_shift_lead1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-01-12</td>
+      <td>2</td>
+      <td>0</td>
+      <td>a</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-01-12</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+      <td>2.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-01-12</td>
+      <td>9</td>
+      <td>9</td>
+      <td>c</td>
+      <td>1.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-01-12</td>
+      <td>8</td>
+      <td>4</td>
+      <td>D</td>
+      <td>9.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-01-13</td>
+      <td>7</td>
+      <td>2</td>
+      <td>e</td>
+      <td>NaN</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-01-13</td>
+      <td>4</td>
+      <td>3</td>
+      <td>F</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="데이터-타입" class="level2">
 <h2 class="anchored" data-anchor-id="데이터-타입">6. 데이터 타입</h2>
 <section id="dtypes-컬럼들의-type-출력" class="level3">
 <h3 class="anchored" data-anchor-id="dtypes-컬럼들의-type-출력">6-1. dtypes : 컬럼들의 type 출력</h3>
 <div class="cell" data-execution_count="252">
-<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'float'</span>: [<span class="fl">1.0</span>],</span>
-<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'int'</span>: [<span class="dv">1</span>],</span>
-<span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'datetime'</span>: [pd.Timestamp(<span class="st">'20180310'</span>)],</span>
-<span id="cb141-4"><a href="#cb141-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'string'</span>: [<span class="st">'foo'</span>]})</span>
-<span id="cb141-5"><a href="#cb141-5" aria-hidden="true" tabindex="-1"></a>df.dtypes</span>
-<span id="cb141-6"><a href="#cb141-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 더 이상의 설명은 필요 없다!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'float'</span>: [<span class="fl">1.0</span>],</span>
+<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'int'</span>: [<span class="dv">1</span>],</span>
+<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'datetime'</span>: [pd.Timestamp(<span class="st">'20180310'</span>)],</span>
+<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'string'</span>: [<span class="st">'foo'</span>]})</span>
+<span id="cb149-5"><a href="#cb149-5" aria-hidden="true" tabindex="-1"></a>df.dtypes</span>
+<span id="cb149-6"><a href="#cb149-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 더 이상의 설명은 필요 없다!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="252">
 <pre><code>float              float64
 int                  int64
@@ -6328,10 +6950,10 @@ dtype: object</code></pre>
 <li>To select Pandas datetimetz dtypes, use ‘datetimetz’ (new in 0.20.0) or ‘datetime64[ns, tz]’</li>
 </ul>
 <div class="cell" data-execution_count="253">
-<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'a'</span>: [<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
-<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'b'</span>: [<span class="va">True</span>, <span class="va">False</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
-<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'c'</span>: [<span class="fl">1.0</span>, <span class="fl">2.0</span>] <span class="op">*</span> <span class="dv">3</span>})</span>
-<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'a'</span>: [<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'b'</span>: [<span class="va">True</span>, <span class="va">False</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb151-3"><a href="#cb151-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'c'</span>: [<span class="fl">1.0</span>, <span class="fl">2.0</span>] <span class="op">*</span> <span class="dv">3</span>})</span>
+<span id="cb151-4"><a href="#cb151-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="253">
 
 <div>
@@ -6388,7 +7010,7 @@ dtype: object</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="254">
-<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(include<span class="op">=</span><span class="st">'bool'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(include<span class="op">=</span><span class="st">'bool'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="254">
 
 <div>
@@ -6431,7 +7053,7 @@ dtype: object</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="255">
-<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(include<span class="op">=</span>[<span class="st">'float64'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(include<span class="op">=</span>[<span class="st">'float64'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="255">
 
 <div>
@@ -6474,7 +7096,7 @@ dtype: object</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="256">
-<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(exclude<span class="op">=</span>[<span class="st">'int64'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>df.select_dtypes(exclude<span class="op">=</span>[<span class="st">'int64'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="256">
 
 <div>
@@ -6532,9 +7154,9 @@ dtype: object</code></pre>
 <li>errors : ignore로 세팅하면, 에러 발생 시 원본을 반환하고 끝냄</li>
 </ul>
 <div class="cell" data-execution_count="257">
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {<span class="st">'col1'</span>: [<span class="dv">1</span>, <span class="dv">2</span>], <span class="st">'col2'</span>: [<span class="dv">3</span>, <span class="dv">4</span>]}</span>
-<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>d)</span>
-<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>df.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {<span class="st">'col1'</span>: [<span class="dv">1</span>, <span class="dv">2</span>], <span class="st">'col2'</span>: [<span class="dv">3</span>, <span class="dv">4</span>]}</span>
+<span id="cb155-2"><a href="#cb155-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>d)</span>
+<span id="cb155-3"><a href="#cb155-3" aria-hidden="true" tabindex="-1"></a>df.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="257">
 <pre><code>col1    int64
 col2    int64
@@ -6542,8 +7164,8 @@ dtype: object</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="258">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>df.astype({<span class="st">'col1'</span>: <span class="st">'int32'</span>}).dtypes</span>
-<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 잘 변경됐습니다~</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a>df.astype({<span class="st">'col1'</span>: <span class="st">'int32'</span>}).dtypes</span>
+<span id="cb157-2"><a href="#cb157-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 잘 변경됐습니다~</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="258">
 <pre><code>col1    int32
 col2    int64
@@ -6563,17 +7185,17 @@ dtype: object</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'month'</span>: [<span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'11월'</span>, <span class="st">'12월'</span>, <span class="st">'12월'</span>],</span>
-<span id="cb151-3"><a href="#cb151-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'fruits'</span>: [<span class="st">'apple'</span>, <span class="st">'orange'</span>, <span class="st">'banana'</span>, <span class="st">'banana'</span>, <span class="st">'apple'</span>, <span class="st">'apple'</span>, <span class="st">'banana'</span>],</span>
-<span id="cb151-4"><a href="#cb151-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'price'</span>: [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">250</span>, <span class="dv">300</span>, <span class="dv">150</span>, <span class="dv">200</span>, <span class="dv">400</span>],</span>
-<span id="cb151-5"><a href="#cb151-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'quantity'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
-<span id="cb151-6"><a href="#cb151-6" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb151-7"><a href="#cb151-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb151-8"><a href="#cb151-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_and_sqrt(x): <span class="co"># 이런 묘한 출력값이 필요한 상황이 있다고 치자.</span></span>
-<span id="cb151-9"><a href="#cb151-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.sqrt(np.mean(x))</span>
-<span id="cb151-10"><a href="#cb151-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb151-11"><a href="#cb151-11" aria-hidden="true" tabindex="-1"></a>df.groupby(by<span class="op">=</span>[<span class="st">'month'</span>,<span class="st">'fruits'</span>]).agg({<span class="st">'price'</span>:mean_and_exp, <span class="st">'quantity'</span>:np.<span class="bu">sum</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb159-2"><a href="#cb159-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'month'</span>: [<span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'10월'</span>, <span class="st">'11월'</span>, <span class="st">'12월'</span>, <span class="st">'12월'</span>],</span>
+<span id="cb159-3"><a href="#cb159-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'fruits'</span>: [<span class="st">'apple'</span>, <span class="st">'orange'</span>, <span class="st">'banana'</span>, <span class="st">'banana'</span>, <span class="st">'apple'</span>, <span class="st">'apple'</span>, <span class="st">'banana'</span>],</span>
+<span id="cb159-4"><a href="#cb159-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'price'</span>: [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">250</span>, <span class="dv">300</span>, <span class="dv">150</span>, <span class="dv">200</span>, <span class="dv">400</span>],</span>
+<span id="cb159-5"><a href="#cb159-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'quantity'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>]</span>
+<span id="cb159-6"><a href="#cb159-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb159-7"><a href="#cb159-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-8"><a href="#cb159-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_and_sqrt(x): <span class="co"># 이런 묘한 출력값이 필요한 상황이 있다고 치자.</span></span>
+<span id="cb159-9"><a href="#cb159-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.sqrt(np.mean(x))</span>
+<span id="cb159-10"><a href="#cb159-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb159-11"><a href="#cb159-11" aria-hidden="true" tabindex="-1"></a>df.groupby(by<span class="op">=</span>[<span class="st">'month'</span>,<span class="st">'fruits'</span>]).agg({<span class="st">'price'</span>:mean_and_exp, <span class="st">'quantity'</span>:np.<span class="bu">sum</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 
 <div>
@@ -6637,10 +7259,10 @@ dtype: object</code></pre>
 <li><p>실제로 사용했던 예시</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>agg_dict <span class="op">=</span> {key:np.<span class="bu">sum</span> <span class="cf">for</span> key <span class="kw">in</span> target_column} <span class="co"># 전부 집계함수 sum으로 세팅</span></span>
-<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a>agg_dict[<span class="st">'accountId'</span>] <span class="op">=</span> <span class="st">'count'</span> <span class="co"># accountId 수만 count로 세팅. accountId 수를 센다.</span></span>
-<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a>ready_for_stacked <span class="op">=</span> for_stackbar.groupby(by<span class="op">=</span>[<span class="st">'log_cate'</span>]).agg(agg_dict) <span class="co"># 집계 적용</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a>agg_dict <span class="op">=</span> {key:np.<span class="bu">sum</span> <span class="cf">for</span> key <span class="kw">in</span> target_column} <span class="co"># 전부 집계함수 sum으로 세팅</span></span>
+<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a>agg_dict[<span class="st">'accountId'</span>] <span class="op">=</span> <span class="st">'count'</span> <span class="co"># accountId 수만 count로 세팅. accountId 수를 센다.</span></span>
+<span id="cb160-3"><a href="#cb160-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-4"><a href="#cb160-4" aria-hidden="true" tabindex="-1"></a>ready_for_stacked <span class="op">=</span> for_stackbar.groupby(by<span class="op">=</span>[<span class="st">'log_cate'</span>]).agg(agg_dict) <span class="co"># 집계 적용</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -6649,8 +7271,8 @@ dtype: object</code></pre>
 <section id="read_excel" class="level3">
 <h3 class="anchored" data-anchor-id="read_excel">8-1. read_excel</h3>
 <div class="cell" data-tags="[]">
-<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>string_quest <span class="op">=</span> pd.read_excel(<span class="vs">r"C:\Users\Documents\data\string\string_quest.xlsx"</span>,</span>
-<span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a>                             header<span class="op">=</span><span class="dv">6</span>, usecols<span class="op">=</span><span class="st">"H,I"</span>, sheet_name <span class="op">=</span> <span class="st">"string_quest"</span>, engine<span class="op">=</span><span class="st">"openpyxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a>string_quest <span class="op">=</span> pd.read_excel(<span class="vs">r"C:\Users\Documents\data\string\string_quest.xlsx"</span>,</span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a>                             header<span class="op">=</span><span class="dv">6</span>, usecols<span class="op">=</span><span class="st">"H,I"</span>, sheet_name <span class="op">=</span> <span class="st">"string_quest"</span>, engine<span class="op">=</span><span class="st">"openpyxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>header : 몇 번째 row를 header로 할까?</li>
@@ -6665,16 +7287,16 @@ dtype: object</code></pre>
 <li>데이터프레임을 잘 구성했다면, 기본적으로는 아래와 같이 특별한 argument 없이 사용해도 별 문제는 없다.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> each_key <span class="kw">in</span> dict_account_id.keys():</span>
-<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>    target_dataframe <span class="op">=</span> pd.DataFrame.from_dict(dict_account_id[each_key])</span>
-<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>    target_dataframe.to_excel(<span class="ss">f"</span><span class="sc">{</span>each_key<span class="sc">}</span><span class="ss">_성장재료_출처.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> each_key <span class="kw">in</span> dict_account_id.keys():</span>
+<span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a>    target_dataframe <span class="op">=</span> pd.DataFrame.from_dict(dict_account_id[each_key])</span>
+<span id="cb162-3"><a href="#cb162-3" aria-hidden="true" tabindex="-1"></a>    target_dataframe.to_excel(<span class="ss">f"</span><span class="sc">{</span>each_key<span class="sc">}</span><span class="ss">_성장재료_출처.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>내용 추가 모드 (append)를 사용하고 싶다면, 아래와 같이 할 수 있다.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.ExcelWriter(<span class="st">'output.xlsx'</span>, mode<span class="op">=</span><span class="st">'a'</span>) <span class="im">as</span> writer: <span class="co"># mode='a'로 append 설정</span></span>
-<span id="cb155-2"><a href="#cb155-2" aria-hidden="true" tabindex="-1"></a>    df.to_excel(writer, sheet_name<span class="op">=</span><span class="st">'Sheet_name_3'</span>) <span class="co">#sheet 이름도 지정함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.ExcelWriter(<span class="st">'output.xlsx'</span>, mode<span class="op">=</span><span class="st">'a'</span>) <span class="im">as</span> writer: <span class="co"># mode='a'로 append 설정</span></span>
+<span id="cb163-2"><a href="#cb163-2" aria-hidden="true" tabindex="-1"></a>    df.to_excel(writer, sheet_name<span class="op">=</span><span class="st">'Sheet_name_3'</span>) <span class="co">#sheet 이름도 지정함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_excel.html</li>
@@ -6683,7 +7305,7 @@ dtype: object</code></pre>
 <section id="read_csv" class="level3">
 <h3 class="anchored" data-anchor-id="read_csv">8-3. read_csv</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
@@ -6691,10 +7313,10 @@ dtype: object</code></pre>
 <li>usercols : 어떤 열을 가져올까?</li>
 <li>chunksize : 파일이 너무 클 경우, 한 번에 불러올 행 수를 지정 가능. 이후 iterable하게 다음 size를 불러올 수 있다. 아래와 같이 사용.</li>
 </ul>
-<div class="sourceCode" id="cb157"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a>chunksize <span class="op">=</span> <span class="dv">10</span> <span class="op">**</span> <span class="dv">6</span></span>
-<span id="cb157-2"><a href="#cb157-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.read_csv(filename, chunksize<span class="op">=</span>chunksize) <span class="im">as</span> reader:</span>
-<span id="cb157-3"><a href="#cb157-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chunk <span class="kw">in</span> reader:</span>
-<span id="cb157-4"><a href="#cb157-4" aria-hidden="true" tabindex="-1"></a>        process(chunk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>chunksize <span class="op">=</span> <span class="dv">10</span> <span class="op">**</span> <span class="dv">6</span></span>
+<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.read_csv(filename, chunksize<span class="op">=</span>chunksize) <span class="im">as</span> reader:</span>
+<span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chunk <span class="kw">in</span> reader:</span>
+<span id="cb165-4"><a href="#cb165-4" aria-hidden="true" tabindex="-1"></a>        process(chunk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</li>
 </ul>
@@ -6702,7 +7324,7 @@ dtype: object</code></pre>
 <section id="to_csv" class="level3">
 <h3 class="anchored" data-anchor-id="to_csv">8-4. to_csv</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
@@ -6723,50 +7345,50 @@ dtype: object</code></pre>
 <li>dataframe-image 패키지도 matplotlib 기반이므로, 그냥 matplotlib를 사용</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> six</span>
-<span id="cb159-2"><a href="#cb159-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb159-3"><a href="#cb159-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
-<span id="cb159-4"><a href="#cb159-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-5"><a href="#cb159-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matplotlib에서 한글이 안 나오는 문제 해결</span></span>
-<span id="cb159-6"><a href="#cb159-6" aria-hidden="true" tabindex="-1"></a>NANUM <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothic.ttf'</span>)</span>
-<span id="cb159-7"><a href="#cb159-7" aria-hidden="true" tabindex="-1"></a>NANUM_bold <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothicBold.ttf'</span>)</span>
-<span id="cb159-8"><a href="#cb159-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-9"><a href="#cb159-9" aria-hidden="true" tabindex="-1"></a><span class="co"># centos라면 폰트 경로는 아래와 같음</span></span>
-<span id="cb159-10"><a href="#cb159-10" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumBarunGothic.ttf</span></span>
-<span id="cb159-11"><a href="#cb159-11" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumGothicBold.ttf</span></span>
-<span id="cb159-12"><a href="#cb159-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-13"><a href="#cb159-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_mpl_table(data, col_width<span class="op">=</span><span class="fl">3.0</span>, row_height<span class="op">=</span><span class="fl">0.625</span>, font_size_header<span class="op">=</span><span class="dv">16</span>, font_size<span class="op">=</span><span class="dv">14</span>,</span>
-<span id="cb159-14"><a href="#cb159-14" aria-hidden="true" tabindex="-1"></a>                     header_color<span class="op">=</span><span class="st">'#C2DED1'</span>, row_colors<span class="op">=</span>[<span class="st">'#f1f1f2'</span>, <span class="st">'w'</span>], edge_color<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb159-15"><a href="#cb159-15" aria-hidden="true" tabindex="-1"></a>                     bbox<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>], header_columns<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb159-16"><a href="#cb159-16" aria-hidden="true" tabindex="-1"></a>                     ax<span class="op">=</span><span class="va">None</span>, align_head<span class="op">=</span><span class="st">'center'</span>, align_cell<span class="op">=</span><span class="st">'center'</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb159-17"><a href="#cb159-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb159-18"><a href="#cb159-18" aria-hidden="true" tabindex="-1"></a><span class="co">    align_head, align_cell : [ 'center' | 'right' | 'left' ] </span></span>
-<span id="cb159-19"><a href="#cb159-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb159-20"><a href="#cb159-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb159-21"><a href="#cb159-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb159-22"><a href="#cb159-22" aria-hidden="true" tabindex="-1"></a>        size <span class="op">=</span> (np.array(data.shape[::<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>])) <span class="op">*</span> np.array([col_width, row_height])</span>
-<span id="cb159-23"><a href="#cb159-23" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>size)</span>
-<span id="cb159-24"><a href="#cb159-24" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb159-25"><a href="#cb159-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-26"><a href="#cb159-26" aria-hidden="true" tabindex="-1"></a>    mpl_table <span class="op">=</span> ax.table(cellText<span class="op">=</span>data.values, bbox<span class="op">=</span>bbox, colLabels<span class="op">=</span>data.columns, <span class="op">**</span>kwargs)</span>
-<span id="cb159-27"><a href="#cb159-27" aria-hidden="true" tabindex="-1"></a>    mpl_table.auto_set_font_size(<span class="va">False</span>)</span>
-<span id="cb159-28"><a href="#cb159-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-29"><a href="#cb159-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, cell <span class="kw">in</span>  six.iteritems(mpl_table._cells):</span>
-<span id="cb159-30"><a href="#cb159-30" aria-hidden="true" tabindex="-1"></a>        cell.set_edgecolor(edge_color)</span>
-<span id="cb159-31"><a href="#cb159-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> k[<span class="dv">1</span>] <span class="op">&lt;</span> header_columns:</span>
-<span id="cb159-32"><a href="#cb159-32" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(header_color)</span>
-<span id="cb159-33"><a href="#cb159-33" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(color<span class="op">=</span><span class="st">'black'</span>, fontproperties <span class="op">=</span> NANUM_bold, fontsize<span class="op">=</span>font_size_header, ha<span class="op">=</span>align_head)</span>
-<span id="cb159-34"><a href="#cb159-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb159-35"><a href="#cb159-35" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(row_colors[k[<span class="dv">0</span>]<span class="op">%</span><span class="bu">len</span>(row_colors)])</span>
-<span id="cb159-36"><a href="#cb159-36" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(fontproperties <span class="op">=</span> NANUM, fontsize<span class="op">=</span>font_size, ha<span class="op">=</span>align_cell)</span>
-<span id="cb159-37"><a href="#cb159-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
-<span id="cb159-38"><a href="#cb159-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-39"><a href="#cb159-39" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> render_mpl_table(caller, col_width<span class="op">=</span><span class="fl">2.0</span>, align_head<span class="op">=</span><span class="st">'left'</span>)</span>
-<span id="cb159-40"><a href="#cb159-40" aria-hidden="true" tabindex="-1"></a>image</span>
-<span id="cb159-41"><a href="#cb159-41" aria-hidden="true" tabindex="-1"></a>image.figure.savefig(<span class="st">"caller.png"</span>) <span class="co"># 이미지 저장</span></span>
-<span id="cb159-42"><a href="#cb159-42" aria-hidden="true" tabindex="-1"></a><span class="co"># crontab으로 돌릴 것이라면 이미지 저장 경로도 절대경로로 지정</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> six</span>
+<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
+<span id="cb167-4"><a href="#cb167-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-5"><a href="#cb167-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matplotlib에서 한글이 안 나오는 문제 해결</span></span>
+<span id="cb167-6"><a href="#cb167-6" aria-hidden="true" tabindex="-1"></a>NANUM <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothic.ttf'</span>)</span>
+<span id="cb167-7"><a href="#cb167-7" aria-hidden="true" tabindex="-1"></a>NANUM_bold <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'C:\Users\limyj0708\AppData\Local\Microsoft\Windows\Fonts\NanumBarunGothicBold.ttf'</span>)</span>
+<span id="cb167-8"><a href="#cb167-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-9"><a href="#cb167-9" aria-hidden="true" tabindex="-1"></a><span class="co"># centos라면 폰트 경로는 아래와 같음</span></span>
+<span id="cb167-10"><a href="#cb167-10" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumBarunGothic.ttf</span></span>
+<span id="cb167-11"><a href="#cb167-11" aria-hidden="true" tabindex="-1"></a> <span class="co">## /usr/share/fonts/NanumFont/NanumGothicBold.ttf</span></span>
+<span id="cb167-12"><a href="#cb167-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-13"><a href="#cb167-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_mpl_table(data, col_width<span class="op">=</span><span class="fl">3.0</span>, row_height<span class="op">=</span><span class="fl">0.625</span>, font_size_header<span class="op">=</span><span class="dv">16</span>, font_size<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb167-14"><a href="#cb167-14" aria-hidden="true" tabindex="-1"></a>                     header_color<span class="op">=</span><span class="st">'#C2DED1'</span>, row_colors<span class="op">=</span>[<span class="st">'#f1f1f2'</span>, <span class="st">'w'</span>], edge_color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb167-15"><a href="#cb167-15" aria-hidden="true" tabindex="-1"></a>                     bbox<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>], header_columns<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb167-16"><a href="#cb167-16" aria-hidden="true" tabindex="-1"></a>                     ax<span class="op">=</span><span class="va">None</span>, align_head<span class="op">=</span><span class="st">'center'</span>, align_cell<span class="op">=</span><span class="st">'center'</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb167-17"><a href="#cb167-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb167-18"><a href="#cb167-18" aria-hidden="true" tabindex="-1"></a><span class="co">    align_head, align_cell : [ 'center' | 'right' | 'left' ] </span></span>
+<span id="cb167-19"><a href="#cb167-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb167-20"><a href="#cb167-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb167-21"><a href="#cb167-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb167-22"><a href="#cb167-22" aria-hidden="true" tabindex="-1"></a>        size <span class="op">=</span> (np.array(data.shape[::<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>])) <span class="op">*</span> np.array([col_width, row_height])</span>
+<span id="cb167-23"><a href="#cb167-23" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>size)</span>
+<span id="cb167-24"><a href="#cb167-24" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb167-25"><a href="#cb167-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-26"><a href="#cb167-26" aria-hidden="true" tabindex="-1"></a>    mpl_table <span class="op">=</span> ax.table(cellText<span class="op">=</span>data.values, bbox<span class="op">=</span>bbox, colLabels<span class="op">=</span>data.columns, <span class="op">**</span>kwargs)</span>
+<span id="cb167-27"><a href="#cb167-27" aria-hidden="true" tabindex="-1"></a>    mpl_table.auto_set_font_size(<span class="va">False</span>)</span>
+<span id="cb167-28"><a href="#cb167-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-29"><a href="#cb167-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, cell <span class="kw">in</span>  six.iteritems(mpl_table._cells):</span>
+<span id="cb167-30"><a href="#cb167-30" aria-hidden="true" tabindex="-1"></a>        cell.set_edgecolor(edge_color)</span>
+<span id="cb167-31"><a href="#cb167-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> k[<span class="dv">1</span>] <span class="op">&lt;</span> header_columns:</span>
+<span id="cb167-32"><a href="#cb167-32" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(header_color)</span>
+<span id="cb167-33"><a href="#cb167-33" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(color<span class="op">=</span><span class="st">'black'</span>, fontproperties <span class="op">=</span> NANUM_bold, fontsize<span class="op">=</span>font_size_header, ha<span class="op">=</span>align_head)</span>
+<span id="cb167-34"><a href="#cb167-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb167-35"><a href="#cb167-35" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(row_colors[k[<span class="dv">0</span>]<span class="op">%</span><span class="bu">len</span>(row_colors)])</span>
+<span id="cb167-36"><a href="#cb167-36" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(fontproperties <span class="op">=</span> NANUM, fontsize<span class="op">=</span>font_size, ha<span class="op">=</span>align_cell)</span>
+<span id="cb167-37"><a href="#cb167-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
+<span id="cb167-38"><a href="#cb167-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-39"><a href="#cb167-39" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> render_mpl_table(caller, col_width<span class="op">=</span><span class="fl">2.0</span>, align_head<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb167-40"><a href="#cb167-40" aria-hidden="true" tabindex="-1"></a>image</span>
+<span id="cb167-41"><a href="#cb167-41" aria-hidden="true" tabindex="-1"></a>image.figure.savefig(<span class="st">"caller.png"</span>) <span class="co"># 이미지 저장</span></span>
+<span id="cb167-42"><a href="#cb167-42" aria-hidden="true" tabindex="-1"></a><span class="co"># crontab으로 돌릴 것이라면 이미지 저장 경로도 절대경로로 지정</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="2021-11-05-pandas_cheatsheet_files/figure-html/cell-129-output-1.png" class="img-fluid"></p>
+<p><img src="2021-11-05-pandas_cheatsheet_files/figure-html/cell-137-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 
