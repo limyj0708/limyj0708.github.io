@@ -9,7 +9,7 @@
 <meta name="author" content="limyj0708">
 <meta name="dcterms.date" content="2020-02-11">
 
-<title>Lim’s Code Archive - Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</title>
+<title>Lim’s Code Archive - 1. Redshift</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,10 +147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#redshift" id="toc-redshift" class="nav-link active" data-scroll-target="#redshift">1. Redshift</a>
-  <ul class="collapse">
-  <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
-  </ul></li>
+  <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link active" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
   <li><a href="#psycopg2" id="toc-psycopg2" class="nav-link" data-scroll-target="#psycopg2">2. psycopg2</a>
   <ul class="collapse">
   <li><a href="#query-parameter-전달-시의-유의점" id="toc-query-parameter-전달-시의-유의점" class="nav-link" data-scroll-target="#query-parameter-전달-시의-유의점">2-1. Query parameter 전달 시의 유의점</a></li>
@@ -168,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</h1>
+<h1 class="title">1. Redshift</h1>
   <div class="quarto-categories">
     <div class="quarto-category">학습_정리</div>
   </div>
@@ -198,8 +195,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="redshift" class="level2">
-<h2 class="anchored" data-anchor-id="redshift">1. Redshift</h2>
 <section id="대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="level3">
 <h3 class="anchored" data-anchor-id="대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h3>
 <ul>
@@ -246,7 +241,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        con.commit()</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(each_code,<span class="st">'_commit complete'</span>)</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    cur_2.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
 </section>
 <section id="psycopg2" class="level2">
 <h2 class="anchored" data-anchor-id="psycopg2">2. psycopg2</h2>
