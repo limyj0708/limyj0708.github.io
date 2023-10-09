@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2021-11-05">
+
+<title>Lim’s Code Archive - (04) Dataframe 결합</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Lim’s Code Archive</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/limyj0708" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/feed/" rel="" target=""><i class="bi bi-Linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#위아래로-붙이는-단순-결합의-경우-어떤-방식이-가장-빠른가" id="toc-위아래로-붙이는-단순-결합의-경우-어떤-방식이-가장-빠른가" class="nav-link active" data-scroll-target="#위아래로-붙이는-단순-결합의-경우-어떤-방식이-가장-빠른가"><span class="header-section-number">1</span> 위아래로 붙이는 단순 결합의 경우, 어떤 방식이 가장 빠른가?</a>
+  <ul class="collapse">
+  <li><a href="#concat" id="toc-concat" class="nav-link" data-scroll-target="#concat"><span class="header-section-number">1.1</span> concat</a></li>
+  </ul></li>
+  <li><a href="#merge-database의-join처럼-dataframe-합치기" id="toc-merge-database의-join처럼-dataframe-합치기" class="nav-link" data-scroll-target="#merge-database의-join처럼-dataframe-합치기"><span class="header-section-number">2</span> Merge : Database의 Join처럼 Dataframe 합치기</a>
+  <ul class="collapse">
+  <li><a href="#dataframe-join의-속도를-향상시키기-위해서는" id="toc-dataframe-join의-속도를-향상시키기-위해서는" class="nav-link" data-scroll-target="#dataframe-join의-속도를-향상시키기-위해서는"><span class="header-section-number">2.1</span> Dataframe Join의 속도를 향상시키기 위해서는?</a></li>
+  </ul></li>
+  <li><a href="#join-merge보다-빠르다" id="toc-join-merge보다-빠르다" class="nav-link" data-scroll-target="#join-merge보다-빠르다"><span class="header-section-number">3</span> Join : Merge보다 빠르다</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">(04) Dataframe 결합</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">pandas</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>limyj0708 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 5, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-tags="[]" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display_html, display</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_multiple_dfs(dfs:<span class="bu">list</span>, styles, margin<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    display_target <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> each_df <span class="kw">in</span> dfs:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        each_df_html <span class="op">=</span> each_df[<span class="dv">0</span>].style.set_caption(<span class="ss">f'&lt;b&gt;</span><span class="sc">{</span>each_df[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;'</span>).set_table_styles(styles).set_table_attributes(<span class="ss">f"style='display:inline;margin:</span><span class="sc">{</span>margin<span class="sc">}</span><span class="ss">px'"</span>)._repr_html_()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        display_target <span class="op">+=</span> each_df_html</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    display_html(display_target, raw <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>styles <span class="op">=</span> [</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"selector"</span> : <span class="st">"caption"</span>, <span class="st">"props"</span> : <span class="st">"text-align:center; font-size:16px"</span>}</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="위아래로-붙이는-단순-결합의-경우-어떤-방식이-가장-빠른가" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 위아래로 붙이는 단순 결합의 경우, 어떤 방식이 가장 빠른가?</h1>
+<ul>
+<li>결론부터 말하자면 데이터를 Dictionary의 리스트로 관리하다가 마지막에 Dataframe으로 만드는 것이 가장 빠르다.
+<ul>
+<li><a href="https://stackoverflow.com/questions/57000903/what-is-the-fastest-and-most-efficient-way-to-append-rows-to-a-dataframe">https://stackoverflow.com/questions/57000903/what-is-the-fastest-and-most-efficient-way-to-append-rows-to-a-dataframe</a></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  start_time <span class="op">=</span> time.time()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dictinary_list <span class="op">=</span> []</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, end_value, <span class="dv">1</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      dictionary_data <span class="op">=</span> {k: random.random() <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>)}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      dictionary_list.append(dictionary_data)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  df_final <span class="op">=</span> pd.DataFrame.from_dict(dictionary_list)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  end_time <span class="op">=</span> time.time()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">'Execution time = </span><span class="sc">%.6f</span><span class="st"> seconds'</span> <span class="op">%</span> (end_time<span class="op">-</span>start_time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>그럼 리스트 합치는 건 뭐가 제일 빠르지?
+<ul>
+<li><a href="https://www.realpythonproject.com/day15-the-fastest-way-to-combine-lists-in-python/">https://www.realpythonproject.com/day15-the-fastest-way-to-combine-lists-in-python/</a></li>
+<li>append() is the fastest but it doesn’t combine the elements of both the lists. <strong>The + operator seems to be the ideal option.</strong> However, this has been done on a comparatively smaller dataset and results may vary when you try it on your own.</li>
+</ul></li>
+</ul></li>
+<li>인생은 항상 원하는대로 흘러가지 않기에, 다른 방법도 알아보자.</li>
+</ul>
+<section id="concat" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="concat"><span class="header-section-number">1.1</span> concat</h2>
+<p><code>pandas.concat(objs, axis=0, join='outer', ignore_index=False, keys=None, levels=None, names=None, verify_integrity=False, sort=False, copy=True)</code></p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> pd.Series([<span class="st">'a'</span>, <span class="st">'b'</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> pd.Series([<span class="st">'c'</span>, <span class="st">'d'</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>pd.concat([s1, s2]) <span class="co"># Series 두 개 합치기</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>0    a
+1    b
+0    c
+1    d
+dtype: object</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pd.concat([s1, s2], ignore_index<span class="op">=</span><span class="va">True</span>) <span class="co"># 합치면서 index 새로 만들어줌</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>0    a
+1    b
+2    c
+3    d
+dtype: object</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> pd.concat([s1, s2], keys<span class="op">=</span>[<span class="st">'s1'</span>, <span class="st">'s2'</span>]) <span class="co"># 최외각 레벨에 새로운 index를 만들어줌</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3[<span class="st">'s1'</span>]) </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3[<span class="st">'s2'</span>][<span class="dv">0</span>]) <span class="co"># 이렇게 조회가능</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>s1  0    a
+    1    b
+s2  0    c
+    1    d
+dtype: object
+0    a
+1    b
+dtype: object
+c</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>s3 <span class="op">=</span> pd.concat([s1, s2], keys<span class="op">=</span>[<span class="st">'s1'</span>, <span class="st">'s2'</span>], names<span class="op">=</span>[<span class="st">'Series name'</span>, <span class="st">'Row ID'</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># index에 이름 붙이기</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3.index)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s3.index.names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series name  Row ID
+s1           0         a
+             1         b
+s2           0         c
+             1         d
+dtype: object
+MultiIndex([('s1', 0),
+            ('s1', 1),
+            ('s2', 0),
+            ('s2', 1)],
+           names=['Series name', 'Row ID'])
+['Series name', 'Row ID']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame([[<span class="st">'a'</span>, <span class="dv">1</span>], [<span class="st">'b'</span>, <span class="dv">2</span>]], columns<span class="op">=</span>[<span class="st">'letter'</span>, <span class="st">'number'</span>])</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df1)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame([[<span class="st">'c'</span>, <span class="dv">3</span>], [<span class="st">'d'</span>, <span class="dv">4</span>]], columns<span class="op">=</span>[<span class="st">'letter'</span>, <span class="st">'number'</span>])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df2)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>pd.concat([df1, df2]) <span class="co"># Dataframe 합치기</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  letter  number
+0      a       1
+1      b       2
+  letter  number
+0      c       3
+1      d       4</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">letter</th>
+<th data-quarto-table-cell-role="th">number</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>c</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>d</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> pd.DataFrame([[<span class="st">'c'</span>, <span class="dv">3</span>, <span class="st">'cat'</span>], [<span class="st">'d'</span>, <span class="dv">4</span>, <span class="st">'dog'</span>]],</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                   columns<span class="op">=</span>[<span class="st">'letter'</span>, <span class="st">'number'</span>, <span class="st">'animal'</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df3)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>pd.concat([df1, df3], sort<span class="op">=</span><span class="va">False</span>) <span class="co"># 한 쪽에 없는 컬럼의 값은 NaN으로 삽입됨</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  letter  number animal
+0      c       3    cat
+1      d       4    dog</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">letter</th>
+<th data-quarto-table-cell-role="th">number</th>
+<th data-quarto-table-cell-role="th">animal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>a</td>
+<td>1</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>b</td>
+<td>2</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>c</td>
+<td>3</td>
+<td>cat</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>d</td>
+<td>4</td>
+<td>dog</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pd.concat([df1, df3], join<span class="op">=</span><span class="st">"inner"</span>) <span class="co"># join="inner"로 하면 양쪽에 다 있는 컬럼만 합쳐서 반환함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">letter</th>
+<th data-quarto-table-cell-role="th">number</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>c</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>d</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> pd.DataFrame([[<span class="st">'bird'</span>, <span class="st">'polly'</span>], [<span class="st">'monkey'</span>, <span class="st">'george'</span>]],</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                   columns<span class="op">=</span>[<span class="st">'animal'</span>, <span class="st">'name'</span>])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>pd.concat([df1, df4], axis<span class="op">=</span><span class="dv">1</span>) <span class="co"># axis=1이면 컬럼을 붙임</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">letter</th>
+<th data-quarto-table-cell-role="th">number</th>
+<th data-quarto-table-cell-role="th">animal</th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>a</td>
+<td>1</td>
+<td>bird</td>
+<td>polly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>b</td>
+<td>2</td>
+<td>monkey</td>
+<td>george</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> pd.DataFrame([[<span class="st">'bird'</span>, <span class="st">'polly'</span>], [<span class="st">'monkey'</span>, <span class="st">'george'</span>], [<span class="st">'dog'</span>, <span class="st">'sam'</span>]],</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                   columns<span class="op">=</span>[<span class="st">'animal'</span>, <span class="st">'name'</span>])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>pd.concat([df1, df4], axis<span class="op">=</span><span class="dv">1</span>) </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># axis=1이면 컬럼을 붙임</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 행의 수가 다르면, 행이 적은 쪽에 NaN이 삽입된 행이 추가됨</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">letter</th>
+<th data-quarto-table-cell-role="th">number</th>
+<th data-quarto-table-cell-role="th">animal</th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>a</td>
+<td>1.0</td>
+<td>bird</td>
+<td>polly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>b</td>
+<td>2.0</td>
+<td>monkey</td>
+<td>george</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>dog</td>
+<td>sam</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df5 <span class="op">=</span> pd.DataFrame([<span class="dv">1</span>], index<span class="op">=</span>[<span class="st">'a'</span>])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>df6 <span class="op">=</span> pd.DataFrame([<span class="dv">2</span>], index<span class="op">=</span>[<span class="st">'a'</span>])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>pd.concat([df5, df6], verify_integrity<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># verify_integrity=True를 하면, index가 같은 것을 허용하지 않음.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: Indexes have overlapping values: Index(['a'], dtype='object')</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="merge-database의-join처럼-dataframe-합치기" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Merge : Database의 Join처럼 Dataframe 합치기</h1>
+<p><code>DataFrame.merge(right, how='inner', on=None, left_on=None, right_on=None, left_index=False, right_index=False, sort=False, suffixes=('_x', '_y'), copy=True, indicator=False, validate=None)</code></p>
+<ul>
+<li>right : 합칠 Dataframe</li>
+<li>how : {‘left’, ‘right’, ‘outer’, ‘inner’, ‘cross’}, default ‘inner’
+<ul>
+<li>left: use only keys from left frame, similar to a SQL left outer join; preserve key order.</li>
+<li>right: use only keys from right frame, similar to a SQL right outer join; preserve key order.</li>
+<li>outer: use union of keys from both frames, similar to a SQL full outer join; sort keys lexicographically.</li>
+<li>inner: use intersection of keys from both frames, similar to a SQL inner join; preserve the order of the left keys.</li>
+<li>cross: creates the cartesian product from both frames, preserves the order of the left keys.</li>
+</ul></li>
+<li>on : label or list
+<ul>
+<li>조인할 컬럼이나 인덱스 레벨의 이름. 두 Dataframe에 무조건 있어야 한다.</li>
+</ul></li>
+<li>left_on : label or list, or array-like
+<ul>
+<li>왼쪽 Dataframe의 조인할 컬럼이나 인덱스 레벨의 이름.</li>
+</ul></li>
+<li>right_on : label or list, or array-like
+<ul>
+<li>오른쪽 Dataframe의 조인할 컬럼이나 인덱스 레벨의 이름.</li>
+</ul></li>
+<li>left_index : bool, default False
+<ul>
+<li>왼쪽 index를 조인의 key로 사용할까요?</li>
+<li>MultiIndex인 경우, 상대 Dataframe의 key 수가 level의 수와 동일해야 함.</li>
+</ul></li>
+<li>right_index : bool, default False
+<ul>
+<li>오른쪽 index를 조인의 key로 사용할까요?</li>
+<li>MultiIndex인 경우, 상대 Dataframe의 key 수가 level의 수와 동일해야 함.</li>
+</ul></li>
+<li>sort : bool, default False
+<ul>
+<li>조인 결과 Dataframe에서 key를 사전 순서(lexicographically)로 배열함</li>
+<li>False인 경우, 조인 방법에 정의된 방법을 따라감</li>
+</ul></li>
+<li>suffixes : list-like, default is (“_x”, “_y”)
+<ul>
+<li>컬럼에 접미사를 붙인다. 왼쪽 오른쪽 구분용.</li>
+<li>기본적으로 왼쪽에 _x, 오른쪽에 _y가 붙는다.</li>
+</ul></li>
+<li>copy : bool, default True
+<ul>
+<li>False면, 가능하면 복사를 피한다.</li>
+</ul></li>
+<li>indicator : bool or str, default False</li>
+<li>validate : str, optional
+<ul>
+<li>If specified, checks if merge is of specified type.
+<ul>
+<li>“one_to_one” or “1:1”: check if merge keys are unique in both left and right datasets.</li>
+<li>“one_to_many” or “1:m”: check if merge keys are unique in left dataset.</li>
+<li>“many_to_one” or “m:1”: check if merge keys are unique in right dataset.</li>
+<li>“many_to_many” or “m:m”: allowed, but does not result in checks.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame({<span class="st">'lkey'</span>: [<span class="st">'foo'</span>, <span class="st">'bar'</span>, <span class="st">'baz'</span>, <span class="st">'foo'</span>], <span class="st">'value'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>]})</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({<span class="st">'rkey'</span>: [<span class="st">'foo'</span>, <span class="st">'bar'</span>, <span class="st">'baz'</span>, <span class="st">'foo'</span>], <span class="st">'value'</span>: [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]})</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>display_multiple_dfs([[df1, <span class="st">''</span>], [df2, <span class="st">''</span>]], styles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df_x <span class="op">=</span> df1.merge(df2, left_on<span class="op">=</span><span class="st">'lkey'</span>, right_on<span class="op">=</span><span class="st">'rkey'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 뒤에 _x, _y가 붙은 것을 확인.</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df_suffix <span class="op">=</span> df1.merge(df2, left_on<span class="op">=</span><span class="st">'lkey'</span>, right_on<span class="op">=</span><span class="st">'rkey'</span>, suffixes<span class="op">=</span>(<span class="st">'_left'</span>, <span class="st">'_right'</span>))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># _left, _right로 바꿔 보았음</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>display_multiple_dfs([[df_x, <span class="st">''</span>], [df_suffix, <span class="st">''</span>]], styles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame({<span class="st">'a'</span>: [<span class="st">'foo'</span>, <span class="st">'bar'</span>], <span class="st">'b'</span>: [<span class="dv">1</span>, <span class="dv">2</span>]})</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({<span class="st">'a'</span>: [<span class="st">'foo'</span>, <span class="st">'baz'</span>], <span class="st">'c'</span>: [<span class="dv">3</span>, <span class="dv">4</span>]})</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>display_multiple_dfs([[df1, <span class="st">''</span>], [df2, <span class="st">''</span>]], styles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, how<span class="op">=</span><span class="st">'inner'</span>, on<span class="op">=</span><span class="st">'a'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a 컬럼을 키로 잡음. 두 Dataframe에 다 a 컬럼이 있어서 가능한것</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'a'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># left outer join</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, how<span class="op">=</span><span class="st">'left'</span>, left_on<span class="op">=</span><span class="st">'a'</span>, right_on<span class="op">=</span><span class="st">'a'</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># left outer join</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="dataframe-join의-속도를-향상시키기-위해서는" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="dataframe-join의-속도를-향상시키기-위해서는"><span class="header-section-number">2.1</span> Dataframe Join의 속도를 향상시키기 위해서는?</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/40860457/improve-pandas-merge-performance">https://stackoverflow.com/questions/40860457/improve-pandas-merge-performance</a></li>
+<li>key를 index로 사용한다.
+<ul>
+<li>index 검색 시에는 hash table을 이용하기 때문</li>
+<li>A short explanation why it is faster to merge by index instead of by a “normal” column: Indices have a hash table. Meaning you can look them up in amortized O(1). For a normal column you need O(n) in worst case, meaning merging two dfs with len n takes O(n^2) in worst case.</li>
+</ul></li>
+<li>join을 쓴다.</li>
+<li>concat을 쓴다.</li>
+</ul>
+<p><strong>여기서의 결론</strong> : key를 index로 사용한 후 join을 쓴다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.DataFrame({<span class="st">'uid_sample'</span>: random.sample(<span class="bu">range</span>(<span class="dv">100000</span>), <span class="dv">80000</span>), <span class="st">'value'</span>: random.sample(<span class="bu">range</span>(<span class="dv">10000000</span>), <span class="dv">80000</span>)})</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({<span class="st">'userId_sample2'</span>: random.sample(<span class="bu">range</span>(<span class="dv">100000</span>), <span class="dv">80000</span>), <span class="st">'value'</span>: random.sample(<span class="bu">range</span>(<span class="dv">10000000</span>), <span class="dv">80000</span>)})</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 80000명의 정보를 담고 있는 두 Dataframe이 있다고 하자.</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># uid_sample, userId_sample2를 key로 조인하고 싶다.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df1.merge(df2, how<span class="op">=</span><span class="st">'left'</span>, left_on<span class="op">=</span><span class="st">'uid_sample'</span>, right_on<span class="op">=</span><span class="st">'userId_sample2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># key로 사용하려는 컬럼을 index로 할당</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 10%정도 빨라졌다.</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> df1.set_index(<span class="st">'uid_sample'</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> df2.set_index(<span class="st">'userId_sample2'</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>df3.merge(df4, right_index<span class="op">=</span><span class="va">True</span>, left_index<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># key로 사용하려는 컬럼을 index로 할당</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># join 함수 사용</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 여기서 이미 3배 빨라졌다</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> df1.set_index(<span class="st">'uid_sample'</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> df2.set_index(<span class="st">'userId_sample2'</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>df3.join(df4, how<span class="op">=</span><span class="st">'left'</span>, lsuffix<span class="op">=</span><span class="st">'left'</span>, rsuffix<span class="op">=</span><span class="st">'right'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># inner, outer밖에 안 되는데 join보다 느리다.</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> df1.set_index(<span class="st">'uid_sample'</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> df2.set_index(<span class="st">'userId_sample2'</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>pd.concat([df3, df4], axis<span class="op">=</span><span class="dv">1</span>, join<span class="op">=</span><span class="st">'inner'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="join-merge보다-빠르다" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Join : Merge보다 빠르다</h1>
+<p><code>DataFrame.join(other, on=None, how='left', lsuffix='', rsuffix='', sort=False)</code></p>
+<ul>
+<li>other : 다른 데이터프레임, 혹은 시리즈, 혹은 데이터프레임 리스트
+<ul>
+<li>함수를 호출한 데이터프레임에 붙일 대상</li>
+</ul></li>
+<li>on : 조인 키가 될 컬럼 이름, 혹은 컬럼 이름 리스트(array-like 자료형이면 됨)</li>
+<li>how
+<ul>
+<li>left : 함수를 호출한 데이터프레임(caller)의 index를 조인 키로 사용. on에서 컬럼을 지정했을 경우, 그 컬럼을 사용</li>
+<li>right : other 패러미터에 할당된 객체의 index를 사용</li>
+<li>outer : outer join 실행 후, 사전 순으로 정렬함. 기본적으론 양쪽 다 index를 사용. on에서 지정하면 caller만 해당 컬럼 사용.</li>
+<li>inner : inner join 실행. caller의 순서 보존됨.</li>
+<li>cross : 양쪽의 곱집합 생성. left key(caller)의 순서 보존됨.</li>
+</ul></li>
+<li>lsuffix, rsuffix : join된 결과물 컬럼의 접미사 세팅.</li>
+<li>sort : TRUE면, join key의 사전 순서대로 정렬됨. FALSE면, how에서의 기본 처리방식을 따름.</li>
+</ul>
+<div class="cell" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>caller <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>, <span class="st">'K3'</span>, <span class="st">'K4'</span>, <span class="st">'K5'</span>], <span class="st">'A'</span>: [<span class="st">'A0'</span>, <span class="st">'A1'</span>, <span class="st">'A2'</span>, <span class="st">'A3'</span>, <span class="st">'A4'</span>, <span class="st">'A5'</span>]})</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>other <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>], <span class="st">'B'</span>: [<span class="st">'B0'</span>, <span class="st">'B1'</span>, <span class="st">'B2'</span>]})</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>other2 <span class="op">=</span> pd.DataFrame({<span class="st">'key'</span>: [<span class="st">'K0'</span>, <span class="st">'K1'</span>, <span class="st">'K2'</span>], <span class="st">'C'</span>: [<span class="st">'C0'</span>, <span class="st">'C1'</span>, <span class="st">'C2'</span>]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>display_multiple_dfs([[caller, <span class="st">'caller'</span>], [other, <span class="st">'other'</span>], [other2, <span class="st">'other2'</span>]], styles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<style type="text/css">
+#T_e56e2 caption {
+  text-align: center;
+  font-size: 16px;
+}
+</style>
+
+<table id="T_e56e2" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption><strong>caller</strong></caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_e56e2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">key</th>
+<th id="T_e56e2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_e56e2_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">0</td>
+<td id="T_e56e2_row0_col0" class="data row0 col0">K0</td>
+<td id="T_e56e2_row0_col1" class="data row0 col1">A0</td>
+</tr>
+<tr class="even">
+<td id="T_e56e2_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">1</td>
+<td id="T_e56e2_row1_col0" class="data row1 col0">K1</td>
+<td id="T_e56e2_row1_col1" class="data row1 col1">A1</td>
+</tr>
+<tr class="odd">
+<td id="T_e56e2_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">2</td>
+<td id="T_e56e2_row2_col0" class="data row2 col0">K2</td>
+<td id="T_e56e2_row2_col1" class="data row2 col1">A2</td>
+</tr>
+<tr class="even">
+<td id="T_e56e2_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">3</td>
+<td id="T_e56e2_row3_col0" class="data row3 col0">K3</td>
+<td id="T_e56e2_row3_col1" class="data row3 col1">A3</td>
+</tr>
+<tr class="odd">
+<td id="T_e56e2_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">4</td>
+<td id="T_e56e2_row4_col0" class="data row4 col0">K4</td>
+<td id="T_e56e2_row4_col1" class="data row4 col1">A4</td>
+</tr>
+<tr class="even">
+<td id="T_e56e2_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">5</td>
+<td id="T_e56e2_row5_col0" class="data row5 col0">K5</td>
+<td id="T_e56e2_row5_col1" class="data row5 col1">A5</td>
+</tr>
+</tbody>
+</table>
+<table id="T_864f0" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption><strong>other</strong></caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_864f0_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">key</th>
+<th id="T_864f0_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_864f0_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">0</td>
+<td id="T_864f0_row0_col0" class="data row0 col0">K0</td>
+<td id="T_864f0_row0_col1" class="data row0 col1">B0</td>
+</tr>
+<tr class="even">
+<td id="T_864f0_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">1</td>
+<td id="T_864f0_row1_col0" class="data row1 col0">K1</td>
+<td id="T_864f0_row1_col1" class="data row1 col1">B1</td>
+</tr>
+<tr class="odd">
+<td id="T_864f0_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">2</td>
+<td id="T_864f0_row2_col0" class="data row2 col0">K2</td>
+<td id="T_864f0_row2_col1" class="data row2 col1">B2</td>
+</tr>
+</tbody>
+</table>
+<table id="T_d6fb7" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption><strong>other2</strong></caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_d6fb7_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">key</th>
+<th id="T_d6fb7_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_d6fb7_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">0</td>
+<td id="T_d6fb7_row0_col0" class="data row0 col0">K0</td>
+<td id="T_d6fb7_row0_col1" class="data row0 col1">C0</td>
+</tr>
+<tr class="even">
+<td id="T_d6fb7_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">1</td>
+<td id="T_d6fb7_row1_col0" class="data row1 col0">K1</td>
+<td id="T_d6fb7_row1_col1" class="data row1 col1">C1</td>
+</tr>
+<tr class="odd">
+<td id="T_d6fb7_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">2</td>
+<td id="T_d6fb7_row2_col0" class="data row2 col0">K2</td>
+<td id="T_d6fb7_row2_col1" class="data row2 col1">C2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 이러면 index 0,1,2,3,4,5 기준으로 join됨</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>caller.join(other, lsuffix<span class="op">=</span><span class="st">'_caller'</span>, rsuffix<span class="op">=</span><span class="st">'_other'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">key_caller</th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">key_other</th>
+<th data-quarto-table-cell-role="th">B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>K0</td>
+<td>A0</td>
+<td>K0</td>
+<td>B0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>K1</td>
+<td>A1</td>
+<td>K1</td>
+<td>B1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>K2</td>
+<td>A2</td>
+<td>K2</td>
+<td>B2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>K3</td>
+<td>A3</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>K4</td>
+<td>A4</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>K5</td>
+<td>A5</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set_index로 조인 키로 쓰고 싶은 컬럼을 index로 만들어주는 방법이 있음</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>caller.set_index(<span class="st">'key'</span>).join(other.set_index(<span class="st">'key'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">B</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">key</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K0</td>
+<td>A0</td>
+<td>B0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K1</td>
+<td>A1</td>
+<td>B1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K2</td>
+<td>A2</td>
+<td>B2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K3</td>
+<td>A3</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K4</td>
+<td>A4</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K5</td>
+<td>A5</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 혹은, other만 조인 키로 쓰고 싶은 컬럼을 index로 만들어 주고,</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># on에다 조인 키로 쓰고 싶은 caller의 컬럼을 할당하는 방법이 있음</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>caller.join(other.set_index(<span class="st">'key'</span>), on<span class="op">=</span><span class="st">'key'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">key</th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>K0</td>
+<td>A0</td>
+<td>B0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>K1</td>
+<td>A1</td>
+<td>B1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>K2</td>
+<td>A2</td>
+<td>B2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>K3</td>
+<td>A3</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>K4</td>
+<td>A4</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>K5</td>
+<td>A5</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 한 번에 여러 개의 Dataframe을 Join 할 때에는, index로 join하는 것만 지원한다.</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 즉, on을 쓰지 못한다는 이야기이다.</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>caller.set_index(<span class="st">'key'</span>).join([other.set_index(<span class="st">'key'</span>), other2.set_index(<span class="st">'key'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">B</th>
+<th data-quarto-table-cell-role="th">C</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">key</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K0</td>
+<td>A0</td>
+<td>B0</td>
+<td>C0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K1</td>
+<td>A1</td>
+<td>B1</td>
+<td>C1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K2</td>
+<td>A2</td>
+<td>B2</td>
+<td>C2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K3</td>
+<td>A3</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">K4</td>
+<td>A4</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">K5</td>
+<td>A5</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-docs" data-repo-id="" data-category="General" data-category-id="" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
