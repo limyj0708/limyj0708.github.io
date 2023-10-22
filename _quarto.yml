@@ -4,6 +4,8 @@ project:
 
 website:
   title: "Lim's Code Archive"
+  search: true
+  page-navigation: true
   navbar:
     right:
       - about.qmd

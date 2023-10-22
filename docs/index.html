@@ -141,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(29)</span></div><div class="category" data-category="Bigquery">Bigquery <span class="quarto-category-count">(5)</span></div><div class="category" data-category="JupyterLab">JupyterLab <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Linux">Linux <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(9)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="git">git <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pandas">pandas <span class="quarto-category-count">(8)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="학습_정리">학습_정리 <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(29)</span></div><div class="category" data-category="JupyterLab">JupyterLab <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Linux">Linux <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(9)</span></div><div class="category" data-category="Redshift">Redshift <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(5)</span></div><div class="category" data-category="git">git <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pandas">pandas <span class="quarto-category-count">(8)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -152,18 +152,43 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="quarto-listing quarto-listing-container-table" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-title-sort" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
 
 <table class="quarto-listing-table table table-hover">
 <thead>
 <tr>
 <th>
-Date
+<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Date</a>
 </th>
 <th>
-Title
+<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
 </th>
 <th>
-Author
+<a class="sort" data-sort="listing-author" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Author</a>
 </th>
 </tr>
 </thead>
@@ -192,19 +217,19 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="2" data-categories="SQL,Bigquery" data-listing-date-sort="1673449200000" data-listing-file-modified-sort="1693059115576" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-title-sort="Window 함수의 window_frame_clause 정리" data-listing-filename-sort="2023-01-12-Window 함수, Preceding, Following.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="2" data-categories="SQL" data-listing-date-sort="1673449200000" data-listing-file-modified-sort="1697189336079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-title-sort="Bigquery_Window 함수의 window_frame_clause 정리" data-listing-filename-sort="2023-01-12-Window 함수의 window_frame_clause 정리.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2023-01-12</span>
 </td>
 <td>
-<a href="./posts/2023-01-12-Window 함수, Preceding, Following.html" class="title listing-title">Window 함수의 window_frame_clause 정리</a>
+<a href="./posts/2023-01-12-Window 함수의 window_frame_clause 정리.html" class="title listing-title">Bigquery_Window 함수의 window_frame_clause 정리</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="3" data-categories="Bigquery" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1693059471715" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="Bigquery_사용자 정의 함수(UDF)" data-listing-filename-sort="2022-10-29-Bigquery_사용자 정의 함수(UDF).ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="3" data-categories="SQL" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1697189418005" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="Bigquery_사용자 정의 함수(UDF)" data-listing-filename-sort="2022-10-29-Bigquery_사용자 정의 함수(UDF).ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2022-10-29</span>
@@ -216,7 +241,7 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="4" data-categories="Bigquery" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1693059460960" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-title-sort="Bigquery_Array, Struct 조합 사용과 Cartesian Product" data-listing-filename-sort="2022-10-29-Bigquery_Array, Struct 실전사용.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="4" data-categories="SQL" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1697189426692" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-title-sort="Bigquery_Array, Struct 조합 사용과 Cartesian Product" data-listing-filename-sort="2022-10-29-Bigquery_Array, Struct 실전사용.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2022-10-29</span>
@@ -228,7 +253,7 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="5" data-categories="Bigquery" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1693059471263" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Bigquery_사분위수 구하기" data-listing-filename-sort="2022-10-29-Bigquery_사분위수 구하기.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="5" data-categories="SQL" data-listing-date-sort="1666969200000" data-listing-file-modified-sort="1697189435545" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Bigquery_사분위수 구하기" data-listing-filename-sort="2022-10-29-Bigquery_사분위수 구하기.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2022-10-29</span>
@@ -240,13 +265,13 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="6" data-categories="Bigquery" data-listing-date-sort="1666623600000" data-listing-file-modified-sort="1693059470919" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-title-sort="Bigquery_7일 연속 미접속 시작일 쉽게 추출하기" data-listing-filename-sort="2022-10-25-Bigquery 7일 연속 미접속 시작일 쉽게 추출하기.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="6" data-categories="SQL" data-listing-date-sort="1666623600000" data-listing-file-modified-sort="1697189461722" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-title-sort="Bigquery_7일 연속 미접속 시작일 쉽게 추출하기" data-listing-filename-sort="2022-10-25-Bigquery_7일 연속 미접속 시작일 쉽게 추출하기.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2022-10-25</span>
 </td>
 <td>
-<a href="./posts/2022-10-25-Bigquery 7일 연속 미접속 시작일 쉽게 추출하기.html" class="title listing-title">Bigquery_7일 연속 미접속 시작일 쉽게 추출하기</a>
+<a href="./posts/2022-10-25-Bigquery_7일 연속 미접속 시작일 쉽게 추출하기.html" class="title listing-title">Bigquery_7일 연속 미접속 시작일 쉽게 추출하기</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
@@ -276,7 +301,7 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="9" data-categories="Python" data-listing-date-sort="1647615600000" data-listing-file-modified-sort="1693059418840" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="맥 OS pyenv 세팅 101" data-listing-filename-sort="2022-03-19-맥 OS pyenv 세팅 101.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="9" data-categories="Python" data-listing-date-sort="1647615600000" data-listing-file-modified-sort="1696850562305" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="맥 OS pyenv 세팅 101" data-listing-filename-sort="2022-03-19-맥 OS pyenv 세팅 101.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2022-03-19</span>
@@ -312,97 +337,97 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="12" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693578513056" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="(01) Dataframe 생성" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="12" data-categories="pandas" data-listing-date-sort="1636038420000" data-listing-file-modified-sort="1696850458388" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Pandas_08_파일 입출력" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_08_파일 입출력.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.html" class="title listing-title">(01) Dataframe 생성</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_08_파일 입출력.html" class="title listing-title">Pandas_08_파일 입출력</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="13" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693227865998" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="(6) 데이터 타입" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_06_데이터 타입.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="13" data-categories="pandas" data-listing-date-sort="1636038360000" data-listing-file-modified-sort="1696850452632" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Pandas_07_데이터 집계" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_07_데이터 집계.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_06_데이터 타입.html" class="title listing-title">(6) 데이터 타입</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_07_데이터 집계.html" class="title listing-title">Pandas_07_데이터 집계</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="14" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693227606987" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-title-sort="(04) Dataframe 결합" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_04_Dataframe 결합.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="14" data-categories="pandas" data-listing-date-sort="1636038300000" data-listing-file-modified-sort="1696850449823" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Pandas_06_데이터 타입" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_06_데이터 타입.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_04_Dataframe 결합.html" class="title listing-title">(04) Dataframe 결합</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_06_데이터 타입.html" class="title listing-title">Pandas_06_데이터 타입</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="15" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693227968960" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="(7) 데이터 집계" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_07_데이터 집계.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="15" data-categories="pandas" data-listing-date-sort="1636038240000" data-listing-file-modified-sort="1696850343234" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="Pandas_05_데이터 구조 변경" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_05_데이터 구조 변경.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_07_데이터 집계.html" class="title listing-title">(7) 데이터 집계</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_05_데이터 구조 변경.html" class="title listing-title">Pandas_05_데이터 구조 변경</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="16" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693227468391" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="(03) 값 삭제, 대체" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_03_값 삭제, 대체.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="16" data-categories="pandas" data-listing-date-sort="1636038180000" data-listing-file-modified-sort="1696850431865" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-title-sort="Pandas_04_Dataframe 결합" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_04_Dataframe 결합.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_03_값 삭제, 대체.html" class="title listing-title">(03) 값 삭제, 대체</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_04_Dataframe 결합.html" class="title listing-title">Pandas_04_Dataframe 결합</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="17" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693227463370" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="(02) Indexing, 값 변경, 추가" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_02_Indexing, 값 변경, 추가.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="17" data-categories="pandas" data-listing-date-sort="1636038120000" data-listing-file-modified-sort="1696850435570" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="Pandas_03_값 삭제, 대체" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_03_값 삭제, 대체.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_02_Indexing, 값 변경, 추가.html" class="title listing-title">(02) Indexing, 값 변경, 추가</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_03_값 삭제, 대체.html" class="title listing-title">Pandas_03_값 삭제, 대체</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="18" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693578483439" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="(3) 값 삭제, 대체" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_08_파일 입출력.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="18" data-categories="pandas" data-listing-date-sort="1636038060000" data-listing-file-modified-sort="1696850415022" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="Pandas_02_Indexing, 값 변경, 추가" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_02_Indexing, 값 변경, 추가.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_08_파일 입출력.html" class="title listing-title">(3) 값 삭제, 대체</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_02_Indexing, 값 변경, 추가.html" class="title listing-title">Pandas_02_Indexing, 값 변경, 추가</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="19" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1693578505539" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-title-sort="(05) 데이터 구조 변경" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_05_데이터 구조 변경.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="19" data-categories="pandas" data-listing-date-sort="1636038000000" data-listing-file-modified-sort="1696850369442" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-title-sort="Pandas_01_Dataframe 생성" data-listing-filename-sort="2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2021-11-05</span>
 </td>
 <td>
-<a href="./posts/2021-11-05_pandas_cheatsheet_05_데이터 구조 변경.html" class="title listing-title">(05) 데이터 구조 변경</a>
+<a href="./posts/2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.html" class="title listing-title">Pandas_01_Dataframe 생성</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
@@ -432,13 +457,13 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="22" data-categories="학습_정리" data-listing-date-sort="1581346800000" data-listing-file-modified-sort="1693059376507" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="1. Redshift" data-listing-filename-sort="2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="22" data-categories="Redshift" data-listing-date-sort="1581346800000" data-listing-file-modified-sort="1696854035339" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2" data-listing-filename-sort="2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2020-02-11</span>
 </td>
 <td>
-<a href="./posts/2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2.html" class="title listing-title">1. Redshift</a>
+<a href="./posts/2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2.html" class="title listing-title">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
@@ -456,13 +481,13 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="24" data-categories="Python" data-listing-date-sort="1573398000000" data-listing-file-modified-sort="1693059371462" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-title-sort="thread X" data-listing-filename-sort="2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="24" data-categories="Python" data-listing-date-sort="1573398000000" data-listing-file-modified-sort="1697894329865" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-title-sort="Asynchronous, Synchronous, Blocking, Non-Blocking" data-listing-filename-sort="2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2019-11-11</span>
 </td>
 <td>
-<a href="./posts/2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.html" class="title listing-title">thread X</a>
+<a href="./posts/2019-11-11-Asynchronous, Synchronous, Blocking, Non-Blocking.html" class="title listing-title">Asynchronous, Synchronous, Blocking, Non-Blocking</a>
 </td>
 <td>
 <span class="listing-author">limyj0708 </span>
@@ -504,7 +529,7 @@ Author
 <span class="listing-author">limyj0708 </span>
 </td>
 </tr>
-<tr data-index="28" data-categories="Python" data-listing-date-sort="1570719600000" data-listing-file-modified-sort="1692537072354" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="Python_Parameters, Arguments 정의와 차이점" data-listing-filename-sort="2019-10-11-Python_Parameters, Arguments 정의와 차이점.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="28" data-categories="Python" data-listing-date-sort="1570719600000" data-listing-file-modified-sort="1696854943923" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="Python_Parameters, Arguments 정의와 차이점" data-listing-filename-sort="2019-10-11-Python_Parameters, Arguments 정의와 차이점.ipynb" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <span class="listing-date">2019-10-11</span>

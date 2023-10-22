@@ -9,7 +9,7 @@
 <meta name="author" content="limyj0708">
 <meta name="dcterms.date" content="2020-02-11">
 
-<title>Lim’s Code Archive - 1. Redshift</title>
+<title>Lim’s Code Archive - Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -147,27 +147,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link active" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
-  <li><a href="#psycopg2" id="toc-psycopg2" class="nav-link" data-scroll-target="#psycopg2">2. psycopg2</a>
+  <li><a href="#redshift" id="toc-redshift" class="nav-link active" data-scroll-target="#redshift"><span class="header-section-number">1</span> Redshift</a>
   <ul class="collapse">
-  <li><a href="#query-parameter-전달-시의-유의점" id="toc-query-parameter-전달-시의-유의점" class="nav-link" data-scroll-target="#query-parameter-전달-시의-유의점">2-1. Query parameter 전달 시의 유의점</a></li>
-  <li><a href="#server-side-cursor" id="toc-server-side-cursor" class="nav-link" data-scroll-target="#server-side-cursor">2-2. Server Side Cursor</a></li>
+  <li><a href="#대량의-데이터를-insert로-넣을-생각은-하지-말-것" id="toc-대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="nav-link" data-scroll-target="#대량의-데이터를-insert로-넣을-생각은-하지-말-것"><span class="header-section-number">1.1</span> 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</a></li>
   </ul></li>
-  <li><a href="#로컬-db-postgresql" id="toc-로컬-db-postgresql" class="nav-link" data-scroll-target="#로컬-db-postgresql">3. 로컬 DB : postgreSQL</a>
+  <li><a href="#psycopg2" id="toc-psycopg2" class="nav-link" data-scroll-target="#psycopg2"><span class="header-section-number">2</span> psycopg2</a>
   <ul class="collapse">
-  <li><a href="#copy-시의-권한-문제" id="toc-copy-시의-권한-문제" class="nav-link" data-scroll-target="#copy-시의-권한-문제">3-1. COPY 시의 권한 문제</a></li>
+  <li><a href="#query-parameter-전달-시의-유의점" id="toc-query-parameter-전달-시의-유의점" class="nav-link" data-scroll-target="#query-parameter-전달-시의-유의점"><span class="header-section-number">2.1</span> Query parameter 전달 시의 유의점</a></li>
+  <li><a href="#server-side-cursor" id="toc-server-side-cursor" class="nav-link" data-scroll-target="#server-side-cursor"><span class="header-section-number">2.2</span> Server Side Cursor</a></li>
+  </ul></li>
+  <li><a href="#로컬-db-postgresql" id="toc-로컬-db-postgresql" class="nav-link" data-scroll-target="#로컬-db-postgresql"><span class="header-section-number">3</span> 로컬 DB : postgreSQL</a>
+  <ul class="collapse">
+  <li><a href="#copy-시의-권한-문제" id="toc-copy-시의-권한-문제" class="nav-link" data-scroll-target="#copy-시의-권한-문제"><span class="header-section-number">3.1</span> COPY 시의 권한 문제</a></li>
   </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">1. Redshift</h1>
+<h1 class="title">Redshift에 데이터를 적재하는 과정에서 얻은 교훈 &amp; psycopg2</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">학습_정리</div>
+    <div class="quarto-category">Redshift</div>
   </div>
   </div>
 
@@ -195,8 +198,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="level3">
-<h3 class="anchored" data-anchor-id="대량의-데이터를-insert로-넣을-생각은-하지-말-것">1-1. 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h3>
+<section id="redshift" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Redshift</h1>
+<section id="대량의-데이터를-insert로-넣을-생각은-하지-말-것" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="대량의-데이터를-insert로-넣을-생각은-하지-말-것"><span class="header-section-number">1.1</span> 대량의 데이터를 Insert로 넣을 생각은 하지 말 것</h2>
 <ul>
 <li>차라리 로컬 DB에서 연산한 후, S3에 올리고 COPY로 집어넣는 것이 훨씬 빠르다.</li>
 <li>Redshift에서 직접 SELECT, INSERT 처리를 하면 : 300만행 추가에 예상 완료시간 4일</li>
@@ -242,10 +247,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(each_code,<span class="st">'_commit complete'</span>)</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    cur_2.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="psycopg2" class="level2">
-<h2 class="anchored" data-anchor-id="psycopg2">2. psycopg2</h2>
-<section id="query-parameter-전달-시의-유의점" class="level3">
-<h3 class="anchored" data-anchor-id="query-parameter-전달-시의-유의점">2-1. Query parameter 전달 시의 유의점</h3>
+</section>
+<section id="psycopg2" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> psycopg2</h1>
+<section id="query-parameter-전달-시의-유의점" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="query-parameter-전달-시의-유의점"><span class="header-section-number">2.1</span> Query parameter 전달 시의 유의점</h2>
 <ul>
 <li><a href="https://www.psycopg.org/docs/usage.html#query-parameters">psycopg2 document</a>에는, 빨간색으로 엄청 잘 보이게 써 있는 경고문이 있다.</li>
 </ul>
@@ -283,8 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
-<section id="server-side-cursor" class="level3">
-<h3 class="anchored" data-anchor-id="server-side-cursor">2-2. Server Side Cursor</h3>
+<section id="server-side-cursor" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="server-side-cursor"><span class="header-section-number">2.2</span> Server Side Cursor</h2>
 <ul>
 <li>Client Side Cursor를 사용하면, 일단 데이터를 클라이언트의 메모리에 저장한 후 거기서 결과값을 계산하게 된다.</li>
 <li>엄청 큰 테이블의 일부를 select 하려고 하면 반드시 메모리 부족으로 문제가 생기게 된다.</li>
@@ -295,10 +301,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cur_1 <span class="op">=</span> con.cursor(<span class="st">'ss_cursor'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="로컬-db-postgresql" class="level2">
-<h2 class="anchored" data-anchor-id="로컬-db-postgresql">3. 로컬 DB : postgreSQL</h2>
-<section id="copy-시의-권한-문제" class="level3">
-<h3 class="anchored" data-anchor-id="copy-시의-권한-문제">3-1. COPY 시의 권한 문제</h3>
+<section id="로컬-db-postgresql" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> 로컬 DB : postgreSQL</h1>
+<section id="copy-시의-권한-문제" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="copy-시의-권한-문제"><span class="header-section-number">3.1</span> COPY 시의 권한 문제</h2>
 <ul>
 <li>작업 폴더 내에 있는 CSV 파일을 그대로 COPY하려고 하면, 무조건 permission error가 발생한다.</li>
 <li>DB 서버 사용자가 해당 파일에 접근할 권한이 없기 때문에 발생하는 문제로, 파일이나 폴더의 권한설정을 만져주면 해결된다. 그런데 권한 설정하는 것 보다는 DB 서버 사용자가 접근할 수 있는 폴더에 CSV 파일을 옮기는 것이 더 빠르지 않을까?

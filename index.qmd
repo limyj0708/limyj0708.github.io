@@ -5,8 +5,8 @@ listing:
   sort: "date desc"
   type: table
   categories: true
-  sort-ui: false
-  filter-ui: false
+  sort-ui: true
+  filter-ui: true
   table-hover: true
   date-format: YYYY-MM-DD
 page-layout: full
