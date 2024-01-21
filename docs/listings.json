@@ -1,13 +1,10 @@
 [
   {
-    "listing": "/posts/2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.html",
-    "items": []
-  },
-  {
     "listing": "/index.html",
     "items": [
       "/posts/2022-06-13-git_cheatsheet.html",
       "/posts/2023-08-13-plotly_cheatsheet.html",
+      "/posts/2024-01-12-Quarto 사용하기.html",
       "/posts/2023-01-12-Window 함수의 window_frame_clause 정리.html",
       "/posts/2022-10-29-Bigquery_사용자 정의 함수(UDF).html",
       "/posts/2022-10-29-Bigquery_Array, Struct 실전사용.html",
@@ -22,10 +19,10 @@
       "/posts/2021-11-05_pandas_cheatsheet_07_데이터 집계.html",
       "/posts/2021-11-05_pandas_cheatsheet_06_데이터 타입.html",
       "/posts/2021-11-05_pandas_cheatsheet_05_데이터 구조 변경.html",
-      "/posts/2021-11-05_pandas_cheatsheet_04_Dataframe 결합.html",
       "/posts/2021-11-05_pandas_cheatsheet_03_값 삭제, 대체.html",
       "/posts/2021-11-05_pandas_cheatsheet_02_Indexing, 값 변경, 추가.html",
-      "/posts/2021-11-05_pandas_cheatsheet_01_데이터프레임 생성.html",
+      "/posts/2021-11-05_pandas_cheatsheet_04_Dataframe 결합.html",
+      "/posts/2021-11-05_pandas_cheatsheet_01_Dataframe 생성.html",
       "/posts/2021-09-07-Crontab으로 Python 스크립트 주기적으로 실행하기.html",
       "/posts/2021-09-06-Linux_비밀번호 만료 안 되게 하기.html",
       "/posts/2020-02-11-Redshift에 데이터를 적재하는 과정에서 얻은 교훈 & psycopg2.html",
