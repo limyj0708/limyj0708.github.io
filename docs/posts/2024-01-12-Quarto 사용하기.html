@@ -208,7 +208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://quarto.org/docs/get-started/">Quarto CLI</a> 설치</li>
 <li>Github page repository 생성</li>
 <li>대상 폴더에 가서 <code>quarto create project</code> 실행</li>
-<li>project root에 추가할 것들
+<li>생성된 프로젝트 root에 추가할 것들
 <ul>
 <li>.nojekyll 파일(github page가 jekyll로 페이지를 생성하는 것을 막음)</li>
 <li>_quarto.yml 세팅</li>
@@ -241,6 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ot">*/.ipynb_checkpoints/*</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">/_site/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li>giscus 세팅 : <a href="https://giscus.app/ko">링크</a></li>
+<li>프로젝트 폴더에 github page repository를 연결</li>
 </ol>
 </section>
 <section id="글-추가" class="level1">
@@ -267,10 +268,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol start="2" type="1">
 <li>root에서 <code>quarto render &lt;대상 파일 경로&gt;</code>
 <ul>
-<li>대상 파일 경로를 넣지 않으면, posts 폴더 안의 모든 문서를 렌더링하여 docs에 저장한다.</li>
+<li>대상 파일 경로를 넣지 않으면, posts 폴더 안의 모든 문서를 렌더링하여 docs에 저장한다. 글이 많아지면 생각보다 오래 걸리므로 전체를 다 렌더딩 하지는 말자.</li>
 </ul></li>
 <li><code>quarto preview</code> 로 미리 로컬에서 렌더링 된 결과를 확인할 수 있다.</li>
-<li>git push</li>
+<li>add, commit 후 push.</li>
+<li>repository의 github action에서 문제 없이 잘 빌드되는지 확인할 수 있다.</li>
 </ol>
 
 
