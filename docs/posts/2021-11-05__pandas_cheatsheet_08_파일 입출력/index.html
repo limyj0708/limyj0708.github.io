@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2021-11-05">
+
+<title>Pandas_08_파일 입출력 – Lim’s Code Archive</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Lim’s Code Archive</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/limyj0708"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/%EC%98%81%EC%A7%84-%EC%9E%84-b499a0111/?utm_source=share&amp;utm_campaign=share_via&amp;utm_content=profile"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#read_excel" id="toc-read_excel" class="nav-link active" data-scroll-target="#read_excel"><span class="header-section-number">1</span> read_excel</a></li>
+  <li><a href="#to_excel" id="toc-to_excel" class="nav-link" data-scroll-target="#to_excel"><span class="header-section-number">2</span> to_excel</a></li>
+  <li><a href="#read_csv" id="toc-read_csv" class="nav-link" data-scroll-target="#read_csv"><span class="header-section-number">3</span> read_csv</a></li>
+  <li><a href="#to_csv" id="toc-to_csv" class="nav-link" data-scroll-target="#to_csv"><span class="header-section-number">4</span> to_csv</a></li>
+  <li><a href="#parquet" id="toc-parquet" class="nav-link" data-scroll-target="#parquet"><span class="header-section-number">5</span> Parquet</a>
+  <ul class="collapse">
+  <li><a href="#쓰기" id="toc-쓰기" class="nav-link" data-scroll-target="#쓰기"><span class="header-section-number">5.1</span> 쓰기</a></li>
+  <li><a href="#읽기" id="toc-읽기" class="nav-link" data-scroll-target="#읽기"><span class="header-section-number">5.2</span> 읽기</a></li>
+  </ul></li>
+  <li><a href="#dataframe을-이미지로-추출" id="toc-dataframe을-이미지로-추출" class="nav-link" data-scroll-target="#dataframe을-이미지로-추출"><span class="header-section-number">6</span> Dataframe을 이미지로 추출</a>
+  <ul class="collapse">
+  <li><a href="#matplotlib를-이용" id="toc-matplotlib를-이용" class="nav-link" data-scroll-target="#matplotlib를-이용"><span class="header-section-number">6.1</span> matplotlib를 이용</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Pandas_08_파일 입출력</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">pandas</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>limyj0708 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 5, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="d3dd94f9-d5df-4ca1-81fd-8a6a736555d4" class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display_html, display</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4281b5ba-d3c0-4063-a0a1-775dfa6ff742" class="cell" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_multiple_dfs(dfs:<span class="bu">list</span>, styles, margin<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    display_target <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> each_df <span class="kw">in</span> dfs:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        each_df_html <span class="op">=</span> each_df[<span class="dv">0</span>].style.set_caption(<span class="ss">f'&lt;b&gt;</span><span class="sc">{</span>each_df[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">&lt;/b&gt;'</span>).set_table_styles(styles).set_table_attributes(<span class="ss">f"style='display:inline;margin:</span><span class="sc">{</span>margin<span class="sc">}</span><span class="ss">px'"</span>)._repr_html_()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        display_target <span class="op">+=</span> each_df_html</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    display_html(display_target, raw <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="bd76eaab-5a90-4c06-af6d-e77b741d11ed" class="cell" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>styles <span class="op">=</span> [</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"selector"</span> : <span class="st">"caption"</span>, <span class="st">"props"</span> : <span class="st">"text-align:center; font-size:16px"</span>}</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="read_excel" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> read_excel</h1>
+<div id="2ac0b7e0-82a2-44fc-befa-7f30f07a5df0" class="cell" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>string_quest <span class="op">=</span> pd.read_excel(<span class="vs">r"C:\Users\Documents\data\string\string_quest.xlsx"</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                             header<span class="op">=</span><span class="dv">6</span>, usecols<span class="op">=</span><span class="st">"H,I"</span>, sheet_name <span class="op">=</span> <span class="st">"string_quest"</span>, engine<span class="op">=</span><span class="st">"openpyxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg ansi-bold">/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_파일 입출력.ipynb Cell 6</span> line <span class="ansi-cyan-fg">1
+</span><span class="ansi-green-fg">----&gt; &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#W5sZmlsZQ%3D%3D?line=0'&gt;1&lt;/a&gt;</span> string_quest = pd.read_excel(r"C:\Users\Documents\data\string\string_quest.xlsx",
+<span class="ansi-green-fg ansi-bold">      &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#W5sZmlsZQ%3D%3D?line=1'&gt;2&lt;/a&gt;</span>                              header=6, usecols="H,I", sheet_name = "string_quest", engine="openpyxl")
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/util/_decorators.py:211</span>, in <span class="ansi-cyan-fg">deprecate_kwarg.&lt;locals&gt;._deprecate_kwarg.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-fg ansi-bold">    209</span>     else:
+<span class="ansi-green-fg ansi-bold">    210</span>         kwargs[new_arg_name] = new_arg_value
+<span class="ansi-green-fg">--&gt; 211</span> return func(*args, **kwargs)
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/util/_decorators.py:331</span>, in <span class="ansi-cyan-fg">deprecate_nonkeyword_arguments.&lt;locals&gt;.decorate.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-fg ansi-bold">    325</span> if len(args) &gt; num_allow_args:
+<span class="ansi-green-fg ansi-bold">    326</span>     warnings.warn(
+<span class="ansi-green-fg ansi-bold">    327</span>         msg.format(arguments=_format_argument_list(allow_args)),
+<span class="ansi-green-fg ansi-bold">    328</span>         FutureWarning,
+<span class="ansi-green-fg ansi-bold">    329</span>         stacklevel=find_stack_level(),
+<span class="ansi-green-fg ansi-bold">    330</span>     )
+<span class="ansi-green-fg">--&gt; 331</span> return func(*args, **kwargs)
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/io/excel/_base.py:482</span>, in <span class="ansi-cyan-fg">read_excel</span><span class="ansi-blue-fg">(io, sheet_name, header, names, index_col, usecols, squeeze, dtype, engine, converters, true_values, false_values, skiprows, nrows, na_values, keep_default_na, na_filter, verbose, parse_dates, date_parser, thousands, decimal, comment, skipfooter, convert_float, mangle_dupe_cols, storage_options)</span>
+<span class="ansi-green-fg ansi-bold">    480</span> if not isinstance(io, ExcelFile):
+<span class="ansi-green-fg ansi-bold">    481</span>     should_close = True
+<span class="ansi-green-fg">--&gt; 482</span>     io = ExcelFile(io, storage_options=storage_options, engine=engine)
+<span class="ansi-green-fg ansi-bold">    483</span> elif engine and engine != io.engine:
+<span class="ansi-green-fg ansi-bold">    484</span>     raise ValueError(
+<span class="ansi-green-fg ansi-bold">    485</span>         "Engine should not be specified when passing "
+<span class="ansi-green-fg ansi-bold">    486</span>         "an ExcelFile - ExcelFile already has the engine set"
+<span class="ansi-green-fg ansi-bold">    487</span>     )
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/io/excel/_base.py:1695</span>, in <span class="ansi-cyan-fg">ExcelFile.__init__</span><span class="ansi-blue-fg">(self, path_or_buffer, engine, storage_options)</span>
+<span class="ansi-green-fg ansi-bold">   1692</span> self.engine = engine
+<span class="ansi-green-fg ansi-bold">   1693</span> self.storage_options = storage_options
+<span class="ansi-green-fg">-&gt; 1695</span> self._reader = self._engines[engine](self._io, storage_options=storage_options)
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/io/excel/_openpyxl.py:557</span>, in <span class="ansi-cyan-fg">OpenpyxlReader.__init__</span><span class="ansi-blue-fg">(self, filepath_or_buffer, storage_options)</span>
+<span class="ansi-green-fg ansi-bold">    547</span> """
+<span class="ansi-green-fg ansi-bold">    548</span> Reader using openpyxl engine.
+<span class="ansi-green-fg ansi-bold">    549</span> 
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-fg ansi-bold">    554</span> {storage_options}
+<span class="ansi-green-fg ansi-bold">    555</span> """
+<span class="ansi-green-fg ansi-bold">    556</span> import_optional_dependency("openpyxl")
+<span class="ansi-green-fg">--&gt; 557</span> super().__init__(filepath_or_buffer, storage_options=storage_options)
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/io/excel/_base.py:535</span>, in <span class="ansi-cyan-fg">BaseExcelReader.__init__</span><span class="ansi-blue-fg">(self, filepath_or_buffer, storage_options)</span>
+<span class="ansi-green-fg ansi-bold">    531</span> self.handles = IOHandles(
+<span class="ansi-green-fg ansi-bold">    532</span>     handle=filepath_or_buffer, compression={"method": None}
+<span class="ansi-green-fg ansi-bold">    533</span> )
+<span class="ansi-green-fg ansi-bold">    534</span> if not isinstance(filepath_or_buffer, (ExcelFile, self._workbook_class)):
+<span class="ansi-green-fg">--&gt; 535</span>     self.handles = get_handle(
+<span class="ansi-green-fg ansi-bold">    536</span>         filepath_or_buffer, "rb", storage_options=storage_options, is_text=False
+<span class="ansi-green-fg ansi-bold">    537</span>     )
+<span class="ansi-green-fg ansi-bold">    539</span> if isinstance(self.handles.handle, self._workbook_class):
+<span class="ansi-green-fg ansi-bold">    540</span>     self.book = self.handles.handle
+
+File <span class="ansi-green-fg">~/.pyenv/versions/3.11.2/lib/python3.11/site-packages/pandas/io/common.py:865</span>, in <span class="ansi-cyan-fg">get_handle</span><span class="ansi-blue-fg">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="ansi-green-fg ansi-bold">    856</span>         handle = open(
+<span class="ansi-green-fg ansi-bold">    857</span>             handle,
+<span class="ansi-green-fg ansi-bold">    858</span>             ioargs.mode,
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-fg ansi-bold">    861</span>             newline="",
+<span class="ansi-green-fg ansi-bold">    862</span>         )
+<span class="ansi-green-fg ansi-bold">    863</span>     else:
+<span class="ansi-green-fg ansi-bold">    864</span>         # Binary mode
+<span class="ansi-green-fg">--&gt; 865</span>         handle = open(handle, ioargs.mode)
+<span class="ansi-green-fg ansi-bold">    866</span>     handles.append(handle)
+<span class="ansi-green-fg ansi-bold">    868</span> # Convert BytesIO or file objects passed with an encoding
+
+<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: 'C:\\Users\\Documents\\data\\string\\string_quest.xlsx'</pre>
+</div>
+</div>
+</div>
+<ul>
+<li>header : 몇 번째 row를 header로 할까?</li>
+<li>usercols : 어떤 열을 가져올까?</li>
+<li>sheet_name : 어떤 시트를 가져올까?</li>
+<li>engine : openpyxl을 사용하여야 xlsx 파일의 불러오기가 가능</li>
+</ul>
+</section>
+<section id="to_excel" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> to_excel</h1>
+<ul>
+<li>데이터프레임을 잘 구성했다면, 기본적으로는 아래와 같이 특별한 argument 없이 사용해도 별 문제는 없다.</li>
+</ul>
+<div id="bafbe348-38f7-414d-af86-03c32ddfe83c" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> each_key <span class="kw">in</span> dict_account_id.keys():</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    target_dataframe <span class="op">=</span> pd.DataFrame.from_dict(dict_account_id[each_key])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    target_dataframe.to_excel(<span class="ss">f"</span><span class="sc">{</span>each_key<span class="sc">}</span><span class="ss">_성장재료_출처.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>내용 추가 모드 (append)를 사용하고 싶다면, 아래와 같이 할 수 있다.</li>
+</ul>
+<div id="886b110f-2d34-48fe-98fd-d6221adcde31" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.ExcelWriter(<span class="st">'output.xlsx'</span>, mode<span class="op">=</span><span class="st">'a'</span>) <span class="im">as</span> writer: <span class="co"># mode='a'로 append 설정</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    df.to_excel(writer, sheet_name<span class="op">=</span><span class="st">'Sheet_name_3'</span>) <span class="co">#sheet 이름도 지정함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_excel.html</li>
+</ul>
+</section>
+<section id="read_csv" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> read_csv</h1>
+<div id="d721bfa7-0d88-4cfb-937e-1bc75f6553e3" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
+<li>header : 몇 번째 row를 header로 할까?</li>
+<li>usercols : 어떤 열을 가져올까?</li>
+<li>chunksize : 파일이 너무 클 경우, 한 번에 불러올 행 수를 지정 가능. 이후 iterable하게 다음 size를 불러올 수 있다. 아래와 같이 사용.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chunksize <span class="op">=</span> <span class="dv">10</span> <span class="op">**</span> <span class="dv">6</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.read_csv(filename, chunksize<span class="op">=</span>chunksize) <span class="im">as</span> reader:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chunk <span class="kw">in</span> reader:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        process(chunk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</li>
+</ul>
+</section>
+<section id="to_csv" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> to_csv</h1>
+<div id="ee634a06-7a9c-4e6d-a2ae-1cb35e7b3523" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>target_df <span class="op">=</span> pd.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>sep : delimeter. 기본값은 쉼표(,)이다.</li>
+<li>columns : 쓰기에 사용할 컬럼 이름 리스트.</li>
+<li>header : bool or list of str, default True
+<ul>
+<li>문자열 리스트가 주어지면, 각 컬럼에 대한 alias로 취급된다.</li>
+</ul></li>
+<li>추가 내용 : https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html</li>
+</ul>
+</section>
+<section id="parquet" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Parquet</h1>
+<section id="쓰기" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="쓰기"><span class="header-section-number">5.1</span> 쓰기</h2>
+<div id="691d18ae-a768-47d9-abae-f664baec5e9c" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df.to_parquet(<span class="st">'df.parquet'</span>, engine<span class="op">=</span><span class="st">'pyarrow'</span>, index<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># index : 데이터프레임의 index 저장 유무. False, True, None을 할당할 수 있다.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">## index=False: If you set index=False, the dataframe’s index will not be written to the file.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">## index=None: If you set index=None, the dataframe’s index will be saved.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">### However, instead of being saved as values, the RangeIndex will be stored as a range in the metadata so it doesn’t require much space and is faster.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">### Other indexes will be included as columns in the file output.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="읽기" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="읽기"><span class="header-section-number">5.2</span> 읽기</h2>
+<div id="90f53931-a11f-4cba-82ea-e78699cc4ffd" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">'df.parquet'</span>, engine<span class="op">=</span><span class="st">'pyarrow'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="dataframe을-이미지로-추출" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Dataframe을 이미지로 추출</h1>
+<section id="matplotlib를-이용" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="matplotlib를-이용"><span class="header-section-number">6.1</span> matplotlib를 이용</h2>
+<ul>
+<li>dataframe-image 패키지를 이용 시, linux에서 crontab으로 실행할 경우 복잡한 권한 문제에 직면하게 됨</li>
+<li>dataframe-image 패키지도 matplotlib 기반이므로, 그냥 matplotlib를 사용</li>
+</ul>
+<div id="592f8200-e093-4c2e-9a06-36fef167c289" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> six</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matplotlib에서 한글이 안 나오는 문제 해결</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>NANUM <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'/Users/limyj0708/Library/Fonts/NanumGothic.ttf'</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>NANUM_bold <span class="op">=</span> fm.FontProperties(fname<span class="op">=</span><span class="vs">r'/Users/limyj0708/Library/Fonts/NanumGothicBold.ttf'</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># centos라면 폰트 경로는 아래와 같음</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a> <span class="co"># /usr/share/fonts/NanumFont/NanumBarunGothic.ttf</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> <span class="co"># /usr/share/fonts/NanumFont/NanumGothicBold.ttf</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_mpl_table(data, col_width<span class="op">=</span><span class="fl">3.0</span>, row_height<span class="op">=</span><span class="fl">0.625</span>, font_size_header<span class="op">=</span><span class="dv">16</span>, font_size<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                     header_color<span class="op">=</span><span class="st">'#C2DED1'</span>, row_colors<span class="op">=</span>[<span class="st">'#f1f1f2'</span>, <span class="st">'w'</span>], edge_color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                     bbox<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>], header_columns<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                     ax<span class="op">=</span><span class="va">None</span>, align_head<span class="op">=</span><span class="st">'center'</span>, align_cell<span class="op">=</span><span class="st">'center'</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">    align_head, align_cell : [ 'center' | 'right' | 'left' ] </span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        size <span class="op">=</span> (np.array(data.shape[::<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.array([<span class="dv">0</span>, <span class="dv">1</span>])) <span class="op">*</span> np.array([col_width, row_height])</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>size)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    mpl_table <span class="op">=</span> ax.table(cellText<span class="op">=</span>data.values, bbox<span class="op">=</span>bbox, colLabels<span class="op">=</span>data.columns, <span class="op">**</span>kwargs)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    mpl_table.auto_set_font_size(<span class="va">False</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, cell <span class="kw">in</span>  six.iteritems(mpl_table._cells):</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>        cell.set_edgecolor(edge_color)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> k[<span class="dv">1</span>] <span class="op">&lt;</span> header_columns:</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(header_color)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(color<span class="op">=</span><span class="st">'black'</span>, fontproperties <span class="op">=</span> NANUM_bold, fontsize<span class="op">=</span>font_size_header, ha<span class="op">=</span>align_head)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>            cell.set_facecolor(row_colors[k[<span class="dv">0</span>]<span class="op">%</span><span class="bu">len</span>(row_colors)])</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>            cell.set_text_props(fontproperties <span class="op">=</span> NANUM, fontsize<span class="op">=</span>font_size, ha<span class="op">=</span>align_cell)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> render_mpl_table(caller, col_width<span class="op">=</span><span class="fl">2.0</span>, align_head<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>image</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>image.figure.savefig(<span class="st">"caller.png"</span>) <span class="co"># 이미지 저장</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg ansi-bold">/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_파일 입출력.ipynb Cell 31</span> line <span class="ansi-cyan-fg">3
+</span><span class="ansi-green-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#X35sZmlsZQ%3D%3D?line=35'&gt;36&lt;/a&gt;</span>             cell.set_text_props(fontproperties = NANUM, fontsize=font_size, ha=align_cell)
+<span class="ansi-green-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#X35sZmlsZQ%3D%3D?line=36'&gt;37&lt;/a&gt;</span>     return ax
+<span class="ansi-green-fg">---&gt; &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#X35sZmlsZQ%3D%3D?line=38'&gt;39&lt;/a&gt;</span> image = render_mpl_table(caller, col_width=2.0, align_head='center')
+<span class="ansi-green-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#X35sZmlsZQ%3D%3D?line=39'&gt;40&lt;/a&gt;</span> image
+<span class="ansi-green-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/limyj0708/Documents/personal/blog/blog/posts/2021-11-05_pandas_cheatsheet_08_%ED%8C%8C%EC%9D%BC%20%EC%9E%85%EC%B6%9C%EB%A0%A5.ipynb#X35sZmlsZQ%3D%3D?line=40'&gt;41&lt;/a&gt;</span> image.figure.savefig("caller.png") # 이미지 저장
+
+<span class="ansi-red-fg">NameError</span>: name 'caller' is not defined</pre>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="limyj0708/blog" data-repo-id="R_kgDOIJzVlQ" data-category="General" data-category-id="DIC_kwDOIJzVlc4Cck8R" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2023-01-12">
+
+<title>Bigquery_Window 함수의 window_frame_clause 정리 – Lim’s Code Archive</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-55c119cbca0847612369e51c8a5413ad.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Lim’s Code Archive</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/limyj0708"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/%EC%98%81%EC%A7%84-%EC%9E%84-b499a0111/?utm_source=share&amp;utm_campaign=share_via&amp;utm_content=profile"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rows" id="toc-rows" class="nav-link active" data-scroll-target="#rows"><span class="header-section-number">1</span> 1. ROWS</a>
+  <ul class="collapse">
+  <li><a href="#unbounded-preceding" id="toc-unbounded-preceding" class="nav-link" data-scroll-target="#unbounded-preceding"><span class="header-section-number">1.1</span> 1-1. UNBOUNDED PRECEDING</a></li>
+  <li><a href="#unbounded-following" id="toc-unbounded-following" class="nav-link" data-scroll-target="#unbounded-following"><span class="header-section-number">1.2</span> 1-2. UNBOUNDED FOLLOWING</a></li>
+  </ul></li>
+  <li><a href="#numeric-preceding-numeric-following" id="toc-numeric-preceding-numeric-following" class="nav-link" data-scroll-target="#numeric-preceding-numeric-following"><span class="header-section-number">2</span> 1-3. NUMERIC PRECEDING, NUMERIC FOLLOWING</a></li>
+  <li><a href="#range" id="toc-range" class="nav-link" data-scroll-target="#range"><span class="header-section-number">3</span> 2. RANGE</a>
+  <ul class="collapse">
+  <li><a href="#unbounded-preceding-1" id="toc-unbounded-preceding-1" class="nav-link" data-scroll-target="#unbounded-preceding-1"><span class="header-section-number">3.1</span> 2-1. UNBOUNDED PRECEDING</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bigquery_Window 함수의 window_frame_clause 정리</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">SQL</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>limyj0708 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 12, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>정리해두지 않으면 항상 헷갈린다.</p>
+</blockquote>
+<ul>
+<li>문법은 아래 설명이 너무 명확해서 더 볼 것이 없다.
+<ul>
+<li><a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/window-function-calls#def_window_frame">Link</a></li>
+</ul></li>
+<li>frame_start와 frame_end의 조합 제약사항들만 잘 살펴보면 된다.</li>
+</ul>
+<pre><code>window_frame_clause:
+  { rows_range } { frame_start | frame_between }
+
+rows_range:
+  { ROWS | RANGE }
+
+frame_between:
+  {
+    BETWEEN  unbounded_preceding AND frame_end_a
+    | BETWEEN numeric_preceding AND frame_end_a
+    | BETWEEN current_row AND frame_end_b
+    | BETWEEN numeric_following AND frame_end_c
+  }
+
+frame_start:
+  { unbounded_preceding | numeric_preceding | [ current_row ] }
+
+frame_end_a:
+  { numeric_preceding | current_row | numeric_following | unbounded_following }
+
+frame_end_b:
+  { current_row | numeric_following | unbounded_following }
+
+frame_end_c:
+  { numeric_following | unbounded_following }
+
+unbounded_preceding:
+  UNBOUNDED PRECEDING
+
+numeric_preceding:
+  numeric_expression PRECEDING
+
+unbounded_following:
+  UNBOUNDED FOLLOWING
+
+numeric_following:
+  numeric_expression FOLLOWING
+
+current_row:
+  CURRENT ROW</code></pre>
+<section id="rows" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="rows"><span class="header-section-number">1</span> 1. ROWS</h2>
+<ul>
+<li>현재 행의 OFFSET 기반으로 윈도우 프레임을 정의함.
+<ul>
+<li>OFFSET 기반이므로, 현재 행은 index 0. 범위 2을 잡으면, 0~2이므로, 현재 행을 포함하여 행 3개를 프레임으로 잡게 됨</li>
+</ul></li>
+</ul>
+<section id="unbounded-preceding" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="unbounded-preceding"><span class="header-section-number">1.1</span> 1-1. UNBOUNDED PRECEDING</h3>
+<ul>
+<li>PARTITION BY의 시작 부분을 참조</li>
+<li>즉, <code>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> 라면, 윈도우 프레임의 범위는 PARTITION BY의 시작부터 현재 행까지임</li>
+<li>예시 쿼리</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    employee_number</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  , last_name</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  , first_name</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  , salary</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  , dept_id</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  , <span class="fu">SUM</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION</span> <span class="kw">BY</span> dept_id</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ORDER</span> <span class="kw">BY</span> salary</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> sum_salary</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `bigquery<span class="op">-</span>personal.test_ground.test_emp`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>결과
+<ul>
+<li>PARTITON BY dept_id의 시작부터 현재 행까지 누적으로 SUM(salary)가 되고 있음을 알 수 있다.</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>행</th>
+<th>employee_number</th>
+<th>last_name</th>
+<th>first_name</th>
+<th>salary</th>
+<th>dept_id</th>
+<th>sum_salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1004</td>
+<td>Horvath</td>
+<td>Jack</td>
+<td>42000</td>
+<td>501</td>
+<td>42000</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1003</td>
+<td>Everest</td>
+<td>Brad</td>
+<td>71000</td>
+<td>501</td>
+<td>113000</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1005</td>
+<td>Kate</td>
+<td>Smith</td>
+<td>72000</td>
+<td>501</td>
+<td>185000</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1006</td>
+<td>blank</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>501</td>
+<td>265000</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1007</td>
+<td>mobile</td>
+<td>phone</td>
+<td>100000</td>
+<td>501</td>
+<td>365000</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1002</td>
+<td>Anderson</td>
+<td>Jane</td>
+<td>57500</td>
+<td>500</td>
+<td>57500</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1008</td>
+<td>Lim</td>
+<td>Smith</td>
+<td>58000</td>
+<td>500</td>
+<td>115500</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1011</td>
+<td>Johnson</td>
+<td>Sally</td>
+<td>58000</td>
+<td>500</td>
+<td>173500</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1001</td>
+<td>Smith</td>
+<td>John</td>
+<td>62000</td>
+<td>500</td>
+<td>235500</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1010</td>
+<td>Nakamura</td>
+<td>Shin</td>
+<td>62000</td>
+<td>500</td>
+<td>297500</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>1009</td>
+<td>Waterman</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>500</td>
+<td>377500</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1012</td>
+<td>Johnson</td>
+<td>Emily</td>
+<td>80000</td>
+<td>500</td>
+<td>457500</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="unbounded-following" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="unbounded-following"><span class="header-section-number">1.2</span> 1-2. UNBOUNDED FOLLOWING</h3>
+<ul>
+<li>PARTITION BY의 끝 부분을 참조</li>
+<li>즉, <code>ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING</code> 이라면, 윈도우 프레임의 범위는 현재 행부터 PARITION BY의 끝까지임</li>
+<li>예시 쿼리</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    employee_number</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  , last_name</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  , first_name</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  , salary</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  , dept_id</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  , <span class="fu">SUM</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION</span> <span class="kw">BY</span> dept_id</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ORDER</span> <span class="kw">BY</span> salary</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span> <span class="kw">AND</span> <span class="kw">UNBOUNDED</span> <span class="kw">FOLLOWING</span>) <span class="kw">AS</span> sum_salary</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `bigquery<span class="op">-</span>personal.test_ground.test_emp`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>결과
+<ul>
+<li>현재 행부터 PARTITON BY dept_id의 끝까지 누적으로 SUM(salary)가 되고 있음을 알 수 있다.</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>행</th>
+<th>employee_number</th>
+<th>last_name</th>
+<th>first_name</th>
+<th>salary</th>
+<th>dept_id</th>
+<th>sum_salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1002</td>
+<td>Anderson</td>
+<td>Jane</td>
+<td>57500</td>
+<td>500</td>
+<td>457500</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1008</td>
+<td>Lim</td>
+<td>Smith</td>
+<td>58000</td>
+<td>500</td>
+<td>400000</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1011</td>
+<td>Johnson</td>
+<td>Sally</td>
+<td>58000</td>
+<td>500</td>
+<td>342000</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1001</td>
+<td>Smith</td>
+<td>John</td>
+<td>62000</td>
+<td>500</td>
+<td>284000</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1010</td>
+<td>Nakamura</td>
+<td>Shin</td>
+<td>62000</td>
+<td>500</td>
+<td>222000</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1009</td>
+<td>Waterman</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>500</td>
+<td>160000</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1012</td>
+<td>Johnson</td>
+<td>Emily</td>
+<td>80000</td>
+<td>500</td>
+<td>80000</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1004</td>
+<td>Horvath</td>
+<td>Jack</td>
+<td>42000</td>
+<td>501</td>
+<td>365000</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1003</td>
+<td>Everest</td>
+<td>Brad</td>
+<td>71000</td>
+<td>501</td>
+<td>323000</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1005</td>
+<td>Kate</td>
+<td>Smith</td>
+<td>72000</td>
+<td>501</td>
+<td>252000</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>1006</td>
+<td>blank</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>501</td>
+<td>180000</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1007</td>
+<td>mobile</td>
+<td>phone</td>
+<td>100000</td>
+<td>501</td>
+<td>100000</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="numeric-preceding-numeric-following" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="numeric-preceding-numeric-following"><span class="header-section-number">2</span> 1-3. NUMERIC PRECEDING, NUMERIC FOLLOWING</h2>
+<ul>
+<li>NUMERIC PRECEDING : 현재 행부터 N만큼 위에 있는 행을 참조</li>
+<li>NUMERIC FOLLOWING : 현재 행부터 N만큼 아래에 있는 행을 참조</li>
+<li>예시 쿼리</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    employee_number</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  , last_name</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  , first_name</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  , salary</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  , dept_id</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  , <span class="fu">SUM</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION</span> <span class="kw">BY</span> dept_id</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ORDER</span> <span class="kw">BY</span> salary</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="dv">1</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="dv">1</span> <span class="kw">FOLLOWING</span>) <span class="kw">AS</span> sum_salary</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `bigquery<span class="op">-</span>personal.test_ground.test_emp`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>결과
+<ul>
+<li>윈도우 프레임의 범위 : 현재 행보다 1행 위에 있는 행 ~ 현재 행 ~ 현재 행보다 1행 아래에 있는 행</li>
+<li>1행이면 1,2행 / 2행이면 1,2,3행의 값이 더해지게 된다.</li>
+<li>적절히 숫자를 바꾸면 된다.</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>행</th>
+<th>employee_number</th>
+<th>last_name</th>
+<th>first_name</th>
+<th>salary</th>
+<th>dept_id</th>
+<th>sum_salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1004</td>
+<td>Horvath</td>
+<td>Jack</td>
+<td>42000</td>
+<td>501</td>
+<td>42000</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1003</td>
+<td>Everest</td>
+<td>Brad</td>
+<td>71000</td>
+<td>501</td>
+<td>113000</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1005</td>
+<td>Kate</td>
+<td>Smith</td>
+<td>72000</td>
+<td>501</td>
+<td>185000</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1006</td>
+<td>blank</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>501</td>
+<td>223000</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1007</td>
+<td>mobile</td>
+<td>phone</td>
+<td>100000</td>
+<td>501</td>
+<td>252000</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1002</td>
+<td>Anderson</td>
+<td>Jane</td>
+<td>57500</td>
+<td>500</td>
+<td>57500</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1011</td>
+<td>Johnson</td>
+<td>Sally</td>
+<td>58000</td>
+<td>500</td>
+<td>115500</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1008</td>
+<td>Lim</td>
+<td>Smith</td>
+<td>58000</td>
+<td>500</td>
+<td>173500</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1010</td>
+<td>Nakamura</td>
+<td>Shin</td>
+<td>62000</td>
+<td>500</td>
+<td>178000</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1001</td>
+<td>Smith</td>
+<td>John</td>
+<td>62000</td>
+<td>500</td>
+<td>182000</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>1009</td>
+<td>Waterman</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>500</td>
+<td>204000</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1012</td>
+<td>Johnson</td>
+<td>Emily</td>
+<td>80000</td>
+<td>500</td>
+<td>222000</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="range" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="range"><span class="header-section-number">3</span> 2. RANGE</h2>
+<ul>
+<li>ORDER BY {sum_value}로 정렬했을 때, 같은 {sum_value}를 가지는 행들을 논리적으로 같은 행 범위라고 정의한다.</li>
+</ul>
+<section id="unbounded-preceding-1" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="unbounded-preceding-1"><span class="header-section-number">3.1</span> 2-1. UNBOUNDED PRECEDING</h3>
+<ul>
+<li>예시 코드</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    employee_number</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  , last_name</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  , first_name</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  , salary</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  , dept_id</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  , <span class="fu">SUM</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION</span> <span class="kw">BY</span> dept_id</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                  <span class="kw">ORDER</span> <span class="kw">BY</span> salary</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                  <span class="kw">RANGE</span> <span class="kw">BETWEEN</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> sum_salary</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `bigquery<span class="op">-</span>personal.test_ground.test_emp`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>결과
+<ul>
+<li>ORDER BY salary 이므로, 같은 salary인 행들은 전체가 한 번에 더해진다.</li>
+<li>salary가 80000인 행이 행 6,7인데, 160000이 한 번에 더해지는 것을 볼 수 있다.</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>행</th>
+<th>employee_number</th>
+<th>last_name</th>
+<th>first_name</th>
+<th>salary</th>
+<th>dept_id</th>
+<th>sum_salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1002</td>
+<td>Anderson</td>
+<td>Jane</td>
+<td>57500</td>
+<td>500</td>
+<td>57500</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1008</td>
+<td>Lim</td>
+<td>Smith</td>
+<td>58000</td>
+<td>500</td>
+<td>173500</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1011</td>
+<td>Johnson</td>
+<td>Sally</td>
+<td>58000</td>
+<td>500</td>
+<td>173500</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1001</td>
+<td>Smith</td>
+<td>John</td>
+<td>62000</td>
+<td>500</td>
+<td>297500</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1010</td>
+<td>Nakamura</td>
+<td>Shin</td>
+<td>62000</td>
+<td>500</td>
+<td>297500</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1009</td>
+<td>Waterman</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>500</td>
+<td>457500</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1012</td>
+<td>Johnson</td>
+<td>Emily</td>
+<td>80000</td>
+<td>500</td>
+<td>457500</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1004</td>
+<td>Horvath</td>
+<td>Jack</td>
+<td>42000</td>
+<td>501</td>
+<td>42000</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1003</td>
+<td>Everest</td>
+<td>Brad</td>
+<td>71000</td>
+<td>501</td>
+<td>113000</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1005</td>
+<td>Kate</td>
+<td>Smith</td>
+<td>72000</td>
+<td>501</td>
+<td>185000</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>1006</td>
+<td>blank</td>
+<td>Pencil</td>
+<td>80000</td>
+<td>501</td>
+<td>265000</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1007</td>
+<td>mobile</td>
+<td>phone</td>
+<td>100000</td>
+<td>501</td>
+<td>36500</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="limyj0708/blog" data-repo-id="R_kgDOIJzVlQ" data-category="General" data-category-id="DIC_kwDOIJzVlc4Cck8R" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

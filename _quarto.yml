@@ -11,10 +11,13 @@ website:
       - about.qmd
       - icon: github
         href: https://github.com/limyj0708
-      - icon: Linkedin
-        href: https://www.linkedin.com/feed/
+      - icon: linkedin
+        href: https://www.linkedin.com/in/%EC%98%81%EC%A7%84-%EC%9E%84-b499a0111/?utm_source=share&utm_campaign=share_via&utm_content=profile
 
 format:
   html:
     theme: cosmo
     css: styles.css
+  
+execute:
+  freeze: auto # re-render only when source changes

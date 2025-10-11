@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="limyj0708">
+<meta name="dcterms.date" content="2022-06-13">
+
+<title>Git CheatSheet (지속적으로 업데이트함) – Lim’s Code Archive</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Lim’s Code Archive</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/limyj0708"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/%EC%98%81%EC%A7%84-%EC%9E%84-b499a0111/?utm_source=share&amp;utm_campaign=share_via&amp;utm_content=profile"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#기존-디렉토리를-git-저장소로-만들기" id="toc-기존-디렉토리를-git-저장소로-만들기" class="nav-link active" data-scroll-target="#기존-디렉토리를-git-저장소로-만들기"><span class="header-section-number">1</span> 기존 디렉토리를 Git 저장소로 만들기</a></li>
+  <li><a href="#수정과-저장" id="toc-수정과-저장" class="nav-link" data-scroll-target="#수정과-저장"><span class="header-section-number">2</span> 수정과 저장</a>
+  <ul class="collapse">
+  <li><a href="#상태-확인" id="toc-상태-확인" class="nav-link" data-scroll-target="#상태-확인"><span class="header-section-number">2.1</span> 상태 확인</a></li>
+  <li><a href="#파일을-새로-추적하기" id="toc-파일을-새로-추적하기" class="nav-link" data-scroll-target="#파일을-새로-추적하기"><span class="header-section-number">2.2</span> 파일을 새로 추적하기</a></li>
+  <li><a href="#modified-상태의-파일을-staging-하기" id="toc-modified-상태의-파일을-staging-하기" class="nav-link" data-scroll-target="#modified-상태의-파일을-staging-하기"><span class="header-section-number">2.3</span> Modified 상태의 파일을 Staging 하기</a></li>
+  <li><a href="#commit" id="toc-commit" class="nav-link" data-scroll-target="#commit"><span class="header-section-number">2.4</span> commit</a></li>
+  <li><a href="#파일-삭제" id="toc-파일-삭제" class="nav-link" data-scroll-target="#파일-삭제"><span class="header-section-number">2.5</span> 파일 삭제</a></li>
+  <li><a href="#파일-이동-이름-바꾸기" id="toc-파일-이동-이름-바꾸기" class="nav-link" data-scroll-target="#파일-이동-이름-바꾸기"><span class="header-section-number">2.6</span> 파일 이동, 이름 바꾸기</a></li>
+  </ul></li>
+  <li><a href="#원격-저장소" id="toc-원격-저장소" class="nav-link" data-scroll-target="#원격-저장소"><span class="header-section-number">3</span> 원격 저장소</a>
+  <ul class="collapse">
+  <li><a href="#원격-저장소-확인하기" id="toc-원격-저장소-확인하기" class="nav-link" data-scroll-target="#원격-저장소-확인하기"><span class="header-section-number">3.1</span> 원격 저장소 확인하기</a></li>
+  <li><a href="#원격-저장소-추가하기" id="toc-원격-저장소-추가하기" class="nav-link" data-scroll-target="#원격-저장소-추가하기"><span class="header-section-number">3.2</span> 원격 저장소 추가하기</a></li>
+  <li><a href="#원격-저장소에서-pull-fetch" id="toc-원격-저장소에서-pull-fetch" class="nav-link" data-scroll-target="#원격-저장소에서-pull-fetch"><span class="header-section-number">3.3</span> 원격 저장소에서 Pull, Fetch</a></li>
+  <li><a href="#원격-저장소에-push-하기" id="toc-원격-저장소에-push-하기" class="nav-link" data-scroll-target="#원격-저장소에-push-하기"><span class="header-section-number">3.4</span> 원격 저장소에 Push 하기</a></li>
+  <li><a href="#원격-저장소-정보-보기" id="toc-원격-저장소-정보-보기" class="nav-link" data-scroll-target="#원격-저장소-정보-보기"><span class="header-section-number">3.5</span> 원격 저장소 정보 보기</a></li>
+  <li><a href="#원격-저장소-이름-바꾸기-삭제하기" id="toc-원격-저장소-이름-바꾸기-삭제하기" class="nav-link" data-scroll-target="#원격-저장소-이름-바꾸기-삭제하기"><span class="header-section-number">3.6</span> 원격 저장소 이름 바꾸기, 삭제하기</a></li>
+  </ul></li>
+  <li><a href="#다중-계정-사용" id="toc-다중-계정-사용" class="nav-link" data-scroll-target="#다중-계정-사용"><span class="header-section-number">4</span> 다중 계정 사용</a>
+  <ul class="collapse">
+  <li><a href="#config-분리" id="toc-config-분리" class="nav-link" data-scroll-target="#config-분리"><span class="header-section-number">4.1</span> config 분리</a></li>
+  <li><a href="#ssh_key-등록" id="toc-ssh_key-등록" class="nav-link" data-scroll-target="#ssh_key-등록"><span class="header-section-number">4.2</span> ssh_key 등록</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Git CheatSheet (지속적으로 업데이트함)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">git</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>limyj0708 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 13, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>안 쓰면 잊어버리는, git 주요 조작법들을 정리</p>
+</blockquote>
+<p><strong>교과서 : https://git-scm.com/book/ko/v2</strong></p>
+<section id="기존-디렉토리를-git-저장소로-만들기" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 기존 디렉토리를 Git 저장소로 만들기</h1>
+<ul>
+<li>원하는 폴더로 이동 후 <code>git init</code></li>
+</ul>
+</section>
+<section id="수정과-저장" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 수정과 저장</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://git-scm.com/book/en/v2/images/lifecycle.png" class="img-fluid figure-img"></p>
+<figcaption>lifecycle.png</figcaption>
+</figure>
+</div>
+<p>워킹 디렉토리의 모든 파일은 크게 Tracked(관리대상임)와 Untracked(관리대상이 아님)로 나눈다. Tracked 파일은 이미 스냅샷에 포함돼 있던 파일이다. Tracked 파일은 또 Unmodified(수정하지 않음)와 Modified(수정함) 그리고 Staged(커밋으로 저장소에 기록할) 상태 중 하나이다. 간단히 말하자면 Git이 알고 있는 파일이라는 것이다.</p>
+<p>그리고 나머지 파일은 모두 Untracked 파일이다. Untracked 파일은 워킹 디렉토리에 있는 파일 중 스냅샷에도 Staging Area에도 포함되지 않은 파일이다. 처음 저장소를 Clone 하면 모든 파일은 Tracked이면서 Unmodified 상태이다. 파일을 Checkout 하고 나서 아무것도 수정하지 않았기 때문에 그렇다.</p>
+<p>마지막 커밋 이후 아직 아무것도 수정하지 않은 상태에서 어떤 파일을 수정하면 Git은 그 파일을 Modified 상태로 인식한다. 실제로 커밋을 하기 위해서는 이 수정한 파일을 Staged 상태로 만들고, Staged 상태의 파일을 커밋한다. 이런 라이프사이클을 계속 반복한다.</p>
+<section id="상태-확인" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="상태-확인"><span class="header-section-number">2.1</span> 상태 확인</h2>
+<ul>
+<li><code>git status</code></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">PS</span> C<span class="op">:</span>\Users\limyj0708\fastpages<span class="op">&gt;</span> git status</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>On branch master</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Your branch is up to date with <span class="st">'origin/master'</span><span class="op">.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Untracked files<span class="op">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git add &lt;file&gt;..."</span> to include <span class="kw">in</span> what will be committed<span class="op">)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>nothing added to commit but untracked files present <span class="op">(</span>use <span class="st">"git add"</span> to track<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>2022-06-13-git_cheatsheet.ipynb 파일이 untracked 상태</li>
+<li>Git은 Untracked 파일을 아직 스냅샷(커밋)에 넣어지지 않은 파일이라고 본다. 파일이 Tracked 상태가 되기 전까지는 Git은 절대 그 파일을 커밋하지 않는다. 그래서 일하면서 생성하는 바이너리 파일 같은 것을 커밋하는 실수는 하지 않게 된다.</li>
+</ul>
+</section>
+<section id="파일을-새로-추적하기" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="파일을-새로-추적하기"><span class="header-section-number">2.2</span> 파일을 새로 추적하기</h2>
+<ul>
+<li><code>git add _notebooks/2022-06-13-git_cheatsheet.ipynb</code></li>
+<li>이후 다시 status를 보면</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PS</span> C<span class="op">:</span>\Users\limyj0708\fastpages<span class="op">&gt;</span> git status</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>On branch master</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Your branch is up to date with <span class="st">'origin/master'</span><span class="op">.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Changes to be committed<span class="op">:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore --staged &lt;file&gt;..."</span> to unstage<span class="op">)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        new file<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>“Changes to be committed” 에 들어 있는 파일은 Staged 상태라는 것을 의미한다. 커밋하면 git add 를 실행한 시점의 파일이 커밋되어 저장소 히스토리에 남는다.</li>
+<li>git add 명령은 파일 또는 디렉토리의 경로를 argument로 받는다. 디렉토리면 아래에 있는 모든 파일들까지 재귀적으로 추가한다.</li>
+<li><code>git add .</code> 의 경우, .은 현재 디렉토리를 나타내므로, 현재 디렉토리와 하위 디렉토리의 모든 파일들을 Staged 상태로 만든다.</li>
+</ul>
+</section>
+<section id="modified-상태의-파일을-staging-하기" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="modified-상태의-파일을-staging-하기"><span class="header-section-number">2.3</span> Modified 상태의 파일을 Staging 하기</h2>
+<ul>
+<li>2022-06-13-git_cheatsheet.ipynb를 수정한 후에 <code>git status</code>를 해 보면?</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>On branch master</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Your branch is up to date with <span class="st">'origin/master'</span><span class="op">.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Changes to be committed<span class="op">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore --staged &lt;file&gt;..."</span> to unstage<span class="op">)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        new file<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>Changes not staged <span class="cf">for</span> commit<span class="op">:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git add &lt;file&gt;..."</span> to update what will be committed<span class="op">)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore &lt;file&gt;..."</span> to discard changes <span class="kw">in</span> working directory<span class="op">)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        modified<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>“Changes not staged for commit” 에 있다. 이것은 수정한 파일이 Tracked 상태이지만 아직 Staged 상태는 아니라는 것이다. Staged 상태로 만들려면 git add 명령을 실행해야 한다. git add 명령은 파일을 새로 추적할 때도 사용하고 수정한 파일을 Staged 상태로 만들 때도 사용한다. Merge 할 때 충돌난 상태의 파일을 Resolve 상태로 만들때도 사용한다. add의 의미는 프로젝트에 파일을 추가한다기 보다는 다음 커밋에 추가한다고 받아들이는게 좋다.</p></li>
+<li><p><code>git add _notebooks/2022-06-13-git_cheatsheet.ipynb</code>후 다시 <code>git status</code>를 해 보자.</p></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PS</span> C<span class="op">:</span>\Users\limyj0708\fastpages<span class="op">&gt;</span> git status</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>On branch master</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Your branch is up to date with <span class="st">'origin/master'</span><span class="op">.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Changes to be committed<span class="op">:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore --staged &lt;file&gt;..."</span> to unstage<span class="op">)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        new file<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>“Changes to be committed”에 잘 들어갔는데, 여기서 또 수정을 하고 <code>git status</code>를 하면?</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PS</span> C<span class="op">:</span>\Users\limyj0708\fastpages<span class="op">&gt;</span> git status</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>On branch master</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Your branch is up to date with <span class="st">'origin/master'</span><span class="op">.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Changes to be committed<span class="op">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore --staged &lt;file&gt;..."</span> to unstage<span class="op">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        new file<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Changes not staged <span class="cf">for</span> commit<span class="op">:</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git add &lt;file&gt;..."</span> to update what will be committed<span class="op">)</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span>use <span class="st">"git restore &lt;file&gt;..."</span> to discard changes <span class="kw">in</span> working directory<span class="op">)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        modified<span class="op">:</span>   _notebooks<span class="op">/</span><span class="dv">2022</span><span class="op">-</span><span class="dv">06</span><span class="op">-</span><span class="dv">13</span><span class="op">-</span>git_cheatsheet<span class="op">.</span><span class="fu">ipynb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Changes to be committed / Changes not staged for commit에 둘 다 2022-06-13-git_cheatsheet.ipynb이 들어있는 이유
+<ul>
+<li>지금 이 시점에서 커밋을 하면 git commit 명령을 실행하는 시점의 버전이 커밋되는 것이 아니라 마지막으로 git add 명령을 실행했을 때의 버전이 커밋된다. 그러니까 git add 명령을 실행한 후에 또 파일을 수정하면 git add 명령을 다시 실행해서 최신 버전을 Staged 상태로 만들어야 한다.</li>
+</ul></li>
+</ul>
+</section>
+<section id="commit" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="commit"><span class="header-section-number">2.4</span> commit</h2>
+<ul>
+<li>Staged 상태가 된 파일을 저장소에 기록</li>
+<li>커밋 메세지를 첨부하려면 -m을 붙이고 메시지를 기재</li>
+</ul>
+<pre class="shell"><code>git commit -m "modify readme"
+[main c524828] modify readme
+ 1 file changed, 23 insertions(+), 24 deletions(-)</code></pre>
+<ul>
+<li>main branch에 기록되었으며, 체크섬은 c524828</li>
+<li>-a 옵션을 붙이면, add를 해서 staging area에 변경된 파일을 추가하는 작업을 자동으로 처리해 줌
+<ul>
+<li><code>git commit -a -m "modify readme"</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="파일-삭제" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="파일-삭제"><span class="header-section-number">2.5</span> 파일 삭제</h2>
+<ul>
+<li><code>git rm [파일명 or 디렉토리명]</code>
+<ul>
+<li>파일이 실제로 삭제된다.</li>
+</ul></li>
+<li>파일을 그냥 삭제하면, 파일이 unstaged 상태에 있다고 표시된다.
+<ul>
+<li>파일을 그냥 삭제하였다면, git rm을 적용해 주어야 staged 상태가 된다.</li>
+<li>그리고 commit을 하면, 더 이상 파일을 추적하지 않는다.</li>
+</ul></li>
+<li>파일을 수정했는데 지우고 싶거나, staging area에 추가했다면, -f 옵션을 주어서 강제로 삭제해야 한다.</li>
+<li>Staging Area에서만 제거하고 디렉토리에 있는 파일은 지우지 않고 남겨두기
+<ul>
+<li>–cached 옵션 사용</li>
+<li><code>git rm --cached README</code></li>
+</ul></li>
+<li>한 번에 여러 파일 삭제하기
+<ul>
+<li><code>git rm log/\*.log</code>
+<ul>
+<li>log 폴더 내의, .log 확장자인 파일을 모두 삭제함</li>
+</ul></li>
+<li><code>git rm \*~</code>
+<ul>
+<li>이름이 ~로 끝나는 파일을 모두 삭제함</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="파일-이동-이름-바꾸기" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="파일-이동-이름-바꾸기"><span class="header-section-number">2.6</span> 파일 이동, 이름 바꾸기</h2>
+<ul>
+<li><code>git mv README.md README</code>
+<ul>
+<li>README.md를 README로 이름 변경</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="원격-저장소" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> 원격 저장소</h1>
+<section id="원격-저장소-확인하기" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="원격-저장소-확인하기"><span class="header-section-number">3.1</span> 원격 저장소 확인하기</h2>
+<pre class="shell"><code>$ git remote -v
+origin  https://github.com/limyj0708/bigquery_module.git (fetch)
+origin  https://github.com/limyj0708/bigquery_module.git (push)
+</code></pre>
+</section>
+<section id="원격-저장소-추가하기" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="원격-저장소-추가하기"><span class="header-section-number">3.2</span> 원격 저장소 추가하기</h2>
+<ul>
+<li><code>git remote add &lt;원격 저장소 이름&gt; &lt;url&gt;</code>
+<ul>
+<li>clone 시에는, 단축이름이 자동으로 origin이 된다.</li>
+<li><code>git clone https://github.com/limyj0708/fastpages.git</code> : 이런 식으로 할 경우</li>
+</ul></li>
+<li>현재 디렉토리에 추가된 원격 저장소가 있는데, 다른 원격 저장소로 바꾸고 싶을 경우
+<ul>
+<li>https://shanepark.tistory.com/284 참조</li>
+</ul></li>
+</ul>
+</section>
+<section id="원격-저장소에서-pull-fetch" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="원격-저장소에서-pull-fetch"><span class="header-section-number">3.3</span> 원격 저장소에서 Pull, Fetch</h2>
+<ul>
+<li><code>git fetch &lt;원격 저장소 이름&gt;</code>
+<ul>
+<li>로컬에는 없는데, 원격 저장소에 있는 내용을 모두 가져온다.</li>
+<li>가져오긴 하지만 branch를 merge 하지는 않으므로, 수동으로 merge 해야 한다.</li>
+</ul></li>
+<li><code>git pull &lt;원격 저장소 이름&gt;</code>
+<ul>
+<li>원격 저장소에 있는 내용을 모두 가져온 후, branch merge까지 알아서 진행한다.</li>
+<li>최초에 내용을 <code>git clone</code>으로 가져왔을 경우, 자동으로 로컬의 master branch가 리모트 저장소의 master branch를 추적하도록 한다(물론 리모트 저장소에 master 브랜치가 있다는 가정에서).</li>
+</ul></li>
+</ul>
+</section>
+<section id="원격-저장소에-push-하기" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="원격-저장소에-push-하기"><span class="header-section-number">3.4</span> 원격 저장소에 Push 하기</h2>
+<ul>
+<li><code>git push &lt;원격 저장소 이름&gt; &lt;브랜치 이름&gt;</code>
+<ul>
+<li>최초에 <code>git clone</code>으로 가져왔을 경우, 단축이름은 origin이고 branch 이름은 master이므로 아래와 같이 된다.</li>
+<li><code>git push origin master</code></li>
+</ul></li>
+<li>이 명령은 Clone 한 리모트 저장소에 쓰기 권한이 있고, Clone 하고 난 이후 아무도 Upstream 저장소에 Push 하지 않았을 때만 사용할 수 있다. 다시 말해서 Clone 한 사람이 여러 명 있을 때, 다른 사람이 Push 한 후에 Push 하려고 하면 Push 할 수 없다. 먼저 다른 사람이 작업한 것을 가져와서 Merge 한 후에 Push 할 수 있다.</li>
+</ul>
+</section>
+<section id="원격-저장소-정보-보기" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="원격-저장소-정보-보기"><span class="header-section-number">3.5</span> 원격 저장소 정보 보기</h2>
+<ul>
+<li><code>git remote show &lt;원격 저장소 이름&gt;</code></li>
+</ul>
+<pre class="shell"><code>$ git remote show origin
+* remote origin
+  Fetch URL: https://github.com/schacon/ticgit
+  Push  URL: https://github.com/schacon/ticgit
+  HEAD branch: master
+  Remote branches:
+    master                               tracked
+    dev-branch                           tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)</code></pre>
+<ul>
+<li>원격 저장소의 URL과 추적하는 branch를 출력한다. 이 명령은 git pull 명령을 실행할 때 master branch와 Merge할 branch가 무엇인지 보여준다. git pull 명령은 원격 저장소 branch의 데이터를 모두 가져오고 나서 자동으로 Merge할 것이다.</li>
+</ul>
+</section>
+<section id="원격-저장소-이름-바꾸기-삭제하기" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="원격-저장소-이름-바꾸기-삭제하기"><span class="header-section-number">3.6</span> 원격 저장소 이름 바꾸기, 삭제하기</h2>
+<ul>
+<li><code>git remote rename &lt;기존 원격 저장소 이름&gt; &lt;바꿀 원격 저장소 이름&gt;</code></li>
+<li><code>git remote remove &lt;원격 저장소 이름&gt;</code></li>
+</ul>
+</section>
+</section>
+<section id="다중-계정-사용" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> 다중 계정 사용</h1>
+<section id="config-분리" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="config-분리"><span class="header-section-number">4.1</span> config 분리</h2>
+<ul>
+<li>한 PC에서 업무용 repository 접근계정, 개인용 repository 접근계정을 분리해서 사용하고 싶을 때</li>
+<li>윈도우의 경우, C:{계정명} 에 .gitconfig가 존재한다.</li>
+<li>.gitconfig에 아래 항목 추가</li>
+</ul>
+<pre class="config"><code>[includeIf "gitdir/i:C:/Code/limyj0708_code_archive/"]
+    path = .gitconfig_personal.config</code></pre>
+<ul>
+<li>C:/Code/limyj0708_code_archive/ 아래에 있는 repository에 접근 시에는, .gitconfig_personal.config의 정보를 사용하겠다는 의미이다.</li>
+<li>C:{계정명} 에 .gitconfig_personal.config를 만들고, users 항목을 입력한다.</li>
+</ul>
+<pre class="config"><code>[user]
+    email = limyj0708@gmail.com
+    name = limyj0708</code></pre>
+<ul>
+<li>확인해보면, 원하는 대로 잘 된다.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git config <span class="at">--show-origin</span> user.email</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">file:C:/Users/limyj0708/.gitconfig_personal.config</span>      limyj0708@gmail.com</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ssh_key-등록" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="ssh_key-등록"><span class="header-section-number">4.2</span> ssh_key 등록</h2>
+<ul>
+<li>ssh_key를 각각 분리해서 등록해주면, 원격 저장소에 push할 때 귀찮은 일이 없어진다.</li>
+</ul>
+<pre><code>&gt; ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\limyj0708/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\limyj0708/.ssh/id_rsa.
+Your public key has been saved in C:\Users\limyj0708/.ssh/id_rsa.pub.
+The key fingerprint is:</code></pre>
+<ul>
+<li>passphrase는 <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases">설정을 권장</a>하고 있으므로 설정해준다.</li>
+<li><code>C:\Users\limyj0708\.ssh</code>에 가서, 공개키(pub)를 열고 내용을 복사하자.</li>
+<li>github 계정 &gt; Settings &gt; SSH and GPG keys 메뉴로 이동
+<ul>
+<li>SSH keys &gt; New SSH key</li>
+<li>공개키 내용을 붙여넣고, 적절히 이름을 붙여서 등록</li>
+</ul></li>
+<li><code>C:\Users\limyj0708\.ssh\config</code>에 내용을 추가하자.</li>
+</ul>
+<pre class="config"><code>Host github_personal
+  IdentityFile C:\Users\limyj0708\.ssh\{비밀키 파일명}
+  User git
+  HostName github.com</code></pre>
+<ul>
+<li>이후, 로컬 저장소에서 원격 저장소를 어떻게 등록해주면 되냐면…
+<ul>
+<li><code>git remote add origin git@github_personal:limyj0708/blog.git</code>
+<ul>
+<li>git@github.com:limyj0708/blog.git에서, github.com 부분을 github_personal으로 바꿔 준 것이다.</li>
+</ul></li>
+<li>이미 연결되어있던 원격 저장소가 있어서, 바꿔줘야 되는 상황이라면 미리 <code>git remote remove {저장소명}</code>을 해 주자.</li>
+</ul></li>
+<li>이제 원격 저장소로 push 할 때, passphrase만 잘 입력해 주면 추가 조치 없이 잘 진행된다.</li>
+<li>회사 계정은 github_work 등으로 추가할 수 있다.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="limyj0708/blog" data-repo-id="R_kgDOIJzVlQ" data-category="General" data-category-id="DIC_kwDOIJzVlc4Cck8R" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>
