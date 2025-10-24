@@ -33,7 +33,7 @@ comments:
 ## 상태 확인
   - `git status`
   
-```PowerShell
+```Powersh
   PS C:\Users\limyj0708\fastpages> git status
 On branch master
 Your branch is up to date with 'origin/master'.
@@ -52,7 +52,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 - `git add _notebooks/2022-06-13-git_cheatsheet.ipynb`
 - 이후 다시 status를 보면
 
-```PowerShell
+```Powersh
 PS C:\Users\limyj0708\fastpages> git status
 On branch master
 Your branch is up to date with 'origin/master'.
@@ -70,7 +70,7 @@ Changes to be committed:
 
 - 2022-06-13-git_cheatsheet.ipynb를 수정한 후에 `git status`를 해 보면?
 
-```PowerShell
+```Powersh
 On branch master
 Your branch is up to date with 'origin/master'.
 
@@ -88,7 +88,7 @@ Changes not staged for commit:
 
 - `git add _notebooks/2022-06-13-git_cheatsheet.ipynb`후 다시 `git status`를 해 보자.
 
-```PowerShell
+```Powersh
 PS C:\Users\limyj0708\fastpages> git status
 On branch master
 Your branch is up to date with 'origin/master'.
@@ -100,7 +100,7 @@ Changes to be committed:
 
 - “Changes to be committed”에 잘 들어갔는데, 여기서 또 수정을 하고 `git status`를 하면?
 
-```PowerShell
+```Powersh
 PS C:\Users\limyj0708\fastpages> git status
 On branch master
 Your branch is up to date with 'origin/master'.
@@ -121,7 +121,7 @@ Changes not staged for commit:
 ## commit
 - Staged 상태가 된 파일을 저장소에 기록
 - 커밋 메세지를 첨부하려면 -m을 붙이고 메시지를 기재
-```Shell
+```sh
 git commit -m "modify readme"
 [main c524828] modify readme
  1 file changed, 23 insertions(+), 24 deletions(-)
@@ -153,7 +153,7 @@ git commit -m "modify readme"
 # 원격 저장소
 
 ## 원격 저장소 확인하기
-```shell
+```sh
 $ git remote -v
 origin  https://github.com/limyj0708/bigquery_module.git (fetch)
 origin  https://github.com/limyj0708/bigquery_module.git (push)
@@ -184,7 +184,7 @@ origin  https://github.com/limyj0708/bigquery_module.git (push)
 ## 원격 저장소 정보 보기
 - `git remote show <원격 저장소 이름>`
 
-```shell
+```sh
 $ git remote show origin
 * remote origin
   Fetch URL: https://github.com/schacon/ticgit
@@ -210,13 +210,13 @@ $ git remote show origin
 - 한 PC에서 업무용 repository 접근계정, 개인용 repository 접근계정을 분리해서 사용하고 싶을 때
 - 윈도우의 경우, C:\Users\{계정명} 에 .gitconfig가 존재한다.
 - .gitconfig에 아래 항목 추가
-```config
+```sh
 [includeIf "gitdir/i:C:/Code/limyj0708_code_archive/"]
     path = .gitconfig_personal.config
 ```
 - C:/Code/limyj0708_code_archive/ 아래에 있는 repository에 접근 시에는, .gitconfig_personal.config의 정보를 사용하겠다는 의미이다.
 - C:\Users\{계정명} 에 .gitconfig_personal.config를 만들고, users 항목을 입력한다.
-```config
+```sh
 [user]
 	email = limyj0708@gmail.com
 	name = limyj0708
@@ -229,7 +229,7 @@ file:C:/Users/limyj0708/.gitconfig_personal.config      limyj0708@gmail.com
 
 ## ssh_key 등록
 - ssh_key를 각각 분리해서 등록해주면, 원격 저장소에 push할 때 귀찮은 일이 없어진다.
-```
+```bash
 > ssh-keygen
 Generating public/private rsa key pair.
 Enter file in which to save the key (C:\Users\limyj0708/.ssh/id_rsa):
@@ -245,7 +245,7 @@ The key fingerprint is:
   - SSH keys > New SSH key
   - 공개키 내용을 붙여넣고, 적절히 이름을 붙여서 등록
 - `C:\Users\limyj0708\.ssh\config`에 내용을 추가하자.
-```Config
+```sh
 Host github_personal
   IdentityFile C:\Users\limyj0708\.ssh\{비밀키 파일명}
   User git
@@ -266,7 +266,7 @@ Host github_personal
   - 로컬 브랜치 목록을 보여준다
   - 현재 작업 중인 브랜치 앞에 `*` 표시가 붙는다
   
-```shell
+```sh
 $ git branch
 * master
   develop
@@ -276,7 +276,7 @@ $ git branch
 - `git branch -v`
   - 각 브랜치의 마지막 커밋 메시지도 함께 보여준다
   
-```shell
+```sh
 $ git branch -v
 * master    c524828 modify readme
   develop   a3f2b1c add new feature
@@ -294,7 +294,7 @@ $ git branch -v
   - 새로운 브랜치를 생성한다
   - 생성만 할 뿐 해당 브랜치로 전환하지는 않는다
   
-```shell
+```sh
 $ git branch develop
 $ git branch
   develop
@@ -305,7 +305,7 @@ $ git branch
   - 새로운 브랜치를 생성하고 바로 전환한다
   - `git branch <브랜치명>` + `git checkout <브랜치명>`을 한 번에 실행
   
-```shell
+```sh
 $ git checkout -b feature-2
 Switched to a new branch 'feature-2'
 ```
@@ -314,7 +314,7 @@ Switched to a new branch 'feature-2'
   - Git 2.23 버전 이후 추가된 명령어
   - `git checkout -b`와 동일한 기능 (브랜치 생성 + 전환)
   
-```shell
+```sh
 $ git switch -c feature-3
 Switched to a new branch 'feature-3'
 ```
@@ -324,7 +324,7 @@ Switched to a new branch 'feature-3'
   - 지정한 브랜치로 전환한다
   - 워킹 디렉토리의 파일들이 해당 브랜치의 상태로 변경된다
   
-```shell
+```sh
 $ git checkout develop
 Switched to branch 'develop'
 ```
@@ -333,7 +333,7 @@ Switched to branch 'develop'
   - Git 2.23 버전 이후 추가된 명령어
   - `git checkout`보다 명확하게 브랜치 전환 용도로 사용
   
-```shell
+```sh
 $ git switch master
 Switched to branch 'master'
 ```
@@ -347,7 +347,7 @@ Switched to branch 'master'
   - 로컬 브랜치를 삭제한다
   - 병합되지 않은 브랜치는 삭제되지 않는다 (안전장치)
   
-```shell
+```sh
 $ git branch -d feature-1
 Deleted branch feature-1 (was d8e9f0a).
 ```
@@ -356,7 +356,7 @@ Deleted branch feature-1 (was d8e9f0a).
   - 강제로 브랜치를 삭제한다
   - 병합되지 않은 브랜치도 삭제된다
   
-```shell
+```sh
 $ git branch -D feature-2
 Deleted branch feature-2 (was a1b2c3d).
 ```
@@ -365,7 +365,7 @@ Deleted branch feature-2 (was a1b2c3d).
   - `git push <원격 저장소> --delete <브랜치명>`
   - 또는 `git push <원격 저장소> :<브랜치명>`
   
-```shell
+```sh
 $ git push origin --delete feature-1
 To https://github.com/user/repo.git
  - [deleted]         feature-1
@@ -376,7 +376,7 @@ To https://github.com/user/repo.git
   - 현재 브랜치에 지정한 브랜치의 내용을 병합한다
   - 예: develop 브랜치의 내용을 master에 병합하고 싶다면
   
-```shell
+```sh
 $ git checkout master
 $ git merge develop
 Updating c524828..a3f2b1c
@@ -395,17 +395,18 @@ Fast-forward
   - 시나리오 1 (성공):
     - Mine은 file1.txt를 수정.
     - Theirs는 file2.txt를 수정.
-    - 결과: 겹치는 부분이 없으므로, 두 변경 사항을 모두 적용한 새 커밋을 만듭니다.
+    - 결과: 겹치는 부분이 없으므로, 두 변경 사항을 모두 적용한 새 커밋을 만든다.
   - 시나리오 2 (성공):
     - Mine은 file1.txt의 10번째 줄을 수정.
     - Theirs는 file1.txt의 50번째 줄을 수정.
-    - 결과: 같은 파일이지만 수정한 위치가 다르므로, 두 변경 사항을 모두 적용
-  - 시나리오 3 (실패: 병합 충돌!)
+    - 결과: 같은 파일이지만 수정한 위치가 다르므로, 두 변경 사항을 모두 적용.
+  - 시나리오 3 (실패: 병합 충돌)
     - Mine은 file1.txt의 10번째 줄을 A라고 수정.
     - Theirs도 file1.txt의 10번째 줄을 B라고 수정.
-  - 결과: Git은 **원본(Base)**과 비교해 보니 둘 다 같은 곳을 다르게 수정했음을 확인. Git은 "둘 중 뭘 선택해야 할지 모르겠어!"라며 **병합 충돌(Merge Conflict)**을 일으키고 사용자에게 해결을 요청함
+  - 결과: Git은 **원본(Base)**과 비교해 보니 둘 다 같은 곳을 다르게 수정했음을 확인.
+    - Git은 "둘 중 뭘 선택해야 할지 모르겠어!"라며 **병합 충돌(Merge Conflict)**을 일으키고 사용자에게 해결을 요청함
   - 충돌이 없거나, 충돌을 모두 해결하고 나면 Git은 이 모든 변경 사항을 합친 **새로운 커밋 M**을 생성
-```
+```sh
      A---B---C  (feature)  <- 병합할 브랜치 (Theirs)
     /
 ---O---D---E       (main)     <- 현재 브랜치 (Mine)
@@ -418,7 +419,7 @@ Fast-forward
   - 같은 파일의 같은 부분을 수정한 경우 충돌이 발생한다
   - 충돌이 발생하면 Git은 해당 파일에 충돌 마커를 추가한다
   
-```shell
+```sh
 <<<<<<< HEAD
 현재 브랜치의 내용
 =======
@@ -433,12 +434,12 @@ Fast-forward
 - `git branch -m <기존 브랜치명> <새 브랜치명>`
   - 브랜치 이름을 변경한다
   
-```shell
+```sh
 $ git branch -m old-name new-name
 ```
 
 - 현재 브랜치의 이름을 변경하려면
   
-```shell
+```sh
 $ git branch -m new-name
 ```

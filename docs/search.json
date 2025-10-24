@@ -810,5 +810,47 @@
     "title": "Lim's Code Archive",
     "section": "",
     "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-10-08\n\n\nuv init으로 시작하는 프로젝트 환경 세팅\n\n\nlimyj0708 \n\n\n\n\n2025-10-08\n\n\nCloud Compute Instance 사용 시 알아두면 좋은 사용법들\n\n\nlimyj0708 \n\n\n\n\n2025-02-02\n\n\nFastAPI_02 Routing, URL prefix 지정\n\n\nlimyj0708 \n\n\n\n\n2025-02-02\n\n\nUbuntu에서 메인 Python 버전 새로 설치하기 (with uv)\n\n\nlimyj0708 \n\n\n\n\n2025-02-02\n\n\nUnity - matchWidthOrHeight - 해상도 변경 시 UI 스케일링 기준을 조정\n\n\nlimyj0708 \n\n\n\n\n2025-02-02\n\n\nFastAPI_01 Docker 세팅과 Hello World\n\n\nlimyj0708 \n\n\n\n\n2024-01-21\n\n\nQuarto 101\n\n\nlimyj0708 \n\n\n\n\n2023-01-12\n\n\nBigquery_Window 함수의 window_frame_clause 정리\n\n\nlimyj0708 \n\n\n\n\n2022-10-29\n\n\nBigquery_사분위수 구하기\n\n\nlimyj0708 \n\n\n\n\n2022-10-29\n\n\nBigquery_Array, Struct 조합 사용과 Cartesian Product\n\n\nlimyj0708 \n\n\n\n\n2022-10-29\n\n\nBigquery_사용자 정의 함수(UDF)\n\n\nlimyj0708 \n\n\n\n\n2022-10-25\n\n\nBigquery_7일 연속 미접속 시작일 쉽게 추출하기\n\n\nlimyj0708 \n\n\n\n\n2022-06-13\n\n\nGit CheatSheet (지속적으로 업데이트함)\n\n\nlimyj0708 \n\n\n\n\n2022-05-26\n\n\nPython Google Drive API v3로 파일 업로드\n\n\nlimyj0708 \n\n\n\n\n2022-05-26\n\n\nJupyter Lab Server 세팅\n\n\nlimyj0708 \n\n\n\n\n2022-03-19\n\n\n맥 OS pyenv 세팅 101\n\n\nlimyj0708 \n\n\n\n\n2021-11-17\n\n\n리눅스 Shell 명령어 Python 스크립트에서 실행하기 + Crontab\n\n\nlimyj0708 \n\n\n\n\n2021-11-08\n\n\nPython 스크립트 Console 유저 입력 받기\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_08_파일 입출력\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_07_데이터 집계\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_06_데이터 타입\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_05_데이터 구조 변경\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_04_Dataframe 결합\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_03_값 삭제, 대체\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_02_Indexing, 값 변경, 추가\n\n\nlimyj0708 \n\n\n\n\n2021-11-05\n\n\nPandas_01_Dataframe 생성\n\n\nlimyj0708 \n\n\n\n\n2021-09-07\n\n\nCrontab으로 Python 스크립트 주기적으로 실행하기\n\n\nlimyj0708 \n\n\n\n\n2021-09-06\n\n\nLinux_비밀번호 만료 안 되게 하기\n\n\nlimyj0708 \n\n\n\n\n2020-02-11\n\n\nRedshift에 데이터를 적재하는 과정에서 얻은 교훈 & psycopg2\n\n\nlimyj0708 \n\n\n\n\n2020-02-06\n\n\n로컬 머신에서 AWS Redshift에 접근하기\n\n\nlimyj0708 \n\n\n\n\n2019-11-11\n\n\nAsynchronous, Synchronous, Blocking, Non-Blocking\n\n\nlimyj0708 \n\n\n\n\n2019-10-30\n\n\nPython_Decorator가 뭐지? with Scope, Namespace\n\n\nlimyj0708 \n\n\n\n\n2019-10-12\n\n\nUbuntu 새 유저 SSH key 추가\n\n\nlimyj0708 \n\n\n\n\n2019-10-12\n\n\nMap vs List Comprehension\n\n\nlimyj0708 \n\n\n\n\n2019-10-11\n\n\nPython_Parameters, Arguments 정의와 차이점\n\n\nlimyj0708 \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-목록-확인",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-목록-확인",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.1 Branch 목록 확인",
+    "text": "5.1 Branch 목록 확인\n\ngit branch\n\n로컬 브랜치 목록을 보여준다\n현재 작업 중인 브랜치 앞에 * 표시가 붙는다\n\n\n$ git branch\n* master\n  develop\n  feature-1\n\ngit branch -v\n\n각 브랜치의 마지막 커밋 메시지도 함께 보여준다\n\n\n$ git branch -v\n* master    c524828 modify readme\n  develop   a3f2b1c add new feature\n  feature-1 d8e9f0a fix bug\n\ngit branch -a\n\n로컬 브랜치와 원격 브랜치를 모두 보여준다\n\ngit branch -r\n\n원격 브랜치만 보여준다"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-생성",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-생성",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.2 Branch 생성",
+    "text": "5.2 Branch 생성\n\ngit branch &lt;브랜치명&gt;\n\n새로운 브랜치를 생성한다\n생성만 할 뿐 해당 브랜치로 전환하지는 않는다\n\n\n$ git branch develop\n$ git branch\n  develop\n* master\n\ngit checkout -b &lt;브랜치명&gt;\n\n새로운 브랜치를 생성하고 바로 전환한다\ngit branch &lt;브랜치명&gt; + git checkout &lt;브랜치명&gt;을 한 번에 실행\n\n\n$ git checkout -b feature-2\nSwitched to a new branch 'feature-2'\n\ngit switch -c &lt;브랜치명&gt;\n\nGit 2.23 버전 이후 추가된 명령어\ngit checkout -b와 동일한 기능 (브랜치 생성 + 전환)\n\n\n$ git switch -c feature-3\nSwitched to a new branch 'feature-3'"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-전환",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-전환",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.3 Branch 전환",
+    "text": "5.3 Branch 전환\n\ngit checkout &lt;브랜치명&gt;\n\n지정한 브랜치로 전환한다\n워킹 디렉토리의 파일들이 해당 브랜치의 상태로 변경된다\n\n\n$ git checkout develop\nSwitched to branch 'develop'\n\ngit switch &lt;브랜치명&gt;\n\nGit 2.23 버전 이후 추가된 명령어\ngit checkout보다 명확하게 브랜치 전환 용도로 사용\n\n\n$ git switch master\nSwitched to branch 'master'\n\n주의사항\n\n브랜치를 전환하기 전에 현재 작업 중인 내용을 커밋하거나 stash 해야 한다\n그렇지 않으면 변경사항이 사라지거나 충돌이 발생할 수 있다"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-삭제",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-삭제",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.4 Branch 삭제",
+    "text": "5.4 Branch 삭제\n\ngit branch -d &lt;브랜치명&gt;\n\n로컬 브랜치를 삭제한다\n병합되지 않은 브랜치는 삭제되지 않는다 (안전장치)\n\n\n$ git branch -d feature-1\nDeleted branch feature-1 (was d8e9f0a).\n\ngit branch -D &lt;브랜치명&gt;\n\n강제로 브랜치를 삭제한다\n병합되지 않은 브랜치도 삭제된다\n\n\n$ git branch -D feature-2\nDeleted branch feature-2 (was a1b2c3d).\n\n원격 브랜치 삭제\n\ngit push &lt;원격 저장소&gt; --delete &lt;브랜치명&gt;\n또는 git push &lt;원격 저장소&gt; :&lt;브랜치명&gt;\n\n\n$ git push origin --delete feature-1\nTo https://github.com/user/repo.git\n - [deleted]         feature-1"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-병합-merge",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-병합-merge",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.5 Branch 병합 (Merge)",
+    "text": "5.5 Branch 병합 (Merge)\n\ngit merge &lt;브랜치명&gt;\n\n현재 브랜치에 지정한 브랜치의 내용을 병합한다\n예: develop 브랜치의 내용을 master에 병합하고 싶다면\n\n\n$ git checkout master\n$ git merge develop\nUpdating c524828..a3f2b1c\nFast-forward\n README.md | 10 ++++++++++\n 1 file changed, 10 insertions(+)\n\nFast-forward 병합\n\n현재 브랜치가 병합할 브랜치의 직접적인 조상인 경우\nGit은 단순히 포인터를 앞으로 이동시킨다\n\n3-way Merge\n\n현재 브랜치와 병합할 브랜치가 갈라진 경우\nGit은 공통 조상, 현재 브랜치, 병합할 브랜치를 비교하여 새로운 커밋을 생성\n시나리오 1 (성공):\n\nMine은 file1.txt를 수정.\nTheirs는 file2.txt를 수정.\n결과: 겹치는 부분이 없으므로, 두 변경 사항을 모두 적용한 새 커밋을 만든다.\n\n시나리오 2 (성공):\n\nMine은 file1.txt의 10번째 줄을 수정.\nTheirs는 file1.txt의 50번째 줄을 수정.\n결과: 같은 파일이지만 수정한 위치가 다르므로, 두 변경 사항을 모두 적용.\n\n시나리오 3 (실패: 병합 충돌)\n\nMine은 file1.txt의 10번째 줄을 A라고 수정.\nTheirs도 file1.txt의 10번째 줄을 B라고 수정.\n\n결과: Git은 원본(Base)과 비교해 보니 둘 다 같은 곳을 다르게 수정했음을 확인.\n\nGit은 “둘 중 뭘 선택해야 할지 모르겠어!”라며 병합 충돌(Merge Conflict)을 일으키고 사용자에게 해결을 요청함\n\n충돌이 없거나, 충돌을 모두 해결하고 나면 Git은 이 모든 변경 사항을 합친 새로운 커밋 M을 생성\n\n   A---B---C  (feature)  &lt;- 병합할 브랜치 (Theirs)\n  /\n---O---D---E       (main)     &lt;- 현재 브랜치 (Mine)\n\n    A---B---C\n   /         \\\n---O---D---E---M   (main)\n병합 충돌 해결\n\n같은 파일의 같은 부분을 수정한 경우 충돌이 발생한다\n충돌이 발생하면 Git은 해당 파일에 충돌 마커를 추가한다\n\n\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n현재 브랜치의 내용\n=======\n병합하려는 브랜치의 내용\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; develop\n\n수동으로 충돌을 해결한 후 git add로 해결 표시\ngit commit으로 병합 완료"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#branch-이름-변경",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#branch-이름-변경",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "5.6 Branch 이름 변경",
+    "text": "5.6 Branch 이름 변경\n\ngit branch -m &lt;기존 브랜치명&gt; &lt;새 브랜치명&gt;\n\n브랜치 이름을 변경한다\n\n\n$ git branch -m old-name new-name\n\n현재 브랜치의 이름을 변경하려면\n\n$ git branch -m new-name"
   }
 ]
