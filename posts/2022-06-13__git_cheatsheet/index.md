@@ -443,3 +443,13 @@ $ git branch -m old-name new-name
 ```sh
 $ git branch -m new-name
 ```
+
+# Commit
+## Commit 메시지 변경
+- 조직의 commit 메시지 규격에 맞지 않게 commit 메시지를 입력했다가, Push가 안 되는 경우가 종종 발생한다.
+
+### 가장 최근의 commit 수정 (Push 하기 전)
+```sh
+git commit --amend
+```
+- 에디터 창이 열리고, commit 메시지 수정 후 esc -> :wq (저장 후 닫기) 수행하면 완료

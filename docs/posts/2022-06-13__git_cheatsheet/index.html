@@ -187,6 +187,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#branch-병합-merge" id="toc-branch-병합-merge" class="nav-link" data-scroll-target="#branch-병합-merge"><span class="header-section-number">5.5</span> Branch 병합 (Merge)</a></li>
   <li><a href="#branch-이름-변경" id="toc-branch-이름-변경" class="nav-link" data-scroll-target="#branch-이름-변경"><span class="header-section-number">5.6</span> Branch 이름 변경</a></li>
   </ul></li>
+  <li><a href="#commit-1" id="toc-commit-1" class="nav-link" data-scroll-target="#commit-1"><span class="header-section-number">6</span> Commit</a>
+  <ul class="collapse">
+  <li><a href="#commit-메시지-변경" id="toc-commit-메시지-변경" class="nav-link" data-scroll-target="#commit-메시지-변경"><span class="header-section-number">6.1</span> Commit 메시지 변경</a>
+  <ul class="collapse">
+  <li><a href="#가장-최근의-commit-수정-push-하기-전" id="toc-가장-최근의-commit-수정-push-하기-전" class="nav-link" data-scroll-target="#가장-최근의-commit-수정-push-하기-전"><span class="header-section-number">6.1.1</span> 가장 최근의 commit 수정 (Push 하기 전)</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -746,8 +753,24 @@ Changes not staged for commit:
 <li>현재 브랜치의 이름을 변경하려면</li>
 </ul>
 <div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git branch <span class="at">-m</span> new-name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="commit-1" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Commit</h1>
+<section id="commit-메시지-변경" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="commit-메시지-변경"><span class="header-section-number">6.1</span> Commit 메시지 변경</h2>
+<ul>
+<li>조직의 commit 메시지 규격에 맞지 않게 commit 메시지를 입력했다가, Push가 안 되는 경우가 종종 발생한다.</li>
+</ul>
+<section id="가장-최근의-commit-수정-push-하기-전" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="가장-최근의-commit-수정-push-하기-전"><span class="header-section-number">6.1.1</span> 가장 최근의 commit 수정 (Push 하기 전)</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">--amend</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>에디터 창이 열리고, commit 메시지 수정 후 esc -&gt; :wq (저장 후 닫기) 수행하면 완료</li>
+</ul>
 
 
+</section>
 </section>
 </section>
 

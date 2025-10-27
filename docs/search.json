@@ -852,5 +852,12 @@
     "title": "Git CheatSheet (지속적으로 업데이트함)",
     "section": "5.6 Branch 이름 변경",
     "text": "5.6 Branch 이름 변경\n\ngit branch -m &lt;기존 브랜치명&gt; &lt;새 브랜치명&gt;\n\n브랜치 이름을 변경한다\n\n\n$ git branch -m old-name new-name\n\n현재 브랜치의 이름을 변경하려면\n\n$ git branch -m new-name"
+  },
+  {
+    "objectID": "posts/2022-06-13__git_cheatsheet/index.html#commit-메시지-변경",
+    "href": "posts/2022-06-13__git_cheatsheet/index.html#commit-메시지-변경",
+    "title": "Git CheatSheet (지속적으로 업데이트함)",
+    "section": "6.1 Commit 메시지 변경",
+    "text": "6.1 Commit 메시지 변경\n\n조직의 commit 메시지 규격에 맞지 않게 commit 메시지를 입력했다가, Push가 안 되는 경우가 종종 발생한다.\n\n\n6.1.1 가장 최근의 commit 수정 (Push 하기 전)\ngit commit --amend\n\n에디터 창이 열리고, commit 메시지 수정 후 esc -&gt; :wq (저장 후 닫기) 수행하면 완료"
   }
 ]
