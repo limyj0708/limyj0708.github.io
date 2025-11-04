@@ -124,8 +124,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cidr" id="toc-cidr" class="nav-link active" data-scroll-target="#cidr">CIDR?</a></li>
-  <li><a href="#그럼-0.0.0.00은-무엇인지" id="toc-그럼-0.0.0.00은-무엇인지" class="nav-link" data-scroll-target="#그럼-0.0.0.00은-무엇인지">그럼 0.0.0.0/0은 무엇인지?</a></li>
+  <li><a href="#cidr" id="toc-cidr" class="nav-link active" data-scroll-target="#cidr">1. CIDR?</a></li>
+  <li><a href="#그럼-0.0.0.00은-무엇인지" id="toc-그럼-0.0.0.00은-무엇인지" class="nav-link" data-scroll-target="#그럼-0.0.0.00은-무엇인지">2. 그럼 0.0.0.0/0은 무엇인지?</a></li>
   </ul>
 </nav>
     </div>
@@ -167,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="cidr" class="level1">
-<h1>CIDR?</h1>
+<h1>1. CIDR?</h1>
 <ul>
 <li><strong>CIDR (Classless Inter-Domain Routing)</strong>는 IP 주소 범위를 나타내는 표기</li>
 <li>표기 방식: [IP 주소]/[프리픽스 길이]
@@ -190,9 +190,9 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="그럼-0.0.0.00은-무엇인지" class="level1">
-<h1>그럼 0.0.0.0/0은 무엇인지?</h1>
+<h1>2. 그럼 0.0.0.0/0은 무엇인지?</h1>
 <ul>
-<li>0.0.0.0: IP 주소의 시작점입니다.</li>
+<li>0.0.0.0: IP 주소의 시작점.</li>
 <li>/0: 고정되는 비트가 0개라는 뜻. 즉, 32비트 전체가 변할 수 있음을 의미함.</li>
 <li>결과적으로 0.0.0.0/0은 0.0.0.0부터 255.255.255.255까지, 모든 IPv4 주소 범위 전체를 나타내는 표기법</li>
 <li>예를 들어, Oracle Compute Instance의 Ingress Rule의 <strong>Source CIDR (소스 CIDR)</strong>에 0.0.0.0/0을 설정하면, 인터넷상의 모든 IP 주소로부터의 접속(TCP 프로토콜)을 허용하겠다는 의미임</li>
