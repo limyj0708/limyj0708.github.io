@@ -24,12 +24,12 @@ format:
 5. Reserve public IP address 버튼 클릭
 6. 내용 작성하여 등록
 7. 고정 IP 할당 결과
-![고정 IP 할당 결과](1_oracle_public_ip.jpg)
+![고정 IP 할당 결과](1_oracle_public_ip.gif)
 
 
 # 2. ~.ssh/config에서 간단 접속 설정
 1. 터미널에서 `nano ~/.ssh/config` 실행하여 config 편집
-```
+```conf
 Host 사용할_호스트_이름
     # Public IP
     HostName 000.000.000.000
@@ -101,9 +101,12 @@ Host 사용할_호스트_이름
 2. Subnet
 3. Security
   - Security List에서 수정 원하는 항목 클릭
-![Security](3_subnet_security.jpg)
+![Security](3_subnet_security.gif)
 4. Security Rules
   - 여기까지 왔으면 이제 Ingress Rule과 Egress Rule을 수정할 수 있다.
+  ![IngressRule](4_Add_Ingress_rules.gif)
+5. Ingress Rule 설정 시 사용하는 CIDR (Classless Inter-Domain Routing)에 대한 설명은 다음 포스트를 참조
+  - [CIDR](../2025-11-03__CIDR (Classless Inter-Domain Routing)/)
 
 
 # 4. Oracle Compute Instance SSH 포트 변경
@@ -139,7 +142,7 @@ Host 사용할_호스트_이름
     - openssh-server 패키지가 업데이트되면 설정이 덮어씌워짐
     - override 메커니즘을 사용하면 되지만 관리가 복잡함
   - 이제 비활성화 하자
-    ```shell
+    ```sh
     # 1. SSH 소켓 비활성화 및 중지
     sudo systemctl stop ssh.socket
     sudo systemctl disable ssh.socket
@@ -154,15 +157,15 @@ Host 사용할_호스트_이름
 4. iptables 규칙 추가
     - 기본적으로 UFW가 없음. iptables로 관리
     - 규칙 추가 예시
-      ```shell
+      ```sh
       sudo iptables -I INPUT 5 -p tcp --dport 00000 -m state --state NEW -j ACCEPT
       ```
     - 규칙 확인
-      ```shell
+      ```sh
       sudo iptables -L INPUT -n -v --line-numbers
       ```
     - 규칙 저장
-      ```shell
+      ```sh
       # iptables-persistent 설치 (없다면)
       sudo apt-get update
       sudo apt-get install iptables-persistent

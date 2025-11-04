@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  
+execute:
+  freeze: auto # re-render only when source changes
 
 website:
   title: "Lim's Code Archive"
@@ -18,6 +21,3 @@ format:
   html:
     theme: cosmo
     css: styles.css
-  
-execute:
-  freeze: auto # re-render only when source changes
