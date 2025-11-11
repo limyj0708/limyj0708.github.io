@@ -9,7 +9,7 @@
 <meta name="author" content="limyj0708">
 <meta name="dcterms.date" content="2025-10-28">
 
-<title>Airflow_DockerOperator를 사용해 보자 – Lim’s Code Archive</title>
+<title>Airflow DockerOperator 적용 예시 (Docker-out-of-Docker) – Lim’s Code Archive</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -161,9 +161,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#왜-dockeroperator를-사용하게-되었나" id="toc-왜-dockeroperator를-사용하게-되었나" class="nav-link active" data-scroll-target="#왜-dockeroperator를-사용하게-되었나">왜 DockerOperator를 사용하게 되었나</a></li>
   <li><a href="#코드-예시" id="toc-코드-예시" class="nav-link" data-scroll-target="#코드-예시">코드 예시</a></li>
-  <li><a href="#추가-설명" id="toc-추가-설명" class="nav-link" data-scroll-target="#추가-설명">추가 설명</a>
+  <li><a href="#그런데-보안-취약점이-있다" id="toc-그런데-보안-취약점이-있다" class="nav-link" data-scroll-target="#그런데-보안-취약점이-있다">그런데 보안 취약점이 있다</a>
   <ul class="collapse">
   <li><a href="#docker-socket" id="toc-docker-socket" class="nav-link" data-scroll-target="#docker-socket">Docker Socket</a></li>
+  <li><a href="#어떻게-보안-취약점을-해결하는가" id="toc-어떻게-보안-취약점을-해결하는가" class="nav-link" data-scroll-target="#어떻게-보안-취약점을-해결하는가">어떻게 보안 취약점을 해결하는가</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -173,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Airflow_DockerOperator를 사용해 보자</h1>
+<h1 class="title">Airflow DockerOperator 적용 예시 (Docker-out-of-Docker)</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Airflow</div>
   </div>
@@ -208,18 +209,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="왜-dockeroperator를-사용하게-되었나" class="level1">
 <h1>왜 DockerOperator를 사용하게 되었나</h1>
 <ol type="1">
+<li>네이버 뉴스 API를 10분 간격으로 호출하여, 특정 키워드가 들어간 최신 기사를 slack으로 전송하는 반복 작업이 필요</li>
+<li>PythonOperator, BashOperator를 사용하고 싶지 않았음
+<ul>
+<li>Airflow 환경과 Application 환경을 완전히 분리하여 의존성을 제거하고 싶었음</li>
+<li>Application이 메모리를 많이 사용해도, Airflow 안정성이 보장되었으면 함</li>
+</ul></li>
 <li>Airflow : Docker Container에서 실행 중</li>
-<li>실행해야 할 대상 : 다른 Docker Image로 관리 중</li>
-</ol>
+<li>Application : 다른 Docker Image로 관리 중
 <ul>
 <li>이런 경우, 임시 Docker Container를 생성한 후 대상을 실행함</li>
 <li>그리고 임시 Docker Container를 제거</li>
-</ul>
+</ul></li>
+</ol>
 </section>
 <section id="코드-예시" class="level1">
 <h1>코드 예시</h1>
 <ul>
-<li>Airflow Container와 같은 머신에 있는 Container를 실행하는 경우</li>
+<li>Airflow Container와 같은 머신에 있는 Container를 실행하는 경우 (Docker-out-of-Docker)</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">서울 지하철 뉴스 봇 DAG</span></span>
@@ -294,13 +301,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>fetch_news <span class="op">=</span> DockerOperator(</span>
 <span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    task_id<span class="op">=</span><span class="st">'fetch_news'</span>,</span>
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    image<span class="op">=</span>DOCKER_IMAGE,</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    api_version<span class="op">=</span><span class="st">'auto'</span>,</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    api_version<span class="op">=</span><span class="st">'auto'</span>, <span class="co"># Docker SDK가 연결된 Docker 데몬의 API 버전을 자동으로 감지하고, 호환되는 최신 버전을 사용</span></span>
 <span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    auto_remove<span class="op">=</span><span class="va">True</span>,  <span class="co"># 컨테이너 실행 완료 후 자동 삭제</span></span>
 <span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    command<span class="op">=</span><span class="st">'python scripts/1_fetch_news.py'</span>,  <span class="co"># 실행할 명령어</span></span>
 <span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    docker_url<span class="op">=</span><span class="st">'unix://var/run/docker.sock'</span>,  <span class="co"># Docker 소켓</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    network_mode<span class="op">=</span>NETWORK_MODE,  <span class="co"># shared_network 사용. 미리 생성해줘야 함</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    network_mode<span class="op">=</span>NETWORK_MODE,  <span class="co"># 어떤 공유 네트워크를 사용할 것인지 지정. 컨테이너 간 통신이 존재한다면 필요하며, 컨테이너 간 통신이 없다면 필요 없는 옵션.</span></span>
 <span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    mounts<span class="op">=</span>MOUNTS,  <span class="co"># 데이터 디렉토리 및 .env 파일 마운트</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    mount_tmp_dir<span class="op">=</span><span class="va">False</span>,  <span class="co"># /tmp 마운트 비활성화</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    mount_tmp_dir<span class="op">=</span><span class="va">False</span>,  <span class="co"># /tmp 마운트 비활성화. 이미 data 디렉토리가 마운트되어 있음. 비활성화를 하지 않으면 자동으로 호스트의 /tmp에 마운트함 </span></span>
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    dag<span class="op">=</span>dag,</span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
@@ -321,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co"># Task 3: 텔레그램 알림 전송</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co"># Task 3: 슬랙 알림 전송</span></span>
 <span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
 <span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>send_notifications <span class="op">=</span> DockerOperator(</span>
 <span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    task_id<span class="op">=</span><span class="st">'send_notifications'</span>,</span>
@@ -357,8 +364,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
 <span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>fetch_news <span class="op">&gt;&gt;</span> filter_duplicates <span class="op">&gt;&gt;</span> send_notifications <span class="op">&gt;&gt;</span> cleanup</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="추가-설명" class="level1">
-<h1>추가 설명</h1>
+<section id="그런데-보안-취약점이-있다" class="level1">
+<h1>그런데 보안 취약점이 있다</h1>
 <section id="docker-socket" class="level2">
 <h2 class="anchored" data-anchor-id="docker-socket">Docker Socket</h2>
 <ul>
@@ -367,13 +374,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>unix:// 프로토콜은 같은 머신 내에서 통신할 때 사용</li>
 <li>/var/run/docker.sock는 Unix 도메인 소켓 파일로, Docker 클라이언트가 Docker 데몬(dockerd)과 통신하기 위한 통로</li>
 </ul></li>
-<li>docker.sock 파일의 권한을 확인해 보면</li>
+<li>docker.sock 파일 상세</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /var/run/docker.sock</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">srw-rw----</span> 1 root docker 0 Oct  9 14:31 /var/run/docker.sock</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li></li>
+<li>소유자(Owner) 권한: rw-
+<ul>
+<li>소유자: root</li>
+<li>r (read): 읽기 가능</li>
+<li>w (write): 쓰기 가능</li>
+<li>(execute): 실행 권한 없음</li>
+</ul></li>
+<li>그룹(Group) 권한: rw-
+<ul>
+<li>그룹: docker</li>
+<li>r (read): 읽기 가능</li>
+<li>w (write): 쓰기 가능</li>
+<li>(execute): 실행 권한 없음</li>
+</ul></li>
+<li>기타(Others) 권한: —
+<ul>
+<li>—: 아무 권한 없음</li>
+</ul></li>
+<li>Docker 소켓 접근 권한이 있으면 사실상 root 권한을 얻을 수 있음
+<ul>
+<li>예: 호스트 파일시스템을 마운트한 컨테이너 실행 가능. 파일을 원하는대로 조작 가능</li>
+</ul></li>
 </ul>
+</section>
+<section id="어떻게-보안-취약점을-해결하는가" class="level2">
+<h2 class="anchored" data-anchor-id="어떻게-보안-취약점을-해결하는가">어떻게 보안 취약점을 해결하는가</h2>
+<ol type="1">
+<li>Docker 데몬을 다른 작업용 서버에 띄운다
+<ul>
+<li>Airflow 워커가 있는 호스트가 아닌, 별도의 전용 VM/서버에 Docker 데몬을 띄움. Airflow는 TLS 인증서를 통해 네트워크로 이 원격 데몬에 docker run을 요청.</li>
+<li>효과: 악의적인 DAG가 배포되거나 Task 컨테이너가 침해되어 Docker socket을 악용하려 해도, 피해 범위는 격리된 작업용 서버로 한정됨</li>
+</ul></li>
+<li>Docker Socket Proxy 사용
+<ul>
+<li>워커에 docker.sock를 직접 마운트하는 대신, API 호출을 필터링하는 프록시 소켓을 마운트.</li>
+<li>효과: –privileged나 위험한 볼륨 마운트(-v /:/host_root) 같은 위험한 명령어를 원천 차단</li>
+</ul></li>
+<li>위험을 감수하고 사용
+<ul>
+<li>DooD 방식의 취약점을 알지만, 특정 조건 하에 위험을 수용하고 그냥 사용</li>
+<li>위험 수용 조건
+<ul>
+<li>강력한 내부 통제: DAG를 작성하고 배포할 수 있는 사람이 소수의 신뢰할 수 있는 엔지니어로 완벽하게 통제되는 환경. (즉, 악의적인 코드가 유입될 경로가 없다고 신뢰)</li>
+<li>완전한 폐쇄망: 해당 Airflow 클러스터가 인터넷은 물론, 회사 내부의 다른 중요 시스템과도 네트워크가 완전히 분리된 환경. (즉, 탈취당해도 피해 범위가 해당 클러스터로 한정됨)</li>
+</ul></li>
+</ul></li>
+<li>Kubernetes로의 이전
+<ul>
+<li>DockerOperator가 해결하려던 의존성 격리 문제를, <strong>KubernetesPodOperator</strong>를 사용하여 해결</li>
+<li>KubernetesPodOperator는 Task마다 별도의 Pod를 생성하여 작업을 실행하고 종료</li>
+<li>또는 Airflow 전체를 <strong>KubernetesExecutor</strong>로 전환하여 모든 Task를 자동으로 Pod에서 실행 가능</li>
+</ul></li>
+</ol>
 
 
 </section>

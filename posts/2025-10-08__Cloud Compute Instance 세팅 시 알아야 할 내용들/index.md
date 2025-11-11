@@ -3,7 +3,7 @@ toc: true
 toc-depth: 3
 toc-expand: true
 number-sections: false  # H tag에 번호를 자동으로 붙임
-title: Cloud Compute Instance 사용 시 알아두면 좋은 사용법들
+title: Cloud Compute Instance 세팅 시 알아야 할 내용들
 date: 2025-10-08
 categories: [Cloud]
 author: limyj0708
@@ -29,7 +29,7 @@ format:
 
 # 2. ~.ssh/config에서 간단 접속 설정
 1. 터미널에서 `nano ~/.ssh/config` 실행하여 config 편집
-```conf
+```config
 Host 사용할_호스트_이름
     # Public IP
     HostName 000.000.000.000

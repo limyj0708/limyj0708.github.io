@@ -9,7 +9,7 @@
 <meta name="author" content="limyj0708">
 <meta name="dcterms.date" content="2025-10-08">
 
-<title>Cloud Compute Instance 사용 시 알아두면 좋은 사용법들 – Lim’s Code Archive</title>
+<title>Cloud Compute Instance 세팅 시 알아야 할 내용들 – Lim’s Code Archive</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Cloud Compute Instance 사용 시 알아두면 좋은 사용법들</h1>
+<h1 class="title">Cloud Compute Instance 세팅 시 알아야 할 내용들</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Cloud</div>
   </div>
@@ -224,35 +224,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>터미널에서 <code>nano ~/.ssh/config</code> 실행하여 config 편집</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode conf code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">Host</span> <span class="er">사용할</span><span class="dt">_</span><span class="er">호스트</span><span class="dt">_</span><span class="er">이름</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Public IP</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">HostName</span> <span class="dt">000.000.000.000</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Port</span> <span class="dt">00000</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 서버 유저</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">User</span> <span class="dt">user_account_name</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Private key 경로</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">IdentityFile</span> <span class="er">/</span><span class="dt">Users</span><span class="er">/</span><span class="dt">....</span><span class="er">/</span><span class="dt">private.key</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 연결 유지 (끊김 방지)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 60초마다 null packet을 보내서 연결이 끊기지 않게 유지</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ServerAliveInterval</span> <span class="dt">60</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">## ServerAliveInterval에 설정된 간격으로 신호를 보냈는데 서버로부터 응답이 없을 경우, 몇 번까지 더 시도할지를 결정</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ServerAliveCountMax</span> <span class="dt">3</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 연결 재사용 (속도 향상)</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ControlMaster</span> <span class="dt">auto</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ControlPath</span> <span class="er">~/</span><span class="dt">.ssh</span><span class="er">/</span><span class="dt">controlmasters</span><span class="er">/%</span><span class="dt">r</span><span class="er">@%</span><span class="dt">h</span><span class="er">:%</span><span class="dt">p</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ControlPersist</span> <span class="dt">10m</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 접속 시도 타임아웃</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ConnectTimeout</span> <span class="dt">10</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 보안 관련 옵션</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">## X11 Forwarding(GUI 프로그램 실행) 기능을 비활성화. 서버에서 GUI 애플리케이션을 사용할 일이 없다면 꺼두는 것이 보안에 좋음</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ForwardX11</span> <span class="dt">no</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 내 PC → Bastion 서버 (Public IP) → Private 서버 (Private IP) 이런 접속 구조가 필요할 때에는 SSH Agent Forwarding이 필요</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 하지만 저런 구조에서 사용할 일이 없으므로 끈다.</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">ForwardAgent</span> <span class="dt">no</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="config"><code>Host 사용할_호스트_이름
+    # Public IP
+    HostName 000.000.000.000
+    Port 00000
+    # 서버 유저
+    User user_account_name
+    # Private key 경로
+    IdentityFile /Users/..../private.key
+
+    # 연결 유지 (끊김 방지)
+    ## 60초마다 null packet을 보내서 연결이 끊기지 않게 유지
+    ServerAliveInterval 60
+    ## ServerAliveInterval에 설정된 간격으로 신호를 보냈는데 서버로부터 응답이 없을 경우, 몇 번까지 더 시도할지를 결정
+    ServerAliveCountMax 3
+
+    # 연결 재사용 (속도 향상)
+    ControlMaster auto
+    ControlPath ~/.ssh/controlmasters/%r@%h:%p
+    ControlPersist 10m
+
+    # 접속 시도 타임아웃
+    ConnectTimeout 10
+
+    # 보안 관련 옵션
+    ## X11 Forwarding(GUI 프로그램 실행) 기능을 비활성화. 서버에서 GUI 애플리케이션을 사용할 일이 없다면 꺼두는 것이 보안에 좋음
+    ForwardX11 no
+    ## 내 PC → Bastion 서버 (Public IP) → Private 서버 (Private IP) 이런 접속 구조가 필요할 때에는 SSH Agent Forwarding이 필요
+    ## 하지만 저런 구조에서 사용할 일이 없으므로 끈다.
+    ForwardAgent no</code></pre>
 <ol start="2" type="1">
 <li>각 항목에 대한 설명</li>
 </ol>

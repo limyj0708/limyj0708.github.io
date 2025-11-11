@@ -91,3 +91,11 @@ categories: pandas
 execute:
   freeze: auto  # re-render only when source changes
 ```
+
+## 상대경로로 포스트 간 링크 추가
+- 특정 포스트로 이동
+  - `[uv로 프로젝트 환경 세팅하기](../2025-10-08__uv init으로 시작하는 프로젝트 환경 세팅/)`
+  - [uv로 프로젝트 환경 세팅하기](../2025-10-08__uv init으로 시작하는 프로젝트 환경 세팅/)
+- 특정 포스트의 제목으로 이동
+  - `[sshconfig에서-간단-접속-설정](../2025-10-08__Cloud Compute Instance 사용 시 알아두면 좋은 사용법들/#sshconfig에서-간단-접속-설정)`
+  - [sshconfig에서-간단-접속-설정](../2025-10-08__Cloud Compute Instance 사용 시 알아두면 좋은 사용법들/#sshconfig에서-간단-접속-설정)
